@@ -5,11 +5,11 @@ VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CountyRP.GameServer", "CountyRP.GameServer\CountyRP.GameServer.csproj", "{3D4D7F36-DEA0-4E2E-A76C-838374F429D3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CountyRP.Contracts", "CountyRP.Contracts\CountyRP.Contracts.csproj", "{FBB26CD6-6C1B-4869-8F0E-BC34F5A2EC17}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CountyRP.Entities", "CountyRP.Entities\CountyRP.Entities.csproj", "{FBB26CD6-6C1B-4869-8F0E-BC34F5A2EC17}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CountyRP.WebAPI", "CountyRP.WebAPI\CountyRP.WebAPI.csproj", "{875B62BA-7A40-42C6-8154-FA0063F72902}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CountyRP.WebSite", "CountyRP.WebSite\CountyRP.WebSite.csproj", "{EAF85419-7FBF-44B8-A5CF-5800D76DE1A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CountyRP.WebSite", "CountyRP.WebSite\CountyRP.WebSite.csproj", "{EAF85419-7FBF-44B8-A5CF-5800D76DE1A3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
