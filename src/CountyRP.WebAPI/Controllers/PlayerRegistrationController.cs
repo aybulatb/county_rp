@@ -19,6 +19,8 @@ namespace CountyRP.WebAPI.Controllers
 
         [HttpPost]
         [Route("register")]
+        [ProducesResponseType(typeof(void), 201)]
+        [ProducesResponseType(typeof(string), 400)]
         public IActionResult Register(string login, string password)
         {
             if (login.Length < 3 || login.Length > 32)

@@ -19,6 +19,8 @@ namespace CountyRP.WebAPI.Controllers
 
         [HttpGet]
         [Route("tryauthorize")]
+        [ProducesResponseType(typeof(Player), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public IActionResult TryAuthorize(string login, string password)
         {
             Player player = playerContext.Players.
