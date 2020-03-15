@@ -24,6 +24,9 @@ namespace CountyRP.WebAPI
 
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<PlayerContext>(options => options.UseSqlServer(connectionString));
+
+            // Register the Swagger services
+            services.AddSwaggerDocument();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -36,6 +39,10 @@ namespace CountyRP.WebAPI
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            // Register the Swagger generator and the Swagger UI middlewares
+            app.UseOpenApi();
+            app.UseSwaggerUi3();
 
             app.UseAuthorization();
 
