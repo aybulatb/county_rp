@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 
+using CountyRP.WebSite.Exceptions;
 using CountyRP.WebSite.Services.Interfaces;
 using CountyRP.Extra;
 
@@ -21,13 +22,13 @@ namespace CountyRP.WebSite.Services
             try
             {
                 player = await _playerAuthorizationClient.TryAuthorizeAsync(login, password);
-
-                return player;
             }
-            catch (ApiException)
+            catch (ApiException ex)
             {
-                return null;
+                throw new AdapterException(ex.StatusCode, ex.Message);
             }
+
+            return player;
         }
     }
 }

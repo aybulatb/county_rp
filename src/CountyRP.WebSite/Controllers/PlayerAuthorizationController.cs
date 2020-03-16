@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
+using CountyRP.WebSite.Exceptions;
 using CountyRP.WebSite.Services.Interfaces;
 using CountyRP.Extra;
 
@@ -21,14 +22,18 @@ namespace CountyRP.WebSite.Controllers
         [Route("TryAuthorize")]
         public async Task<IActionResult> TryAuthorize(string login, string password)
         {
-            Player player = await _playerAuthorizationClient.TryAuthorize(login, password);
+            Player player;
 
-            if (player == null)
+            try
             {
-                return BadRequest("Данный игрок не найден");
+                player = await _playerAuthorizationClient.TryAuthorize(login, password);
+            }
+            catch (AdapterException ex)
+            {
+                return BadRequest(ex.Message);
             }
 
-            return Content($"{player.Id} {player.Login} {player.Password}");
+            return Ok(player);
         }
     }
 }
