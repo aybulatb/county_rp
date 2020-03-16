@@ -21,7 +21,6 @@ namespace CountyRP.WebSite
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
 
@@ -35,11 +34,12 @@ namespace CountyRP.WebSite
 
             HttpClient httpClient = new HttpClient();
             services.AddSingleton(new PlayerAuthorizationClient(httpClient));
+            services.AddSingleton(new PlayerRegistrationClient(httpClient));
 
             services.AddTransient<IPlayerAuthorizationAdapter, PlayerAuthorizationAdapter>();
+            services.AddTransient<IPlayerRegistrationAdapter, PlayerRegistrationAdapter>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
