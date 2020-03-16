@@ -6,6 +6,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
+using CountyRP.WebSite.Services;
+using CountyRP.WebSite.Services.Interfaces;
 using CountyRP.Extra;
 
 namespace CountyRP.WebSite
@@ -33,6 +35,8 @@ namespace CountyRP.WebSite
 
             HttpClient httpClient = new HttpClient();
             services.AddSingleton(new PlayerAuthorizationClient(httpClient));
+
+            services.AddTransient<IPlayerAuthorizationAdapter, PlayerAuthorizationAdapter>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
