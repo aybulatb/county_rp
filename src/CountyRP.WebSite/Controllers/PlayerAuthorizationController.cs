@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-using CountyRP.Extra;
+using CountyRP.WebSite.Services.Interfaces;
 
 namespace CountyRP.WebSite.Controllers
 {
@@ -9,9 +9,9 @@ namespace CountyRP.WebSite.Controllers
     [Route("[controller]")]
     public class PlayerAuthorizationController : ControllerBase
     {
-        private PlayerAuthorizationClient _playerAuthorizationClient;
+        private IPlayerAuthorizationAdapter _playerAuthorizationClient;
 
-        public PlayerAuthorizationController(PlayerAuthorizationClient playerAuthorizationClient)
+        public PlayerAuthorizationController(IPlayerAuthorizationAdapter playerAuthorizationClient)
         {
             _playerAuthorizationClient = playerAuthorizationClient;
         }
@@ -20,16 +20,9 @@ namespace CountyRP.WebSite.Controllers
         [Route("tryauthorize")]
         public async Task<IActionResult> TryAuthorize(string login, string password)
         {
-            try
-            {
-                var x = await _playerAuthorizationClient.TryAuthorizeAsync(login, password);
+            var x = await _playerAuthorizationClient.TryAuthorize(login, password);
 
-                return Content($"{x.Id} {x.Login} {x.Password}");
-            }
-            catch (ApiException ex)
-            {
-                return Content($"{ex.StatusCode}");
-            }
+            return Content($"{x.Id} {x.Login} {x.Password}");
         }
     }
 }
