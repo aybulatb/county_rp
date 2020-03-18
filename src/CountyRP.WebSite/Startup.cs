@@ -35,7 +35,7 @@ namespace CountyRP.WebSite
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
-                    options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
+                    options.ExpireTimeSpan = System.TimeSpan.FromDays(365);
                 });
 
             HttpClient httpClient = new HttpClient();
