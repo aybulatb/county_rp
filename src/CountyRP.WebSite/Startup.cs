@@ -1,4 +1,5 @@
 using System.Net.Http;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
@@ -23,7 +24,6 @@ namespace CountyRP.WebSite
 
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllersWithViews();
 
             // In production, the React files will be served from this directory
@@ -31,6 +31,12 @@ namespace CountyRP.WebSite
             {
                 configuration.RootPath = "ClientApp/build";
             });
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
+                });
 
             HttpClient httpClient = new HttpClient();
             services.AddSingleton(new PlayerAuthorizationClient(httpClient));
@@ -58,6 +64,9 @@ namespace CountyRP.WebSite
             app.UseSpaStaticFiles();
 
             app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
