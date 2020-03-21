@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 
+import AuthForm from './AuthForm';
+
 export class Home extends Component {
   static displayName = Home.name;
 
   render () {
     return (
       <div>
+        <AuthForm />
         <h1>Hello, world!</h1>
         <p>Welcome to your new single-page application, built with:</p>
         <ul>

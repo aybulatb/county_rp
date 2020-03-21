@@ -1,0 +1,14 @@
+﻿.topMenu__wrap {
+    background-color: #FF0000;
+    display: flex;
+    justify-content: center;
+}
+
+.topMenu {
+    width: 980px;
+    height: 80px;
+}
+
+.topMenu__ {
+
+}
