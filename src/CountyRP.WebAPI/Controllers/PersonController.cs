@@ -17,16 +17,28 @@ namespace CountyRP.WebAPI.Controllers
 
         [HttpGet]
         [Route("GetById")]
-        public Person GetById(int id)
+        [ProducesResponseType(typeof(Person), 200)]
+        public IActionResult GetById(int id)
         {
-            return _playerContext.Persons.FirstOrDefault(p => p.Id == id);
+            Person person = _playerContext.Persons.FirstOrDefault(p => p.Id == id);
+
+            if (person == null)
+                return NotFound();
+
+            return Ok(person);
         }
 
         [HttpGet]
         [Route("GetByName")]
-        public Person GetByName(string name)
+        [ProducesResponseType(typeof(Person), 200)]
+        public IActionResult GetByName(string name)
         {
-            return _playerContext.Persons.FirstOrDefault(p => p.Name == name);
+            Person person = _playerContext.Persons.FirstOrDefault(p => p.Name == name);
+
+            if (person == null)
+                return NotFound();
+
+            return Ok(person);
         }
     }
 }
