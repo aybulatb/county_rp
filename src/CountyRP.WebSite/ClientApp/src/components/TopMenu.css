@@ -7,8 +7,14 @@
 .topMenu {
     width: 980px;
     height: 80px;
+    display: flex;
+    justify-content: center;
 }
 
-.topMenu__ {
+.topMenu__logo {
+    width: 200px;
+}
 
+.topMenu__navPanel {
+    flex-grow: 1;
 }

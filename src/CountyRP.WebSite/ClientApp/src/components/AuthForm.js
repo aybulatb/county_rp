@@ -11,25 +11,50 @@ export default class AuthForm extends Component {
 
     this.changeLoginInput = this.changeLoginInput.bind(this);
     this.changePasswordInput = this.changePasswordInput.bind(this);
+    this.authorize = this.authorize.bind(this);
   }
 
   changeLoginInput(e) {
     this.setState({
-      login: e.value
+      login: e.target.value
     });
   }
 
   changePasswordInput(e) {
     this.setState({
-      password: e.value
+      password: e.target.value
     });
+  }
+
+  authorize() {
+    var formData = new FormData();
+    formData.append('login', this.state.login);
+    formData.append('password', this.state.password);
+
+    var query = 'login=' + this.state.login + '&password=' + this.state.password;
+
+    var request = new XMLHttpRequest();
+    request.open('POST', 'PlayerAuthorization/TryAuthorize?' + query);
+    request.onreadystatechange = () => {
+      if (request.readyState !== XMLHttpRequest.DONE)
+        return;
+
+      if (request.status === 200) {
+        var player = JSON.parse(request.responseText);
+        console.log(player.login);
+        console.log(player.password);
+      }
+    };
+
+    request.send(formData);
   }
 
   render() {
     return (
       <div>
         <input type="text" value={this.state.login} onChange={this.changeLoginInput} />
-        <input type="password" value={this.state.password} onChange={this.ChangePasswordInput} />
+        <input type="password" value={this.state.password} onChange={this.changePasswordInput} />
+        <button onClick={this.authorize}>Авторизоваться</button>
       </div>
     );
   }

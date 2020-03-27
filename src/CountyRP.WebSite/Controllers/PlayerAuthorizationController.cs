@@ -22,10 +22,13 @@ namespace CountyRP.WebSite.Controllers
             _playerAuthorizationClient = playerAuthorizationClient;
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("TryAuthorize")]
         public async Task<IActionResult> TryAuthorize(string login, string password)
         {
+            if (User.Identity.IsAuthenticated)
+                return BadRequest("Вы уже авторизованы");
+
             Player player;
 
             try
@@ -37,22 +40,22 @@ namespace CountyRP.WebSite.Controllers
                 return BadRequest(ex.Message);
             }
 
-            await Authenticate(player.Login, player.Password);
+            await Authenticate(player.Id, player.Password);
 
             return Ok(player);
         }
 
-        private async Task Authenticate(string login, string password)
+        private async Task Authenticate(int id, string password)
         {
             var claims = new List<Claim>
             {
-                new Claim(ClaimsIdentity.DefaultNameClaimType, login),
+                new Claim("id", id.ToString()),
                 new Claim("password", password)
             };
 
-            ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
+            ClaimsIdentity identity = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
 
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
         }
 
         [HttpGet]
