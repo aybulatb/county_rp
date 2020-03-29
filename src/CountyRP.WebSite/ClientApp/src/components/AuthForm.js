@@ -1,4 +1,5 @@
 ﻿import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 
 export default class AuthForm extends Component {
   constructor(props) {
@@ -43,6 +44,7 @@ export default class AuthForm extends Component {
         var player = JSON.parse(request.responseText);
         console.log(player.login);
         console.log(player.password);
+        //this.props.history.push('/');
       }
     };
 

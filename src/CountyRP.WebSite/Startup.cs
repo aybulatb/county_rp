@@ -39,9 +39,13 @@ namespace CountyRP.WebSite
                 });
 
             HttpClient httpClient = new HttpClient();
+            services.AddSingleton(new PlayerClient(httpClient));
+            services.AddSingleton(new PersonClient(httpClient));
             services.AddSingleton(new PlayerAuthorizationClient(httpClient));
             services.AddSingleton(new PlayerRegistrationClient(httpClient));
 
+            services.AddTransient<IPlayerAdapter, PlayerAdapter>();
+            services.AddTransient<IPersonAdapter, PersonAdapter>();
             services.AddTransient<IPlayerAuthorizationAdapter, PlayerAuthorizationAdapter>();
             services.AddTransient<IPlayerRegistrationAdapter, PlayerRegistrationAdapter>();
         }
