@@ -1,44 +1,22 @@
 ﻿import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { observer, inject } from 'mobx-react';
 
 import './TopMenu.css';
 
-export default class TopMenu extends Component {
+class TopMenu extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      isAuthLoading: true,
-      miniProfile: null
+      isAuthLoading: true
     };
 
     this.logOut = this.logOut.bind(this);
     this.renderLoadingAuth = this.renderLoadingAuth.bind(this);
     this.renderMiniProfile = this.renderMiniProfile.bind(this);
 
-    this.getMiniProfile();
-  }
-
-  getMiniProfile() {
-    var request = new XMLHttpRequest();
-    request.open('GET', 'PlayerProfile/MiniInfo');
-    request.onload = () => {
-      if (request.readyState === XMLHttpRequest.DONE) {
-        if (request.status === 200) {
-          var miniProfile = JSON.parse(request.responseText);
-          this.setState({
-            miniProfile: {
-              login: miniProfile.login
-            }
-          });
-        }
-
-        this.setState({
-          isAuthLoading: false
-        });
-      }
-    };
-    request.send();
+    this.props.miniPlayerInfoStore.getMiniProfile();
   }
 
   logOut() {
@@ -57,17 +35,17 @@ export default class TopMenu extends Component {
   }
 
   renderLoadingAuth() {
-    return ((this.state.isAuthLoading) ?
+    return ((this.props.miniPlayerInfoStore.isLoading) ?
       "loading" :
       this.renderMiniProfile()
     );
   }
 
   renderMiniProfile() {
-    return ((this.state.miniProfile === null) ?
+    return ((!this.props.miniPlayerInfoStore.isAuthorized) ?
       <Link to="/Auth">Авторизация</Link> :
       <div>
-        <div>{this.state.miniProfile.login}</div>
+        <div>{this.props.miniPlayerInfoStore.profile.login}</div>
         <button onClick={this.logOut}>Выйти</button>
       </div>      
     );
@@ -91,3 +69,5 @@ export default class TopMenu extends Component {
     );
   }
 }
+
+export default inject('miniPlayerInfoStore')(observer(TopMenu));
