@@ -1,7 +1,7 @@
 ﻿import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 
-export class AuthForm extends Component {
+class AuthForm extends Component {
   constructor(props) {
     super(props);
 
@@ -40,4 +40,4 @@ export class AuthForm extends Component {
   }
 }
 
-inject('miniPlayerInfoStore')(observer(AuthForm));
+export default inject('miniPlayerInfoStore')(observer(AuthForm));

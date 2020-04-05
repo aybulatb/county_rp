@@ -6,7 +6,7 @@ using CountyRP.WebSite.Services.Interfaces;
 namespace CountyRP.WebSite.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class PlayerRegistrationController : ControllerBase
     {
         private IPlayerRegistrationAdapter _playerRegistrationAdapter;

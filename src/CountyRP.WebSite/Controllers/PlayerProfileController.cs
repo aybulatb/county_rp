@@ -8,7 +8,7 @@ using CountyRP.Extra;
 namespace CountyRP.WebSite.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class PlayerProfileController : ControllerBase
     {
         private IPlayerAdapter _playerAdapter;
