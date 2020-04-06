@@ -9,7 +9,7 @@ using CountyRP.WebAPI.Models.ViewModels.VehicleViewModels;
 namespace CountyRP.WebAPI.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class VehicleController : ControllerBase
     {
         private PropertyContext _propertyContext;

@@ -9,7 +9,7 @@ using CountyRP.WebAPI.Models.ViewModels.FactionViewModels;
 namespace CountyRP.WebAPI.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class FactionController : ControllerBase
     {
         private FactionContext _factionContext;
