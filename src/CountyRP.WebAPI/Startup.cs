@@ -26,6 +26,7 @@ namespace CountyRP.WebAPI
             services.AddDbContext<PlayerContext>(options => options.UseSqlServer(connectionString));
             services.AddDbContext<FactionContext>(options => options.UseSqlServer(connectionString));
             services.AddDbContext<PropertyContext>(options => options.UseSqlServer(connectionString));
+            services.AddDbContext<GroupContext>(options => options.UseSqlServer(connectionString));
 
             // Register the Swagger services
             services.AddSwaggerDocument();
