@@ -8,7 +8,7 @@ namespace CountyRP.WebAPI.Models
     {
         public DbSet<Faction> Factions { get; set; }
 
-        public FactionContext(DbContextOptions<PlayerContext> options)
+        public FactionContext(DbContextOptions<FactionContext> options)
             : base(options)
         {
             Database.EnsureCreated();

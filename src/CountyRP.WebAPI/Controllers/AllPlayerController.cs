@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 
 using CountyRP.Entities;
 using CountyRP.WebAPI.Models;
@@ -13,16 +14,20 @@ namespace CountyRP.WebAPI.Controllers
     public class AllPlayerController : ControllerBase
     {
         private PlayerContext _playerContext;
+        private PropertyContext _propertyContext;
+        private FactionContext _factionContext;
 
-        public AllPlayerController(PlayerContext playerContext)
+        public AllPlayerController(PlayerContext playerContext, PropertyContext propertyContext, FactionContext factionContext)
         {
             _playerContext = playerContext;
+            _propertyContext = propertyContext;
+            _factionContext = factionContext;
         }
 
         [HttpGet]
         [Route("GetById")]
-        [ProducesResponseType(typeof(AllPlayer), 200)]
-        [ProducesResponseType(typeof(string), 400)]
+        [ProducesResponseType(typeof(AllPlayer), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public IActionResult GetById(int id)
         {
             Player player = _playerContext.Players.FirstOrDefault(p => p.Id == id);
@@ -34,15 +39,29 @@ namespace CountyRP.WebAPI.Controllers
             AllPlayer allPlayer = new AllPlayer
             {
                 Player = player,
-                Persons = persons
+                Persons = persons.Select(p => new AllPerson 
+                { 
+                    Person = p,
+                    Faction = _factionContext.Factions
+                        .Where(f => f.Id == p.FactionId)
+                        .Select(f => new Models.ViewModels.FactionViewModels.Faction
+                        {
+                            Id = f.Id,
+                            Name = f.Name,
+                            Ranks = f.Ranks
+                        })
+                        .FirstOrDefault(),
+                    Vehicles = _propertyContext.Vehicles.Where(v => v.PersonId == p.Id).ToList()
+                }).ToList()
             };
+
             return Ok(allPlayer);
         }
 
         [HttpGet]
         [Route("GetByLogin")]
-        [ProducesResponseType(typeof(AllPlayer), 200)]
-        [ProducesResponseType(typeof(string), 400)]
+        [ProducesResponseType(typeof(AllPlayer), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public IActionResult GetByLogin(string login)
         {
             Player player = _playerContext.Players.FirstOrDefault(p => p.Login == login);
@@ -54,8 +73,22 @@ namespace CountyRP.WebAPI.Controllers
             AllPlayer allPlayer = new AllPlayer
             {
                 Player = player,
-                Persons = persons
+                Persons = persons.Select(p => new AllPerson
+                {
+                    Person = p,
+                    Faction = _factionContext.Factions
+                        .Where(f => f.Id == p.FactionId)
+                        .Select(f => new Models.ViewModels.FactionViewModels.Faction 
+                        { 
+                            Id = f.Id,
+                            Name = f.Name,
+                            Ranks = f.Ranks
+                        })
+                        .FirstOrDefault(),
+                    Vehicles = _propertyContext.Vehicles.Where(v => v.PersonId == p.Id).ToList()
+                }).ToList()
             };
+
             return Ok(allPlayer);
         }
     }

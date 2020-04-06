@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 
-using CountyRP.Entities;
 using CountyRP.WebAPI.Models;
 using CountyRP.WebAPI.Models.ViewModels.FactionViewModels;
 
@@ -24,10 +23,11 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(Faction), StatusCodes.Status201Created)]
         public IActionResult Create(CreateFaction createFaction)
         {
-            Faction faction = new Faction
+            Entities.Faction faction = new Entities.Faction
             {
                 Id = createFaction.Id,
-                Name = createFaction.Name
+                Name = createFaction.Name,
+                Ranks = createFaction.Ranks
             };
 
             _factionContext.Factions.Add(faction);
@@ -41,12 +41,17 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(Faction), StatusCodes.Status200OK)]
         public IActionResult GetById(string id)
         {
-            Faction faction = _factionContext.Factions.FirstOrDefault(f => f.Id == id);
+            Entities.Faction faction = _factionContext.Factions.FirstOrDefault(f => f.Id == id);
 
             if (faction == null)
                 return NotFound();
 
-            return Ok(faction);
+            return Ok(new Faction
+            {
+                Id = faction.Id,
+                Name = faction.Name,
+                Ranks = faction.Ranks
+            });
         }
     }
 }
