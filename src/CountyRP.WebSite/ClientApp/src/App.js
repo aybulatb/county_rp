@@ -21,7 +21,7 @@ export default class App extends Component {
         <Layout>
           <Route exact path='/' component={Home} />
           <Route path='/Auth' component={AuthForm} />
-          <Route path='/profile' component={Profile} />
+          <Route path='/profile/:login' component={Profile} />
         </Layout>
       </Provider>
     );

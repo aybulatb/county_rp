@@ -293,6 +293,270 @@ namespace CountyRP.Extra
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.2.5.0 (NJsonSchema v10.1.7.0 (Newtonsoft.Json v12.0.0.0))")]
+    public partial class FactionClient 
+    {
+        private string _baseUrl = "https://localhost:5001";
+        private System.Net.Http.HttpClient _httpClient;
+        private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
+    
+        public FactionClient(System.Net.Http.HttpClient httpClient)
+        {
+            _httpClient = httpClient; 
+            _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(CreateSerializerSettings);
+        }
+    
+        private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
+        {
+            var settings = new Newtonsoft.Json.JsonSerializerSettings();
+            UpdateJsonSerializerSettings(settings);
+            return settings;
+        }
+    
+        public string BaseUrl 
+        {
+            get { return _baseUrl; }
+            set { _baseUrl = value; }
+        }
+    
+        protected Newtonsoft.Json.JsonSerializerSettings JsonSerializerSettings { get { return _settings.Value; } }
+    
+        partial void UpdateJsonSerializerSettings(Newtonsoft.Json.JsonSerializerSettings settings);
+        partial void PrepareRequest(System.Net.Http.HttpClient client, System.Net.Http.HttpRequestMessage request, string url);
+        partial void PrepareRequest(System.Net.Http.HttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
+        partial void ProcessResponse(System.Net.Http.HttpClient client, System.Net.Http.HttpResponseMessage response);
+    
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Faction> CreateAsync(CreateFaction createFaction)
+        {
+            return CreateAsync(createFaction, System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<Faction> CreateAsync(CreateFaction createFaction, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/Faction/Create");
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(createFaction, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "201") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<Faction>(response_, headers_).ConfigureAwait(false);
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new ApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(Faction);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Faction> GetByIdAsync(string id)
+        {
+            return GetByIdAsync(id, System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<Faction> GetByIdAsync(string id, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/Faction/GetById?");
+            if (id != null) 
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("id") + "=").Append(System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<Faction>(response_, headers_).ConfigureAwait(false);
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new ApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(Faction);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        protected struct ObjectResponseResult<T>
+        {
+            public ObjectResponseResult(T responseObject, string responseText)
+            {
+                this.Object = responseObject;
+                this.Text = responseText;
+            }
+    
+            public T Object { get; }
+    
+            public string Text { get; }
+        }
+    
+        public bool ReadResponseAsString { get; set; }
+        
+        protected virtual async System.Threading.Tasks.Task<ObjectResponseResult<T>> ReadObjectResponseAsync<T>(System.Net.Http.HttpResponseMessage response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers)
+        {
+            if (response == null || response.Content == null)
+            {
+                return new ObjectResponseResult<T>(default(T), string.Empty);
+            }
+        
+            if (ReadResponseAsString)
+            {
+                var responseText = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                try
+                {
+                    var typedBody = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(responseText, JsonSerializerSettings);
+                    return new ObjectResponseResult<T>(typedBody, responseText);
+                }
+                catch (Newtonsoft.Json.JsonException exception)
+                {
+                    var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
+                    throw new ApiException(message, (int)response.StatusCode, responseText, headers, exception);
+                }
+            }
+            else
+            {
+                try
+                {
+                    using (var responseStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
+                    using (var streamReader = new System.IO.StreamReader(responseStream))
+                    using (var jsonTextReader = new Newtonsoft.Json.JsonTextReader(streamReader))
+                    {
+                        var serializer = Newtonsoft.Json.JsonSerializer.Create(JsonSerializerSettings);
+                        var typedBody = serializer.Deserialize<T>(jsonTextReader);
+                        return new ObjectResponseResult<T>(typedBody, string.Empty);
+                    }
+                }
+                catch (Newtonsoft.Json.JsonException exception)
+                {
+                    var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";
+                    throw new ApiException(message, (int)response.StatusCode, string.Empty, headers, exception);
+                }
+            }
+        }
+    
+        private string ConvertToString(object value, System.Globalization.CultureInfo cultureInfo)
+        {
+            if (value is System.Enum)
+            {
+                string name = System.Enum.GetName(value.GetType(), value);
+                if (name != null)
+                {
+                    var field = System.Reflection.IntrospectionExtensions.GetTypeInfo(value.GetType()).GetDeclaredField(name);
+                    if (field != null)
+                    {
+                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute)) 
+                            as System.Runtime.Serialization.EnumMemberAttribute;
+                        if (attribute != null)
+                        {
+                            return attribute.Value != null ? attribute.Value : name;
+                        }
+                    }
+                }
+            }
+            else if (value is bool) {
+                return System.Convert.ToString(value, cultureInfo).ToLowerInvariant();
+            }
+            else if (value is byte[])
+            {
+                return System.Convert.ToBase64String((byte[]) value);
+            }
+            else if (value != null && value.GetType().IsArray)
+            {
+                var array = System.Linq.Enumerable.OfType<object>((System.Array) value);
+                return string.Join(",", System.Linq.Enumerable.Select(array, o => ConvertToString(o, cultureInfo)));
+            }
+        
+            return System.Convert.ToString(value, cultureInfo);
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.2.5.0 (NJsonSchema v10.1.7.0 (Newtonsoft.Json v12.0.0.0))")]
     public partial class PersonClient 
     {
         private string _baseUrl = "https://localhost:5001";
@@ -324,6 +588,74 @@ namespace CountyRP.Extra
         partial void PrepareRequest(System.Net.Http.HttpClient client, System.Net.Http.HttpRequestMessage request, string url);
         partial void PrepareRequest(System.Net.Http.HttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(System.Net.Http.HttpClient client, System.Net.Http.HttpResponseMessage response);
+    
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Person> CreateAsync(CreatePerson createPerson)
+        {
+            return CreateAsync(createPerson, System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<Person> CreateAsync(CreatePerson createPerson, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/Person/Create");
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(createPerson, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "201") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<Person>(response_, headers_).ConfigureAwait(false);
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new ApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(Person);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
     
         /// <exception cref="ApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<Person> GetByIdAsync(int? id)
@@ -419,6 +751,144 @@ namespace CountyRP.Extra
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<Person>(response_, headers_).ConfigureAwait(false);
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new ApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(Person);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Person>> GetAllByPlayerIdAsync(int? playerId)
+        {
+            return GetAllByPlayerIdAsync(playerId, System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Person>> GetAllByPlayerIdAsync(int? playerId, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/Person/GetAllByPlayerId?");
+            if (playerId != null) 
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("playerId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(playerId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<Person>>(response_, headers_).ConfigureAwait(false);
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new ApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(System.Collections.Generic.ICollection<Person>);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Person> UpdateAsync(EditPerson editPerson)
+        {
+            return UpdateAsync(editPerson, System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<Person> UpdateAsync(EditPerson editPerson, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/Person/Update");
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(editPerson, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("PUT");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
     
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -1232,6 +1702,412 @@ namespace CountyRP.Extra
             return System.Convert.ToString(value, cultureInfo);
         }
     }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.2.5.0 (NJsonSchema v10.1.7.0 (Newtonsoft.Json v12.0.0.0))")]
+    public partial class VehicleClient 
+    {
+        private string _baseUrl = "https://localhost:5001";
+        private System.Net.Http.HttpClient _httpClient;
+        private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
+    
+        public VehicleClient(System.Net.Http.HttpClient httpClient)
+        {
+            _httpClient = httpClient; 
+            _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(CreateSerializerSettings);
+        }
+    
+        private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
+        {
+            var settings = new Newtonsoft.Json.JsonSerializerSettings();
+            UpdateJsonSerializerSettings(settings);
+            return settings;
+        }
+    
+        public string BaseUrl 
+        {
+            get { return _baseUrl; }
+            set { _baseUrl = value; }
+        }
+    
+        protected Newtonsoft.Json.JsonSerializerSettings JsonSerializerSettings { get { return _settings.Value; } }
+    
+        partial void UpdateJsonSerializerSettings(Newtonsoft.Json.JsonSerializerSettings settings);
+        partial void PrepareRequest(System.Net.Http.HttpClient client, System.Net.Http.HttpRequestMessage request, string url);
+        partial void PrepareRequest(System.Net.Http.HttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
+        partial void ProcessResponse(System.Net.Http.HttpClient client, System.Net.Http.HttpResponseMessage response);
+    
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Vehicle> CreateAsync(CreateVehicle createVehicle)
+        {
+            return CreateAsync(createVehicle, System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<Vehicle> CreateAsync(CreateVehicle createVehicle, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/Vehicle/Create");
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(createVehicle, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "201") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<Vehicle>(response_, headers_).ConfigureAwait(false);
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new ApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(Vehicle);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Vehicle> GetByIdAsync(int? id)
+        {
+            return GetByIdAsync(id, System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<Vehicle> GetByIdAsync(int? id, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/Vehicle/GetById?");
+            if (id != null) 
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("id") + "=").Append(System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<Vehicle>(response_, headers_).ConfigureAwait(false);
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new ApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(Vehicle);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Vehicle> GetByPersonIdAsync(int? personId)
+        {
+            return GetByPersonIdAsync(personId, System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<Vehicle> GetByPersonIdAsync(int? personId, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/Vehicle/GetByPersonId?");
+            if (personId != null) 
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("personId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(personId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<Vehicle>(response_, headers_).ConfigureAwait(false);
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new ApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(Vehicle);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<FileResponse> DeleteAsync(int? id)
+        {
+            return DeleteAsync(id, System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<FileResponse> DeleteAsync(int? id, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/Vehicle/Delete?");
+            if (id != null) 
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("id") + "=").Append(System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/octet-stream"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200" || status_ == "206") 
+                        {
+                            var responseStream_ = response_.Content == null ? System.IO.Stream.Null : await response_.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                            var fileResponse_ = new FileResponse((int)response_.StatusCode, headers_, responseStream_, null, response_); 
+                            client_ = null; response_ = null; // response and client are disposed by FileResponse
+                            return fileResponse_;
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new ApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(FileResponse);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        protected struct ObjectResponseResult<T>
+        {
+            public ObjectResponseResult(T responseObject, string responseText)
+            {
+                this.Object = responseObject;
+                this.Text = responseText;
+            }
+    
+            public T Object { get; }
+    
+            public string Text { get; }
+        }
+    
+        public bool ReadResponseAsString { get; set; }
+        
+        protected virtual async System.Threading.Tasks.Task<ObjectResponseResult<T>> ReadObjectResponseAsync<T>(System.Net.Http.HttpResponseMessage response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers)
+        {
+            if (response == null || response.Content == null)
+            {
+                return new ObjectResponseResult<T>(default(T), string.Empty);
+            }
+        
+            if (ReadResponseAsString)
+            {
+                var responseText = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                try
+                {
+                    var typedBody = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(responseText, JsonSerializerSettings);
+                    return new ObjectResponseResult<T>(typedBody, responseText);
+                }
+                catch (Newtonsoft.Json.JsonException exception)
+                {
+                    var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
+                    throw new ApiException(message, (int)response.StatusCode, responseText, headers, exception);
+                }
+            }
+            else
+            {
+                try
+                {
+                    using (var responseStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
+                    using (var streamReader = new System.IO.StreamReader(responseStream))
+                    using (var jsonTextReader = new Newtonsoft.Json.JsonTextReader(streamReader))
+                    {
+                        var serializer = Newtonsoft.Json.JsonSerializer.Create(JsonSerializerSettings);
+                        var typedBody = serializer.Deserialize<T>(jsonTextReader);
+                        return new ObjectResponseResult<T>(typedBody, string.Empty);
+                    }
+                }
+                catch (Newtonsoft.Json.JsonException exception)
+                {
+                    var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";
+                    throw new ApiException(message, (int)response.StatusCode, string.Empty, headers, exception);
+                }
+            }
+        }
+    
+        private string ConvertToString(object value, System.Globalization.CultureInfo cultureInfo)
+        {
+            if (value is System.Enum)
+            {
+                string name = System.Enum.GetName(value.GetType(), value);
+                if (name != null)
+                {
+                    var field = System.Reflection.IntrospectionExtensions.GetTypeInfo(value.GetType()).GetDeclaredField(name);
+                    if (field != null)
+                    {
+                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute)) 
+                            as System.Runtime.Serialization.EnumMemberAttribute;
+                        if (attribute != null)
+                        {
+                            return attribute.Value != null ? attribute.Value : name;
+                        }
+                    }
+                }
+            }
+            else if (value is bool) {
+                return System.Convert.ToString(value, cultureInfo).ToLowerInvariant();
+            }
+            else if (value is byte[])
+            {
+                return System.Convert.ToBase64String((byte[]) value);
+            }
+            else if (value != null && value.GetType().IsArray)
+            {
+                var array = System.Linq.Enumerable.OfType<object>((System.Array) value);
+                return string.Join(",", System.Linq.Enumerable.Select(array, o => ConvertToString(o, cultureInfo)));
+            }
+        
+            return System.Convert.ToString(value, cultureInfo);
+        }
+    }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.7.0 (Newtonsoft.Json v12.0.0.0)")]
     public partial class AllPlayer 
@@ -1240,7 +2116,7 @@ namespace CountyRP.Extra
         public Player Player { get; set; }
     
         [Newtonsoft.Json.JsonProperty("persons", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<Person> Persons { get; set; }
+        public System.Collections.Generic.ICollection<AllPerson> Persons { get; set; }
     
     
     }
@@ -1261,6 +2137,21 @@ namespace CountyRP.Extra
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.7.0 (Newtonsoft.Json v12.0.0.0)")]
+    public partial class AllPerson 
+    {
+        [Newtonsoft.Json.JsonProperty("person", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Person Person { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("faction", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Faction Faction { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("vehicles", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<Vehicle> Vehicles { get; set; }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.7.0 (Newtonsoft.Json v12.0.0.0)")]
     public partial class Person 
     {
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Always)]
@@ -1272,7 +2163,126 @@ namespace CountyRP.Extra
         [Newtonsoft.Json.JsonProperty("playerId", Required = Newtonsoft.Json.Required.Always)]
         public int PlayerId { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("factionId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string FactionId { get; set; }
     
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.7.0 (Newtonsoft.Json v12.0.0.0)")]
+    public partial class Faction 
+    {
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Id { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Name { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("ranks", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<string> Ranks { get; set; }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.7.0 (Newtonsoft.Json v12.0.0.0)")]
+    public partial class Vehicle 
+    {
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Always)]
+        public int Id { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("personId", Required = Newtonsoft.Json.Required.Always)]
+        public int PersonId { get; set; }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.7.0 (Newtonsoft.Json v12.0.0.0)")]
+    public partial class CreateFaction 
+    {
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Id { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Name { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("ranks", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<string> Ranks { get; set; }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.7.0 (Newtonsoft.Json v12.0.0.0)")]
+    public partial class CreatePerson 
+    {
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Name { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("regDate", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.DateTimeOffset RegDate { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("playerId", Required = Newtonsoft.Json.Required.Always)]
+        public int PlayerId { get; set; }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.7.0 (Newtonsoft.Json v12.0.0.0)")]
+    public partial class EditPerson 
+    {
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Always)]
+        public int Id { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("factionId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string FactionId { get; set; }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.7.0 (Newtonsoft.Json v12.0.0.0)")]
+    public partial class CreateVehicle 
+    {
+        [Newtonsoft.Json.JsonProperty("personId", Required = Newtonsoft.Json.Required.Always)]
+        public int PersonId { get; set; }
+    
+    
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.2.5.0 (NJsonSchema v10.1.7.0 (Newtonsoft.Json v12.0.0.0))")]
+    public partial class FileResponse : System.IDisposable
+    {
+        private System.IDisposable _client; 
+        private System.IDisposable _response; 
+
+        public int StatusCode { get; private set; }
+
+        public System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> Headers { get; private set; }
+
+        public System.IO.Stream Stream { get; private set; }
+
+        public bool IsPartial
+        {
+            get { return StatusCode == 206; }
+        }
+
+        public FileResponse(int statusCode, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers, System.IO.Stream stream, System.IDisposable client, System.IDisposable response)
+        {
+            StatusCode = statusCode; 
+            Headers = headers; 
+            Stream = stream; 
+            _client = client; 
+            _response = response;
+        }
+
+        public void Dispose() 
+        {
+            if (Stream != null)
+                Stream.Dispose();
+            if (_response != null)
+                _response.Dispose();
+            if (_client != null)
+                _client.Dispose();
+        }
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.2.5.0 (NJsonSchema v10.1.7.0 (Newtonsoft.Json v12.0.0.0))")]

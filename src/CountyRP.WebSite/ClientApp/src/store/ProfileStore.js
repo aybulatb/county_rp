@@ -5,7 +5,29 @@ class Profile {
   player = {
     login: ''
   }
-  persons = [];
+  persons = [
+    {
+      person: {
+        id: 0,
+        name: '',
+        playerId: 0,
+        factionId: ''
+      },
+      faction: {
+        id: '',
+        name: '',
+        ranks: [
+          ''
+        ]
+      },
+      vehicles: [
+        {
+          id: 0,
+          personId: 0
+        }
+      ]
+    }
+  ];
 
   getProfile(login) {
     this.isLoading = true;
@@ -23,7 +45,9 @@ class Profile {
           this.player.id = profile.player.id;
           this.player.login = profile.player.login;
           profile.persons.map(p => this.persons.push({
-            name: p.name
+            person: p.person,
+            faction: p.faction,
+            vehicles: p.vehicles
           }));
         }
 

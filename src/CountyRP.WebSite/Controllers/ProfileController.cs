@@ -34,9 +34,9 @@ namespace CountyRP.WebSite.Controllers
                 },
                 Persons = allPlayer.Persons.Select(p => new
                 {
-                    Id = p.Id,
-                    Name = p.Name,
-                    PlayerId = p.PlayerId
+                    Person = p.Person,
+                    Faction = p.Faction,
+                    Vehicles = p.Vehicles
                 })
             });
         }
