@@ -106,8 +106,8 @@ namespace CountyRP.WebAPI.Controllers
             if (group.Name.Length < 3 || group.Name.Length > 32)
                 return BadRequest("Название группы должно состоять от 3 до 32 символов");
 
-            if (!System.Text.RegularExpressions.Regex.IsMatch(group.Color, "[0-9a-zA-F]{6}"))
-                return BadRequest("Название группы должно состоять от 3 до 32 символов");
+            if (!System.Text.RegularExpressions.Regex.IsMatch(group.Color, "[0-9a-fA-F]{6}"))
+                return BadRequest("Цвет должна состоять только из следующих символов: 0-9, A-F");
 
             return null;
         }
