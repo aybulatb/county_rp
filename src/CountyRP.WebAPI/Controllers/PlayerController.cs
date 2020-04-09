@@ -32,8 +32,7 @@ namespace CountyRP.WebAPI.Controllers
             return Ok(player);
         }
 
-        [HttpGet]
-        [Route("GetByLogin/{login}")]
+        [HttpGet("GetByLogin/{login}")]
         [ProducesResponseType(typeof(Player), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public IActionResult GetByLogin(string login)
@@ -46,8 +45,7 @@ namespace CountyRP.WebAPI.Controllers
             return Ok(player);
         }
 
-        [HttpGet]
-        [Route("TryAuthorize")]
+        [HttpGet("TryAuthorize")]
         [ProducesResponseType(typeof(Player), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public IActionResult TryAuthorize(string login, string password)
@@ -62,7 +60,6 @@ namespace CountyRP.WebAPI.Controllers
         }
 
         [HttpPost]
-        [Route("Register")]
         [ProducesResponseType(typeof(Player), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public IActionResult Register([FromBody]Player player)
@@ -84,7 +81,6 @@ namespace CountyRP.WebAPI.Controllers
         }
 
         [HttpPut]
-        [Route("Edit")]
         [ProducesResponseType(typeof(Player), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
@@ -107,11 +103,16 @@ namespace CountyRP.WebAPI.Controllers
                 return BadRequest($"Игрок с логином {player.Login} уже существует");
             }
 
-            return Ok();
+            existingPlayer.Login = player.Login;
+            existingPlayer.Password = player.Password;
+            existingPlayer.GroupId = player.GroupId;
+
+            _playerContext.SaveChanges();
+
+            return Ok(existingPlayer);
         }
 
-        [HttpPut]
-        [Route("{id}/SetLogin/{login}")]
+        [HttpPut("{id}/SetLogin/{login}")]
         [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
@@ -138,8 +139,7 @@ namespace CountyRP.WebAPI.Controllers
             return Ok();
         }
 
-        [HttpPut]
-        [Route("{id}/SetPassword/{password}")]
+        [HttpPut("{id}/SetPassword/{password}")]
         [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
@@ -160,8 +160,7 @@ namespace CountyRP.WebAPI.Controllers
             return Ok();
         }
 
-        [HttpDelete]
-        [Route("{id}")]
+        [HttpDelete("{id}")]
         [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public IActionResult Delete(int id)
@@ -172,6 +171,7 @@ namespace CountyRP.WebAPI.Controllers
                 return NotFound($"Игрок с ID {id} найден");
 
             _playerContext.Players.Remove(player);
+            _playerContext.SaveChanges();
 
             return Ok();
         }
