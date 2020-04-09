@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 
 using CountyRP.Entities;
 using CountyRP.WebAPI.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CountyRP.WebAPI.Controllers
 {
@@ -86,7 +87,7 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public IActionResult Edit([FromBody]Player player)
         {
-            Player existingPlayer = _playerContext.Players
+            Player existingPlayer = _playerContext.Players.AsNoTracking()
                 .FirstOrDefault(p => p.Id == player.Id);
 
             if (existingPlayer == null)
@@ -103,13 +104,10 @@ namespace CountyRP.WebAPI.Controllers
                 return BadRequest($"Игрок с логином {player.Login} уже существует");
             }
 
-            existingPlayer.Login = player.Login;
-            existingPlayer.Password = player.Password;
-            existingPlayer.GroupId = player.GroupId;
-
+            _playerContext.Players.Update(player);
             _playerContext.SaveChanges();
 
-            return Ok(existingPlayer);
+            return Ok(player);
         }
 
         [HttpPut("{id}/SetLogin/{login}")]
