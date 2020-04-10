@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 
 using CountyRP.WebAPI.Models;
 using CountyRP.WebAPI.Models.ViewModels.FactionViewModels;
+using CountyRP.WebAPI.Extensions;
 
 namespace CountyRP.WebAPI.Controllers
 {
@@ -19,16 +20,21 @@ namespace CountyRP.WebAPI.Controllers
         }
 
         [HttpPost]
-        [Route("Create")]
         [ProducesResponseType(typeof(Faction), StatusCodes.Status201Created)]
-        public IActionResult Create(CreateFaction createFaction)
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        public IActionResult Create(Faction createFaction)
         {
-            Entities.Faction faction = new Entities.Faction
+            var result = CheckParams(createFaction);
+            if (result != null)
+                return result;
+            
+            if (_factionContext.Factions
+                .FirstOrDefault(f => f.Id == createFaction.Id) != null)
             {
-                Id = createFaction.Id,
-                Name = createFaction.Name,
-                Ranks = createFaction.Ranks
-            };
+                return BadRequest($"Фракции с ID {createFaction.Id} уже существует");
+            }
+
+            Entities.Faction faction = new Entities.Faction().Format(createFaction);
 
             _factionContext.Factions.Add(faction);
             _factionContext.SaveChanges();
@@ -36,22 +42,86 @@ namespace CountyRP.WebAPI.Controllers
             return Created("", faction);
         }
 
-        [HttpGet]
-        [Route("GetById")]
+        [HttpGet("GetById/{id}")]
         [ProducesResponseType(typeof(Faction), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public IActionResult GetById(string id)
         {
             Entities.Faction faction = _factionContext.Factions.FirstOrDefault(f => f.Id == id);
 
             if (faction == null)
-                return NotFound();
+                return NotFound($"Фракции с ID {id} не найдена");
 
-            return Ok(new Faction
+            return Ok(new Faction().Format(faction));
+        }
+
+        [HttpPut]
+        [ProducesResponseType(typeof(Faction), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        public IActionResult Edit(Faction faction)
+        {
+            if (_factionContext.Factions
+                .FirstOrDefault(f => f.Id == faction.Id) == null)
             {
-                Id = faction.Id,
-                Name = faction.Name,
-                Ranks = faction.Ranks
-            });
+                return NotFound($"Фракции с ID {faction.Id} не найдена");
+            }
+
+            var result = CheckParams(faction);
+            if (result != null)
+                return result;
+
+            _factionContext.Factions.Update(new Entities.Faction().Format(faction));
+            _factionContext.SaveChanges();
+
+            return Ok(faction);
+        }
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        public IActionResult Delete(string id)
+        {
+            Entities.Faction faction = _factionContext.Factions
+                .FirstOrDefault(f => f.Id == id);
+
+            if (faction == null)
+                return NotFound($"Фракция с ID {id} не найдена");
+
+            _factionContext.Factions.Remove(faction);
+            _factionContext.SaveChanges();
+
+            return Ok();
+        }
+
+        private IActionResult CheckParams(Faction faction)
+        {
+            TrimParams(faction);
+
+            if (faction.Id.Length < 3 || faction.Id.Length > 16)
+                return BadRequest("ID должен быть от 3 до 16 символов");
+
+            if (faction.Name.Length < 3 || faction.Name.Length > 32)
+                return BadRequest("Название должно быть от 3 до 32 символов");
+
+            foreach (string rank in faction.Ranks)
+            {
+                if (rank.Length < 1 || rank.Length > 32)
+                    return BadRequest("Название ранга должно быть от 1 до 32 символов");
+            }
+
+            if (faction.Type < Entities.FactionType.None)
+                return BadRequest("Тип фракции должно быть от 0 до 1");
+
+            return null;
+        }
+
+        private void TrimParams(Faction faction)
+        {
+            faction.Id = faction.Id.Trim();
+            faction.Name = faction.Name.Trim();
+            for (int i = 0; i < faction.Ranks.Length; i++)
+                faction.Ranks[i] = faction.Ranks[i].Trim();
         }
     }
 }
