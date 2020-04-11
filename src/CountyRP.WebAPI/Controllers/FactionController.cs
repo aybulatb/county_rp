@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 
 using CountyRP.WebAPI.Models;
 using CountyRP.WebAPI.Models.ViewModels.FactionViewModels;
@@ -39,10 +41,10 @@ namespace CountyRP.WebAPI.Controllers
             _factionContext.Factions.Add(faction);
             _factionContext.SaveChanges();
 
-            return Created("", faction);
+            return Created("", createFaction);
         }
 
-        [HttpGet("GetById/{id}")]
+        [HttpGet("{id}")]
         [ProducesResponseType(typeof(Faction), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public IActionResult GetById(string id)
@@ -55,13 +57,24 @@ namespace CountyRP.WebAPI.Controllers
             return Ok(new Faction().Format(faction));
         }
 
+        [HttpGet]
+        [ProducesResponseType(typeof(List<Faction>), StatusCodes.Status200OK)]
+        public IActionResult GetAll()
+        {
+            List<Faction> factions = _factionContext.Factions
+                .Select(f => new Faction().Format(f))
+                .ToList();
+
+            return Ok(factions);
+        }
+
         [HttpPut]
         [ProducesResponseType(typeof(Faction), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public IActionResult Edit(Faction faction)
         {
-            if (_factionContext.Factions
+            if (_factionContext.Factions.AsNoTracking()
                 .FirstOrDefault(f => f.Id == faction.Id) == null)
             {
                 return NotFound($"Фракции с ID {faction.Id} не найдена");
