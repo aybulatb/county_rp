@@ -68,12 +68,15 @@ namespace CountyRP.WebAPI.Controllers
             return Ok(factions);
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         [ProducesResponseType(typeof(Faction), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult Edit(Faction faction)
+        public IActionResult Edit(string id, Faction faction)
         {
+            if (id != faction.Id)
+                return BadRequest($"Указанный ID {id} не соответствует ID {faction.Id} фракции");
+
             if (_factionContext.Factions.AsNoTracking()
                 .FirstOrDefault(f => f.Id == faction.Id) == null)
             {

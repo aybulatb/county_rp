@@ -51,7 +51,7 @@ namespace CountyRP.WebAPI.Controllers
                             Ranks = f.Ranks
                         })
                         .FirstOrDefault(),
-                    Vehicles = _propertyContext.Vehicles.Where(v => v.PersonId == p.Id).ToList()
+                    Vehicles = _propertyContext.Vehicles.Where(v => v.OwnerId == p.Id).ToList()
                 }).ToList()
             };
 
@@ -85,7 +85,7 @@ namespace CountyRP.WebAPI.Controllers
                             Ranks = f.Ranks
                         })
                         .FirstOrDefault(),
-                    Vehicles = _propertyContext.Vehicles.Where(v => v.PersonId == p.Id).ToList()
+                    Vehicles = _propertyContext.Vehicles.Where(v => v.OwnerId == p.Id).ToList()
                 }).ToList()
             };
 
