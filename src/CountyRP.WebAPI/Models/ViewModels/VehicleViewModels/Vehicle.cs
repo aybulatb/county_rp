@@ -1,18 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using Newtonsoft.Json;
-
-namespace CountyRP.Entities
+﻿namespace CountyRP.WebAPI.Models.ViewModels.VehicleViewModels
 {
     public class Vehicle
     {
         public int Id { get; set; }
         public int Model { get; set; }
-        [NotMapped]
-        public float[] Position 
-        {
-            get { return JsonConvert.DeserializeObject<float[]>(_Position); }
-            set { _Position = JsonConvert.SerializeObject(value); } 
-        }
+        public float[] Position { get; set; }
         public float Rotation { get; set; }
         public uint Dimension { get; set; }
         public int Color1 { get; set; }
@@ -22,8 +14,5 @@ namespace CountyRP.Entities
         public string FactionId { get; set; }
         public bool Lock { get; set; }
         public string LicensePlate { get; set; }
-
-        [Column("Position")]
-        public string _Position { get; set; }
     }
 }
