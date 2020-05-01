@@ -1,4 +1,4 @@
-﻿namespace CountyRP.WebAPI.Models.ViewModels.VehicleViewModels
+﻿namespace CountyRP.Models
 {
     public class Vehicle
     {

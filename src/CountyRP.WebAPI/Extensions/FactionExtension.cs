@@ -1,8 +1,8 @@
-﻿using CountyRP.WebAPI.Models.ViewModels.FactionViewModels;
+﻿using CountyRP.Models;
 
 namespace CountyRP.WebAPI.Extensions
 {
-    public static class FactionExtenstion
+    public static class FactionExtension
     {
         public static Entities.Faction Format(this Entities.Faction f1, Faction f2)
         {

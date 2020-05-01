@@ -1,4 +1,4 @@
-﻿using CountyRP.WebAPI.Models.ViewModels.VehicleViewModels;
+﻿using CountyRP.Models;
 
 namespace CountyRP.WebAPI.Extensions
 {

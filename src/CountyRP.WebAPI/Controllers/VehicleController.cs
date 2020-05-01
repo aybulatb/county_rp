@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 
+using CountyRP.Models;
 using CountyRP.WebAPI.Extensions;
 using CountyRP.WebAPI.Models;
-using CountyRP.WebAPI.Models.ViewModels.VehicleViewModels;
 
 namespace CountyRP.WebAPI.Controllers
 {

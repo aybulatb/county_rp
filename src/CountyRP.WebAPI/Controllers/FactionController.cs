@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
+using CountyRP.Models;
 using CountyRP.WebAPI.Models;
-using CountyRP.WebAPI.Models.ViewModels.FactionViewModels;
 using CountyRP.WebAPI.Extensions;
 
 namespace CountyRP.WebAPI.Controllers
@@ -126,7 +126,7 @@ namespace CountyRP.WebAPI.Controllers
                     return BadRequest("Название ранга должно быть от 1 до 32 символов");
             }
 
-            if (faction.Type < Entities.FactionType.None)
+            if (faction.Type < FactionType.None)
                 return BadRequest("Тип фракции должно быть от 0 до 1");
 
             return null;

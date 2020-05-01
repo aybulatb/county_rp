@@ -3,7 +3,8 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 
-using CountyRP.Entities;
+using CountyRP.Models;
+using CountyRP.WebAPI.Extensions;
 using CountyRP.WebAPI.Models;
 using CountyRP.WebAPI.Models.ViewModels;
 
@@ -30,28 +31,31 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public IActionResult GetById(int id)
         {
-            Player player = _playerContext.Players.FirstOrDefault(p => p.Id == id);
+            Entities.Player player = _playerContext.Players.FirstOrDefault(p => p.Id == id);
             if (player == null)
                 return BadRequest();
 
-            List<Person> persons = _playerContext.Persons.Where(p => p.PlayerId == player.Id).ToList();
+            List<Entities.Person> persons = _playerContext.Persons.Where(p => p.PlayerId == player.Id).ToList();
 
             AllPlayer allPlayer = new AllPlayer
             {
-                Player = player,
+                Player = new Player().Format(player),
                 Persons = persons.Select(p => new AllPerson 
                 { 
-                    Person = p,
+                    Person = new Person().Format(p),
                     Faction = _factionContext.Factions
                         .Where(f => f.Id == p.FactionId)
-                        .Select(f => new Models.ViewModels.FactionViewModels.Faction
+                        .Select(f => new Faction
                         {
                             Id = f.Id,
                             Name = f.Name,
                             Ranks = f.Ranks
                         })
                         .FirstOrDefault(),
-                    Vehicles = _propertyContext.Vehicles.Where(v => v.OwnerId == p.Id).ToList()
+                    Vehicles = _propertyContext.Vehicles.Where(v => v.OwnerId == p.Id).Select(v => new Vehicle
+                    { 
+                        Id = v.Id
+                    }).ToList()
                 }).ToList()
             };
 
@@ -64,28 +68,31 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public IActionResult GetByLogin(string login)
         {
-            Player player = _playerContext.Players.FirstOrDefault(p => p.Login == login);
+            Entities.Player player = _playerContext.Players.FirstOrDefault(p => p.Login == login);
             if (player == null)
                 return BadRequest();
 
-            List<Person> persons = _playerContext.Persons.Where(p => p.PlayerId == player.Id).ToList();
+            List<Entities.Person> persons = _playerContext.Persons.Where(p => p.PlayerId == player.Id).ToList();
 
             AllPlayer allPlayer = new AllPlayer
             {
-                Player = player,
+                Player = new Player().Format(player),
                 Persons = persons.Select(p => new AllPerson
                 {
-                    Person = p,
+                    Person = new Person().Format(p),
                     Faction = _factionContext.Factions
                         .Where(f => f.Id == p.FactionId)
-                        .Select(f => new Models.ViewModels.FactionViewModels.Faction 
+                        .Select(f => new Faction 
                         { 
                             Id = f.Id,
                             Name = f.Name,
                             Ranks = f.Ranks
                         })
                         .FirstOrDefault(),
-                    Vehicles = _propertyContext.Vehicles.Where(v => v.OwnerId == p.Id).ToList()
+                    Vehicles = _propertyContext.Vehicles.Where(v => v.OwnerId == p.Id).Select(v => new Vehicle
+                    {
+                        Id = v.Id
+                    }).ToList()
                 }).ToList()
             };
 

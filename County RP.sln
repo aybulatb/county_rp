@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CountyRP.WebAPI", "src\Coun
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CountyRP.WebSite", "src\CountyRP.WebSite\CountyRP.WebSite.csproj", "{EAF85419-7FBF-44B8-A5CF-5800D76DE1A3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CountyRP.Models", "src\CountyRP.Models\CountyRP.Models.csproj", "{381C2764-4F4C-482F-95C1-7158BCAF0B5F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{EAF85419-7FBF-44B8-A5CF-5800D76DE1A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EAF85419-7FBF-44B8-A5CF-5800D76DE1A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EAF85419-7FBF-44B8-A5CF-5800D76DE1A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{381C2764-4F4C-482F-95C1-7158BCAF0B5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{381C2764-4F4C-482F-95C1-7158BCAF0B5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{381C2764-4F4C-482F-95C1-7158BCAF0B5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{381C2764-4F4C-482F-95C1-7158BCAF0B5F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
