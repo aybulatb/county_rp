@@ -3,7 +3,8 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 
-using CountyRP.Entities;
+using CountyRP.Models;
+using CountyRP.WebAPI.Extensions;
 using CountyRP.WebAPI.Models;
 
 namespace CountyRP.WebAPI.Controllers
@@ -21,15 +22,18 @@ namespace CountyRP.WebAPI.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(Person), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public IActionResult Create([FromBody]Person person)
         {
             var result = CheckParams(person);
             if (result != null)
                 return result;
 
-            _playerContext.Persons.Add(person);
+            Entities.Person personEntity = new Entities.Person().Format(person);
+
+            _playerContext.Persons.Add(personEntity);
             _playerContext.SaveChanges();
+
+            person.Id = personEntity.Id;
 
             return Created("", person);
         }
@@ -39,12 +43,12 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public IActionResult GetById(int id)
         {
-            Person person = _playerContext.Persons.FirstOrDefault(p => p.Id == id);
+            Entities.Person person = _playerContext.Persons.FirstOrDefault(p => p.Id == id);
 
             if (person == null)
                 return NotFound($"Персонаж с ID {id} не найден");
 
-            return Ok(person);
+            return Ok(new Person().Format(person));
         }
 
         [HttpGet("GetByName/{name}")]
@@ -52,12 +56,12 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public IActionResult GetByName(string name)
         {
-            Person person = _playerContext.Persons.FirstOrDefault(p => p.Name == name);
+            Entities.Person person = _playerContext.Persons.FirstOrDefault(p => p.Name == name);
 
             if (person == null)
                 return NotFound($"Персонаж с именем {name} не найден");
 
-            return Ok(person);
+            return Ok(new Person().Format(person));
         }
 
         [HttpGet("GetAllByPlayerId/{playerId}")]
@@ -65,24 +69,34 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public IActionResult GetAllByPlayerId(int playerId)
         {
-            List<Person> persons = _playerContext.Persons.Where(p => p.PlayerId == playerId).ToList();
+            List<Entities.Person> persons = _playerContext.Persons.Where(p => p.PlayerId == playerId).ToList();
 
             if (persons == null)
                 return NotFound($"Персонажи, привязанные к игроку с ID {playerId}, не найдены");
 
-            return Ok(persons);
+            return Ok(persons.Select(p => new Person().Format(p)));
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         [ProducesResponseType(typeof(Person), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult Update([FromBody]Person person)
+        public IActionResult Update(int id, [FromBody]Person person)
         {
+            if (id != person.Id)
+                return BadRequest($"Указанный ID {id} не соответствует ID персонажа {person.Id}");
+
             var result = CheckParams(person);
             if (result != null)
                 return result;
 
+            Entities.Person personEntity = _playerContext.Persons.FirstOrDefault(p => p.Id == id);
+            if (personEntity == null)
+                return NotFound($"Персонаж с ID {id} не найден");
+
+            personEntity = personEntity.Format(person);
+
+            _playerContext.Persons.Update(personEntity);
             _playerContext.SaveChanges();
 
             return Ok(person);
@@ -105,9 +119,7 @@ namespace CountyRP.WebAPI.Controllers
 
             if (_playerContext.Players
                 .FirstOrDefault(p => p.Id == person.PlayerId) == null)
-            {
-                return NotFound($"Игрок с ID {person.PlayerId} для привязки персонажа не найден");
-            }
+                return BadRequest($"Игрок с ID {person.PlayerId} для привязки персонажа не найден");
 
             return null;
         }
