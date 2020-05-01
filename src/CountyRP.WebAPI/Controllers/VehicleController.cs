@@ -93,7 +93,7 @@ namespace CountyRP.WebAPI.Controllers
         }
 
         [HttpDelete("{id}")]
-        [ProducesResponseType(typeof(Vehicle), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public IActionResult Delete(int id)
         {
