@@ -13,10 +13,14 @@ namespace CountyRP.WebAPI.Controllers
     public class PersonController : ControllerBase
     {
         private PlayerContext _playerContext;
+        private FactionContext _factionContext;
+        private GangContext _gangContext;
 
-        public PersonController(PlayerContext playerContext)
+        public PersonController(PlayerContext playerContext, FactionContext factionContext, GangContext gangContext)
         {
             _playerContext = playerContext;
+            _factionContext = factionContext;
+            _gangContext = gangContext;
         }
 
         [HttpPost]
@@ -27,6 +31,9 @@ namespace CountyRP.WebAPI.Controllers
             var result = CheckParams(person);
             if (result != null)
                 return result;
+
+            if (_playerContext.Persons.FirstOrDefault(p => p.Name == person.Name) == null)
+                return BadRequest($"Имя {person.Name} уже занято");
 
             Entities.Person personEntity = new Entities.Person().Format(person);
 
@@ -94,6 +101,10 @@ namespace CountyRP.WebAPI.Controllers
             if (personEntity == null)
                 return NotFound($"Персонаж с ID {id} не найден");
 
+            if (person.Name != personEntity.Name
+                && _playerContext.Persons.FirstOrDefault(p => p.Name == person.Name) == null)
+                return BadRequest($"Имя {person.Name} уже занято");
+
             personEntity = personEntity.Format(person);
 
             _playerContext.Persons.Update(personEntity);
@@ -102,7 +113,21 @@ namespace CountyRP.WebAPI.Controllers
             return Ok(person);
         }
 
-        
+        [HttpDelete("{id}")]
+        [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        public IActionResult Delete(int id)
+        {
+            Entities.Person person = _playerContext.Persons.FirstOrDefault(p => p.Id == id);
+            if (person == null)
+                return NotFound($"Персонаж с ID {id} не найден");
+
+            _playerContext.Persons.Remove(person);
+            _playerContext.SaveChanges();
+
+            return Ok();
+        }
+
         private IActionResult CheckName(string name)
         {
             if (name.Length < 3 || name.Length > 32)
@@ -117,9 +142,20 @@ namespace CountyRP.WebAPI.Controllers
             if (result != null)
                 return result;
 
+            if (person.Position.Length != 3)
+                return BadRequest("Количество координат позиции должно быть равно 3");
+
             if (_playerContext.Players
                 .FirstOrDefault(p => p.Id == person.PlayerId) == null)
-                return BadRequest($"Игрок с ID {person.PlayerId} для привязки персонажа не найден");
+                return BadRequest($"Игрок с ID {person.PlayerId} не найден");
+
+            if (person.FactionId != string.Empty
+                && _factionContext.Factions.FirstOrDefault(f => f.Id == person.FactionId) == null)
+                return BadRequest($"Фракция с ID {person.FactionId} не найдена");
+
+            if (person.GroupId != 0
+                && _gangContext.Gangs.FirstOrDefault(g => g.Id == person.GroupId) == null)
+                return BadRequest($"Группировка с ID {person.GroupId} не найдена");
 
             return null;
         }
