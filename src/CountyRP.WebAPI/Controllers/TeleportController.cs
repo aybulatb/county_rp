@@ -86,7 +86,7 @@ namespace CountyRP.WebAPI.Controllers
         {
             Entities.Teleport teleport = _propertyContext.Teleports.FirstOrDefault(t => t.Id == id);
             if (teleport == null)
-                return NotFound($"Телепорт с ID {teleport.Id} не найден");
+                return NotFound($"Телепорт с ID {id} не найден");
 
             _propertyContext.Teleports.Remove(teleport);
             _propertyContext.SaveChanges();

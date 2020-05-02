@@ -86,7 +86,7 @@ namespace CountyRP.WebAPI.Controllers
         {
             Entities.House house = _propertyContext.Houses.FirstOrDefault(h => h.Id == id);
             if (house == null)
-                return NotFound($"Дом с ID {house.Id} не найден");
+                return NotFound($"Дом с ID {id} не найден");
 
             _propertyContext.Houses.Remove(house);
             _propertyContext.SaveChanges();
