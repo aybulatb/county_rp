@@ -26,6 +26,7 @@ namespace CountyRP.WebAPI
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<PlayerContext>(options => options.UseMySql(connectionString));
             services.AddDbContext<FactionContext>(options => options.UseMySql(connectionString));
+            services.AddDbContext<GangContext>(options => options.UseMySql(connectionString));
             services.AddDbContext<PropertyContext>(options => options.UseMySql(connectionString));
             services.AddDbContext<GroupContext>(options => options.UseMySql(connectionString));
 
