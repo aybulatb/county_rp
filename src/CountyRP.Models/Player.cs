@@ -1,4 +1,4 @@
-﻿namespace CountyRP.Entities
+﻿namespace CountyRP.Models
 {
     public class Player
     {

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -23,9 +24,11 @@ namespace CountyRP.WebAPI
             services.AddControllers();
 
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<PlayerContext>(options => options.UseSqlServer(connectionString));
-            services.AddDbContext<FactionContext>(options => options.UseSqlServer(connectionString));
-            services.AddDbContext<PropertyContext>(options => options.UseSqlServer(connectionString));
+            services.AddDbContext<PlayerContext>(options => options.UseMySql(connectionString));
+            services.AddDbContext<FactionContext>(options => options.UseMySql(connectionString));
+            services.AddDbContext<GangContext>(options => options.UseMySql(connectionString));
+            services.AddDbContext<PropertyContext>(options => options.UseMySql(connectionString));
+            services.AddDbContext<GroupContext>(options => options.UseMySql(connectionString));
 
             // Register the Swagger services
             services.AddSwaggerDocument();
@@ -33,12 +36,17 @@ namespace CountyRP.WebAPI
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 

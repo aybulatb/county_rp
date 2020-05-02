@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 
-using CountyRP.Entities;
-using CountyRP.WebAPI.Models.ViewModels.FactionViewModels;
+using CountyRP.Models;
 
 namespace CountyRP.WebAPI.Models.ViewModels
 {
@@ -14,7 +13,7 @@ namespace CountyRP.WebAPI.Models.ViewModels
     public class AllPerson
     {
         public Person Person { get; set; }
-        public FactionViewModels.Faction Faction { get; set; }
+        public Faction Faction { get; set; }
         public List<Vehicle> Vehicles { get; set; }
     }
 }

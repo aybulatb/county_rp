@@ -1,8 +1,6 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations.Schema;
-using Newtonsoft.Json;
 
-namespace CountyRP.Entities
+namespace CountyRP.Models
 {
     public class Person
     {
@@ -16,14 +14,6 @@ namespace CountyRP.Entities
         public int GroupId { get; set; }
         public bool Leader { get; set; }
         public int Rank { get; set; }
-        [NotMapped]
-        public float[] Position
-        {
-            get { return JsonConvert.DeserializeObject<float[]>(_Position); }
-            set { _Position = JsonConvert.SerializeObject(value); }
-        }
-
-        [Column("Position")]
-        public string _Position { get; set; }
+        public float[] Position { get; set; }
     }
 }

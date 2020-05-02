@@ -3,17 +3,18 @@ using Newtonsoft.Json;
 
 namespace CountyRP.Entities
 {
-    public class Faction
+    public class Gang
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
+        public string Color { get; set; }
         [NotMapped]
         public string[] Ranks
         {
             get { return JsonConvert.DeserializeObject<string[]>(_Ranks); }
             set { _Ranks = JsonConvert.SerializeObject(value); }
         }
-        public Models.FactionType Type { get; set; }
+        public Models.GangType Type { get; set; }
 
         [Column("Ranks")]
         public string _Ranks { get; set; }
