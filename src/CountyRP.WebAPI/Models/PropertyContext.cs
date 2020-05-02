@@ -10,6 +10,7 @@ namespace CountyRP.WebAPI.Models
         public DbSet<House> Houses { get; set; }
         public DbSet<Business> Businesses { get; set; }
         public DbSet<Teleport> Teleports { get; set; }
+        public DbSet<Room> Rooms { get; set; }
 
         public PropertyContext(DbContextOptions<PropertyContext> options)
             : base(options)
