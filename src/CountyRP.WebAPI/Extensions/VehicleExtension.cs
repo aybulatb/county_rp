@@ -8,7 +8,7 @@ namespace CountyRP.WebAPI.Extensions
         {
             v1.Id = v2.Id;
             v1.Model = v2.Model;
-            v1.Position = v2.Position;
+            v1.Position = (float[])v2.Position.Clone();
             v1.Rotation = v2.Rotation;
             v1.Dimension = v2.Dimension;
             v1.Color1 = v2.Color1;
@@ -26,7 +26,7 @@ namespace CountyRP.WebAPI.Extensions
         {
             v1.Id = v2.Id;
             v1.Model = v2.Model;
-            v1.Position = v2.Position;
+            v1.Position = (float[])v2.Position.Clone();
             v1.Rotation = v2.Rotation;
             v1.Dimension = v2.Dimension;
             v1.Color1 = v2.Color1;

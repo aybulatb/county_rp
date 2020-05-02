@@ -16,7 +16,7 @@ namespace CountyRP.WebAPI.Extensions
             p1.GroupId = p2.GroupId;
             p1.Leader = p2.Leader;
             p1.Rank = p2.Rank;
-            p1.Position = p2.Position;
+            p1.Position = (float[])p2.Position.Clone();
 
             return p1;
         }
@@ -33,7 +33,7 @@ namespace CountyRP.WebAPI.Extensions
             p1.GroupId = p2.GroupId;
             p1.Leader = p2.Leader;
             p1.Rank = p2.Rank;
-            p1.Position = p2.Position;
+            p1.Position = (float[])p2.Position.Clone();
 
             return p1;
         }

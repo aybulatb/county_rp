@@ -8,7 +8,7 @@ namespace CountyRP.WebAPI.Extensions
         {
             f1.Id = f2.Id;
             f1.Name = f2.Name;
-            f1.Ranks = f2.Ranks;
+            f1.Ranks = (string[])f2.Ranks.Clone();
             f1.Type = f2.Type;
 
             return f1;
@@ -18,7 +18,7 @@ namespace CountyRP.WebAPI.Extensions
         {
             f1.Id = f2.Id;
             f1.Name = f2.Name;
-            f1.Ranks = f2.Ranks;
+            f1.Ranks = (string[])f2.Ranks.Clone();
             f1.Type = f2.Type;
 
             return f1;
