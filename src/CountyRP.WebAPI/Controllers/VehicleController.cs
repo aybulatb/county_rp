@@ -14,11 +14,13 @@ namespace CountyRP.WebAPI.Controllers
     {
         private PlayerContext _playerContext;
         private PropertyContext _propertyContext;
+        private FactionContext _factionContext;
 
-        public VehicleController(PlayerContext playerContext, PropertyContext propertyContext)
+        public VehicleController(PlayerContext playerContext, PropertyContext propertyContext, FactionContext factionContext)
         {
             _playerContext = playerContext;
             _propertyContext = propertyContext;
+            _factionContext = factionContext;
         }
 
         [HttpPost]
@@ -112,6 +114,9 @@ namespace CountyRP.WebAPI.Controllers
 
         private IActionResult CheckParams(Vehicle vehicle)
         {
+            if (vehicle.Position.Length != 3)
+                return BadRequest($"Количество координат позиции должно быть равно 3");
+
             var result = CheckOwner(vehicle);
             if (result != null)
                 return result;
@@ -124,6 +129,10 @@ namespace CountyRP.WebAPI.Controllers
             if (vehicle.OwnerId != 0 &&
                 _playerContext.Persons.FirstOrDefault(p => p.Id == vehicle.OwnerId) == null)
                 return BadRequest($"Персонаж с ID {vehicle.OwnerId} не найден");
+
+            if (vehicle.FactionId != string.Empty
+                && _factionContext.Factions.FirstOrDefault(f => f.Id == vehicle.FactionId) == null)
+                return BadRequest($"Фракция с ID {vehicle.FactionId} не найдена");
 
             return null;
         }
