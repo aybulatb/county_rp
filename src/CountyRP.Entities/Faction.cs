@@ -13,7 +13,6 @@ namespace CountyRP.Entities
             get { return JsonConvert.DeserializeObject<string[]>(_Ranks); }
             set { _Ranks = JsonConvert.SerializeObject(value); }
         }
-        public Models.FactionType Type { get; set; }
 
         [Column("Ranks")]
         public string _Ranks { get; set; }

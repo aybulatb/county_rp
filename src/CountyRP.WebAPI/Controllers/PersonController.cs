@@ -3,9 +3,9 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 
-using CountyRP.Models;
-using CountyRP.WebAPI.Extensions;
+using CountyRP.Entities;
 using CountyRP.WebAPI.Models;
+using CountyRP.WebAPI.Models.ViewModels.PersonViewModels;
 
 namespace CountyRP.WebAPI.Controllers
 {
@@ -13,151 +13,80 @@ namespace CountyRP.WebAPI.Controllers
     public class PersonController : ControllerBase
     {
         private PlayerContext _playerContext;
-        private FactionContext _factionContext;
-        private GangContext _gangContext;
 
-        public PersonController(PlayerContext playerContext, FactionContext factionContext, GangContext gangContext)
+        public PersonController(PlayerContext playerContext)
         {
             _playerContext = playerContext;
-            _factionContext = factionContext;
-            _gangContext = gangContext;
         }
 
         [HttpPost]
+        [Route("Create")]
         [ProducesResponseType(typeof(Person), StatusCodes.Status201Created)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        public IActionResult Create([FromBody]Person person)
+        public IActionResult Create([FromBody]CreatePerson createPerson)
         {
-            var result = CheckParams(person);
-            if (result != null)
-                return result;
+            Person person = new Person
+            {
+                Name = createPerson.Name,
+                PlayerId = createPerson.PlayerId
+            };
 
-            if (_playerContext.Persons.FirstOrDefault(p => p.Name == person.Name) == null)
-                return BadRequest($"Имя {person.Name} уже занято");
-
-            Entities.Person personEntity = new Entities.Person().Format(person);
-
-            _playerContext.Persons.Add(personEntity);
+            _playerContext.Persons.Add(person);
             _playerContext.SaveChanges();
-
-            person.Id = personEntity.Id;
 
             return Created("", person);
         }
 
-        [HttpGet("GetById/{id}")]
+        [HttpGet]
+        [Route("GetById")]
         [ProducesResponseType(typeof(Person), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public IActionResult GetById(int id)
         {
-            Entities.Person person = _playerContext.Persons.FirstOrDefault(p => p.Id == id);
+            Person person = _playerContext.Persons.FirstOrDefault(p => p.Id == id);
 
             if (person == null)
-                return NotFound($"Персонаж с ID {id} не найден");
-
-            return Ok(new Person().Format(person));
-        }
-
-        [HttpGet("GetByName/{name}")]
-        [ProducesResponseType(typeof(Person), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult GetByName(string name)
-        {
-            Entities.Person person = _playerContext.Persons.FirstOrDefault(p => p.Name == name);
-
-            if (person == null)
-                return NotFound($"Персонаж с именем {name} не найден");
-
-            return Ok(new Person().Format(person));
-        }
-
-        [HttpGet("GetAllByPlayerId/{playerId}")]
-        [ProducesResponseType(typeof(List<Person>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult GetAllByPlayerId(int playerId)
-        {
-            List<Entities.Person> persons = _playerContext.Persons.Where(p => p.PlayerId == playerId).ToList();
-
-            if (persons == null)
-                return NotFound($"Персонажи, привязанные к игроку с ID {playerId}, не найдены");
-
-            return Ok(persons.Select(p => new Person().Format(p)));
-        }
-
-        [HttpPut("{id}")]
-        [ProducesResponseType(typeof(Person), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult Update(int id, [FromBody]Person person)
-        {
-            if (id != person.Id)
-                return BadRequest($"Указанный ID {id} не соответствует ID персонажа {person.Id}");
-
-            var result = CheckParams(person);
-            if (result != null)
-                return result;
-
-            Entities.Person personEntity = _playerContext.Persons.FirstOrDefault(p => p.Id == id);
-            if (personEntity == null)
-                return NotFound($"Персонаж с ID {id} не найден");
-
-            if (person.Name != personEntity.Name
-                && _playerContext.Persons.FirstOrDefault(p => p.Name == person.Name) == null)
-                return BadRequest($"Имя {person.Name} уже занято");
-
-            personEntity = personEntity.Format(person);
-
-            _playerContext.Persons.Update(personEntity);
-            _playerContext.SaveChanges();
+                return NotFound();
 
             return Ok(person);
         }
 
-        [HttpDelete("{id}")]
-        [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult Delete(int id)
+        [HttpGet]
+        [Route("GetByName")]
+        [ProducesResponseType(typeof(Person), StatusCodes.Status200OK)]
+        public IActionResult GetByName(string name)
         {
-            Entities.Person person = _playerContext.Persons.FirstOrDefault(p => p.Id == id);
-            if (person == null)
-                return NotFound($"Персонаж с ID {id} не найден");
+            Person person = _playerContext.Persons.FirstOrDefault(p => p.Name == name);
 
-            _playerContext.Persons.Remove(person);
+            if (person == null)
+                return NotFound();
+
+            return Ok(person);
+        }
+
+        [HttpGet]
+        [Route("GetAllByPlayerId")]
+        [ProducesResponseType(typeof(List<Person>), StatusCodes.Status200OK)]
+        public IActionResult GetAllByPlayerId(int playerId)
+        {
+            List<Person> persons = _playerContext.Persons.Where(p => p.PlayerId == playerId).ToList();
+
+            if (persons == null)
+                return NotFound();
+
+            return Ok(persons);
+        }
+
+        [HttpPut]
+        [Route("Update")]
+        [ProducesResponseType(typeof(Person), StatusCodes.Status200OK)]
+        public IActionResult Update([FromBody]EditPerson editPerson)
+        {
+            Person person = _playerContext.Persons.FirstOrDefault(f => f.Id == editPerson.Id);
+
+            person.FactionId = editPerson.FactionId;
+
             _playerContext.SaveChanges();
 
-            return Ok();
-        }
-
-        private IActionResult CheckName(string name)
-        {
-            if (name.Length < 3 || name.Length > 32)
-                return BadRequest("Длина имени должна быть от 3 до 32 символов");
-
-            return null;
-        }
-
-        private IActionResult CheckParams(Person person)
-        {
-            var result = CheckName(person.Name);
-            if (result != null)
-                return result;
-
-            if (person.Position.Length != 3)
-                return BadRequest("Количество координат позиции должно быть равно 3");
-
-            if (_playerContext.Players
-                .FirstOrDefault(p => p.Id == person.PlayerId) == null)
-                return BadRequest($"Игрок с ID {person.PlayerId} не найден");
-
-            if (person.FactionId != string.Empty
-                && _factionContext.Factions.FirstOrDefault(f => f.Id == person.FactionId) == null)
-                return BadRequest($"Фракция с ID {person.FactionId} не найдена");
-
-            if (person.GroupId != 0
-                && _gangContext.Gangs.FirstOrDefault(g => g.Id == person.GroupId) == null)
-                return BadRequest($"Группировка с ID {person.GroupId} не найдена");
-
-            return null;
+            return Ok(person);
         }
     }
 }
