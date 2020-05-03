@@ -4,11 +4,11 @@ using CountyRP.Entities;
 
 namespace CountyRP.WebAPI.Models
 {
-    public class GroupContext : DbContext
+    public class AdminLevelContext : DbContext
     {
-        public DbSet<Group> Groups { get; set; }
+        public DbSet<AdminLevel> AdminLevels { get; set; }
 
-        public GroupContext(DbContextOptions<GroupContext> options)
+        public AdminLevelContext(DbContextOptions<AdminLevelContext> options)
             : base(options)
         {
             Database.EnsureCreated();

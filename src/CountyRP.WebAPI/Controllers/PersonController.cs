@@ -15,14 +15,14 @@ namespace CountyRP.WebAPI.Controllers
         private PlayerContext _playerContext;
         private FactionContext _factionContext;
         private GangContext _gangContext;
-        private GroupContext _groupContext;
+        private AdminLevelContext _adminLevelContext;
 
-        public PersonController(PlayerContext playerContext, FactionContext factionContext, GangContext gangContext, GroupContext groupContext)
+        public PersonController(PlayerContext playerContext, FactionContext factionContext, GangContext gangContext, AdminLevelContext adminLevelContext)
         {
             _playerContext = playerContext;
             _factionContext = factionContext;
             _gangContext = gangContext;
-            _groupContext = groupContext;
+            _adminLevelContext = adminLevelContext;
         }
 
         [HttpPost]
@@ -154,8 +154,8 @@ namespace CountyRP.WebAPI.Controllers
                 .FirstOrDefault(p => p.Id == person.PlayerId) == null)
                 return BadRequest($"Игрок с ID {person.PlayerId} не найден");
 
-            if (person.AdminLevelId == null || 
-                _groupContext.AdminLevels
+            if (person.AdminLevelId == null ||
+                _adminLevelContext.AdminLevels
                 .FirstOrDefault(g => g.Id == person.AdminLevelId) == null)
                 return BadRequest($"Уровень админки с ID {person.AdminLevelId} не найден");
 
