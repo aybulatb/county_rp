@@ -4,7 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
-using CountyRP.Entities;
+using CountyRP.Models;
+using CountyRP.WebAPI.Extensions;
 using CountyRP.WebAPI.Models;
 
 namespace CountyRP.WebAPI.Controllers
@@ -23,19 +24,21 @@ namespace CountyRP.WebAPI.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(Group), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        public IActionResult Create([FromBody]Group createGroup)
+        public IActionResult Create([FromBody]Group group)
         {
-            var result = CheckParams(createGroup);
+            var result = CheckParams(group);
             if (result != null)
                 return result;
 
-            if (_groupContext.Groups.FirstOrDefault(g => g.Id == createGroup.Id) != null)
-                return BadRequest($"Группа с ID {createGroup.Id} уже существует");
+            if (_groupContext.Groups.FirstOrDefault(g => g.Id == group.Id) != null)
+                return BadRequest($"Группа с ID {group.Id} уже существует");
 
-            _groupContext.Groups.Add(createGroup);
+            Entities.Group groupEntity = new Entities.Group().Format(group);
+
+            _groupContext.Groups.Add(groupEntity);
             _groupContext.SaveChanges();
 
-            return Created("", createGroup);
+            return Created("", group);
         }
 
         [HttpGet("{id}")]
@@ -43,40 +46,45 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public IActionResult GetById(string id)
         {
-            Group group = _groupContext.Groups.FirstOrDefault(g => g.Id == id);
+            Entities.Group group = _groupContext.Groups.FirstOrDefault(g => g.Id == id);
 
             if (group == null)
                 return NotFound($"Группа с ID {id} не найдена");
 
-            return Ok(group);
+            return Ok(new Group().Format(group));
         }
 
-        [HttpGet("GetAll")]
+        [HttpGet]
         [ProducesResponseType(typeof(List<Group>), StatusCodes.Status200OK)]
         public IActionResult GetAll()
         {
-            List<Group> group = _groupContext.Groups.ToList();
+            List<Entities.Group> group = _groupContext.Groups.ToList();
 
-            return Ok(group);
+            return Ok(group.Select(g => new Group().Format(g)).ToList());
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         [ProducesResponseType(typeof(Group), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult Edit(Group group)
+        public IActionResult Edit(string id, Group group)
         {
-            Group existingGroup = _groupContext.Groups.AsNoTracking()
-                .FirstOrDefault(g => g.Id == group.Id);
+            if (id != group.Id)
+                return BadRequest($"Указанный ID {id} не соответствует ID группы {group.Id}");
 
-            if (existingGroup == null)
-                return NotFound($"Группа с ID {group.Id} не найдена");
+            Entities.Group groupEntity = _groupContext.Groups.AsNoTracking()
+                .FirstOrDefault(g => g.Id == id);
+
+            if (groupEntity == null)
+                return NotFound($"Группа с ID {id} не найдена");
 
             var result = CheckParams(group);
             if (result != null)
                 return result;
 
-            _groupContext.Groups.Update(group);
+            groupEntity = groupEntity.Format(group);
+
+            _groupContext.Groups.Update(groupEntity);
             _groupContext.SaveChanges();
 
             return Ok(group);
@@ -87,7 +95,7 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public IActionResult Delete(string id)
         {
-            Group group = _groupContext.Groups.FirstOrDefault(g => g.Id == id);
+            Entities.Group group = _groupContext.Groups.FirstOrDefault(g => g.Id == id);
 
             if (group == null)
                 return NotFound($"Группа с ID {id} не найдена");
@@ -100,16 +108,25 @@ namespace CountyRP.WebAPI.Controllers
 
         private IActionResult CheckParams(Group group)
         {
-            if (group.Id.Length < 3 || group.Id.Length > 16)
+            TrimParams(group);
+
+            if (group.Id == null || group.Id.Length < 3 || group.Id.Length > 16)
                 return BadRequest("ID группы должно состоять от 3 до 16 символов");
 
-            if (group.Name.Length < 3 || group.Name.Length > 32)
+            if (group.Name == null || group.Name.Length < 3 || group.Name.Length > 32)
                 return BadRequest("Название группы должно состоять от 3 до 32 символов");
 
-            if (!System.Text.RegularExpressions.Regex.IsMatch(group.Color, "[0-9a-fA-F]{6}"))
+            if (group.Color == null || !System.Text.RegularExpressions.Regex.IsMatch(group.Color, "^[0-9a-fA-F]{6}$"))
                 return BadRequest("Цвет должна состоять только из следующих символов: 0-9, A-F");
 
             return null;
+        }
+
+        private void TrimParams(Group group)
+        {
+            group.Id = group.Id?.Trim();
+            group.Name = group.Name?.Trim();
+            group.Color = group.Color?.Trim();
         }
     }
 }

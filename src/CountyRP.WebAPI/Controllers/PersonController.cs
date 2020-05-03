@@ -15,12 +15,14 @@ namespace CountyRP.WebAPI.Controllers
         private PlayerContext _playerContext;
         private FactionContext _factionContext;
         private GangContext _gangContext;
+        private GroupContext _groupContext;
 
-        public PersonController(PlayerContext playerContext, FactionContext factionContext, GangContext gangContext)
+        public PersonController(PlayerContext playerContext, FactionContext factionContext, GangContext gangContext, GroupContext groupContext)
         {
             _playerContext = playerContext;
             _factionContext = factionContext;
             _gangContext = gangContext;
+            _groupContext = groupContext;
         }
 
         [HttpPost]
@@ -130,8 +132,11 @@ namespace CountyRP.WebAPI.Controllers
 
         private IActionResult CheckName(string name)
         {
-            if (name.Length < 3 || name.Length > 32)
+            if (name == null || name.Length < 3 ||  name.Length > 32)
                 return BadRequest("Длина имени должна быть от 3 до 32 символов");
+
+            if (!System.Text.RegularExpressions.Regex.IsMatch(name, "^[a-zA-Z]+_[a-zA-Z]+$"))
+                return BadRequest("Имя должно состоять из латинских букв и соответствовать формату: Имя_Фамилия");
 
             return null;
         }
@@ -142,19 +147,25 @@ namespace CountyRP.WebAPI.Controllers
             if (result != null)
                 return result;
 
-            if (person.Position.Length != 3)
+            if (person.Position == null || person.Position.Length != 3)
                 return BadRequest("Количество координат позиции должно быть равно 3");
 
             if (_playerContext.Players
                 .FirstOrDefault(p => p.Id == person.PlayerId) == null)
                 return BadRequest($"Игрок с ID {person.PlayerId} не найден");
 
-            if (person.FactionId != string.Empty
-                && _factionContext.Factions.FirstOrDefault(f => f.Id == person.FactionId) == null)
+            if (person.AdminLevelId == null || 
+                _groupContext.AdminLevels
+                .FirstOrDefault(g => g.Id == person.AdminLevelId) == null)
+                return BadRequest($"Уровень админки с ID {person.AdminLevelId} не найден");
+
+            if (person.FactionId == null ||
+                person.FactionId != string.Empty &&
+                _factionContext.Factions.FirstOrDefault(f => f.Id == person.FactionId) == null)
                 return BadRequest($"Фракция с ID {person.FactionId} не найдена");
 
-            if (person.GroupId != 0
-                && _gangContext.Gangs.FirstOrDefault(g => g.Id == person.GroupId) == null)
+            if (person.GroupId != 0 &&
+                _gangContext.Gangs.FirstOrDefault(g => g.Id == person.GroupId) == null)
                 return BadRequest($"Группировка с ID {person.GroupId} не найдена");
 
             return null;

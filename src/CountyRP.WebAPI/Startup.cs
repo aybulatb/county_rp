@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -51,7 +52,24 @@ namespace CountyRP.WebAPI
             app.UseRouting();
 
             // Register the Swagger generator and the Swagger UI middlewares
-            app.UseOpenApi();
+            if (env.IsProduction())
+                app.UseOpenApi(configure =>
+                {
+                    configure.PostProcess = (document, _) =>
+                    {
+                        document.Info.Title = "County RP Service";
+                        document.Schemes = new[] { NSwag.OpenApiSchema.Https };
+                    };
+                });
+            else
+                app.UseOpenApi(configure =>
+                {
+                    configure.PostProcess = (document, _) =>
+                    {
+                        document.Info.Title = "County RP Service";
+                        document.Info.Description = "Общий сервис со всеми основными ресурсами";
+                    };
+                });
             app.UseSwaggerUi3();
 
             app.UseAuthorization();

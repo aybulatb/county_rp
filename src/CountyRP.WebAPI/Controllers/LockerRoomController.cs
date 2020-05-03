@@ -92,10 +92,10 @@ namespace CountyRP.WebAPI.Controllers
 
         private IActionResult CheckParams(LockerRoom lockerRoom)
         {
-            if (lockerRoom.Position.Length != 3)
+            if (lockerRoom.Position == null || lockerRoom.Position.Length != 3)
                 return BadRequest("Количество координат должно быть равно 3");
 
-            if (lockerRoom.ColorMarker.Length != 3)
+            if (lockerRoom.ColorMarker == null || lockerRoom.ColorMarker.Length != 3)
                 return BadRequest("Количество цветов маркера должно быть равно 3");
 
             var result = CheckOwner(lockerRoom);
@@ -107,8 +107,9 @@ namespace CountyRP.WebAPI.Controllers
 
         private IActionResult CheckOwner(LockerRoom lockerRoom)
         {
-            if (lockerRoom.FactionId != string.Empty
-                && _factionContext.LockerRooms.FirstOrDefault(lr => lr.FactionId == lockerRoom.FactionId) == null)
+            if (lockerRoom.FactionId == null ||
+                lockerRoom.FactionId != string.Empty &&
+                _factionContext.LockerRooms.FirstOrDefault(lr => lr.FactionId == lockerRoom.FactionId) == null)
                 return BadRequest($"Фракция с ID {lockerRoom.FactionId} не найдена");
 
             return null;

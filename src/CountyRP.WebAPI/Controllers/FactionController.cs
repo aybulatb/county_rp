@@ -24,24 +24,24 @@ namespace CountyRP.WebAPI.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(Faction), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        public IActionResult Create(Faction createFaction)
+        public IActionResult Create(Faction faction)
         {
-            var result = CheckParams(createFaction);
+            var result = CheckParams(faction);
             if (result != null)
                 return result;
             
             if (_factionContext.Factions
-                .FirstOrDefault(f => f.Id == createFaction.Id) != null)
+                .FirstOrDefault(f => f.Id == faction.Id) != null)
             {
-                return BadRequest($"Фракции с ID {createFaction.Id} уже существует");
+                return BadRequest($"Фракции с ID {faction.Id} уже существует");
             }
 
-            Entities.Faction faction = new Entities.Faction().Format(createFaction);
+            Entities.Faction factionEntity = new Entities.Faction().Format(faction);
 
-            _factionContext.Factions.Add(faction);
+            _factionContext.Factions.Add(factionEntity);
             _factionContext.SaveChanges();
 
-            return Created("", createFaction);
+            return Created("", faction);
         }
 
         [HttpGet("{id}")]
@@ -114,15 +114,18 @@ namespace CountyRP.WebAPI.Controllers
         {
             TrimParams(faction);
 
-            if (faction.Id.Length < 3 || faction.Id.Length > 16)
-                return BadRequest("ID должен быть от 3 до 16 символов");
+            if (faction.Id == null || !System.Text.RegularExpressions.Regex.IsMatch(faction.Id, "^[a-zA-Z0-9]{3,16}$"))
+                return BadRequest("ID должен состоять из латинских букв и цифр от 3 до 16 символов");
 
-            if (faction.Name.Length < 3 || faction.Name.Length > 32)
+            if (faction.Name == null || faction.Name.Length < 3 || faction.Name.Length > 32)
                 return BadRequest("Название должно быть от 3 до 32 символов");
+
+            if (faction.Ranks == null || faction.Ranks.Length != Constants.MaxFactionRanks)
+                return BadRequest($"Количество рангов должно быть {Constants.MaxFactionRanks}");
 
             foreach (string rank in faction.Ranks)
             {
-                if (rank.Length < 1 || rank.Length > 32)
+                if (rank == null || rank.Length < 1 || rank.Length > 32)
                     return BadRequest("Название ранга должно быть от 1 до 32 символов");
             }
 
@@ -134,10 +137,10 @@ namespace CountyRP.WebAPI.Controllers
 
         private void TrimParams(Faction faction)
         {
-            faction.Id = faction.Id.Trim();
-            faction.Name = faction.Name.Trim();
-            for (int i = 0; i < faction.Ranks.Length; i++)
-                faction.Ranks[i] = faction.Ranks[i].Trim();
+            faction.Id = faction.Id?.Trim();
+            faction.Name = faction.Name?.Trim();
+            for (int i = 0; i < faction.Ranks?.Length; i++)
+                faction.Ranks[i] = faction.Ranks[i]?.Trim();
         }
     }
 }

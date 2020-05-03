@@ -94,19 +94,19 @@ namespace CountyRP.WebAPI.Controllers
 
         private IActionResult CheckParams(Room room)
         {
-            if (room.Name.Length < 3 || room.Name.Length > 32)
+            if (room.Name == null || room.Name.Length < 3 || room.Name.Length > 32)
                 return BadRequest("Название должно быть от 3 до 32 символов");
 
-            if (room.EntrancePosition.Length != 3)
+            if (room.EntrancePosition == null || room.EntrancePosition.Length != 3)
                 return BadRequest("Количество координат входа должно быть равно 3");
 
-            if (room.ExitPosition.Length != 3)
+            if (room.ExitPosition == null || room.ExitPosition.Length != 3)
                 return BadRequest("Количество координат выхода должно быть равно 3");
 
-            if (room.ColorMarker.Length != 3)
+            if (room.ColorMarker == null || room.ColorMarker.Length != 3)
                 return BadRequest("Количество цветов маркера должно быть равно 3");
 
-            if (room.SafePosition.Length != 3)
+            if (room.SafePosition == null || room.SafePosition.Length != 3)
                 return BadRequest("Количество координат сейфа должно быть равно 3");
 
             var result = CheckOwner(room);
@@ -123,6 +123,11 @@ namespace CountyRP.WebAPI.Controllers
                 return BadRequest($"Группировка с ID {room.GroupId} не найдена");
 
             return null;
+        }
+
+        private void TrimParams(Room room)
+        {
+            room.Name = room.Name?.Trim();
         }
     }
 }

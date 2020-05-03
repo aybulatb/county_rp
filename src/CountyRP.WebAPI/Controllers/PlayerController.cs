@@ -2,7 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 
-using CountyRP.Entities;
+using CountyRP.Models;
+using CountyRP.WebAPI.Extensions;
 using CountyRP.WebAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,12 +26,12 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public IActionResult GetById(int id)
         {
-            Player player = _playerContext.Players.FirstOrDefault(p => p.Id == id);
+            Entities.Player player = _playerContext.Players.FirstOrDefault(p => p.Id == id);
 
             if (player == null)
                 return NotFound($"Игрок с ID {id} не найден");
 
-            return Ok(player);
+            return Ok(new Player().Format(player));
         }
 
         [HttpGet("GetByLogin/{login}")]
@@ -38,12 +39,12 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public IActionResult GetByLogin(string login)
         {
-            Player player = _playerContext.Players.FirstOrDefault(p => p.Login == login);
+            Entities.Player player = _playerContext.Players.FirstOrDefault(p => p.Login == login);
 
             if (player == null)
                 return NotFound($"Игрок с логином {login} не найден");
 
-            return Ok(player);
+            return Ok(new Player().Format(player));
         }
 
         [HttpGet("TryAuthorize")]
@@ -51,13 +52,13 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public IActionResult TryAuthorize(string login, string password)
         {
-            Player player = _playerContext.Players
+            Entities.Player player = _playerContext.Players
                 .FirstOrDefault(p => p.Login == login && p.Password == password);
 
             if (player == null)
                 return BadRequest("Неправильно указаны либо логин, либо пароль");
 
-            return Ok(player);
+            return Ok(new Player().Format(player));
         }
 
         [HttpPost]
@@ -75,36 +76,41 @@ namespace CountyRP.WebAPI.Controllers
                 return BadRequest($"Игрок с логином {player.Login} уже существует");
             }
 
-            _playerContext.Players.Add(player);
+            Entities.Player playerEntity = new Entities.Player().Format(player);
+
+            _playerContext.Players.Add(playerEntity);
             _playerContext.SaveChanges();
 
             return Created("", player);
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         [ProducesResponseType(typeof(Player), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult Edit([FromBody]Player player)
+        public IActionResult Edit(int id, [FromBody]Player player)
         {
-            Player existingPlayer = _playerContext.Players.AsNoTracking()
-                .FirstOrDefault(p => p.Id == player.Id);
+            if (id != player.Id)
+                return BadRequest($"Указанный ID {id} не соответствует ID игрока {player.Id}");
 
-            if (existingPlayer == null)
+            Entities.Player playerEntity = _playerContext.Players.FirstOrDefault(p => p.Id == player.Id);
+
+            if (playerEntity == null)
                 return NotFound($"Игрок с ID {player.Id} не существует");
 
             var result = CheckParams(player);
             if (result != null)
                 return result;
 
-            if (existingPlayer.Login != player.Login && 
+            if (playerEntity.Login != player.Login && 
                 _playerContext.Players
                 .FirstOrDefault(p => p.Login == player.Login) != null)
             {
                 return BadRequest($"Игрок с логином {player.Login} уже существует");
             }
 
-            _playerContext.Players.Update(player);
+            playerEntity = playerEntity.Format(player);
+
             _playerContext.SaveChanges();
 
             return Ok(player);
@@ -120,7 +126,7 @@ namespace CountyRP.WebAPI.Controllers
             if (result != null)
                 return result;
 
-            Player player = _playerContext.Players.FirstOrDefault(p => p.Id == id);
+            Entities.Player player = _playerContext.Players.FirstOrDefault(p => p.Id == id);
 
             if (player == null)
                 return NotFound($"Игрок с ID {id} не найден");
@@ -147,7 +153,7 @@ namespace CountyRP.WebAPI.Controllers
             if (result != null)
                 return result;
 
-            Player player = _playerContext.Players.FirstOrDefault(p => p.Id == id);
+            Entities.Player player = _playerContext.Players.FirstOrDefault(p => p.Id == id);
 
             if (player == null)
                 return NotFound($"Игрок с ID {id} не найден");
@@ -163,10 +169,10 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public IActionResult Delete(int id)
         {
-            Player player = _playerContext.Players.FirstOrDefault(p => p.Id == id);
+            Entities.Player player = _playerContext.Players.FirstOrDefault(p => p.Id == id);
 
             if (player == null)
-                return NotFound($"Игрок с ID {id} найден");
+                return NotFound($"Игрок с ID {id} не найден");
 
             _playerContext.Players.Remove(player);
             _playerContext.SaveChanges();
@@ -177,6 +183,8 @@ namespace CountyRP.WebAPI.Controllers
 
         private IActionResult CheckParams(Player player)
         {
+            TrimParams(player);
+
             var result = CheckLogin(player.Login);
             if (result != null)
                 return result;
@@ -185,10 +193,8 @@ namespace CountyRP.WebAPI.Controllers
             if (result != null)
                 return result;
 
-            if (player.Password.Length < 8 || player.Password.Length > 32)
-                return BadRequest("Пароль должен быть от 8 до 32 символов");
-
-            if (_groupContext.Groups
+            if (player.GroupId == null || 
+                _groupContext.Groups
                 .FirstOrDefault(g => g.Id == player.GroupId) == null)
             {
                 return BadRequest($"Группа с ID {player.GroupId} не существует");
@@ -199,7 +205,7 @@ namespace CountyRP.WebAPI.Controllers
 
         private IActionResult CheckLogin(string login)
         {
-            if (login.Length < 3 || login.Length > 32)
+            if (login == null || !System.Text.RegularExpressions.Regex.IsMatch(login, "^[a-zA-Z0-9]{3,32}$"))
                 return BadRequest("Логин должен быть от 3 до 32 символов");
 
             return null;
@@ -207,10 +213,15 @@ namespace CountyRP.WebAPI.Controllers
 
         private IActionResult CheckPassword(string password)
         {
-            if (password.Length < 8 || password.Length > 32)
+            if (password == null || password.Length < 8 || password.Length > 32)
                 return BadRequest("Пароль должен быть от 8 до 32 символов");
 
             return null;
+        }
+
+        private void TrimParams(Player player)
+        {
+            player.Login = player.Login?.Trim();
         }
     }
 }

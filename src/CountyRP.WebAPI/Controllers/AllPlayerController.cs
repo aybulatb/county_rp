@@ -26,14 +26,14 @@ namespace CountyRP.WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("GetById")]
+        [Route("GetById/{id}")]
         [ProducesResponseType(typeof(AllPlayer), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public IActionResult GetById(int id)
         {
             Entities.Player player = _playerContext.Players.FirstOrDefault(p => p.Id == id);
             if (player == null)
-                return BadRequest();
+                return NotFound($"Игрок с ID {id} не найден");
 
             List<Entities.Person> persons = _playerContext.Persons.Where(p => p.PlayerId == player.Id).ToList();
 
@@ -45,17 +45,12 @@ namespace CountyRP.WebAPI.Controllers
                     Person = new Person().Format(p),
                     Faction = _factionContext.Factions
                         .Where(f => f.Id == p.FactionId)
-                        .Select(f => new Faction
-                        {
-                            Id = f.Id,
-                            Name = f.Name,
-                            Ranks = f.Ranks
-                        })
+                        .Select(f => new Faction().Format(f))
                         .FirstOrDefault(),
-                    Vehicles = _propertyContext.Vehicles.Where(v => v.OwnerId == p.Id).Select(v => new Vehicle
-                    { 
-                        Id = v.Id
-                    }).ToList()
+                    Vehicles = _propertyContext.Vehicles
+                        .Where(v => v.OwnerId == p.Id)
+                        .Select(v => new Vehicle().Format(v))
+                        .ToList()
                 }).ToList()
             };
 
@@ -63,14 +58,14 @@ namespace CountyRP.WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("GetByLogin")]
+        [Route("GetByLogin/{login}")]
         [ProducesResponseType(typeof(AllPlayer), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public IActionResult GetByLogin(string login)
         {
             Entities.Player player = _playerContext.Players.FirstOrDefault(p => p.Login == login);
             if (player == null)
-                return BadRequest();
+                return NotFound($"Игрок с логином {login} не найден");
 
             List<Entities.Person> persons = _playerContext.Persons.Where(p => p.PlayerId == player.Id).ToList();
 
@@ -82,17 +77,12 @@ namespace CountyRP.WebAPI.Controllers
                     Person = new Person().Format(p),
                     Faction = _factionContext.Factions
                         .Where(f => f.Id == p.FactionId)
-                        .Select(f => new Faction 
-                        { 
-                            Id = f.Id,
-                            Name = f.Name,
-                            Ranks = f.Ranks
-                        })
+                        .Select(f => new Faction().Format(f))
                         .FirstOrDefault(),
-                    Vehicles = _propertyContext.Vehicles.Where(v => v.OwnerId == p.Id).Select(v => new Vehicle
-                    {
-                        Id = v.Id
-                    }).ToList()
+                    Vehicles = _propertyContext.Vehicles
+                        .Where(v => v.OwnerId == p.Id)
+                        .Select(v => new Vehicle().Format(v))
+                        .ToList()
                 }).ToList()
             };
 

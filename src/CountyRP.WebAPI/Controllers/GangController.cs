@@ -109,12 +109,15 @@ namespace CountyRP.WebAPI.Controllers
         {
             TrimParams(gang);
 
-            if (gang.Name.Length < 3 || gang.Name.Length > 32)
+            if (gang.Name == null || gang.Name.Length < 3 || gang.Name.Length > 32)
                 return BadRequest("Название должно быть от 3 до 32 символов");
+
+            if (gang.Ranks == null || gang.Ranks.Length != Constants.MaxGangRanks)
+                return BadRequest($"Количество рангов должно быть {Constants.MaxGangRanks}");
 
             foreach (string rank in gang.Ranks)
             {
-                if (rank.Length < 1 || rank.Length > 32)
+                if (rank == null || rank.Length < 1 || rank.Length > 32)
                     return BadRequest("Название ранга должно быть от 1 до 32 символов");
             }
 
@@ -126,9 +129,9 @@ namespace CountyRP.WebAPI.Controllers
 
         private void TrimParams(Gang gang)
         {
-            gang.Name = gang.Name.Trim();
-            for (int i = 0; i < gang.Ranks.Length; i++)
-                gang.Ranks[i] = gang.Ranks[i].Trim();
+            gang.Name = gang.Name?.Trim();
+            for (int i = 0; i < gang.Ranks?.Length; i++)
+                gang.Ranks[i] = gang.Ranks[i]?.Trim();
         }
     }
 }

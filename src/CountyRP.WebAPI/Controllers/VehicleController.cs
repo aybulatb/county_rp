@@ -114,8 +114,12 @@ namespace CountyRP.WebAPI.Controllers
 
         private IActionResult CheckParams(Vehicle vehicle)
         {
-            if (vehicle.Position.Length != 3)
-                return BadRequest($"Количество координат позиции должно быть равно 3");
+            if (vehicle.Position == null || vehicle.Position.Length != 3)
+                return BadRequest("Количество координат позиции должно быть равно 3");
+
+            if (vehicle.LicensePlate == null ||
+                !System.Text.RegularExpressions.Regex.IsMatch(vehicle.LicensePlate, @"^\d[A-Z]{3}\d\d\d$"))
+                return BadRequest("Номер транспортного средства должен соответствовать формату: ЦБББЦЦЦ");
 
             var result = CheckOwner(vehicle);
             if (result != null)
@@ -130,8 +134,9 @@ namespace CountyRP.WebAPI.Controllers
                 _playerContext.Persons.FirstOrDefault(p => p.Id == vehicle.OwnerId) == null)
                 return BadRequest($"Персонаж с ID {vehicle.OwnerId} не найден");
 
-            if (vehicle.FactionId != string.Empty
-                && _factionContext.Factions.FirstOrDefault(f => f.Id == vehicle.FactionId) == null)
+            if (vehicle.FactionId == null || 
+                vehicle.FactionId != string.Empty &&
+                _factionContext.Factions.FirstOrDefault(f => f.Id == vehicle.FactionId) == null)
                 return BadRequest($"Фракция с ID {vehicle.FactionId} не найдена");
 
             return null;

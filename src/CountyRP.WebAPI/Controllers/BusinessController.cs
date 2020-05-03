@@ -95,6 +95,15 @@ namespace CountyRP.WebAPI.Controllers
 
         private IActionResult CheckParams(Business business)
         {
+            if (business.Name == null || business.Name.Length < 3 || business.Name.Length > 32)
+                return BadRequest("Длина названия должна быть от 3 до 32 символов");
+
+            if (business.EntrancePosition == null || business.EntrancePosition.Length != 3)
+                return BadRequest("Количество координат входа должно быть равно 3");
+
+            if (business.ExitPosition == null || business.ExitPosition.Length != 3)
+                return BadRequest("Количество координат выхода должно быть равно 3");
+
             var result = CheckOwner(business);
             if (result != null)
                 return result;
@@ -109,6 +118,11 @@ namespace CountyRP.WebAPI.Controllers
                 return BadRequest($"Персонаж с ID {business.OwnerId} не найден");
 
             return null;
+        }
+
+        private void TrimParams(Business business)
+        {
+            business.Name = business.Name?.Trim();
         }
     }
 }

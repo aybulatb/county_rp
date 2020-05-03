@@ -96,6 +96,12 @@ namespace CountyRP.WebAPI.Controllers
 
         private IActionResult CheckParams(House house)
         {
+            if (house.EntrancePosition == null || house.EntrancePosition.Length != 3)
+                return BadRequest("Количество координат входа должно быть равно 3");
+
+            if (house.ExitPosition == null || house.ExitPosition.Length != 3)
+                return BadRequest("Количество координат выхода должно быть равно 3");
+
             var result = CheckOwner(house);
             if (result != null)
                 return result;
