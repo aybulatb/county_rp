@@ -1,9 +1,10 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+
+using CountyRP.Models;
 using CountyRP.WebSite.Services.Interfaces;
 using CountyRP.WebSite.Exceptions;
 using CountyRP.WebSite.Extenstions;
-using CountyRP.Extra;
 
 namespace CountyRP.WebSite.Controllers
 {

@@ -5,21 +5,21 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 
+using CountyRP.Models;
 using CountyRP.WebSite.Exceptions;
 using CountyRP.WebSite.Services.Interfaces;
-using CountyRP.Extra;
 
 namespace CountyRP.WebSite.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class PlayerAuthorizationController : ControllerBase
+    public class AuthorizationController : ControllerBase
     {
-        private IPlayerAuthorizationAdapter _playerAuthorizationClient;
+        private IPlayerAdapter _playerAdapter;
 
-        public PlayerAuthorizationController(IPlayerAuthorizationAdapter playerAuthorizationClient)
+        public AuthorizationController(IPlayerAdapter playerAdapter)
         {
-            _playerAuthorizationClient = playerAuthorizationClient;
+            _playerAdapter = playerAdapter;
         }
 
         [HttpPost]
@@ -33,7 +33,7 @@ namespace CountyRP.WebSite.Controllers
 
             try
             {
-                player = await _playerAuthorizationClient.TryAuthorize(login, password);
+                player = await _playerAdapter.TryAuthorize(login, password);
             }
             catch (AdapterException ex)
             {

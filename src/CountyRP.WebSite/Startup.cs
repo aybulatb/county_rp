@@ -42,14 +42,10 @@ namespace CountyRP.WebSite
             services.AddSingleton(new PlayerClient(httpClient));
             services.AddSingleton(new PersonClient(httpClient));
             services.AddSingleton(new AllPlayerClient(httpClient));
-            services.AddSingleton(new PlayerAuthorizationClient(httpClient));
-            services.AddSingleton(new PlayerRegistrationClient(httpClient));
 
             services.AddTransient<IPlayerAdapter, PlayerAdapter>();
             services.AddTransient<IPersonAdapter, PersonAdapter>();
             services.AddTransient<IAllPlayerAdapter, AllPlayerAdapter>();
-            services.AddTransient<IPlayerAuthorizationAdapter, PlayerAuthorizationAdapter>();
-            services.AddTransient<IPlayerRegistrationAdapter, PlayerRegistrationAdapter>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

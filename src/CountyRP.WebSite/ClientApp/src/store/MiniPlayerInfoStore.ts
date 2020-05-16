@@ -38,7 +38,7 @@ export class MiniPlayerInfoStore {
     const query = `login=${login}&password=${password}`;
 
     const request = new XMLHttpRequest();
-    request.open('POST', 'api/PlayerAuthorization/TryAuthorize?' + query);
+    request.open('POST', 'api/Authorization/TryAuthorize?' + query);
     request.onreadystatechange = () => {
       if (request.readyState !== XMLHttpRequest.DONE)
         return;

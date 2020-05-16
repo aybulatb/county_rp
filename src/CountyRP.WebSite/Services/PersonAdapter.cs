@@ -22,9 +22,9 @@ namespace CountyRP.WebSite.Services
             {
                 person = await _personClient.GetByIdAsync(id);
             }
-            catch (ApiException ex)
+            catch (ApiException<string> ex)
             {
-                throw new AdapterException(ex.StatusCode, ex.Message);
+                throw new AdapterException(ex.StatusCode, ex.Result);
             }
 
             return person;
@@ -38,9 +38,9 @@ namespace CountyRP.WebSite.Services
             {
                 person = await _personClient.GetByNameAsync(name);
             }
-            catch (ApiException ex)
+            catch (ApiException<string> ex)
             {
-                throw new AdapterException(ex.StatusCode, ex.Message);
+                throw new AdapterException(ex.StatusCode, ex.Result);
             }
 
             return person;

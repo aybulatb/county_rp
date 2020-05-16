@@ -23,9 +23,9 @@ namespace CountyRP.WebSite.Services
             {
                 allPlayer = await _allPlayerClient.GetByLoginAsync(login);
             }
-            catch (ApiException ex)
+            catch (ApiException<string> ex)
             {
-                throw new AdapterException(ex.StatusCode, ex.Message);
+                throw new AdapterException(ex.StatusCode, ex.Result);
             }
 
             return allPlayer;
