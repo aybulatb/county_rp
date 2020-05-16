@@ -1,7 +1,8 @@
-﻿import { decorate, observable, action } from 'mobx';
+import { decorate, observable, action } from 'mobx';
 
-class MiniPlayerInfoStore {
-  isLoading = true;
+
+export class MiniPlayerInfoStore {
+  isLoading = false;
   isAuthorized = false;
 
   profile = {
@@ -9,12 +10,12 @@ class MiniPlayerInfoStore {
   };
 
   getMiniProfile() {
-    var request = new XMLHttpRequest();
+    const request = new XMLHttpRequest();
     request.open('GET', 'api/PlayerProfile/MiniInfo');
     request.onload = () => {
       if (request.readyState === XMLHttpRequest.DONE) {
         if (request.status === 200) {
-          var miniProfile = JSON.parse(request.responseText);
+          const miniProfile = JSON.parse(request.responseText);
           this.profile = {
             login: miniProfile.login
           };
@@ -24,38 +25,41 @@ class MiniPlayerInfoStore {
 
         this.isLoading = false;
       }
-    };
+    }
+
     request.send();
   }
 
-  authorize(login, password) {
-    var formData = new FormData();
+  authorize(login: string, password: string) {
+    const formData = new FormData();
     formData.append('login', login);
     formData.append('password', password);
 
-    var query = 'login=' + login + '&password=' + password;
+    const query = `login=${login}&password=${password}`;
 
-    var request = new XMLHttpRequest();
+    const request = new XMLHttpRequest();
     request.open('POST', 'api/PlayerAuthorization/TryAuthorize?' + query);
     request.onreadystatechange = () => {
       if (request.readyState !== XMLHttpRequest.DONE)
         return;
 
       if (request.status === 200) {
-        var player = JSON.parse(request.responseText);
-        console.log(player.login);
-        console.log(player.password);
+        const player = JSON.parse(request.responseText);
         this.profile.login = player.login;
         this.isAuthorized = true;
-        //this.props.history.push('/');
+
+        if (process.env.REACT_APP_DEV_MODE === 'true') {
+          console.log(player.login);
+          console.log(player.password);
+        }
       }
-    };
+    }
 
     request.send(formData);
   }
 
   logOut() {
-    var request = new XMLHttpRequest();
+    const request = new XMLHttpRequest();
     request.open('GET', 'api/PlayerAuthorization/Logout');
     request.onload = () => {
       if (request.readyState === XMLHttpRequest.DONE) {
@@ -67,11 +71,13 @@ class MiniPlayerInfoStore {
         }
       }
     };
+
     request.send();
   }
 }
 
-MiniPlayerInfoStore = decorate(MiniPlayerInfoStore, {
+
+decorate(MiniPlayerInfoStore, {
   isLoading: observable,
   isAuthorized: observable,
   profile: observable,
@@ -80,4 +86,5 @@ MiniPlayerInfoStore = decorate(MiniPlayerInfoStore, {
   logOut: action
 });
 
-export default new MiniPlayerInfoStore();
+
+export const miniPlayerInfoStore = new MiniPlayerInfoStore();
