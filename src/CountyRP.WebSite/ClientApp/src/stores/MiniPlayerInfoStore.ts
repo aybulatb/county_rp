@@ -1,17 +1,34 @@
 import { decorate, observable, action } from 'mobx';
 
 
-export class MiniPlayerInfoStore {
+export interface IMiniPlayerInfoStore {
+  isLoading: boolean;
+  isAuthorized: boolean;
+  profile: {
+    login: string
+  }
+
+  getMiniProfile: () => void
+  authorize: (login: string, password: string) => void
+  logOut: () => void
+}
+
+
+class MiniPlayerInfoStore implements IMiniPlayerInfoStore {
   isLoading = false;
   isAuthorized = false;
-
   profile = {
     login: ''
   };
 
   getMiniProfile() {
+    if (!this.isAuthorized) {
+      return;
+    }
+
     const request = new XMLHttpRequest();
-    request.open('GET', 'api/PlayerProfile/MiniInfo');
+    const apiUrl = process.env.REACT_APP_API_URL;
+    request.open('GET', apiUrl + 'api/PlayerProfile/MiniInfo');
     request.onload = () => {
       if (request.readyState === XMLHttpRequest.DONE) {
         if (request.status === 200) {
@@ -36,9 +53,10 @@ export class MiniPlayerInfoStore {
     formData.append('password', password);
 
     const query = `login=${login}&password=${password}`;
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     const request = new XMLHttpRequest();
-    request.open('POST', 'api/PlayerAuthorization/TryAuthorize?' + query);
+    request.open('POST', apiUrl + 'api/Authorization/TryAuthorize?' + query);
     request.onreadystatechange = () => {
       if (request.readyState !== XMLHttpRequest.DONE)
         return;
@@ -59,8 +77,10 @@ export class MiniPlayerInfoStore {
   }
 
   logOut() {
+    const apiUrl = process.env.REACT_APP_API_URL;
+
     const request = new XMLHttpRequest();
-    request.open('GET', 'api/PlayerAuthorization/Logout');
+    request.open('GET', apiUrl + 'api/Authorization/Logout');
     request.onload = () => {
       if (request.readyState === XMLHttpRequest.DONE) {
         if (request.status === 200) {
