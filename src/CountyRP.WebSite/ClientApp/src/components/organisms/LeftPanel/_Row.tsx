@@ -28,6 +28,16 @@ const SidePanelRow = styled(NavLink).attrs({
   &.${activeClassName} {
     border-left: 5px solid #FFFFFF;
     background:  rgb(73, 92, 172);
+
+    animation: fade-in .3s ease;
+
+    &:hover {
+      background: #41539e;
+    }
+  }
+
+  &:hover {
+    background: #2A3799;
   }
 `;
 

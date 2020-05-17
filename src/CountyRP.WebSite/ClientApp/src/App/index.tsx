@@ -15,8 +15,8 @@ import Forum from 'components/pages/Forum';
 import Players from 'components/pages/Players';
 
 
-import { miniPlayerInfoStore } from 'store/MiniPlayerInfoStore';
-import { profileStore } from 'store/ProfileStore';
+import { miniPlayerInfoStore } from 'stores/MiniPlayerInfoStore';
+import { profileStore } from 'stores/ProfileStore';
 
 
 const stores = { miniPlayerInfoStore, profileStore };
