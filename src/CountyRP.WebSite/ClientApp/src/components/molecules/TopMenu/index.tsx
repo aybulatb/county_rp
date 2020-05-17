@@ -1,22 +1,25 @@
 import React, { useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
+import 'mobx-react-lite/batchingForReactDom';
 import { observer, inject } from 'mobx-react';
 
 import Container from './_Container';
 import Logo from './_Logo';
 import TextRow from './_TextRow';
 
-import { MiniPlayerInfoStore } from 'store/MiniPlayerInfoStore';
+import { IMiniPlayerInfoStore } from 'stores/MiniPlayerInfoStore';
 
 
 type TopMenuProps = {
-  miniPlayerInfoStore?: MiniPlayerInfoStore
+  miniPlayerInfoStore?: IMiniPlayerInfoStore
 }
 
-const TopMenu = (props: TopMenuProps) => {
+const TopMenu = ({ miniPlayerInfoStore }: TopMenuProps) => {
+  const login = miniPlayerInfoStore?.profile.login || 'Null';
+
   const renderLoadingAuth = () => {
     return (
-      props.miniPlayerInfoStore?.isLoading ?
+      miniPlayerInfoStore?.isLoading ?
         <TextRow>loading...</TextRow>
         :
         renderMiniProfile()
@@ -24,24 +27,22 @@ const TopMenu = (props: TopMenuProps) => {
   }
 
   const renderMiniProfile = () => {
-    return ((!props?.miniPlayerInfoStore?.isAuthorized) ?
+    return ((!miniPlayerInfoStore?.isAuthorized) ?
       <TextRow as={NavLink} to="/Auth">Войти</TextRow>
       :
       <>
-        <TextRow>{props.miniPlayerInfoStore.profile.login}</TextRow>
-        <Logo>{props.miniPlayerInfoStore.profile.login[0].toUpperCase()}</Logo>
-        <TextRow as={'button'} onClick={() => props.miniPlayerInfoStore?.logOut()}>
+        <TextRow>{miniPlayerInfoStore.profile.login}</TextRow>
+        <Logo>{login[0].toUpperCase()}</Logo>
+        <TextRow as={'button'} onClick={() => miniPlayerInfoStore?.logOut()}>
           Выйти
         </TextRow>
       </>
     );
   }
 
-  const getMiniProfile = props.miniPlayerInfoStore?.getMiniProfile;
-
   useEffect(() => {
-    getMiniProfile && getMiniProfile();
-  }, [getMiniProfile]);
+    miniPlayerInfoStore?.getMiniProfile()
+  }, [miniPlayerInfoStore]);
 
 
   return (

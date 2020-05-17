@@ -6,9 +6,9 @@ type Person = {
     id: number
     name: string
     playerId: number
-    fractionId: string
+    factionId: string
   },
-  fraction: {
+  faction: {
     id: string
     name: string
     ranks: string[]
@@ -22,7 +22,7 @@ type Person = {
 export class ProfileStore {
   isLoading = false;
   player = {
-    id: '',
+    id: NaN,
     login: ''
   }
   persons: Person[] = [];
@@ -30,22 +30,25 @@ export class ProfileStore {
   getProfile(login: string) {
     this.isLoading = true;
     this.player = {
+      id: NaN,
       login: '',
-      id: ''
     }
     this.persons = [];
 
     const request = new XMLHttpRequest();
-    request.open('GET', 'api/Profile?login=' + login);
+    const url = process.env.REACT_APP_API_URL;
+    request.open('GET', url + 'api/Profile?login=' + login);
     request.onload = () => {
       if (request.readyState === XMLHttpRequest.DONE) {
         if (request.status === 200) {
           const profile = JSON.parse(request.responseText);
+
           this.player.id = profile.player.id;
           this.player.login = profile.player.login;
+
           profile.persons.map((personItem: Person) => this.persons.push({
             person: personItem.person,
-            fraction: personItem.fraction,
+            faction: personItem.faction,
             vehicles: personItem.vehicles
           }));
         }

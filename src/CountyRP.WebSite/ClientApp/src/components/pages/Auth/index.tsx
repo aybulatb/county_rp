@@ -1,13 +1,13 @@
 import React from "react";
 
-import Base from 'components/templates/Base';
+import AuthPage from 'components/templates/LoginPage';
 import AuthForm from 'components/molecules/AuthForm';
 
 
 const Home = () => (
-  <Base>
+  <AuthPage>
     <AuthForm />
-  </Base>
+  </AuthPage>
 )
 
 export default Home;

@@ -1,15 +1,21 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
-import { MiniPlayerInfoStore } from 'store/MiniPlayerInfoStore';
+import { IMiniPlayerInfoStore } from 'stores/MiniPlayerInfoStore';
+import InputField from './_InputField';
+import FormContainer from './_FormContainer';
+import Header from './_Header';
+import Button from './_Button';
 
 
 type AuthFormProps = {
-  miniPlayerInfoStore?: MiniPlayerInfoStore
+  miniPlayerInfoStore?: IMiniPlayerInfoStore
 }
 
 const AuthForm = (props: AuthFormProps) => {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
+  const history = useHistory();
 
   const handleLoginInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUserName(event.target.value);
@@ -19,14 +25,18 @@ const AuthForm = (props: AuthFormProps) => {
     setPassword(event.target.value);
   }
 
-  const authorize = () => props.miniPlayerInfoStore?.authorize(userName, password);
+  const handleLogin = () => {
+    props.miniPlayerInfoStore?.authorize(userName, password);
+    history.push('/');
+  }
 
   return (
-    <div>
-      <input type="text" value={userName} onChange={handleLoginInput} />
-      <input type="password" value={password} onChange={handlePasswordInput} />
-      <button onClick={authorize}>Авторизоваться</button>
-    </div>
+    <FormContainer>
+      <Header>Добро пожаловать!</Header>
+      <InputField type="text" value={userName} onChange={handleLoginInput} />
+      <InputField type="password" value={password} onChange={handlePasswordInput} />
+      <Button onClick={handleLogin}>Войти</Button>
+    </FormContainer>
   );
 }
 
