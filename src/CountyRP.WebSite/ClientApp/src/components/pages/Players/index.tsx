@@ -6,6 +6,6 @@ import Base from 'components/templates/Base';
 
 export default () => (
   <Base>
-    <Greeting>Здарова</Greeting>
+    <Greeting></Greeting>
   </Base>
 )
