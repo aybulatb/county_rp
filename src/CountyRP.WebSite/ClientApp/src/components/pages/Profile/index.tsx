@@ -1,23 +1,21 @@
 import React, { useEffect } from "react";
 import { useParams } from 'react-router-dom';
-import { observer, inject } from 'mobx-react';
+import { observer } from 'mobx-react';
 import Base from 'components/templates/Base';
-import { ProfileStore } from 'stores/ProfileStore';
+import { useStore } from 'stores';
 
 
-type ProfileProps = {
-  profileStore?: ProfileStore
-}
 
-const Profile = ({ profileStore }: ProfileProps) => {
+const Profile = observer(() => {
+  const { profileStore } = useStore();
   const { login } = useParams();
 
 
   useEffect(() => {
-    profileStore?.getProfile(login);
+    profileStore.getProfile(login);
   }, [profileStore, login]);
 
-  if (profileStore?.persons.length === 0) {
+  if (profileStore.persons.length === 0) {
     return <Base>Загрузка</Base>
   } else {
     console.log()
@@ -50,6 +48,6 @@ const Profile = ({ profileStore }: ProfileProps) => {
       </Base>
     );
   }
-}
+});
 
-export default inject('profileStore')(observer(Profile));
+export default Profile;

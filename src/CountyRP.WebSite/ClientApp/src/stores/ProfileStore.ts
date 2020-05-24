@@ -1,6 +1,3 @@
-import { decorate, observable, action } from 'mobx';
-
-
 type Person = {
   person: {
     id: number
@@ -19,13 +16,14 @@ type Person = {
   }[]
 }
 
-export class ProfileStore {
-  isLoading = false;
-  player = {
+
+export const createProfileStore = () => ({
+  isLoading: false,
+  player: {
     id: NaN,
     login: ''
-  }
-  persons: Person[] = [];
+  },
+  persons: [] as Person[],
 
   getProfile(login: string) {
     this.isLoading = true;
@@ -59,14 +57,7 @@ export class ProfileStore {
 
     request.send();
   }
-}
-
-decorate(ProfileStore, {
-  isLoading: observable,
-  player: observable,
-  persons: observable,
-  getProfile: action
-});
+})
 
 
-export const profileStore = new ProfileStore();
+export type TProfileStore = ReturnType<typeof createProfileStore>

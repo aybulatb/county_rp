@@ -11,7 +11,7 @@ const Greeting = styled.div`
   font-weight: bold;
   text-align: center;
 
-  background: url('https://media.giphy.com/media/3o6fJgEOrF1lky8WFa/giphy.gif');
+  background: url('https://media1.giphy.com/media/jcxtvm2bsZDH2/giphy.gif?cid=ecf05e47f3cc5384184274653b66819759f1035641bc2031&rid=giphy.gif');
   background-size: contain;
   background-repeat: no-repeat;
   background-position-x: center;
