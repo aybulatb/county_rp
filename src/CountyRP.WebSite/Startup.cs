@@ -112,6 +112,9 @@ namespace CountyRP.WebSite
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "api/{controller}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute(
+                    name: "areas",
+                    pattern: "api/{area:exists}/{controller}/{action}/{id?}");
             });
 
             app.UseSpa(spa =>
