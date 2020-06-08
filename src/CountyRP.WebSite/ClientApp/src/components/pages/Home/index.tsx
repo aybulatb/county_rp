@@ -6,7 +6,7 @@ import Base from 'components/templates/Base';
 
 const Home = () => (
   <Base>
-    <Greeting>Здарова</Greeting>
+    <Greeting></Greeting>
   </Base>
 )
 

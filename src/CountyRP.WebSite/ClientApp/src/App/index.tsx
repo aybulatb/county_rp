@@ -4,7 +4,6 @@ import {
   Switch,
   Route,
 } from 'react-router-dom';
-import { Provider } from 'mobx-react';
 
 import GlobalStyle from './GlobalStyle';
 
@@ -14,15 +13,11 @@ import Profile from 'components/pages/Profile';
 import Forum from 'components/pages/Forum';
 import Players from 'components/pages/Players';
 
+import { StoreProvider } from 'stores/index';
 
-import { miniPlayerInfoStore } from 'stores/MiniPlayerInfoStore';
-import { profileStore } from 'stores/ProfileStore';
-
-
-const stores = { miniPlayerInfoStore, profileStore };
 
 function App() {
-  return <Provider {...stores}>
+  return <StoreProvider>
     <GlobalStyle />
     <BrowserRouter>
       <Switch>
@@ -33,7 +28,7 @@ function App() {
         <Route path='/forum' component={Forum} />
       </Switch>
     </BrowserRouter>
-  </Provider>;
+  </StoreProvider>;
 }
 
 export default App;

@@ -1,18 +1,15 @@
 import React, { useState } from 'react';
+import { observer } from 'mobx-react';
 import { useHistory } from 'react-router-dom';
-import { observer, inject } from 'mobx-react';
-import { IMiniPlayerInfoStore } from 'stores/MiniPlayerInfoStore';
 import InputField from './_InputField';
 import FormContainer from './_FormContainer';
 import Header from './_Header';
 import Button from './_Button';
+import { useStore } from 'stores';
 
 
-type AuthFormProps = {
-  miniPlayerInfoStore?: IMiniPlayerInfoStore
-}
-
-const AuthForm = (props: AuthFormProps) => {
+const AuthForm = observer(() => {
+  const { playerInfoStore } = useStore();
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const history = useHistory();
@@ -26,7 +23,7 @@ const AuthForm = (props: AuthFormProps) => {
   }
 
   const handleLogin = () => {
-    props.miniPlayerInfoStore?.authorize(userName, password);
+    playerInfoStore.authorize(userName, password);
     history.push('/');
   }
 
@@ -38,7 +35,7 @@ const AuthForm = (props: AuthFormProps) => {
       <Button onClick={handleLogin}>Войти</Button>
     </FormContainer>
   );
-}
+})
 
 
-export default inject('miniPlayerInfoStore')(observer(AuthForm));
+export default AuthForm;

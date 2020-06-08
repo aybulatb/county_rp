@@ -1,25 +1,21 @@
-import React, { useEffect } from 'react';
+import React from 'react';
+import { observer } from 'mobx-react';
 import { NavLink } from 'react-router-dom';
-import 'mobx-react-lite/batchingForReactDom';
-import { observer, inject } from 'mobx-react';
-
 import Container from './_Container';
 import Logo from './_Logo';
 import TextRow from './_TextRow';
+import { useStore } from 'stores';
 
-import { IMiniPlayerInfoStore } from 'stores/MiniPlayerInfoStore';
 
+const TopMenu = observer(() => {
+  const { playerInfoStore } = useStore();
 
-type TopMenuProps = {
-  miniPlayerInfoStore?: IMiniPlayerInfoStore
-}
+  const login = playerInfoStore.profile.login || 'Null';
 
-const TopMenu = ({ miniPlayerInfoStore }: TopMenuProps) => {
-  const login = miniPlayerInfoStore?.profile.login || 'Null';
 
   const renderLoadingAuth = () => {
     return (
-      miniPlayerInfoStore?.isLoading ?
+      playerInfoStore.isLoading ?
         <TextRow>loading...</TextRow>
         :
         renderMiniProfile()
@@ -27,22 +23,18 @@ const TopMenu = ({ miniPlayerInfoStore }: TopMenuProps) => {
   }
 
   const renderMiniProfile = () => {
-    return ((!miniPlayerInfoStore?.isAuthorized) ?
+    return ((!playerInfoStore.isAuthorized) ?
       <TextRow as={NavLink} to="/Auth">Войти</TextRow>
       :
       <>
-        <TextRow>{miniPlayerInfoStore.profile.login}</TextRow>
+        <TextRow as={NavLink} to={`/profile/${login}`}>{playerInfoStore.profile.login}</TextRow>
         <Logo>{login[0].toUpperCase()}</Logo>
-        <TextRow as={'button'} onClick={() => miniPlayerInfoStore?.logOut()}>
+        <TextRow as={NavLink} to='/' onClick={() => playerInfoStore.logOut()}>
           Выйти
         </TextRow>
       </>
     );
   }
-
-  useEffect(() => {
-    miniPlayerInfoStore?.getMiniProfile()
-  }, [miniPlayerInfoStore]);
 
 
   return (
@@ -50,6 +42,6 @@ const TopMenu = ({ miniPlayerInfoStore }: TopMenuProps) => {
       <>{renderLoadingAuth()}</>
     </Container>
   );
-}
+})
 
-export default inject('miniPlayerInfoStore')(observer(TopMenu));
+export default TopMenu;

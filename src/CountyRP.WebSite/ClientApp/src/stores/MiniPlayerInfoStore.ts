@@ -1,28 +1,13 @@
-import { decorate, observable, action } from 'mobx';
-
-
-export interface IMiniPlayerInfoStore {
-  isLoading: boolean;
-  isAuthorized: boolean;
+export const createPlayerInfoStore = () => ({
+  isLoading: false,
+  isAuthorized: false,
   profile: {
-    login: string
-  }
-
-  getMiniProfile: () => void
-  authorize: (login: string, password: string) => void
-  logOut: () => void
-}
-
-
-class MiniPlayerInfoStore implements IMiniPlayerInfoStore {
-  isLoading = false;
-  isAuthorized = false;
-  profile = {
     login: ''
-  };
+  },
 
   getMiniProfile() {
     if (!this.isAuthorized) {
+      console.log('sadasda');
       return;
     }
 
@@ -45,7 +30,7 @@ class MiniPlayerInfoStore implements IMiniPlayerInfoStore {
     }
 
     request.send();
-  }
+  },
 
   authorize(login: string, password: string) {
     const formData = new FormData();
@@ -67,16 +52,18 @@ class MiniPlayerInfoStore implements IMiniPlayerInfoStore {
         this.isAuthorized = true;
 
         if (process.env.REACT_APP_DEV_MODE === 'true') {
-          console.log(player.login);
-          console.log(player.password);
+          console.log('login: ', player.login);
+          console.log('password: ', player.password);
         }
       }
     }
 
     request.send(formData);
-  }
+  },
 
   logOut() {
+    console.log('log out...');
+
     const apiUrl = process.env.REACT_APP_API_URL;
 
     const request = new XMLHttpRequest();
@@ -94,17 +81,7 @@ class MiniPlayerInfoStore implements IMiniPlayerInfoStore {
 
     request.send();
   }
-}
-
-
-decorate(MiniPlayerInfoStore, {
-  isLoading: observable,
-  isAuthorized: observable,
-  profile: observable,
-  getMiniProfile: action,
-  authorize: action,
-  logOut: action
 });
 
 
-export const miniPlayerInfoStore = new MiniPlayerInfoStore();
+export type TPlayerInfoStore = ReturnType<typeof createPlayerInfoStore>
