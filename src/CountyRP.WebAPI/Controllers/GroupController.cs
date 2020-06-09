@@ -63,10 +63,10 @@ namespace CountyRP.WebAPI.Controllers
             return Ok(group.Select(g => new Group().Format(g)).ToList());
         }
 
-        [HttpGet("GetWithPageAndCount")]
+        [HttpGet("FilterBy")]
         [ProducesResponseType(typeof(List<Group>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        public IActionResult GetWithPageAndCount(int page, int count)
+        public IActionResult FilterBy(int page, int count, string id, string name)
         {
             if (page < 1)
                 return BadRequest("Номер страницы групп не может быть меньше 1");
@@ -74,19 +74,22 @@ namespace CountyRP.WebAPI.Controllers
             if (count < 1 || count > 50)
                 return BadRequest("Количество групп на одной странице должно быть от 1 до 50");
 
-            List<Entities.Group> group = _groupContext.Groups
-                .Skip((page - 1) * count)
-                .Take(count)
-                .ToList();
+            IQueryable<Entities.Group> query = _groupContext.Groups;
+            if (!string.IsNullOrWhiteSpace(id))
+                query = query.Where(g => g.Id.Contains(id));
+            if (!string.IsNullOrWhiteSpace(name))
+                query = query.Where(g => g.Name.Contains(name));
 
-            return Ok(group.Select(g => new Group().Format(g)).ToList());
+            query = query.Skip((page - 1) * count).Take(count);
+
+            return Ok(query.Select(g => new Group().Format(g)).ToList());
         }
 
         [HttpGet("Count")]
         [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
         public IActionResult GetCount()
         {
-            return Ok(_groupContext.Groups.Count());
+            return Ok(_groupContext.Groups?.Count() ?? 0);
         }
 
         [HttpPut("{id}")]
