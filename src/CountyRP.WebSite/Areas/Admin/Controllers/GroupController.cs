@@ -54,13 +54,13 @@ namespace CountyRP.WebSite.Areas.Admin.Controllers
         }
 
         [HttpGet("FilterBy")]
-        public async Task<IActionResult> FilterBy(int page, int count, string id, string name)
+        public async Task<IActionResult> FilterBy(int page, string id, string name)
         {
             List<Group> groups;
 
             try
             {
-                groups = await _groupAdapter.FilterBy(page, count, id, name);
+                groups = await _groupAdapter.FilterBy(page, 20, id, name);
             }
             catch (AdapterException ex)
             {
