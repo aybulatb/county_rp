@@ -1,0 +1,70 @@
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
+
+using CountyRP.Models;
+using CountyRP.WebSite.Exceptions;
+using CountyRP.WebSite.Services.Interfaces;
+
+namespace CountyRP.WebSite.Controllers
+{
+    [ApiController]
+    [Route("api/[controller]")]
+    public class AuthorizationController : ControllerBase
+    {
+        private IPlayerAdapter _playerAdapter;
+
+        public AuthorizationController(IPlayerAdapter playerAdapter)
+        {
+            _playerAdapter = playerAdapter;
+        }
+
+        [HttpPost]
+        [Route("TryAuthorize")]
+        public async Task<IActionResult> TryAuthorize(string login, string password)
+        {
+            if (User.Identity.IsAuthenticated)
+                return BadRequest("Вы уже авторизованы");
+
+            Player player;
+
+            try
+            {
+                player = await _playerAdapter.TryAuthorize(login, password);
+            }
+            catch (AdapterException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            await Authenticate(player.Id, player.Password);
+
+            return Ok(player);
+        }
+
+        private async Task Authenticate(int id, string password)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim("id", id.ToString()),
+                new Claim("password", password)
+            };
+
+            ClaimsIdentity identity = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
+
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
+        }
+
+        [HttpGet]
+        [Route("Logout")]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            return Ok();
+        }
+    }
+}

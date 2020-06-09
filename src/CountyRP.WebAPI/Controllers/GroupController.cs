@@ -63,6 +63,32 @@ namespace CountyRP.WebAPI.Controllers
             return Ok(group.Select(g => new Group().Format(g)).ToList());
         }
 
+        [HttpGet("GetWithPageAndCount")]
+        [ProducesResponseType(typeof(List<Group>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        public IActionResult GetWithPageAndCount(int page, int count)
+        {
+            if (page < 1)
+                return BadRequest("Номер страницы групп не может быть меньше 1");
+
+            if (count < 1 || count > 50)
+                return BadRequest("Количество групп на одной странице должно быть от 1 до 50");
+
+            List<Entities.Group> group = _groupContext.Groups
+                .Skip((page - 1) * count)
+                .Take(count)
+                .ToList();
+
+            return Ok(group.Select(g => new Group().Format(g)).ToList());
+        }
+
+        [HttpGet("Count")]
+        [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+        public IActionResult GetCount()
+        {
+            return Ok(_groupContext.Groups.Count());
+        }
+
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(Group), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]

@@ -2,6 +2,7 @@ using System.Net.Http;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -42,18 +43,22 @@ namespace CountyRP.WebSite
             services.AddSingleton(new PlayerClient(httpClient));
             services.AddSingleton(new PersonClient(httpClient));
             services.AddSingleton(new AllPlayerClient(httpClient));
-            services.AddSingleton(new PlayerAuthorizationClient(httpClient));
-            services.AddSingleton(new PlayerRegistrationClient(httpClient));
 
             services.AddTransient<IPlayerAdapter, PlayerAdapter>();
             services.AddTransient<IPersonAdapter, PersonAdapter>();
             services.AddTransient<IAllPlayerAdapter, AllPlayerAdapter>();
-            services.AddTransient<IPlayerAuthorizationAdapter, PlayerAuthorizationAdapter>();
-            services.AddTransient<IPlayerRegistrationAdapter, PlayerRegistrationAdapter>();
+
+            // Register the Swagger services
+            services.AddSwaggerDocument();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -65,11 +70,39 @@ namespace CountyRP.WebSite
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            if (env.IsStaging())
+            {
+                // Подключаем CORS
+                app.UseCors(builder => builder.AllowAnyOrigin());
+            }
+
+            //app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
             app.UseRouting();
+
+            // Register the Swagger generator and the Swagger UI middlewares
+            if (!env.IsDevelopment())
+                app.UseOpenApi(configure =>
+                {
+                    configure.PostProcess = (document, _) =>
+                    {
+                        document.Info.Title = "County RP Site";
+                        document.Schemes = new[] { NSwag.OpenApiSchema.Https };
+                        document.Info.Description = "API сайта для фронтенда";
+                    };
+                });
+            else
+                app.UseOpenApi(configure =>
+                {
+                    configure.PostProcess = (document, _) =>
+                    {
+                        document.Info.Title = "County RP Site";
+                        document.Info.Description = "API сайта для фронтенда";
+                    };
+                });
+            app.UseSwaggerUi3();
 
             app.UseAuthentication();
             app.UseAuthorization();
@@ -79,6 +112,9 @@ namespace CountyRP.WebSite
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "api/{controller}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute(
+                    name: "areas",
+                    pattern: "api/{area:exists}/{controller}/{action}/{id?}");
             });
 
             app.UseSpa(spa =>
