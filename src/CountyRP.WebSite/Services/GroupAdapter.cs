@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 
 using CountyRP.Models;
 using CountyRP.WebSite.Exceptions;
+using CountyRP.WebSite.Models.ViewModels;
 using CountyRP.WebSite.Services.Interfaces;
 
 namespace CountyRP.WebSite.Services
@@ -57,25 +58,31 @@ namespace CountyRP.WebSite.Services
             };
         }
 
-        public async Task<List<Group>> FilterBy(int page, int count, string id, string name)
+        public async Task<FilteredGroups> FilterBy(int page, int count, string id, string name)
         {
-            List<Extra.Group> groupsExt;
+            Extra.FilteredGroups filteredGroupsExt;
 
             try
             {
-                groupsExt = (await _groupClient.FilterByAsync(page, count, id, name)).ToList();
+                filteredGroupsExt = await _groupClient.FilterByAsync(page, count, id, name);
             }
             catch (Extra.ApiException<string> ex)
             {
                 throw new AdapterException(ex.StatusCode, ex.Result);
             }
 
-            return groupsExt.Select(g => new Group
+            return new FilteredGroups
             {
-                Id = g.Id,
-                Name = g.Name,
-                Color = g.Color
-            }).ToList();
+                Groups = filteredGroupsExt.Groups.Select(g => new Group
+                {
+                    Id = g.Id,
+                    Name = g.Name,
+                    Color = g.Color
+                }).ToList(),
+                AllAmount = filteredGroupsExt.AllAmount,
+                Page = filteredGroupsExt.Page,
+                MaxPage = filteredGroupsExt.MaxPage
+            };
         }
 
         public async Task<Group> Edit(string id, Group group)

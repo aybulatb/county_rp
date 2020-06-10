@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 using CountyRP.Models;
+using CountyRP.WebSite.Models.ViewModels;
 
 namespace CountyRP.WebSite.Services.Interfaces
 {
@@ -9,7 +9,7 @@ namespace CountyRP.WebSite.Services.Interfaces
     {
         Task Create(Group group);
         Task<Group> GetById(string id);
-        Task<List<Group>> FilterBy(int page, int count, string id, string name);
+        Task<FilteredGroups> FilterBy(int page, int count, string id, string name);
         Task<Group> Edit(string id, Group group);
         Task Delete(string id);
     }

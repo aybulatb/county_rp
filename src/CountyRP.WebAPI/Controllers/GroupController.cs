@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using CountyRP.Models;
 using CountyRP.WebAPI.Extensions;
 using CountyRP.WebAPI.Models;
+using CountyRP.WebAPI.Models.ViewModels;
 
 namespace CountyRP.WebAPI.Controllers
 {
@@ -64,7 +65,7 @@ namespace CountyRP.WebAPI.Controllers
         }
 
         [HttpGet("FilterBy")]
-        [ProducesResponseType(typeof(List<Group>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(FilteredGroups), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public IActionResult FilterBy(int page, int count, string id, string name)
         {
@@ -80,9 +81,22 @@ namespace CountyRP.WebAPI.Controllers
             if (!string.IsNullOrWhiteSpace(name))
                 query = query.Where(g => g.Name.Contains(name));
 
-            query = query.Skip((page - 1) * count).Take(count);
+            int allAmount = query.Count();
+            int maxPage = (allAmount % count == 0) ? allAmount / count : allAmount / count + 1;
+            if (page > maxPage)
+                page = maxPage;
 
-            return Ok(query.Select(g => new Group().Format(g)).ToList());
+            return Ok(new FilteredGroups
+            {
+                Groups = query
+                    .Skip((page - 1) * count)
+                    .Take(count)
+                    .Select(g => new Group().Format(g))
+                    .ToList(),
+                AllAmount = allAmount,
+                Page = page,
+                MaxPage = maxPage
+            });
         }
 
         [HttpGet("Count")]

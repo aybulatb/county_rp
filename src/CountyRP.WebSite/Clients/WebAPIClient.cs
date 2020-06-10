@@ -2558,14 +2558,14 @@ namespace CountyRP.Extra
         }
     
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Group>> FilterByAsync(int? page, int? count, string id, string name)
+        public System.Threading.Tasks.Task<FilteredGroups> FilterByAsync(int? page, int? count, string id, string name)
         {
             return FilterByAsync(page, count, id, name, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Group>> FilterByAsync(int? page, int? count, string id, string name, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<FilteredGroups> FilterByAsync(int? page, int? count, string id, string name, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/Group/FilterBy?");
@@ -2615,7 +2615,7 @@ namespace CountyRP.Extra
                         var status_ = ((int)response_.StatusCode).ToString();
                         if (status_ == "200") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<Group>>(response_, headers_).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<FilteredGroups>(response_, headers_).ConfigureAwait(false);
                             return objectResponse_.Object;
                         }
                         else
@@ -2631,7 +2631,7 @@ namespace CountyRP.Extra
                             throw new ApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
-                        return default(System.Collections.Generic.ICollection<Group>);
+                        return default(FilteredGroups);
                     }
                     finally
                     {
@@ -6661,6 +6661,24 @@ namespace CountyRP.Extra
     
         [Newtonsoft.Json.JsonProperty("color", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Color { get; set; }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.18.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class FilteredGroups 
+    {
+        [Newtonsoft.Json.JsonProperty("groups", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<Group> Groups { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("allAmount", Required = Newtonsoft.Json.Required.Always)]
+        public int AllAmount { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("page", Required = Newtonsoft.Json.Required.Always)]
+        public int Page { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("maxPage", Required = Newtonsoft.Json.Required.Always)]
+        public int MaxPage { get; set; }
     
     
     }

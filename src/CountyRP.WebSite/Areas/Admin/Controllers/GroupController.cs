@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Net.Http;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 using CountyRP.Models;
 using CountyRP.WebSite.Exceptions;
+using CountyRP.WebSite.Models.ViewModels;
 using CountyRP.WebSite.Services.Interfaces;
-using Microsoft.AspNetCore.Http;
 
 namespace CountyRP.WebSite.Areas.Admin.Controllers
 {
@@ -56,7 +55,7 @@ namespace CountyRP.WebSite.Areas.Admin.Controllers
         [HttpGet("FilterBy")]
         public async Task<IActionResult> FilterBy(int page, string id, string name)
         {
-            List<Group> groups;
+            FilteredGroups groups;
 
             try
             {
