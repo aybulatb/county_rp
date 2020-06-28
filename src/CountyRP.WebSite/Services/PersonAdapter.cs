@@ -75,6 +75,48 @@ namespace CountyRP.WebSite.Services
             };
         }
 
+        public async Task<Person> Edit(int id, Person person)
+        {
+            var personExt = new Extra.Person
+            {
+                Id = person.Id,
+                Name = person.Name,
+                PlayerId = person.PlayerId,
+                RegDate = person.RegDate,
+                LastDate = person.LastDate,
+                AdminLevelId = person.AdminLevelId,
+                FactionId = person.FactionId,
+                GroupId = person.GroupId,
+                Leader = person.Leader,
+                Rank = person.Rank,
+                Position = person.Position.ToArray()
+            };
+
+            try
+            {
+                personExt = await _personClient.UpdateAsync(id, personExt);
+            }
+            catch (Extra.ApiException<string> ex)
+            {
+                throw new AdapterException(ex.StatusCode, ex.Result);
+            }
+
+            return new Person
+            {
+                Id = personExt.Id,
+                Name = personExt.Name,
+                PlayerId = personExt.PlayerId,
+                RegDate = personExt.RegDate,
+                LastDate = personExt.LastDate,
+                AdminLevelId = personExt.AdminLevelId,
+                FactionId = personExt.FactionId,
+                GroupId = personExt.GroupId,
+                Leader = personExt.Leader,
+                Rank = personExt.Rank,
+                Position = personExt.Position.ToArray()
+            };
+        }
+
         public async Task<FilteredModels<Person>> FilterBy(int page, int count, string name)
         {
             Extra.FilteredModelsOfPerson filteredPersonsExt;

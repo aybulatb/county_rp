@@ -109,6 +109,34 @@ namespace CountyRP.WebSite.Services
             };
         }
 
+        public async Task<Player> Edit(int id, Player player)
+        {
+            var playerExt = new Extra.Player
+            {
+                Id = player.Id,
+                Login = player.Login,
+                Password = player.Password,
+                GroupId = player.GroupId
+            };
+
+            try
+            {
+                playerExt = await _playerClient.EditAsync(id, playerExt);
+            }
+            catch (Extra.ApiException<string> ex)
+            {
+                throw new AdapterException(ex.StatusCode, ex.Result);
+            }
+
+            return new Player
+            {
+                Id = playerExt.Id,
+                Login = playerExt.Login,
+                Password = playerExt.Password,
+                GroupId = playerExt.GroupId
+            };
+        }
+
         public async Task<FilteredModels<Player>> FilterBy(int page, int count, string name)
         {
             Extra.FilteredModelsOfPlayer filteredPlayerssExt;
