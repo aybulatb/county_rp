@@ -58,9 +58,9 @@ namespace CountyRP.WebSite.Services
             };
         }
 
-        public async Task<FilteredGroups> FilterBy(int page, int count, string id, string name)
+        public async Task<FilteredModels<Group>> FilterBy(int page, int count, string id, string name)
         {
-            Extra.FilteredGroups filteredGroupsExt;
+            Extra.FilteredModelsOfGroup filteredGroupsExt;
 
             try
             {
@@ -71,9 +71,9 @@ namespace CountyRP.WebSite.Services
                 throw new AdapterException(ex.StatusCode, ex.Result);
             }
 
-            return new FilteredGroups
+            return new FilteredModels<Group>
             {
-                Groups = filteredGroupsExt.Groups.Select(g => new Group
+                Items = filteredGroupsExt.Items.Select(g => new Group
                 {
                     Id = g.Id,
                     Name = g.Name,

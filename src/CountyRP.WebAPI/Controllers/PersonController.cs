@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using CountyRP.Models;
 using CountyRP.WebAPI.Extensions;
 using CountyRP.WebAPI.Models;
+using CountyRP.WebAPI.Models.ViewModels;
 
 namespace CountyRP.WebAPI.Controllers
 {
@@ -84,6 +85,39 @@ namespace CountyRP.WebAPI.Controllers
                 return NotFound($"Персонажи, привязанные к игроку с ID {playerId}, не найдены");
 
             return Ok(persons.Select(p => new Person().Format(p)));
+        }
+
+        [HttpGet("FilterBy")]
+        [ProducesResponseType(typeof(FilteredModels<Person>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        public IActionResult FilterBy(int page, int count, string name)
+        {
+            if (page < 1)
+                return BadRequest("Номер страницы персонажей не может быть меньше 1");
+
+            if (count < 1 || count > 50)
+                return BadRequest("Количество персонажей на одной странице должно быть от 1 до 50");
+
+            IQueryable<Entities.Person> query = _playerContext.Persons;
+            if (!string.IsNullOrWhiteSpace(name))
+                query = query.Where(p => p.Name.Contains(name));
+
+            int allAmount = query.Count();
+            int maxPage = (allAmount % count == 0) ? allAmount / count : allAmount / count + 1;
+            if (page > maxPage)
+                page = maxPage;
+
+            return Ok(new FilteredModels<Person>
+            {
+                Items = query
+                    .Skip((page - 1) * count)
+                    .Take(count)
+                    .Select(p => new Person().Format(p))
+                    .ToList(),
+                AllAmount = allAmount,
+                Page = page,
+                MaxPage = maxPage
+            });
         }
 
         [HttpPut("{id}")]

@@ -65,7 +65,7 @@ namespace CountyRP.WebAPI.Controllers
         }
 
         [HttpGet("FilterBy")]
-        [ProducesResponseType(typeof(FilteredGroups), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(FilteredModels<Group>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public IActionResult FilterBy(int page, int count, string id, string name)
         {
@@ -86,9 +86,9 @@ namespace CountyRP.WebAPI.Controllers
             if (page > maxPage)
                 page = maxPage;
 
-            return Ok(new FilteredGroups
+            return Ok(new FilteredModels<Group>
             {
-                Groups = query
+                Items = query
                     .Skip((page - 1) * count)
                     .Take(count)
                     .Select(g => new Group().Format(g))

@@ -55,7 +55,7 @@ namespace CountyRP.WebSite.Areas.Admin.Controllers
         [HttpGet("FilterBy")]
         public async Task<IActionResult> FilterBy(int page, string id, string name)
         {
-            FilteredGroups groups;
+            FilteredModels<Group> groups;
 
             try
             {

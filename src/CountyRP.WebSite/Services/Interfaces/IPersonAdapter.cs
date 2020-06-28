@@ -1,5 +1,7 @@
 ﻿using System.Threading.Tasks;
-using CountyRP.Extra;
+
+using CountyRP.Models;
+using CountyRP.WebSite.Models.ViewModels;
 
 namespace CountyRP.WebSite.Services.Interfaces
 {
@@ -7,5 +9,6 @@ namespace CountyRP.WebSite.Services.Interfaces
     {
         Task<Person> GetById(int id);
         Task<Person> GetByName(string name);
+        Task<FilteredModels<Person>> FilterBy(int page, int count, string name);
     }
 }

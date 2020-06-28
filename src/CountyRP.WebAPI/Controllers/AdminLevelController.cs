@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using CountyRP.Models;
 using CountyRP.WebAPI.Extensions;
 using CountyRP.WebAPI.Models;
+using CountyRP.WebAPI.Models.ViewModels;
 
 namespace CountyRP.WebAPI.Controllers
 {
@@ -50,6 +51,41 @@ namespace CountyRP.WebAPI.Controllers
                 return NotFound($"Уровень админки с ID {id} не найден");
 
             return Ok(new AdminLevel().Format(adminLevel));
+        }
+
+        [HttpGet("FilterBy")]
+        [ProducesResponseType(typeof(FilteredModels<AdminLevel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        public IActionResult FilterBy(int page, int count, string id, string name)
+        {
+            if (page < 1)
+                return BadRequest("Номер страницы админских уровней не может быть меньше 1");
+
+            if (count < 1 || count > 50)
+                return BadRequest("Количество админских уровней на одной странице должно быть от 1 до 50");
+
+            IQueryable<Entities.AdminLevel> query = _adminLevelContext.AdminLevels;
+            if (!string.IsNullOrWhiteSpace(id))
+                query = query.Where(al => al.Id.Contains(id));
+            if (!string.IsNullOrWhiteSpace(name))
+                query = query.Where(al => al.Name.Contains(name));
+
+            int allAmount = query.Count();
+            int maxPage = (allAmount % count == 0) ? allAmount / count : allAmount / count + 1;
+            if (page > maxPage)
+                page = maxPage;
+
+            return Ok(new FilteredModels<AdminLevel>
+            {
+                Items = query
+                    .Skip((page - 1) * count)
+                    .Take(count)
+                    .Select(al => new AdminLevel().Format(al))
+                    .ToList(),
+                AllAmount = allAmount,
+                Page = page,
+                MaxPage = maxPage
+            });
         }
 
         [HttpPut("{id}")]

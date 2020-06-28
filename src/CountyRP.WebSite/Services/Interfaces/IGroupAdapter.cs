@@ -9,7 +9,7 @@ namespace CountyRP.WebSite.Services.Interfaces
     {
         Task Create(Group group);
         Task<Group> GetById(string id);
-        Task<FilteredGroups> FilterBy(int page, int count, string id, string name);
+        Task<FilteredModels<Group>> FilterBy(int page, int count, string id, string name);
         Task<Group> Edit(string id, Group group);
         Task Delete(string id);
     }
