@@ -22,6 +22,7 @@
     "typescript": "^3.7.5"
   },
   "devDependencies": {
+    "@typescript-eslint/parser": "^3.4.0",
     "react-scripts": "3.4.0"
   },
   "scripts": {
@@ -40,8 +41,8 @@
       "not op_mini all"
     ],
     "development": [
-      "last 1 chrome version",
       "last 1 firefox version",
+      "last 1 chrome version",
       "last 1 safari version"
     ]
   }

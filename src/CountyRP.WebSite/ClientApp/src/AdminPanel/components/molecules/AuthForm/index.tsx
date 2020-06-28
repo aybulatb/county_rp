@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { observer } from 'mobx-react';
 import { useHistory } from 'react-router-dom';
-import InputField from './_InputField';
+import Input from 'AdminPanel/components/atoms/Input';
 import FormContainer from './_FormContainer';
-import Header from './_Header';
-import Button from './_Button';
+import Header from 'AdminPanel/components/atoms/Header1';
+import Button from 'AdminPanel/components/atoms/BlueButton';
 import { useStore } from 'AdminPanel/stores';
 
 
@@ -14,26 +14,21 @@ const AuthForm = observer(() => {
   const [password, setPassword] = useState('');
   const history = useHistory();
 
-  const handleLoginInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setUserName(event.target.value);
-  }
+  const handleLogin = async () => {
+    const result = await playerInfoStore.authorize(userName, password);
 
-  const handlePasswordInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(event.target.value);
-  }
-
-  const handleLogin = () => {
-    playerInfoStore.authorize(userName, password);
-    history.push('/admin');
+    if (result === 0 && playerInfoStore.isAuthorized) {
+      history.push('/admin');
+    }
   }
 
   return (
     <FormContainer>
       <Header>Добро пожаловать!</Header>
-      <InputField type="text" value={userName} onChange={handleLoginInput} />
-      <InputField type="password" value={password} onChange={handlePasswordInput} />
+      <Input value={userName} setValue={setUserName} />
+      <Input type="password" value={password} setValue={setPassword} />
       <Button onClick={handleLogin}>Войти</Button>
-    </FormContainer>
+    </FormContainer >
   );
 })
 

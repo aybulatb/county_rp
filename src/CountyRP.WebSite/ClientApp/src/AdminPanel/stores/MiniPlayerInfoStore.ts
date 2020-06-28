@@ -32,33 +32,41 @@ export const createPlayerInfoStore = () => ({
     request.send();
   },
 
-  authorize(login: string, password: string) {
+  async authorize(login: string, password: string) {
     const formData = new FormData();
     formData.append('login', login);
     formData.append('password', password);
 
     const query = `login=${login}&password=${password}`;
     const apiUrl = process.env.REACT_APP_API_URL;
+    const url = apiUrl + 'api/Authorization/TryAuthorize?' + query;
 
-    const request = new XMLHttpRequest();
-    request.open('POST', apiUrl + 'api/Authorization/TryAuthorize?' + query);
-    request.onreadystatechange = () => {
-      if (request.readyState !== XMLHttpRequest.DONE)
-        return;
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        body: formData
+      });
 
-      if (request.status === 200) {
-        const player = JSON.parse(request.responseText);
-        this.profile.login = player.login;
-        this.isAuthorized = true;
-
-        if (process.env.REACT_APP_DEV_MODE === 'true') {
-          console.log('login: ', player.login);
-          console.log('password: ', player.password);
-        }
+      if (!response.ok) {
+        throw new Error(`${response.statusText}`);
       }
-    }
 
-    request.send(formData);
+      const player = await response.json();
+      
+      this.profile.login = player.login;
+      this.isAuthorized = true;
+
+      if (process.env.REACT_APP_DEV_MODE === 'true') {
+        console.log('login: ', this.profile.login);
+        console.log('password: ', player.password);
+      }
+
+      return 0;
+
+    } catch (error) {
+      console.error('Ошибка:', error);
+      return -1;
+    }
   },
 
   logOut() {

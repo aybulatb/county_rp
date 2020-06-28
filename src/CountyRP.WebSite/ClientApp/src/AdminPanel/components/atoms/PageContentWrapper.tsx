@@ -6,7 +6,7 @@ const ContentWrapper = styled.div`
   height: 100%;
 
   overflow: auto;
-  background: #1bcf00;
+  background: #E8E9EF;
 `;
 
 

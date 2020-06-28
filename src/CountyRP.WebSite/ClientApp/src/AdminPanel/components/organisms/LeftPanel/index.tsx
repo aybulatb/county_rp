@@ -28,7 +28,7 @@ const RowsContainer = styled.div`
 
 const PanelContainer = styled.div`
   width: 350px;
-  height: 100vh;
+  min-height: 100vh;
 
   background: linear-gradient(180deg, #2A3799 0%, #298ACF 100%);
 `
@@ -40,8 +40,9 @@ const SidePanel = () => (
 
     <RowsContainer>
       <Row to='/admin' exact>Главная</Row>
-      <Row to='/admin/players' exact>Игроки</Row>
-      <Row to='/admin/forum' exact>Форум</Row>
+      <Row to='/admin/players'>Игроки</Row>
+      <Row to='/admin/group'>Группы</Row>
+      <Row to='/admin/forum'>Форум</Row>
     </RowsContainer>
   </PanelContainer>
 )

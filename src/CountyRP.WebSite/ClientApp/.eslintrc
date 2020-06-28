@@ -7,11 +7,11 @@
     "node": true
   },
   "extends": [
-    "airbnb",
+    // "airbnb",
     "plugin:react/recommended",
-    "plugin:jsx-a11y/strict",
+    "plugin:jsx-a11y/strict"
   ],
-  "parser": "babel-eslint",
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": 6,
     "sourceType": "module",
@@ -19,19 +19,31 @@
       "jsx": true,
       "modules": true,
       "experimentalObjectRestSpread": true
-    }
+    },
+    "project": "./tsconfig.json"
   },
   "plugins": [
-    "react", "react-hooks", "jsx-a11y"
+    "@typescript-eslint",
+    "react",
+    "react-hooks",
+    "jsx-a11y"
   ],
   "rules": {
-    "react/jsx-filename-extension": [1, {
-      "extensions": [".js", ".jsx"]
-    }],
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [
+          ".js",
+          ".jsx",
+          ".tsx"
+        ]
+      }
+    ],
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
     "no-console": "off",
     "react/prop-types": 0,
+    "react/display-name": "off"
   },
   "globals": {
     "window": true,
