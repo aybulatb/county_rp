@@ -7,7 +7,7 @@ namespace CountyRP.WebSite.Services.Interfaces
 {
     public interface IGroupAdapter
     {
-        Task Create(Group group);
+        Task<Group> Create(Group group);
         Task<Group> GetById(string id);
         Task<FilteredModels<Group>> FilterBy(int page, int count, string id, string name);
         Task<Group> Edit(string id, Group group);

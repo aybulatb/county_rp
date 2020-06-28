@@ -18,7 +18,7 @@ namespace CountyRP.WebSite.Services
             _groupClient = groupClient;
         }
 
-        public async Task Create(Group group)
+        public async Task<Group> Create(Group group)
         {
             var groupExt = new Extra.Group
             {
@@ -29,21 +29,7 @@ namespace CountyRP.WebSite.Services
 
             try
             {
-                await _groupClient.CreateAsync(groupExt);
-            }
-            catch (Extra.ApiException<string> ex)
-            {
-                throw new AdapterException(ex.StatusCode, ex.Result);
-            }
-        }
-
-        public async Task<Group> GetById(string id)
-        {
-            Extra.Group groupsExt;
-
-            try
-            {
-                groupsExt = await _groupClient.GetByIdAsync(id);
+                groupExt = await _groupClient.CreateAsync(groupExt);
             }
             catch (Extra.ApiException<string> ex)
             {
@@ -52,9 +38,30 @@ namespace CountyRP.WebSite.Services
 
             return new Group
             {
-                Id = groupsExt.Id,
-                Name = groupsExt.Name,
-                Color = groupsExt.Color
+                Id = groupExt.Id,
+                Name = groupExt.Name,
+                Color = groupExt.Color
+            };
+        }
+
+        public async Task<Group> GetById(string id)
+        {
+            Extra.Group groupExt;
+
+            try
+            {
+                groupExt = await _groupClient.GetByIdAsync(id);
+            }
+            catch (Extra.ApiException<string> ex)
+            {
+                throw new AdapterException(ex.StatusCode, ex.Result);
+            }
+
+            return new Group
+            {
+                Id = groupExt.Id,
+                Name = groupExt.Name,
+                Color = groupExt.Color
             };
         }
 

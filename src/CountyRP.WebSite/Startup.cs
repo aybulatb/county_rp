@@ -43,11 +43,13 @@ namespace CountyRP.WebSite
             services.AddSingleton(new PlayerClient(httpClient));
             services.AddSingleton(new PersonClient(httpClient));
             services.AddSingleton(new AllPlayerClient(httpClient));
+            services.AddSingleton(new FactionClient(httpClient));
             services.AddSingleton(new GroupClient(httpClient));
 
             services.AddTransient<IPlayerAdapter, PlayerAdapter>();
             services.AddTransient<IPersonAdapter, PersonAdapter>();
             services.AddTransient<IAllPlayerAdapter, AllPlayerAdapter>();
+            services.AddTransient<IFactionAdapter, FactionAdapter>();
             services.AddTransient<IGroupAdapter, GroupAdapter>();
 
             // Register the Swagger services
