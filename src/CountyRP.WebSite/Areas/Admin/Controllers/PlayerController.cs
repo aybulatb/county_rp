@@ -1,80 +1,80 @@
 ﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 
 using CountyRP.Models;
 using CountyRP.WebSite.Exceptions;
-using CountyRP.WebSite.Models.ViewModels;
 using CountyRP.WebSite.Services.Interfaces;
+using CountyRP.WebSite.Models.ViewModels;
 
 namespace CountyRP.WebSite.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("api/[area]/[controller]")]
-    public class GroupController : ControllerBase
+    public class PlayerController : ControllerBase
     {
-        private IGroupAdapter _groupAdapter;
+        private IPlayerAdapter _playerAdapter;
 
-        public GroupController(IGroupAdapter groupAdapter)
+        public PlayerController(IPlayerAdapter playerAdapter)
         {
-            _groupAdapter = groupAdapter;
+            _playerAdapter = playerAdapter;
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody]Group group)
+        public async Task<IActionResult> Create([FromBody]Player player)
         {
             try
             {
-                group = await _groupAdapter.Create(group);
+                player = await _playerAdapter.Register(player);
             }
             catch (AdapterException ex)
             {
                 return BadRequest(ex.Message);
             }
 
-            return Ok(group);
+            return Ok(player);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(string id)
+        public async Task<IActionResult> GetById(int id)
         {
-            Group group;
+            Player player;
 
             try
             {
-                group = await _groupAdapter.GetById(id);
+                player = await _playerAdapter.GetById(id);
             }
             catch (AdapterException ex)
             {
                 return NotFound(ex.Message);
             }
 
-            return Ok(group);
+            return Ok(player);
         }
 
         [HttpGet("FilterBy")]
-        public async Task<IActionResult> FilterBy(int page, string id, string name)
+        public async Task<IActionResult> FilterBy(int page, string name)
         {
-            FilteredModels<Group> groups;
+            FilteredModels<Player> players;
 
             try
             {
-                groups = await _groupAdapter.FilterBy(page, 20, id, name);
+                players = await _playerAdapter.FilterBy(page, 20, name);
             }
             catch (AdapterException ex)
             {
                 return BadRequest(ex.Message);
             }
 
-            return Ok(groups);
+            return Ok(players);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Edit(string id, [FromBody]Group group)
+        public async Task<IActionResult> Edit(int id, [FromBody]Player player)
         {
             try
             {
-                group = await _groupAdapter.Edit(id, group);
+                player = await _playerAdapter.Edit(id, player);
             }
             catch (AdapterException ex) when (ex.StatusCode == StatusCodes.Status400BadRequest)
             {
@@ -85,22 +85,7 @@ namespace CountyRP.WebSite.Areas.Admin.Controllers
                 return NotFound(ex.Message);
             }
 
-            return Ok(group);
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(string id)
-        {
-            try
-            {
-                await _groupAdapter.Delete(id);
-            }
-            catch (AdapterException ex)
-            {
-                return NotFound(ex.Message);
-            }
-
-            return Ok();
+            return Ok(player);
         }
     }
 }

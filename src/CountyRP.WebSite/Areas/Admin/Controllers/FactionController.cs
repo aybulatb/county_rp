@@ -1,80 +1,80 @@
 ﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 
 using CountyRP.Models;
 using CountyRP.WebSite.Exceptions;
-using CountyRP.WebSite.Models.ViewModels;
 using CountyRP.WebSite.Services.Interfaces;
+using CountyRP.WebSite.Models.ViewModels;
 
 namespace CountyRP.WebSite.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("api/[area]/[controller]")]
-    public class GroupController : ControllerBase
+    public class FactionController : ControllerBase
     {
-        private IGroupAdapter _groupAdapter;
+        private IFactionAdapter _factionAdapter;
 
-        public GroupController(IGroupAdapter groupAdapter)
+        public FactionController(IFactionAdapter factionAdapter)
         {
-            _groupAdapter = groupAdapter;
+            _factionAdapter = factionAdapter;
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody]Group group)
+        public async Task<IActionResult> Create([FromBody]Faction faction)
         {
             try
             {
-                group = await _groupAdapter.Create(group);
+                faction = await _factionAdapter.Create(faction);
             }
             catch (AdapterException ex)
             {
                 return BadRequest(ex.Message);
             }
 
-            return Ok(group);
+            return Ok(faction);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(string id)
         {
-            Group group;
+            Faction faction;
 
             try
             {
-                group = await _groupAdapter.GetById(id);
+                faction = await _factionAdapter.GetById(id);
             }
             catch (AdapterException ex)
             {
                 return NotFound(ex.Message);
             }
 
-            return Ok(group);
+            return Ok(faction);
         }
 
         [HttpGet("FilterBy")]
         public async Task<IActionResult> FilterBy(int page, string id, string name)
         {
-            FilteredModels<Group> groups;
+            FilteredModels<Faction> factions;
 
             try
             {
-                groups = await _groupAdapter.FilterBy(page, 20, id, name);
+                factions = await _factionAdapter.FilterBy(page, 20, id, name);
             }
             catch (AdapterException ex)
             {
                 return BadRequest(ex.Message);
             }
 
-            return Ok(groups);
+            return Ok(factions);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Edit(string id, [FromBody]Group group)
+        public async Task<IActionResult> Edit(string id, [FromBody]Faction faction)
         {
             try
             {
-                group = await _groupAdapter.Edit(id, group);
+                faction = await _factionAdapter.Edit(id, faction);
             }
             catch (AdapterException ex) when (ex.StatusCode == StatusCodes.Status400BadRequest)
             {
@@ -85,7 +85,7 @@ namespace CountyRP.WebSite.Areas.Admin.Controllers
                 return NotFound(ex.Message);
             }
 
-            return Ok(group);
+            return Ok(faction);
         }
 
         [HttpDelete("{id}")]
@@ -93,7 +93,7 @@ namespace CountyRP.WebSite.Areas.Admin.Controllers
         {
             try
             {
-                await _groupAdapter.Delete(id);
+                await _factionAdapter.Delete(id);
             }
             catch (AdapterException ex)
             {

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using CountyRP.Models;
 using CountyRP.WebAPI.Extensions;
 using CountyRP.WebAPI.Models;
+using CountyRP.WebAPI.Models.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace CountyRP.WebAPI.Controllers
@@ -45,6 +46,39 @@ namespace CountyRP.WebAPI.Controllers
                 return NotFound($"Игрок с логином {login} не найден");
 
             return Ok(new Player().Format(player));
+        }
+
+        [HttpGet("FilterBy")]
+        [ProducesResponseType(typeof(FilteredModels<Player>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        public IActionResult FilterBy(int page, int count, string login)
+        {
+            if (page < 1)
+                return BadRequest("Номер страницы игроков не может быть меньше 1");
+
+            if (count < 1 || count > 50)
+                return BadRequest("Количество игроков на одной странице должно быть от 1 до 50");
+
+            IQueryable<Entities.Player> query = _playerContext.Players;
+            if (!string.IsNullOrWhiteSpace(login))
+                query = query.Where(p => p.Login.Contains(login));
+
+            int allAmount = query.Count();
+            int maxPage = (allAmount % count == 0) ? allAmount / count : allAmount / count + 1;
+            if (page > maxPage)
+                page = maxPage;
+
+            return Ok(new FilteredModels<Player>
+            {
+                Items = query
+                    .Skip((page - 1) * count)
+                    .Take(count)
+                    .Select(p => new Player().Format(p))
+                    .ToList(),
+                AllAmount = allAmount,
+                Page = page,
+                MaxPage = maxPage
+            });
         }
 
         [HttpGet("TryAuthorize")]

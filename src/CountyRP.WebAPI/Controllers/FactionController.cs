@@ -5,8 +5,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 using CountyRP.Models;
-using CountyRP.WebAPI.Models;
 using CountyRP.WebAPI.Extensions;
+using CountyRP.WebAPI.Models;
+using CountyRP.WebAPI.Models.ViewModels;
 
 namespace CountyRP.WebAPI.Controllers
 {
@@ -66,6 +67,41 @@ namespace CountyRP.WebAPI.Controllers
                 .ToList();
 
             return Ok(factions);
+        }
+
+        [HttpGet("FilterBy")]
+        [ProducesResponseType(typeof(FilteredModels<Faction>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        public IActionResult FilterBy(int page, int count, string id, string name)
+        {
+            if (page < 1)
+                return BadRequest("Номер страницы групп не может быть меньше 1");
+
+            if (count < 1 || count > 50)
+                return BadRequest("Количество групп на одной странице должно быть от 1 до 50");
+
+            IQueryable<Entities.Faction> query = _factionContext.Factions;
+            if (!string.IsNullOrWhiteSpace(id))
+                query = query.Where(f => f.Id.Contains(id));
+            if (!string.IsNullOrWhiteSpace(name))
+                query = query.Where(f => f.Name.Contains(name));
+
+            int allAmount = query.Count();
+            int maxPage = (allAmount % count == 0) ? allAmount / count : allAmount / count + 1;
+            if (page > maxPage)
+                page = maxPage;
+
+            return Ok(new FilteredModels<Faction>
+            {
+                Items = query
+                    .Skip((page - 1) * count)
+                    .Take(count)
+                    .Select(f => new Faction().Format(f))
+                    .ToList(),
+                AllAmount = allAmount,
+                Page = page,
+                MaxPage = maxPage
+            });
         }
 
         [HttpPut("{id}")]

@@ -11,70 +11,70 @@ namespace CountyRP.WebSite.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("api/[area]/[controller]")]
-    public class GroupController : ControllerBase
+    public class AdminLevelController : ControllerBase
     {
-        private IGroupAdapter _groupAdapter;
+        private IAdminLevelAdapter _adminLevelAdapter;
 
-        public GroupController(IGroupAdapter groupAdapter)
+        public AdminLevelController(IAdminLevelAdapter adminLevelAdapter)
         {
-            _groupAdapter = groupAdapter;
+            _adminLevelAdapter = adminLevelAdapter;
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody]Group group)
+        public async Task<IActionResult> Create([FromBody]AdminLevel adminLevel)
         {
             try
             {
-                group = await _groupAdapter.Create(group);
+                adminLevel = await _adminLevelAdapter.Create(adminLevel);
             }
             catch (AdapterException ex)
             {
                 return BadRequest(ex.Message);
             }
 
-            return Ok(group);
+            return Ok(adminLevel);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(string id)
         {
-            Group group;
+            AdminLevel adminLevel;
 
             try
             {
-                group = await _groupAdapter.GetById(id);
+                adminLevel = await _adminLevelAdapter.GetById(id);
             }
             catch (AdapterException ex)
             {
                 return NotFound(ex.Message);
             }
 
-            return Ok(group);
+            return Ok(adminLevel);
         }
 
         [HttpGet("FilterBy")]
         public async Task<IActionResult> FilterBy(int page, string id, string name)
         {
-            FilteredModels<Group> groups;
+            FilteredModels<AdminLevel> adminLevels;
 
             try
             {
-                groups = await _groupAdapter.FilterBy(page, 20, id, name);
+                adminLevels = await _adminLevelAdapter.FilterBy(page, 20, id, name);
             }
             catch (AdapterException ex)
             {
                 return BadRequest(ex.Message);
             }
 
-            return Ok(groups);
+            return Ok(adminLevels);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Edit(string id, [FromBody]Group group)
+        public async Task<IActionResult> Edit(string id, [FromBody]AdminLevel adminLevel)
         {
             try
             {
-                group = await _groupAdapter.Edit(id, group);
+                adminLevel = await _adminLevelAdapter.Edit(id, adminLevel);
             }
             catch (AdapterException ex) when (ex.StatusCode == StatusCodes.Status400BadRequest)
             {
@@ -85,7 +85,7 @@ namespace CountyRP.WebSite.Areas.Admin.Controllers
                 return NotFound(ex.Message);
             }
 
-            return Ok(group);
+            return Ok(adminLevel);
         }
 
         [HttpDelete("{id}")]
@@ -93,7 +93,7 @@ namespace CountyRP.WebSite.Areas.Admin.Controllers
         {
             try
             {
-                await _groupAdapter.Delete(id);
+                await _adminLevelAdapter.Delete(id);
             }
             catch (AdapterException ex)
             {
