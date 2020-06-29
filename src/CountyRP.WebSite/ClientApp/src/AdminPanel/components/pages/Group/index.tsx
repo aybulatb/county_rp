@@ -4,12 +4,14 @@ import { NavLink } from 'react-router-dom';
 import Base from 'AdminPanel/components/templates/Base';
 import Input from 'AdminPanel/components/atoms/Input';
 import BlueButton from 'AdminPanel/components/atoms/BlueButton';
-import SearchResultsTable from './SearchResultsTable';
+import SearchResultsTable from 'AdminPanel/components/molecules/SearchResultsTable';
 import HorizontalRule from 'AdminPanel/components/atoms/HorizontalRule';
 import Header3 from 'AdminPanel/components/atoms/Header3';
 import FormContainer from 'AdminPanel/components/atoms/FormContainer';
 import FormRow from 'AdminPanel/components/atoms/FormRow'
 import { getGroupsFilterBy } from 'AdminPanel/services/group/getGroupsFilterBy';
+import { Group } from 'AdminPanel/services/group/Group';
+import { routes } from 'AdminPanel/routes';
 
 
 const Container = styled.div`
@@ -59,11 +61,7 @@ const ButtonsContainer = styled.div`
 `;
 
 
-type Group = {
-  id: string
-  name: string
-  color?: string
-}
+
 
 export default () => {
   const [groups, setGroups] = useState<Group[]>([]);
@@ -78,7 +76,7 @@ export default () => {
     try {
       const response = await getGroupsFilterBy(numberOfPage, idOfGroup, nameOfGroup);
 
-      setGroups(response.groups);
+      setGroups(response.items);
       // setGroupsAmount(response.allAmount);
       setMaxPage(response.maxPage);
       setPageNumber(response.page);
@@ -117,7 +115,9 @@ export default () => {
       </SearchButton>
       <HorizontalRule />
       <SearchResultsTable
-        searchResultsItems={groups}
+        headers={['ID', 'Название']}
+        searchResultsItems={groups.map(group => [group.id, group.name])}
+        editRoute={routes.editGroup}
       />
       <ButtonsContainer>
         <BackButton onClick={handleBackButtton} />

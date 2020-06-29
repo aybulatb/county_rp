@@ -17,7 +17,7 @@ const GlobalStyle = createGlobalStyle`
   @keyframes slide-up {
     0% {
       opacity: 0;
-      transform: translateY(20px);
+      transform: translateY(10px);
     }
     100% {
       opacity: 1;
@@ -36,6 +36,17 @@ const GlobalStyle = createGlobalStyle`
     }
   }
 
+  @keyframes slide-right {
+    0% {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
   @keyframes fade-in { 
     0% { 
       opacity: 0; 
@@ -43,6 +54,15 @@ const GlobalStyle = createGlobalStyle`
     100% { 
       opacity: 1; 
     } 
+  }
+
+  @keyframes turn {
+    0% {
+      transform: rotateY(90deg);
+    }
+    100% {
+      transform: rotateY(0deg);
+    }
   }
 
 `;

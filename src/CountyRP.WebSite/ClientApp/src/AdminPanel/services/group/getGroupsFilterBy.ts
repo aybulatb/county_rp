@@ -1,5 +1,5 @@
 type SearchResult = {
-  groups: {
+  items: {
     id: string;
     name: string;
     color: string;
@@ -22,8 +22,8 @@ export async function getGroupsFilterBy(page: number = 1, id: string = '', name:
 
   const json: SearchResult = await response.json();
 
-  if (!json.hasOwnProperty('groups'))
-    throw new Error(`Response is invalid: ${json.toString()}`);
+  if (!json.hasOwnProperty('items'))
+    throw new Error(`Response is invalid: `+json);
 
   return json;
 }

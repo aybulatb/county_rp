@@ -3,32 +3,25 @@ import styled from 'styled-components';
 import { useHistory, NavLink, useParams } from 'react-router-dom';
 
 import BlueButton from 'AdminPanel/components/atoms/BlueButton';
+import WhiteButton from 'AdminPanel/components/atoms/WhiteButton';
 import Input from 'AdminPanel/components/atoms/Input';
 import ColorPalette from 'AdminPanel/components/molecules/ColorPalette';
 import Checkbox from 'AdminPanel/components/molecules/Checkbox';
 import EditPage from 'AdminPanel/components/templates/Edit';
 
-import { colors as Colors } from 'AdminPanel/variables';
-
 import { editGroup } from 'AdminPanel/services/group/editGroup';
 import { getGroup } from 'AdminPanel/services/group/getGroup';
 import { deleteGroup } from 'AdminPanel/services/group/deleteGroup';
+
+import { routes } from 'AdminPanel/routes';
 
 
 const StyledBlueButton = styled(BlueButton)`
   margin-left: 10px;
 `;
 
-const WhiteButton = styled(StyledBlueButton)`
-  border: 2px ${Colors.gray} solid;
-  color: ${Colors.gray};
-  background: white;
-
-  &:hover {
-    color: ${Colors.blue};
-    background: white;
-    border: 2px ${Colors.blue} solid;
-  }
+const StyledWhiteButton = styled(WhiteButton)`
+  margin-left: 10px;
 `;
 
 
@@ -39,19 +32,7 @@ export default () => {
   const [color, setColor] = useState('');
   const [rights, setRights] = useState(false);
   const history = useHistory();
-  const prevLocation = '/admin/group';
-
-  const getGroupHandler = async () => {
-    try {
-      const fetchResult = await getGroup(oldId);
-
-      setGroupId(fetchResult.id);
-      setGroupName(fetchResult.name);
-      setColor(fetchResult.color);
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  const prevLocation = routes.group;
 
   const editHandler = async () => {
     try {
@@ -78,8 +59,18 @@ export default () => {
   }
 
   useEffect(() => {
-    getGroupHandler();
-  });
+    (async () => {
+      try {
+        const fetchResult = await getGroup(oldId);
+  
+        setGroupId(fetchResult.id);
+        setGroupName(fetchResult.name);
+        setColor('#'+fetchResult.color);
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, [oldId]);
 
   return (
     <EditPage
@@ -111,9 +102,9 @@ export default () => {
             Отмена
           </BlueButton>
 
-          <WhiteButton onClick={deleteHandler}>
+          <StyledWhiteButton onClick={deleteHandler}>
             Удалить
-          </WhiteButton>
+          </StyledWhiteButton>
 
           <StyledBlueButton onClick={editHandler}>
             Сохранить
