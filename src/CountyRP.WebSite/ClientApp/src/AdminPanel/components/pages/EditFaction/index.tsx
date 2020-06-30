@@ -104,7 +104,7 @@ export default () => {
               Отмена
           </BlueButton>
           <BlueButtonWithMargin onClick={editHandler}>
-              Создать
+              Сохранить
           </BlueButtonWithMargin>
         </>
       }
