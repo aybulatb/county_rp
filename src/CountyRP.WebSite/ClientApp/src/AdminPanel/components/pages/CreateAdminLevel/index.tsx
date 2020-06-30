@@ -4,12 +4,14 @@ import styled from 'styled-components';
 
 import BlueButton from 'AdminPanel/components/atoms/BlueButton';
 import Input from 'AdminPanel/components/atoms/Input';
-import ColorPalette from 'AdminPanel/components/molecules/ColorPalette';
-import Checkbox from 'AdminPanel/components/molecules/Checkbox';
 import EditPage from 'AdminPanel/components/templates/Edit';
+import Checkbox from 'AdminPanel/components/molecules/Checkbox';
 
-import { createGroup } from 'AdminPanel/services/group/createGroup';
+import { createAdminLevel } from 'AdminPanel/services/adminLevel/createAdminLevel';
+
 import { routes } from 'AdminPanel/routes';
+
+import { AdminLevel } from 'AdminPanel/services/adminLevel/AdminLevel';
 
 
 const BlueButtonWithMargin = styled(BlueButton)`
@@ -18,16 +20,22 @@ const BlueButtonWithMargin = styled(BlueButton)`
 
 
 export default () => {
-  const [groupId, setGroupId] = useState('');
-  const [groupName, setGroupName] = useState('');
-  const [color, setColor] = useState('');
-  const [rights, setRights] = useState(false);
+  const [adminLevelId, setAdminLevelId] = useState('');
+  const [adminLevelName, setAdminLevel] = useState('');
+  const [ban, setBan] = useState(false);
+
   const history = useHistory();
-  const prevLocation = routes.group;
+  const prevLocation = routes.adminLevel;
 
   const createHandler = async () => {
     try {
-      const fetchResult = await createGroup(groupId, groupName, color);
+      const newFaction: AdminLevel = {
+        id: adminLevelId,
+        name: adminLevelName,
+        ban
+      }
+
+      const fetchResult = await createAdminLevel(newFaction);
 
       if (fetchResult === 0) {
         history.push(prevLocation)
@@ -38,28 +46,22 @@ export default () => {
     }
   }
 
+
   return (
     <EditPage
       pageName='Создать'
       inputRows={[
         {
           name: 'ID',
-          innerElement: <Input value={groupId} setValue={setGroupId} />
+          innerElement: <Input value={adminLevelId} setValue={setAdminLevelId} />
         },
         {
-          name: 'Имя Группы',
-          innerElement: <Input value={groupName} setValue={setGroupName} />
+          name: 'Название',
+          innerElement: <Input value={adminLevelName} setValue={setAdminLevel} />
         },
         {
-          name: 'Цвет',
-          innerElement: <>
-            <Input value={color} setValue={setColor} color={color} />
-            <ColorPalette setColor={setColor} />
-          </>
-        },
-        {
-          name: 'Права На АдминПанель',
-          innerElement: <Checkbox checked={rights} id='rights' handleCheck={() => setRights(!rights)} />
+          name: 'Бан',
+          innerElement: <Checkbox checked={ban} id='rights' handleCheck={() => setBan(!ban)} />
         },
       ]}
       buttons={

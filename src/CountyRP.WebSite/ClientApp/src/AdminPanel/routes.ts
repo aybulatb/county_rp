@@ -8,6 +8,14 @@ const editGroup = `${group}/edit`;
 const players = `${root}/players`;
 const createPlayer = `${players}/create`;
 const editPlayer = `${players}/edit`;
+const person = `${root}/person`;
+const editPerson = `${person}/edit`;
+const faction = `${root}/faction`;
+const editFaction = `${faction}/editFaction`;
+const createFaction = `${faction}/createFaction`;
+const adminLevel = `${root}/adminLevel`;
+const createAdminLevel = `${adminLevel}/create`;
+const editAdminLevel = `${adminLevel}/edit`;
 
 
 export const routes = {
@@ -21,4 +29,12 @@ export const routes = {
   players,
   createPlayer,
   editPlayer,
+  person,
+  editPerson,
+  faction,
+  editFaction,
+  createFaction,
+  adminLevel,
+  createAdminLevel,
+  editAdminLevel
 }

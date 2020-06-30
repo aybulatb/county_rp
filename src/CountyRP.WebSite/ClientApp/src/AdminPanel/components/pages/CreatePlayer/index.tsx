@@ -82,7 +82,7 @@ export default () => {
       ]}
       buttons={
         <>
-          <BlueButton as={NavLink} to={routes.players}>
+          <BlueButton as={NavLink} to={prevLocation}>
               Отмена
           </BlueButton>
           <BlueButtonWithMargin onClick={createHandler}>

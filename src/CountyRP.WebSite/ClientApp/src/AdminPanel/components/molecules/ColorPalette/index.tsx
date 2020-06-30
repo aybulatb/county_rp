@@ -61,7 +61,6 @@ export default ({ setColor, className }: { setColor: Function; className?: strin
 
 
   const handleClick = (R: number, G: number, B: number) => {
-    console.log(invertColor(fromRGBtoHEX(R, G, B)))
     setColor("#" + fromRGBtoHEX(R, G, B));
   }
 

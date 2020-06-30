@@ -87,7 +87,7 @@ export default () => {
         {
           name: 'Цвет',
           innerElement: <>
-            <Input value={color} setValue={setColor} />
+            <Input value={color} setValue={setColor} color={color}/>
             <ColorPalette setColor={setColor} />
           </>
         },
@@ -98,7 +98,7 @@ export default () => {
       ]}
       buttons={
         <>
-          <BlueButton as={NavLink} to='/admin/group'>
+          <BlueButton as={NavLink} to={prevLocation}>
             Отмена
           </BlueButton>
 

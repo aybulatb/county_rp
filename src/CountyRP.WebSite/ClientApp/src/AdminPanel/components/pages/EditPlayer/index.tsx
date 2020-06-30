@@ -73,7 +73,7 @@ export default () => {
 
   return (
     <EditPage
-      pageName='Создать'
+      pageName='Редактировать'
       inputRows={[
         {
           name: 'Логин  ',
@@ -95,7 +95,7 @@ export default () => {
       ]}
       buttons={
         <>
-          <BlueButton as={NavLink} to={routes.players}>
+          <BlueButton as={NavLink} to={prevLocation}>
             Отмена
           </BlueButton>
 

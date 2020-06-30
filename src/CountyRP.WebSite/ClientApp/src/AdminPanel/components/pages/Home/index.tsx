@@ -3,8 +3,7 @@ import styled from "styled-components";
 
 import Base from 'AdminPanel/components/templates/Base';
 import Tile from 'AdminPanel/components/molecules/Tile';
-
-import { routes } from 'AdminPanel/routes';
+import { locations } from 'AdminPanel/locations';
 
 
 const TilesGrid = styled.div`
@@ -19,9 +18,16 @@ const TilesGrid = styled.div`
 const Home = () => (
   <Base>
     <TilesGrid>
-      <Tile name='Игроки' description='Описание' to={routes.players} />
-      <Tile name='Группы' description='Описание' to={routes.group} />
-      <Tile name='Форум' description='Описание' to={routes.forum} />
+      {
+        locations.map((location, key) => (
+          <Tile
+            key={key}
+            name={location.name}
+            description={location.description}
+            to={location.route}
+          />
+        ))
+      }
     </TilesGrid>
   </Base>
 )

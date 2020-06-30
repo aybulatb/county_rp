@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import styled from 'styled-components';
-import { NavLink } from 'react-router-dom';
 import Base from 'AdminPanel/components/templates/Base';
 import Input from 'AdminPanel/components/atoms/Input';
 import BlueButton from 'AdminPanel/components/atoms/BlueButton';
@@ -9,9 +8,9 @@ import HorizontalRule from 'AdminPanel/components/atoms/HorizontalRule';
 import Header3 from 'AdminPanel/components/atoms/Header3';
 import FormContainer from 'AdminPanel/components/atoms/FormContainer';
 import FormRow from 'AdminPanel/components/atoms/FormRow'
-import { getPlayersFilterBy } from 'AdminPanel/services/player/getPlayersFilterBy';
+import { getPersonFilterBy } from 'AdminPanel/services/person/getPersonFilterBy';
 import { routes } from 'AdminPanel/routes';
-import { Player } from 'AdminPanel/services/player/Player';
+import { Person } from 'AdminPanel/services/person/Person';
 
 
 const Container = styled.div`
@@ -61,17 +60,19 @@ const ButtonsContainer = styled.div`
 `;
 
 
+
 export default () => {
-  const [username, setUsername] = useState('');
-  const [players, setPlayers] = useState<Player[]>([]);
+  const [personName, setPersonName] = useState('');
+
+  const [persons, setPersons] = useState<Person[]>([]);
   const [pageNumber, setPageNumber] = useState(1);
   const [maxPage, setMaxPage] = useState(1);
 
   const handleSearch = async (numberOfPage: number, name: string) => {
     try {
-      const response = await getPlayersFilterBy(numberOfPage, name);
+      const response = await getPersonFilterBy(numberOfPage, name);
 
-      setPlayers(response.items);
+      setPersons(response.items);
       setMaxPage(response.maxPage);
       setPageNumber(response.page);
     } catch (error) {
@@ -81,33 +82,34 @@ export default () => {
 
   const handleForwardButton = () => {
     const nextPageNumber = pageNumber < maxPage ? pageNumber + 1 : pageNumber;
-    handleSearch(nextPageNumber, username);
+    handleSearch(nextPageNumber, personName);
   }
 
   const handleBackButtton = () => {
     const previousPageNumber = pageNumber > 1 ? pageNumber - 1 : pageNumber;
-    handleSearch(previousPageNumber, username);
+    handleSearch(previousPageNumber, personName);
   }
 
   return <Base>
     <Container>
-      <BlueButton as={NavLink} to={routes.createPlayer}>Создать</BlueButton>
       <Header3>Фильтр</Header3>
 
       <FormContainer>
-        <FormRow name='Логин'>
-          <Input value={username} setValue={setUsername} />
+        <FormRow name='Имя'>
+          <Input value={personName} setValue={setPersonName} />
         </FormRow>
       </FormContainer>
 
-      <SearchButton onClick={() => handleSearch(pageNumber, username)}>
+      <SearchButton onClick={() => handleSearch(pageNumber, personName)}>
         Найти
       </SearchButton>
       <HorizontalRule />
       <SearchResultsTable
-        headers={['ID', 'Логин', 'Группа']}
-        searchResultsItems={players.map((player) => [player.id.toString(), player.login, player.groupId])}
-        editRoute={routes.editPlayer}
+        headers={['ID', 'Имя', 'Фракция', 'Ранг', 'ID группы']}
+        searchResultsItems={persons.map((person) => (
+          [person.id.toString(), person.name, person.factionId, person.rank.toString(), person.groupId]
+        ))}
+        editRoute={routes.editPerson}
       />
       <ButtonsContainer>
         <BackButton onClick={handleBackButtton} />
