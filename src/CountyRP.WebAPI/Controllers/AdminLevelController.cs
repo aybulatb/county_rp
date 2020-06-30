@@ -41,7 +41,7 @@ namespace CountyRP.WebAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(AdminLevel), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(AdminLevel), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public IActionResult Get(string id)
         {
