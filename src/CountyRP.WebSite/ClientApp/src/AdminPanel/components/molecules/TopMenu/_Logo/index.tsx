@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { makeColorFromString } from './makeColorFromString';
-import { invertColor } from './invertColor'
+import { invertColor } from 'AdminPanel/utils/invertColor'
 
 
 type AvatarProps = {

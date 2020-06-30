@@ -10,9 +10,11 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
   const playerInfoStore = useLocalStore(createPlayerInfoStore);
   const profileStore = useLocalStore(createProfileStore);
 
-  return <storeContext.Provider value={{ playerInfoStore, profileStore }}>
-    {children}
-  </storeContext.Provider>
+  return (
+    <storeContext.Provider value={{ playerInfoStore, profileStore }}>
+      {children}
+    </storeContext.Provider>
+  )
 }
 
 export const useStore = () => {

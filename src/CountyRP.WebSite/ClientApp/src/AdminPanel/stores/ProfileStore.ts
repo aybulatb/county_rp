@@ -1,20 +1,22 @@
 type Person = {
   person: {
-    id: number
-    name: string
-    playerId: number
-    factionId: string
-  },
+    id: number;
+    name: string;
+    playerId: number;
+    factionId: string;
+  };
+
   faction: {
-    id: string
-    name: string
-    ranks: string[]
-  }
+    id: string;
+    name: string;
+    ranks: string[];
+  };
+
   vehicles: {
-    id: number
-    personId: number
-  }[]
-}
+    id: number;
+    personId: number;
+  }[];
+};
 
 
 export const createProfileStore = () => ({
@@ -23,7 +25,7 @@ export const createProfileStore = () => ({
     id: NaN,
     login: ''
   },
-  persons: [] as Person[],
+  persons: ([] as Person[]),
 
   getProfile(login: string) {
     this.isLoading = true;

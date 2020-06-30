@@ -1,5 +1,4 @@
 import React from 'react';
-
 import TopMenu from 'AdminPanel/components/molecules/TopMenu';
 import LeftPanel from 'AdminPanel/components/organisms/LeftPanel';
 import PageContainer from 'AdminPanel/components/atoms/PageContainer';

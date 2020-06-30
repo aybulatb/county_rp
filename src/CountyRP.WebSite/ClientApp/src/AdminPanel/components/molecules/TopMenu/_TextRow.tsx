@@ -1,8 +1,9 @@
 import styled from 'styled-components';
+import { colors } from 'AdminPanel/variables';
 
 
 const TextRow = styled.div`
-  color: #2A3799;
+  color: ${colors.blue};
   font-size: 16px;
   font-weight: bold;
   background: none;
