@@ -35,12 +35,13 @@ namespace CountyRP.WebSite.Services
                 throw new AdapterException(ex.StatusCode, ex.Result);
             }
 
-            player.Id = playerExt.Id;
-            player.Login = playerExt.Login;
-            player.Password = playerExt.Password;
-            player.GroupId = playerExt.GroupId;
-
-            return player;
+            return new Player
+            {
+                Id = playerExt.Id,
+                Login = playerExt.Login,
+                Password = playerExt.Password,
+                GroupId = playerExt.GroupId,
+            };
         }
 
         public async Task<Player> TryAuthorize(string login, string password)

@@ -115,6 +115,8 @@ namespace CountyRP.WebAPI.Controllers
             _playerContext.Players.Add(playerEntity);
             _playerContext.SaveChanges();
 
+            player.Id = playerEntity.Id;
+
             return Created("", player);
         }
 
