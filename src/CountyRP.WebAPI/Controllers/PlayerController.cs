@@ -65,7 +65,7 @@ namespace CountyRP.WebAPI.Controllers
 
             int allAmount = query.Count();
             int maxPage = (allAmount % count == 0) ? allAmount / count : allAmount / count + 1;
-            if (page > maxPage)
+            if (page > maxPage && maxPage > 0)
                 page = maxPage;
 
             return Ok(new FilteredModels<Player>
