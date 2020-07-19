@@ -46,6 +46,9 @@ namespace CountyRP.WebSite
             services.AddSingleton(new FactionClient(httpClient));
             services.AddSingleton(new GroupClient(httpClient));
             services.AddSingleton(new AdminLevelClient(httpClient));
+            services.AddSingleton(new LogClient(httpClient));
+            services.AddSingleton(new SiteBanClient(httpClient));
+            services.AddSingleton(new GameBanClient(httpClient));
 
             services.AddTransient<IPlayerAdapter, PlayerAdapter>();
             services.AddTransient<IPersonAdapter, PersonAdapter>();
@@ -53,6 +56,9 @@ namespace CountyRP.WebSite
             services.AddTransient<IFactionAdapter, FactionAdapter>();
             services.AddTransient<IGroupAdapter, GroupAdapter>();
             services.AddTransient<IAdminLevelAdapter, AdminLevelAdapter>();
+            services.AddTransient<ILogAdapter, LogAdapter>();
+            services.AddTransient<ISiteBanAdapter, SiteBanAdapter>();
+            services.AddTransient<IGameBanAdapter, GameBanAdapter>();
 
             // Register the Swagger services
             services.AddSwaggerDocument();
