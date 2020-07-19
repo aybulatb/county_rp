@@ -20,13 +20,13 @@ namespace CountyRP.WebSite.Areas.Admin.Controllers
             _logAdapter = logAdapter;
         }
 
-        public async Task<IActionResult> FilterBy(int page)
+        public async Task<IActionResult> FilterBy(int page, string login, string ip, int actionId, string commentPart)
         {
             FilteredModels<LogUnit> filteredLogUnits;
 
             try
             {
-                filteredLogUnits = await _logAdapter.FilterBy(page, 50);
+                filteredLogUnits = await _logAdapter.FilterBy(page, 50, login, ip, actionId, commentPart);
             }
             catch (AdapterException ex) when (ex.StatusCode == StatusCodes.Status400BadRequest)
             {

@@ -39,7 +39,7 @@ namespace CountyRP.WebAPI.Controllers
         [HttpGet("FilterBy")]
         [ProducesResponseType(typeof(FilteredModels<LogUnit>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        public IActionResult FilterBy(int page, int count)
+        public IActionResult FilterBy(int page, int count, string login, string ip, int actionId, string commentPart)
         {
             if (page < 1)
                 return BadRequest("Номер страницы логов не может быть меньше 1");
@@ -49,16 +49,22 @@ namespace CountyRP.WebAPI.Controllers
 
             IQueryable<Entities.LogUnit> query = _logContext.LogUnits;
 
-            int allAmount = query.Count();
-            int maxPage = (allAmount % count == 0) ? allAmount / count : allAmount / count + 1;
-            if (page > maxPage && maxPage > 0)
-                page = maxPage;
-
             var choosenLogUnits = query
                     .OrderByDescending(lu => lu.DateTime)
+                    .Where(lu => 
+                        !string.IsNullOrWhiteSpace(login) ? lu.Login == login : true &&
+                        !string.IsNullOrWhiteSpace(ip) ? lu.IP.Contains(ip) : true &&
+                        actionId != -1 ? lu.ActionId == (Entities.LogAction)actionId : true &&
+                        !string.IsNullOrWhiteSpace(commentPart) ? lu.Comment.Contains(commentPart) : true
+                    )
                     .Skip((page - 1) * count)
                     .Take(count)
                     .ToList();
+
+            int allAmount = choosenLogUnits.Count;
+            int maxPage = (allAmount % count == 0) ? allAmount / count : allAmount / count + 1;
+            if (page > maxPage && maxPage > 0)
+                page = maxPage;
 
             return Ok(new FilteredModels<LogUnit>
             {

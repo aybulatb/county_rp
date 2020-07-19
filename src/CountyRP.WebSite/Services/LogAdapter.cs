@@ -33,13 +33,13 @@ namespace CountyRP.WebSite.Services
             return MapToModel(logUnitExt);
         }
 
-        public async Task<FilteredModels<LogUnit>> FilterBy(int page, int count)
+        public async Task<FilteredModels<LogUnit>> FilterBy(int page, int count, string login, string ip, int actionId, string commentPart)
         {
             Extra.FilteredModelsOfLogUnit filteredLogUnitsExt;
 
             try
             {
-                filteredLogUnitsExt = await _logClient.FilterByAsync(page, count);
+                filteredLogUnitsExt = await _logClient.FilterByAsync(page, count, login, ip, actionId, commentPart);
             }
             catch (Extra.ApiException<string> ex)
             {

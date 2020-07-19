@@ -4646,14 +4646,14 @@ namespace CountyRP.Extra
         }
     
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<FilteredModelsOfLogUnit> FilterByAsync(int? page, int? count)
+        public System.Threading.Tasks.Task<FilteredModelsOfLogUnit> FilterByAsync(int? page, int? count, string login, string ip, int? actionId, string commentPart)
         {
-            return FilterByAsync(page, count, System.Threading.CancellationToken.None);
+            return FilterByAsync(page, count, login, ip, actionId, commentPart, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<FilteredModelsOfLogUnit> FilterByAsync(int? page, int? count, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<FilteredModelsOfLogUnit> FilterByAsync(int? page, int? count, string login, string ip, int? actionId, string commentPart, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/Log/FilterBy?");
@@ -4664,6 +4664,22 @@ namespace CountyRP.Extra
             if (count != null) 
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("count") + "=").Append(System.Uri.EscapeDataString(ConvertToString(count, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (login != null) 
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("login") + "=").Append(System.Uri.EscapeDataString(ConvertToString(login, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (ip != null) 
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("ip") + "=").Append(System.Uri.EscapeDataString(ConvertToString(ip, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (actionId != null) 
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("actionId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(actionId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (commentPart != null) 
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("commentPart") + "=").Append(System.Uri.EscapeDataString(ConvertToString(commentPart, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             urlBuilder_.Length--;
     
