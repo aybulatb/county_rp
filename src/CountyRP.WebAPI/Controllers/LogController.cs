@@ -55,6 +55,7 @@ namespace CountyRP.WebAPI.Controllers
                 page = maxPage;
 
             var choosenLogUnits = query
+                    .OrderByDescending(lu => lu.DateTime)
                     .Skip((page - 1) * count)
                     .Take(count)
                     .ToList();
