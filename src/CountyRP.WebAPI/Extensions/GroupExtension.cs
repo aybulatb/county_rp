@@ -9,6 +9,7 @@ namespace CountyRP.WebAPI.Extensions
             g1.Id = g2.Id;
             g1.Name = g2.Name;
             g1.Color = g2.Color;
+            g1.AdminPanel = g2.AdminPanel;
 
             return g1;
         }
@@ -18,6 +19,7 @@ namespace CountyRP.WebAPI.Extensions
             g1.Id = g2.Id;
             g1.Name = g2.Name;
             g1.Color = g2.Color;
+            g1.AdminPanel = g2.AdminPanel;
 
             return g1;
         }
