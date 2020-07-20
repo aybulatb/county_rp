@@ -19,12 +19,7 @@ namespace CountyRP.WebSite.Services
 
         public async Task<Group> Create(Group group)
         {
-            var groupExt = new Extra.Group
-            {
-                Id = group.Id,
-                Name = group.Name,
-                Color = group.Color
-            };
+            var groupExt = MapToExtra(group);
 
             try
             {
@@ -35,12 +30,7 @@ namespace CountyRP.WebSite.Services
                 throw new AdapterException(ex.StatusCode, ex.Result);
             }
 
-            return new Group
-            {
-                Id = groupExt.Id,
-                Name = groupExt.Name,
-                Color = groupExt.Color
-            };
+            return MapToModel(groupExt);
         }
 
         public async Task<Group> GetById(string id)
@@ -56,12 +46,7 @@ namespace CountyRP.WebSite.Services
                 throw new AdapterException(ex.StatusCode, ex.Result);
             }
 
-            return new Group
-            {
-                Id = groupExt.Id,
-                Name = groupExt.Name,
-                Color = groupExt.Color
-            };
+            return MapToModel(groupExt);
         }
 
         public async Task<FilteredModels<Group>> FilterBy(int page, int count, string id, string name)
@@ -79,12 +64,7 @@ namespace CountyRP.WebSite.Services
 
             return new FilteredModels<Group>
             {
-                Items = filteredGroupsExt.Items.Select(g => new Group
-                {
-                    Id = g.Id,
-                    Name = g.Name,
-                    Color = g.Color
-                }).ToList(),
+                Items = filteredGroupsExt.Items.Select(g => MapToModel(g)).ToList(),
                 AllAmount = filteredGroupsExt.AllAmount,
                 Page = filteredGroupsExt.Page,
                 MaxPage = filteredGroupsExt.MaxPage
@@ -93,12 +73,7 @@ namespace CountyRP.WebSite.Services
 
         public async Task<Group> Edit(string id, Group group)
         {
-            var groupExt = new Extra.Group
-            {
-                Id = group.Id,
-                Name = group.Name,
-                Color = group.Color
-            };
+            var groupExt = MapToExtra(group);
 
             try
             {
@@ -109,12 +84,7 @@ namespace CountyRP.WebSite.Services
                 throw new AdapterException(ex.StatusCode, ex.Result);
             }
 
-            return new Group
-            {
-                Id = groupExt.Id,
-                Name = groupExt.Name,
-                Color = groupExt.Color
-            };
+            return MapToModel(groupExt);
         }
 
         public async Task Delete(string id)
@@ -127,6 +97,28 @@ namespace CountyRP.WebSite.Services
             {
                 throw new AdapterException(ex.StatusCode, ex.Result);
             }
+        }
+
+        private Extra.Group MapToExtra(Group g)
+        {
+            return new Extra.Group
+            {
+                Id = g.Id,
+                Name = g.Name,
+                Color = g.Color,
+                AdminPanel = g.AdminPanel
+            };
+        }
+
+        private Group MapToModel(Extra.Group g)
+        {
+            return new Group
+            {
+                Id = g.Id,
+                Name = g.Name,
+                Color = g.Color,
+                AdminPanel = g.AdminPanel
+            };
         }
     }
 }
