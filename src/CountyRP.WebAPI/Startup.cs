@@ -32,6 +32,7 @@ namespace CountyRP.WebAPI
             services.AddDbContext<AdminLevelContext>(options => options.UseMySql(connectionString));
             services.AddDbContext<BanContext>(options => options.UseMySql(connectionString));
             services.AddDbContext<LogContext>(options => options.UseMySql(connectionString));
+            services.AddDbContext<AppearanceContext>(options => options.UseMySql(connectionString));
 
             // Register the Swagger services
             services.AddSwaggerDocument();
