@@ -21,7 +21,7 @@ namespace CountyRP.WebAPI
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson();
 
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<PlayerContext>(options => options.UseMySql(connectionString));
@@ -33,6 +33,7 @@ namespace CountyRP.WebAPI
             services.AddDbContext<BanContext>(options => options.UseMySql(connectionString));
             services.AddDbContext<LogContext>(options => options.UseMySql(connectionString));
             services.AddDbContext<AppearanceContext>(options => options.UseMySql(connectionString));
+            services.AddDbContext<InventoryContext>(options => options.UseMySql(connectionString));
 
             // Register the Swagger services
             services.AddSwaggerDocument();
