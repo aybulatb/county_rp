@@ -1,11 +1,13 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 
 using CountyRP.Models;
 using CountyRP.WebSite.Exceptions;
 using CountyRP.WebSite.Services.Interfaces;
 using CountyRP.WebSite.Models.ViewModels;
+using CountyRP.WebSite.Extenstions;
 
 namespace CountyRP.WebSite.Areas.Admin.Controllers
 {
@@ -14,15 +16,23 @@ namespace CountyRP.WebSite.Areas.Admin.Controllers
     public class PlayerController : ControllerBase
     {
         private IPlayerAdapter _playerAdapter;
+        private IGroupAdapter _groupAdapter;
 
-        public PlayerController(IPlayerAdapter playerAdapter)
+        public PlayerController(IPlayerAdapter playerAdapter, IGroupAdapter groupAdapter)
         {
             _playerAdapter = playerAdapter;
+            _groupAdapter = groupAdapter;
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody]Player player)
+        [Authorize]
+        public async Task<IActionResult> Create([FromBody] Player player)
         {
+            var actor = await _playerAdapter.GetById(User.Claims.GetId());
+            var group = await _groupAdapter.GetById(actor.GroupId);
+            if (!group.AdminPanel)
+                return Forbid();
+
             try
             {
                 player = await _playerAdapter.Register(player);

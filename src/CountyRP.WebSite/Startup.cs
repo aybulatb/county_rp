@@ -1,4 +1,5 @@
 using System.Net.Http;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -8,9 +9,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
+using CountyRP.Extra;
 using CountyRP.WebSite.Services;
 using CountyRP.WebSite.Services.Interfaces;
-using CountyRP.Extra;
 
 namespace CountyRP.WebSite
 {
@@ -25,7 +26,7 @@ namespace CountyRP.WebSite
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddNewtonsoftJson();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -36,8 +37,19 @@ namespace CountyRP.WebSite
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
+                    options.Events.OnRedirectToLogin = async (context) =>
+                    {
+                        context.Response.StatusCode = 401;
+                        await Task.CompletedTask;
+                    };
+                    options.Events.OnRedirectToAccessDenied = async (context) =>
+                    {
+                        context.Response.StatusCode = 403;
+                        await Task.CompletedTask;
+                    };
                     options.ExpireTimeSpan = System.TimeSpan.FromDays(365);
-                });
+                }
+            );
 
             HttpClient httpClient = new HttpClient();
             services.AddSingleton(new PlayerClient(httpClient));
