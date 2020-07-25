@@ -1,23 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory, NavLink } from 'react-router-dom';
 import styled from 'styled-components';
-
 import BlueButton from 'AdminPanel/components/atoms/BlueButton';
 import Input from 'AdminPanel/components/atoms/Input';
 import EditPage from 'AdminPanel/components/templates/Edit';
-
-import { createPlayer } from 'AdminPanel/services/player/createPlayer';
-import { getGroupsFilterBy } from 'AdminPanel/services/group/getGroupsFilterBy';
-
+import { createPlayer } from 'AdminPanel/services';
+import { getGroupsFilterBy } from 'AdminPanel/services';
 import { routes } from 'AdminPanel/routes';
-
-import { Group } from 'AdminPanel/services/group/Group';
+import { Group } from 'AdminPanel/types';
+import { handlerFactory } from 'AdminPanel/utils/handlerFactory';
 
 
 const BlueButtonWithMargin = styled(BlueButton)`
   margin-left: 10px;
 `;
-
 
 export default () => {
   const [username, setUsername] = useState('');
@@ -27,18 +23,10 @@ export default () => {
   const history = useHistory();
   const prevLocation = routes.players;
 
-  const createHandler = async () => {
-    try {
-      const fetchResult = await createPlayer(username, password, groupId);
-
-      if (fetchResult === 0) {
-        history.push(prevLocation)
-      }
-
-    } catch (error) {
-      console.dir(error);
-    }
-  }
+  const handleCreate = handlerFactory(
+    () => createPlayer(username, password, groupId),
+    () => history.push(prevLocation)
+  );
 
   const fetchGroups = async () => {
     try {
@@ -85,7 +73,7 @@ export default () => {
           <BlueButton as={NavLink} to={prevLocation}>
               Отмена
           </BlueButton>
-          <BlueButtonWithMargin onClick={createHandler}>
+          <BlueButtonWithMargin onClick={handleCreate}>
               Создать
           </BlueButtonWithMargin>
         </>

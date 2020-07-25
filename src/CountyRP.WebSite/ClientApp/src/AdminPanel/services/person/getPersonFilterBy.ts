@@ -1,4 +1,4 @@
-import { Person } from 'AdminPanel/services/person/Person';
+import { Person } from 'AdminPanel/types';
 
 
 type SearchResult = {
@@ -10,7 +10,8 @@ type SearchResult = {
 }
 
 export async function getPersonFilterBy(page: number = 1, name: string = '') {
-  let url = `https://www.county-rp.ru/api/Admin/Person/FilterBy?page=${page}`;
+  const apiUrl = process.env.REACT_APP_API_URL;
+  let url = `${apiUrl}Admin/Person/FilterBy?page=${page}`;
   url += name ? `&name=${name}` : '';
 
   const response = await fetch(url);

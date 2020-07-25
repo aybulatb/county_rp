@@ -32,4 +32,9 @@ export const locations: Location[] = [
     description: 'Описание',
     route: routes.adminLevel
   },
+  {
+    name: 'Тестовая комната',
+    description: 'Ничего странного здесь не происходит',
+    route: routes.testRoom
+  },
 ]

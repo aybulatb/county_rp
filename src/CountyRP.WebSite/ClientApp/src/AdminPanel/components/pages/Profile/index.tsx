@@ -29,13 +29,13 @@ const Profile = observer(() => {
               <div>Логин: {profileStore?.player.login} ({profileStore?.player.id})</div>
               <div>Персонажи:</div>
               <hr />
-              {profileStore?.persons.map(p =>
-                <div>
+              {profileStore?.persons.map((p, key) =>
+                <div key={key}>
                   <div>Имя: {p.person.name} ({p.person.id})</div>
                   <div>Фракция: {(p.person.factionId === null) ? 'Нет' : p.faction.name + ' (' + p.faction.id + ')'}</div>
                   <div>Имущество:</div>
-                  {p.vehicles.map(v =>
-                    <div>
+                  {p.vehicles.map((v, key2) =>
+                    <div key={key2}>
                       <div>{v.id}</div>
                     </div>
                   )}

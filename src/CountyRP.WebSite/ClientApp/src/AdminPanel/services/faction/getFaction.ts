@@ -1,4 +1,4 @@
-import { Faction } from 'AdminPanel/services/faction/Faction';
+import { Faction } from 'AdminPanel/types';
 
 
 export async function getFaction(id: string = '') {
@@ -8,7 +8,7 @@ export async function getFaction(id: string = '') {
   const response = await fetch(url);
 
   if (!response.ok)
-    throw new Error(`${response.statusText}`);
+    throw new Error(`${response.status}: ${response.statusText}`);
 
   const json: Faction = await response.json();
 
