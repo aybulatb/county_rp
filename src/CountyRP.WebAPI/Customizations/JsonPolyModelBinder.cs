@@ -9,11 +9,11 @@ namespace CountyRP.WebAPI.Customizations
     {
         public async Task BindModelAsync(ModelBindingContext bindingContext)
         {
-            StreamReader reader = new StreamReader(bindingContext.HttpContext.Request.Body);
+            StreamReader reader = new StreamReader(bindingContext.ActionContext.HttpContext.Request.Body);
             string json = await reader.ReadToEndAsync();
             var settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Auto };
             var result = JsonConvert.DeserializeObject(json, bindingContext.ModelType, settings);
-            bindingContext.Model = result;
+            bindingContext.Result = ModelBindingResult.Success(result);
         }
     }
 }
