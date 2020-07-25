@@ -1,129 +1,48 @@
-import React, { useState } from "react";
-import styled from 'styled-components';
+import React, {useState} from 'react';
 import { NavLink } from 'react-router-dom';
-import Base from 'AdminPanel/components/templates/Base';
-import Input from 'AdminPanel/components/atoms/Input';
 import BlueButton from 'AdminPanel/components/atoms/BlueButton';
-import SearchResultsTable from 'AdminPanel/components/molecules/SearchResultsTable';
-import HorizontalRule from 'AdminPanel/components/atoms/HorizontalRule';
-import Header3 from 'AdminPanel/components/atoms/Header3';
-import FormContainer from 'AdminPanel/components/atoms/FormContainer';
-import FormRow from 'AdminPanel/components/atoms/FormRow'
-import { getGroupsFilterBy } from 'AdminPanel/services/group/getGroupsFilterBy';
-import { Group } from 'AdminPanel/services/group/Group';
+import Input from 'AdminPanel/components/atoms/Input';
+import CategoryPage from 'AdminPanel/components/templates/CategoryPage/new';
 import { routes } from 'AdminPanel/routes';
+import { useStore } from 'AdminPanel/stores';
+import { observer } from 'mobx-react';
 
 
-const Container = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-
-  box-sizing: border-box;
-  padding: 50px;
-`;
-
-const SearchButton = styled(BlueButton)`
-  margin-left: auto;
-  margin-right: 40px;
-`;
-
-const ForwardButton = styled.button`
-  width: 15px;
-  height: 15px;
-
-  border: none;
-  border-top: 2px blue solid;
-  border-right: 2px blue solid;
-  outline: none;
-
-  background: none;
-
-  transform: rotate(45deg);
-
-  cursor: pointer;
-`;
-
-const BackButton = styled(ForwardButton)`
-  transform: rotate(-135deg);
-`;
-
-const ButtonsContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  width: 100%;
-  margin-top: 25px;
-  padding-right: 29px;
-  color: blue;
-`;
-
-
-
-
-export default () => {
-  const [groups, setGroups] = useState<Group[]>([]);
-  const [pageNumber, setPageNumber] = useState(1);
-  // const [groupsAmout, setGroupsAmount] = useState(0);
-  const [maxPage, setMaxPage] = useState(1);
+const GroupPage = observer(() => {
   const [groupId, setGroupId] = useState('');
   const [groupName, setGroupName] = useState('');
+  const { groupsSearchStore } = useStore();
+
+  return (
+    <CategoryPage
+      topButtons={
+        <BlueButton as={NavLink} to='/admin/group/create' >
+          Создать
+        </BlueButton>
+      }
+      inputRows={[
+        {
+          name: 'ID',
+          innerComponent: <Input value={groupId} setValue={setGroupId} />
+        },
+        {
+          name: 'Имя группы',
+          innerComponent: <Input value={groupName} setValue={setGroupName} />
+        }
+      ]}
+      searchTableProps={{
+        headers: ['ID', 'Название'],
+        searchResultsItems: groupsSearchStore.searchResult.map(group => [group.id, group.name]),
+        editRoute: routes.editGroup,
+        maxPage: groupsSearchStore.maxPage,
+        currentPage: groupsSearchStore.currentPage,
+        goToNextPage: groupsSearchStore.goToNextPage,
+        goToPrevPage: groupsSearchStore.goToPrevPage,
+        search: () => {groupsSearchStore.searchGroups(groupId, groupName)}
+      }}
+    />
+  );
+})
 
 
-  const handleSearch = async (numberOfPage: number, idOfGroup: string, nameOfGroup: string) => {
-    try {
-      const response = await getGroupsFilterBy(numberOfPage, idOfGroup, nameOfGroup);
-
-      setGroups(response.items);
-      // setGroupsAmount(response.allAmount);
-      setMaxPage(response.maxPage);
-      setPageNumber(response.page);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  const handleForwardButton = () => {
-    const nextPageNumber = pageNumber < maxPage ? pageNumber + 1 : pageNumber;
-    handleSearch(nextPageNumber, groupId, groupName);
-  }
-
-  const handleBackButtton = () => {
-    const previousPageNumber = pageNumber > 1 ? pageNumber - 1 : pageNumber;
-    handleSearch(previousPageNumber, groupId, groupName);
-  }
-
-  return <Base>
-    <Container>
-      <BlueButton as={NavLink} to='/admin/group/create' >Создать</BlueButton>
-      <Header3>Фильтр</Header3>
-
-      <FormContainer>
-        <FormRow name='ID'>
-          <Input value={groupId} setValue={setGroupId} />
-        </FormRow>
-
-        <FormRow name='Имя группы'>
-          <Input value={groupName} setValue={setGroupName} />
-        </FormRow>
-      </FormContainer>
-
-      <SearchButton onClick={() => handleSearch(pageNumber, groupId, groupName)}>
-        Найти
-      </SearchButton>
-      <HorizontalRule />
-      <SearchResultsTable
-        headers={['ID', 'Название']}
-        searchResultsItems={groups.map(group => [group.id, group.name])}
-        editRoute={routes.editGroup}
-      />
-      <ButtonsContainer>
-        <BackButton onClick={handleBackButtton} />
-        <span>{pageNumber}..{maxPage}</span>
-        <ForwardButton onClick={handleForwardButton} />
-      </ButtonsContainer>
-    </Container>
-  </Base>
-}
+export default GroupPage;

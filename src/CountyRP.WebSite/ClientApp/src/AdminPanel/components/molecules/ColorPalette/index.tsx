@@ -18,10 +18,10 @@ const ColorBlock = styled.button<{ hexColor: string }>`
   border: none;
 
   &:focus {
-    outline: 2px solid #${props => invertColor(props.hexColor)};
+    outline: 2px solid ${props => invertColor(props.hexColor)};
   }
 
-  background: #${props => props.hexColor};
+  background: ${props => props.hexColor};
   cursor: pointer;
 `;
 

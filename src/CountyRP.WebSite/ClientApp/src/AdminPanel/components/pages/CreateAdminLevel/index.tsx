@@ -1,23 +1,18 @@
 import React, { useState } from 'react';
 import { useHistory, NavLink } from 'react-router-dom';
 import styled from 'styled-components';
-
 import BlueButton from 'AdminPanel/components/atoms/BlueButton';
 import Input from 'AdminPanel/components/atoms/Input';
 import EditPage from 'AdminPanel/components/templates/Edit';
 import Checkbox from 'AdminPanel/components/molecules/Checkbox';
-
-import { createAdminLevel } from 'AdminPanel/services/adminLevel/createAdminLevel';
-
+import { createAdminLevel } from 'AdminPanel/services';
 import { routes } from 'AdminPanel/routes';
-
-import { AdminLevel } from 'AdminPanel/services/adminLevel/AdminLevel';
+import { handlerFactory } from 'AdminPanel/utils/handlerFactory';
 
 
 const BlueButtonWithMargin = styled(BlueButton)`
   margin-left: 10px;
 `;
-
 
 export default () => {
   const [adminLevelId, setAdminLevelId] = useState('');
@@ -27,24 +22,14 @@ export default () => {
   const history = useHistory();
   const prevLocation = routes.adminLevel;
 
-  const createHandler = async () => {
-    try {
-      const newFaction: AdminLevel = {
-        id: adminLevelId,
-        name: adminLevelName,
-        ban
-      }
-
-      const fetchResult = await createAdminLevel(newFaction);
-
-      if (fetchResult === 0) {
-        history.push(prevLocation)
-      }
-
-    } catch (error) {
-      console.dir(error);
-    }
-  }
+  const handleCreate = handlerFactory(
+    () => createAdminLevel({
+      id: adminLevelId,
+      name: adminLevelName,
+      ban
+    }),
+    () => {history.push(prevLocation)}
+  );
 
 
   return (
@@ -69,7 +54,7 @@ export default () => {
           <BlueButton as={NavLink} to={prevLocation}>
               Отмена
           </BlueButton>
-          <BlueButtonWithMargin onClick={createHandler}>
+          <BlueButtonWithMargin onClick={handleCreate}>
               Создать
           </BlueButtonWithMargin>
         </>

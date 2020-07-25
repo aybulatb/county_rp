@@ -1,4 +1,4 @@
-import { Person } from 'AdminPanel/services/person/Person';
+import { Person } from 'AdminPanel/types';
 
 
 export async function getPerson(id: string = '') {

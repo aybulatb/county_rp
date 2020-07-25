@@ -1,19 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useHistory, NavLink, useParams } from 'react-router-dom';
-
 import BlueButton from 'AdminPanel/components/atoms/BlueButton';
 import WhiteButton from 'AdminPanel/components/atoms/WhiteButton';
 import Input from 'AdminPanel/components/atoms/Input';
 import ColorPalette from 'AdminPanel/components/molecules/ColorPalette';
 import Checkbox from 'AdminPanel/components/molecules/Checkbox';
 import EditPage from 'AdminPanel/components/templates/Edit';
-
-import { editGroup } from 'AdminPanel/services/group/editGroup';
-import { getGroup } from 'AdminPanel/services/group/getGroup';
-import { deleteGroup } from 'AdminPanel/services/group/deleteGroup';
-
+import { editGroup } from 'AdminPanel/services';
+import { getGroup } from 'AdminPanel/services';
+import { deleteGroup } from 'AdminPanel/services';
 import { routes } from 'AdminPanel/routes';
+import { handlerFactory, handlerFetchError } from 'AdminPanel/utils/handlerFactory';
 
 
 const StyledBlueButton = styled(BlueButton)`
@@ -24,7 +22,6 @@ const StyledWhiteButton = styled(WhiteButton)`
   margin-left: 10px;
 `;
 
-
 export default () => {
   const { id: oldId } = useParams<{ id: string }>();
   const [groupId, setGroupId] = useState(oldId);
@@ -34,29 +31,15 @@ export default () => {
   const history = useHistory();
   const prevLocation = routes.group;
 
-  const editHandler = async () => {
-    try {
-      const fetchResult = await editGroup(oldId, groupId, groupName, color);
-
-      if (fetchResult === 0) {
-        history.push(prevLocation)
-      }
-    } catch (error) {
-      console.dir(error);
-    }
-  }
-
-  const deleteHandler = async () => {
-    try {
-      const fetchResult = await deleteGroup(oldId);
-
-      if (fetchResult === 0) {
-        history.push(prevLocation)
-      }
-    } catch (error) {
-      console.dir(error);
-    }
-  }
+  const editHandler = handlerFactory(
+    () => editGroup(oldId, groupId, groupName, color),
+    () => history.push(prevLocation)
+  );
+  
+  const deleteHandler = handlerFactory(
+    () => deleteGroup(oldId),
+    () => history.push(prevLocation)
+  );
 
   useEffect(() => {
     (async () => {
@@ -68,6 +51,7 @@ export default () => {
         setColor('#'+fetchResult.color);
       } catch (error) {
         console.log(error);
+        handlerFetchError(error);
       }
     })();
   }, [oldId]);

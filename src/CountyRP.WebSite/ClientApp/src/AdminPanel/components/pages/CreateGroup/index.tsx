@@ -1,21 +1,19 @@
 import React, { useState } from 'react';
 import { useHistory, NavLink } from 'react-router-dom';
 import styled from 'styled-components';
-
 import BlueButton from 'AdminPanel/components/atoms/BlueButton';
 import Input from 'AdminPanel/components/atoms/Input';
 import ColorPalette from 'AdminPanel/components/molecules/ColorPalette';
 import Checkbox from 'AdminPanel/components/molecules/Checkbox';
 import EditPage from 'AdminPanel/components/templates/Edit';
-
 import { createGroup } from 'AdminPanel/services/group/createGroup';
 import { routes } from 'AdminPanel/routes';
+import { handlerFactory } from 'AdminPanel/utils/handlerFactory';
 
 
 const BlueButtonWithMargin = styled(BlueButton)`
   margin-left: 10px;
 `;
-
 
 export default () => {
   const [groupId, setGroupId] = useState('');
@@ -25,18 +23,10 @@ export default () => {
   const history = useHistory();
   const prevLocation = routes.group;
 
-  const createHandler = async () => {
-    try {
-      const fetchResult = await createGroup(groupId, groupName, color);
-
-      if (fetchResult === 0) {
-        history.push(prevLocation)
-      }
-
-    } catch (error) {
-      console.dir(error);
-    }
-  }
+  const handleCreate = handlerFactory(
+    () => createGroup(groupId, groupName, color),
+    () => history.push(prevLocation)
+  )
 
   return (
     <EditPage
@@ -67,7 +57,7 @@ export default () => {
           <BlueButton as={NavLink} to={prevLocation}>
               Отмена
           </BlueButton>
-          <BlueButtonWithMargin onClick={createHandler}>
+          <BlueButtonWithMargin onClick={handleCreate}>
               Создать
           </BlueButtonWithMargin>
         </>

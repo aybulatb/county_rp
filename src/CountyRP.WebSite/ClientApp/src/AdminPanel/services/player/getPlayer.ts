@@ -1,4 +1,5 @@
-import { Player } from './Player'; 
+import { Player } from 'AdminPanel/types'; 
+
 
 export async function getPlayer(id: string = '') {
   const apiUrl = process.env.REACT_APP_API_URL;
