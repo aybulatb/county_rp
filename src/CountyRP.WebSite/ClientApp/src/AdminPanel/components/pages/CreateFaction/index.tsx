@@ -1,23 +1,18 @@
 import React, { useState } from 'react';
 import { useHistory, NavLink } from 'react-router-dom';
 import styled from 'styled-components';
-
 import BlueButton from 'AdminPanel/components/atoms/BlueButton';
 import Input from 'AdminPanel/components/atoms/Input';
 import EditPage from 'AdminPanel/components/templates/Edit';
 import ColorPalette from 'AdminPanel/components/molecules/ColorPalette';
-
-import { createFaction } from 'AdminPanel/services/faction/createFaction';
-
+import { createFaction } from 'AdminPanel/services';
 import { routes } from 'AdminPanel/routes';
-
-import { Faction } from 'AdminPanel/services/faction/Faction';
+import { handlerFactory } from 'AdminPanel/utils/handlerFactory';
 
 
 const BlueButtonWithMargin = styled(BlueButton)`
   margin-left: 10px;
 `;
-
 
 export default () => {
   const [factionId, setFactionId] = useState('');
@@ -29,27 +24,16 @@ export default () => {
   const history = useHistory();
   const prevLocation = routes.faction;
 
-  const createHandler = async () => {
-    try {
-      const newFaction: Faction = {
-        id: factionId,
-        name: factionName,
-        color: factionColor,
-        ranks: factionRanks.split(','),
-        type: factionType
-      }
-
-      const fetchResult = await createFaction(newFaction);
-
-      if (fetchResult === 0) {
-        history.push(prevLocation)
-      }
-
-    } catch (error) {
-      console.dir(error);
-    }
-  }
-
+  const handleCreate = handlerFactory(
+    () => createFaction({
+      id: factionId,
+      name: factionName,
+      color: factionColor,
+      ranks: factionRanks.split(','),
+      type: factionType
+    }),
+    () => history.push(prevLocation)
+  );
 
   return (
     <EditPage
@@ -84,7 +68,7 @@ export default () => {
           <BlueButton as={NavLink} to={prevLocation}>
               Отмена
           </BlueButton>
-          <BlueButtonWithMargin onClick={createHandler}>
+          <BlueButtonWithMargin onClick={handleCreate}>
               Создать
           </BlueButtonWithMargin>
         </>

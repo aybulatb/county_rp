@@ -1,4 +1,4 @@
-import { AdminLevel } from 'AdminPanel/services/adminLevel/AdminLevel';
+import { AdminLevel } from 'AdminPanel/types';
 
 
 export async function editAdminLevel(id: string, adminLevel: AdminLevel) {

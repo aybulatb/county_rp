@@ -17,6 +17,8 @@ const adminLevel = `${root}/adminLevel`;
 const createAdminLevel = `${adminLevel}/create`;
 const editAdminLevel = `${adminLevel}/edit`;
 
+const testRoom = `${root}/testRoom`;
+
 
 export const routes = {
   root,
@@ -36,5 +38,6 @@ export const routes = {
   createFaction,
   adminLevel,
   createAdminLevel,
-  editAdminLevel
+  editAdminLevel,
+  testRoom
 }

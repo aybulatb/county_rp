@@ -1,24 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory, NavLink, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-
 import BlueButton from 'AdminPanel/components/atoms/BlueButton';
 import Input from 'AdminPanel/components/atoms/Input';
 import EditPage from 'AdminPanel/components/templates/Edit';
 import Checkbox from 'AdminPanel/components/molecules/Checkbox';
-
-import { editAdminLevel } from 'AdminPanel/services/adminLevel/editAdminLevel';
-import { getAdminLevel } from 'AdminPanel/services/adminLevel/getAdminLevel';
-
+import { editAdminLevel } from 'AdminPanel/services';
+import { getAdminLevel } from 'AdminPanel/services';
 import { routes } from 'AdminPanel/routes';
-
-import { AdminLevel } from 'AdminPanel/services/adminLevel/AdminLevel';
+import { handlerFactory, handlerFetchError } from 'AdminPanel/utils/handlerFactory';
 
 
 const BlueButtonWithMargin = styled(BlueButton)`
   margin-left: 10px;
 `;
-
 
 export default () => {
   const { id } = useParams<{ id: string }>();
@@ -30,24 +25,14 @@ export default () => {
   const history = useHistory();
   const prevLocation = routes.adminLevel;
 
-  const editHandler = async () => {
-    try {
-      const newFaction: AdminLevel = {
-        id: adminLevelId,
-        name: adminLevelName,
-        ban
-      }
-
-      const fetchResult = await editAdminLevel(id, newFaction);
-
-      if (fetchResult === 0) {
-        history.push(prevLocation)
-      }
-
-    } catch (error) {
-      console.dir(error);
-    }
-  }
+  const handleEdit = handlerFactory(
+    () => editAdminLevel(id, {
+      id: adminLevelId,
+      name: adminLevelName,
+      ban
+    }),
+    () => history.push(prevLocation)
+  );
 
   useEffect(() => {
     (async () => { 
@@ -60,10 +45,11 @@ export default () => {
 
       } catch (error) {
         console.log(error);
+        handlerFetchError(error);
+        history.push(prevLocation)
       }
     })();
-  }, [id])
-
+  }, [history, id, prevLocation])
 
   return (
     <EditPage
@@ -87,7 +73,7 @@ export default () => {
           <BlueButton as={NavLink} to={prevLocation}>
               Отмена
           </BlueButton>
-          <BlueButtonWithMargin onClick={editHandler}>
+          <BlueButtonWithMargin onClick={handleEdit}>
               Сохранить
           </BlueButtonWithMargin>
         </>

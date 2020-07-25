@@ -1,4 +1,4 @@
-import {AdminLevel} from 'AdminPanel/services/adminLevel/AdminLevel';
+import {AdminLevel} from 'AdminPanel/types';
 
 
 type SearchResult = {
@@ -10,7 +10,8 @@ type SearchResult = {
 }
 
 export async function getAdminLevelFilterBy(page: number = 1, id: string = '', name: string = '') {
-  let url = `https://www.county-rp.ru/api/Admin/AdminLevel/FilterBy?page=${page}`;
+  const apiUrl = process.env.REACT_APP_API_URL;
+  let url = `${apiUrl}api/Admin/AdminLevel/FilterBy?page=${page}`;
   url += id ? `&id=${id}` : '';
   url += name ? `&name=${name}` : '';
 

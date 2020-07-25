@@ -6,6 +6,8 @@ import FormContainer from './_FormContainer';
 import Header from 'AdminPanel/components/atoms/Header1';
 import Button from 'AdminPanel/components/atoms/BlueButton';
 import { useStore } from 'AdminPanel/stores';
+import { routes } from 'AdminPanel/routes';
+import { handlerFetchError } from 'AdminPanel/utils/handlerFactory';
 
 
 const AuthForm = observer(() => {
@@ -14,20 +16,25 @@ const AuthForm = observer(() => {
   const [password, setPassword] = useState('');
   const history = useHistory();
 
-  const handleLogin = async () => {
-    const result = await playerInfoStore.authorize(userName, password);
+  const handleLogin = async (event: React.FormEvent) => {
+    event.preventDefault();
 
-    if (result === 0 && playerInfoStore.isAuthorized) {
-      history.push('/admin');
+    try {
+      await playerInfoStore.authorize(userName, password);
+
+      if (playerInfoStore.isAuthorized)
+        history.push(routes.root);
+    } catch (error) {
+      handlerFetchError(error);
     }
   }
 
   return (
-    <FormContainer>
+    <FormContainer onSubmit={handleLogin}>
       <Header>Добро пожаловать!</Header>
       <Input value={userName} setValue={setUserName} />
       <Input type="password" value={password} setValue={setPassword} />
-      <Button onClick={handleLogin}>Войти</Button>
+      <Button as={'input'} type='submit' value='Войти'/>
     </FormContainer >
   );
 })

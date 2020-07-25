@@ -6,11 +6,9 @@ import {
 } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 import { observer } from 'mobx-react';
-
 import GlobalStyle from './GlobalStyle';
 import { StoreProvider } from 'AdminPanel/stores/index';
 import { useStore } from 'AdminPanel/stores';
-
 import Home from 'AdminPanel/components/pages/Home';
 import AuthForm from 'AdminPanel/components/pages/Auth';
 import Profile from 'AdminPanel/components/pages/Profile';
@@ -29,12 +27,12 @@ import EditFaction from 'AdminPanel/components/pages/EditFaction';
 import AdminLevel from 'AdminPanel/components/pages/AdminLevel';
 import EditAdminLevel from 'AdminPanel/components/pages/EditAdminLevel';
 import CreateAdminLevel from 'AdminPanel/components/pages/EditAdminLevel'
-
+import TestRoom from 'AdminPanel/components/pages/TestRoom';
+import NotificationTray from 'AdminPanel/components/molecules/Notification';
 import { routes } from 'AdminPanel/routes';
 
 
 const App = observer(() => {
-  
   useAuthCheck();
 
   return <>
@@ -64,8 +62,11 @@ const App = observer(() => {
       <Route path={routes.createAdminLevel}><CreateAdminLevel /></Route>
       <Route path={routes.editAdminLevel + '/:id'}><EditAdminLevel /></Route>
 
+      <Route path={routes.testRoom}><TestRoom/></Route>
+
       <Redirect to={routes.root} />
     </Switch>
+    <NotificationTray />
   </>;
 })
 
@@ -76,7 +77,7 @@ function useAuthCheck() {
   const isAuthorized = playerInfoStore.isAuthorized;
 
   useEffect(() => {
-    if (!isAuthorized && process.env.REACT_APP_AUTH === 'ON') {
+    if (!isAuthorized && process.env.REACT_APP_DEV_MODE === 'false') {
       history.push('/admin/Auth');
     }
   }, [history, isAuthorized]);

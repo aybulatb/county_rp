@@ -1,24 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory, NavLink, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-
 import BlueButton from 'AdminPanel/components/atoms/BlueButton';
 import Input from 'AdminPanel/components/atoms/Input';
 import EditPage from 'AdminPanel/components/templates/Edit';
-
-import { getPlayer } from 'AdminPanel/services/player/getPlayer';
-import { editPlayer } from 'AdminPanel/services/player/editPlayer';
-import { getGroupsFilterBy } from 'AdminPanel/services/group/getGroupsFilterBy';
-
+import { getPlayer } from 'AdminPanel/services';
+import { editPlayer } from 'AdminPanel/services';
+import { getGroupsFilterBy } from 'AdminPanel/services';
 import { routes } from 'AdminPanel/routes';
-
-import { Group } from 'AdminPanel/services/group/Group';
+import { Group } from 'AdminPanel/types';
+import { handlerFactory, handlerFetchError } from 'AdminPanel/utils/handlerFactory';
 
 
 const BlueButtonWithMargin = styled(BlueButton)`
   margin-left: 10px;
 `;
-
 
 export default () => {
   const { id } = useParams<{ id: string }>();
@@ -29,17 +25,10 @@ export default () => {
   const history = useHistory();
   const prevLocation = routes.players;
 
-  const editHandler = async () => {
-    try {
-      const fetchResult = await editPlayer(id, username, password, groupId);
-
-      if (fetchResult === 0) {
-        history.push(prevLocation)
-      }
-    } catch (error) {
-      console.dir(error);
-    }
-  }
+  const handleEdit = handlerFactory(
+    () => editPlayer(id, username, password, groupId),
+    () => history.push(prevLocation)
+  );
 
   const fetchGroups = async () => {
     try {
@@ -66,6 +55,7 @@ export default () => {
         setGroupId(fetchResult.groupId);
       } catch (error) {
         console.log(error);
+        handlerFetchError(error);
       }
     })();
   }, [id]);
@@ -99,7 +89,7 @@ export default () => {
             Отмена
           </BlueButton>
 
-          <BlueButtonWithMargin onClick={editHandler}>
+          <BlueButtonWithMargin onClick={handleEdit}>
             Сохранить
           </BlueButtonWithMargin>
         </>

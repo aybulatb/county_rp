@@ -1,4 +1,4 @@
-import { Faction } from 'AdminPanel/services/faction/Faction';
+import { Faction } from 'AdminPanel/types';
 
 
 export async function createFaction(faction: Faction) {
@@ -13,7 +13,7 @@ export async function createFaction(faction: Faction) {
   });
 
   if (!response.ok)
-    throw new Error(`${response.statusText}`);
+    throw new Error(`${response.status}: ${response.statusText}`);
 
   return 0;
 }
