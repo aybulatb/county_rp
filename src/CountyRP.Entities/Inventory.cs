@@ -17,9 +17,16 @@ namespace CountyRP.Entities
         public string _Slots { get; set; }
     }
 
+    public enum InventorySlotType
+    {
+        Base = 0,
+        Simple
+    }
+
     public class Slot
     {
         public int ItemId { get; set; }
+        public InventorySlotType Type { get; set; }
     }
 
     public class SimpleSlot : Slot

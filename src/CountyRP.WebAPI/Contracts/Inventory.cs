@@ -7,8 +7,13 @@ namespace CountyRP.WebAPI.Contracts
     public class Inventory
     {
         public int Id { get; set; }
-        [JsonProperty(ItemTypeNameHandling = TypeNameHandling.All)]
         public Slot[] Slots { get; set; }
+    }
+
+    public enum InventorySlotType
+    {
+        Base = 0,
+        Simple
     }
 
     [JsonConverter(typeof(JsonInheritanceConverter))]
@@ -16,6 +21,7 @@ namespace CountyRP.WebAPI.Contracts
     public class Slot
     {
         public int ItemId { get; set; }
+        public InventorySlotType Type { get; set; }
     }
 
     public class SimpleSlot : Slot

@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-using CountyRP.Models;
-using CountyRP.WebAPI.Customizations;
 using CountyRP.WebAPI.Models;
 
 namespace CountyRP.WebAPI.Controllers
@@ -69,16 +67,7 @@ namespace CountyRP.WebAPI.Controllers
             if (error != null)
                 return error;
 
-
-            inventoryEntity.Id = inventory.Id;
-            inventoryEntity.Slots = inventory.Slots.Select(s =>
-            {
-                var ss = s as Contracts.SimpleSlot;
-                if (ss != null)
-                    return new Entities.SimpleSlot { ItemId = ss.ItemId, Amount = ss.Amount };
-
-                return new Entities.Slot { ItemId = s.ItemId };
-            }).ToArray();
+            inventoryEntity.Slots = inventory.Slots.Select(s => MapSlotToEntity(s)).ToArray();
 
             _inventoryContext.SaveChanges();
 
@@ -101,57 +90,12 @@ namespace CountyRP.WebAPI.Controllers
             return Ok();
         }
 
-        private Entities.Inventory MapToEntity(Inventory inv)
-        {
-            var slots = new Entities.Slot[inv.Slots.Length];
-            for (int j = 0; j < inv.Slots.Length; j++)
-            {
-                var ss = inv.Slots[j] as SimpleSlot;
-                if (ss != null)
-                    slots[j] = new Entities.SimpleSlot { ItemId = ss.ItemId, Amount = ss.Amount };
-                else
-                    slots[j] = new Entities.Slot { ItemId = inv.Slots[j].ItemId };
-            }
-
-            return new Entities.Inventory
-            {
-                Id = inv.Id,
-                Slots = slots
-            };
-        }
-
         private Entities.Inventory MapToEntity(Contracts.Inventory inv)
         {
-            var slots = new Entities.Slot[inv.Slots.Length];
-            for (int j = 0; j < inv.Slots.Length; j++)
-            {
-                var ss = inv.Slots[j] as Contracts.SimpleSlot;
-                if (ss != null)
-                    slots[j] = new Entities.SimpleSlot { ItemId = ss.ItemId, Amount = ss.Amount };
-                else
-                    slots[j] = new Entities.Slot { ItemId = inv.Slots[j].ItemId };
-            }
-
             return new Entities.Inventory
             {
                 Id = inv.Id,
-                Slots = slots
-            };
-        }
-
-        private Inventory MapToModel(Entities.Inventory i)
-        {
-            return new Inventory
-            {
-                Id = i.Id,
-                Slots = i.Slots.Select(s =>
-                {
-                    var ss = s as Entities.SimpleSlot;
-                    if (ss != null)
-                        return new SimpleSlot { ItemId = ss.ItemId, Amount = ss.Amount };
-
-                    return new Slot { ItemId = s.ItemId };
-                }).ToArray()
+                Slots = inv.Slots.Select(s => MapSlotToEntity(s)).ToArray()
             };
         }
 
@@ -160,19 +104,48 @@ namespace CountyRP.WebAPI.Controllers
             return new Contracts.Inventory
             {
                 Id = i.Id,
-                Slots = i.Slots.Select(s =>
-                {
-                    var ss = s as Entities.SimpleSlot;
-                    if (ss != null)
-                        return new Contracts.SimpleSlot { ItemId = ss.ItemId, Amount = ss.Amount };
-
-                    return new Contracts.Slot { ItemId = s.ItemId };
-                }).ToArray()
+                Slots = i.Slots.Select(s => MapSlotToContract(s)).ToArray()
             };
         }
 
         private IActionResult CheckParams(Contracts.Inventory inventory)
         {
+            return null;
+        }
+
+        private Contracts.Slot MapSlotToContract(Entities.Slot slot)
+        {
+            switch (slot.Type)
+            {
+                case Entities.InventorySlotType.Base:
+                    {
+                        return new Contracts.Slot { ItemId = slot.ItemId, Type = (Contracts.InventorySlotType)slot.Type };
+                    }
+                case Entities.InventorySlotType.Simple:
+                    {
+                        var cs = slot as Entities.SimpleSlot;
+                        return new Contracts.SimpleSlot { ItemId = cs.ItemId, Type = (Contracts.InventorySlotType)cs.Type, Amount = cs.Amount };
+                    }
+            }
+
+            return null;
+        }
+
+        private Entities.Slot MapSlotToEntity(Contracts.Slot slot)
+        {
+            switch (slot.Type)
+            {
+                case Contracts.InventorySlotType.Base:
+                    {
+                        return new Entities.Slot { ItemId = slot.ItemId, Type = (Entities.InventorySlotType)slot.Type };
+                    }
+                case Contracts.InventorySlotType.Simple:
+                    {
+                        var cs = slot as Contracts.SimpleSlot;
+                        return new Entities.SimpleSlot { ItemId = cs.ItemId, Type = (Entities.InventorySlotType)cs.Type, Amount = cs.Amount };
+                    }
+            }
+
             return null;
         }
     }
