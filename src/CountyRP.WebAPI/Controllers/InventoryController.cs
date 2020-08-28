@@ -119,12 +119,23 @@ namespace CountyRP.WebAPI.Controllers
             {
                 case Entities.InventorySlotType.Base:
                     {
-                        return new Contracts.Slot { ItemId = slot.ItemId, Type = (Contracts.InventorySlotType)slot.Type };
+                        return new Contracts.Slot 
+                        { 
+                            ItemId = slot.ItemId, 
+                            Amount = slot.Amount, 
+                            Type = (Contracts.InventorySlotType)slot.Type 
+                        };
                     }
-                case Entities.InventorySlotType.Simple:
+                case Entities.InventorySlotType.Backpack:
                     {
-                        var cs = slot as Entities.SimpleSlot;
-                        return new Contracts.SimpleSlot { ItemId = cs.ItemId, Type = (Contracts.InventorySlotType)cs.Type, Amount = cs.Amount };
+                        var cs = slot as Entities.BackpackSlot;
+                        return new Contracts.BackpackSlot 
+                        { 
+                            ItemId = cs.ItemId, 
+                            Amount = cs.Amount, 
+                            Type = (Contracts.InventorySlotType)cs.Type, 
+                            Id = cs.Id 
+                        };
                     }
             }
 
@@ -137,12 +148,23 @@ namespace CountyRP.WebAPI.Controllers
             {
                 case Contracts.InventorySlotType.Base:
                     {
-                        return new Entities.Slot { ItemId = slot.ItemId, Type = (Entities.InventorySlotType)slot.Type };
+                        return new Entities.Slot 
+                        { 
+                            ItemId = slot.ItemId,
+                            Amount = slot.Amount, 
+                            Type = (Entities.InventorySlotType)slot.Type
+                        };
                     }
-                case Contracts.InventorySlotType.Simple:
+                case Contracts.InventorySlotType.Backpack:
                     {
-                        var cs = slot as Contracts.SimpleSlot;
-                        return new Entities.SimpleSlot { ItemId = cs.ItemId, Type = (Entities.InventorySlotType)cs.Type, Amount = cs.Amount };
+                        var cs = slot as Contracts.BackpackSlot;
+                        return new Entities.BackpackSlot 
+                        { 
+                            ItemId = cs.ItemId, 
+                            Amount = cs.Amount, 
+                            Type = (Entities.InventorySlotType)cs.Type, 
+                            Id = cs.Id 
+                        };
                     }
             }
 

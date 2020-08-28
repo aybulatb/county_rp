@@ -13,19 +13,20 @@ namespace CountyRP.WebAPI.Contracts
     public enum InventorySlotType
     {
         Base = 0,
-        Simple
+        Backpack = 1
     }
 
     [JsonConverter(typeof(JsonInheritanceConverter))]
-    [KnownType(typeof(SimpleSlot))]
+    [KnownType(typeof(BackpackSlot))]
     public class Slot
     {
         public int ItemId { get; set; }
+        public int Amount { get; set; }
         public InventorySlotType Type { get; set; }
     }
 
-    public class SimpleSlot : Slot
+    public class BackpackSlot : Slot
     {
-        public int Amount { get; set; }
+        public int Id { get; set; }
     }
 }

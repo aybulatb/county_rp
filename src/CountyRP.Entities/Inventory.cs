@@ -20,17 +20,18 @@ namespace CountyRP.Entities
     public enum InventorySlotType
     {
         Base = 0,
-        Simple
+        Backpack = 1
     }
 
     public class Slot
     {
         public int ItemId { get; set; }
+        public int Amount { get; set; }
         public InventorySlotType Type { get; set; }
     }
 
-    public class SimpleSlot : Slot
+    public class BackpackSlot : Slot
     {
-        public int Amount { get; set; }
+        public int Id { get; set; }
     }
 }
