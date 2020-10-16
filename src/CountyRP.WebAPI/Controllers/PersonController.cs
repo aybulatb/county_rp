@@ -29,13 +29,13 @@ namespace CountyRP.WebAPI.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(Person), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        public IActionResult Create([FromBody]Person person)
+        public IActionResult Create([FromBody] Person person)
         {
             var result = CheckParams(person);
             if (result != null)
                 return result;
 
-            if (_playerContext.Persons.FirstOrDefault(p => p.Name == person.Name) == null)
+            if (_playerContext.Persons.FirstOrDefault(p => p.Name == person.Name) != null)
                 return BadRequest($"Имя {person.Name} уже занято");
 
             Entities.Person personEntity = new Entities.Person().Format(person);
@@ -124,7 +124,7 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(Person), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult Update(int id, [FromBody]Person person)
+        public IActionResult Update(int id, [FromBody] Person person)
         {
             if (id != person.Id)
                 return BadRequest($"Указанный ID {id} не соответствует ID персонажа {person.Id}");
@@ -189,6 +189,7 @@ namespace CountyRP.WebAPI.Controllers
                 return BadRequest($"Игрок с ID {person.PlayerId} не найден");
 
             if (person.AdminLevelId == null ||
+                person.AdminLevelId != string.Empty &&
                 _adminLevelContext.AdminLevels
                 .FirstOrDefault(g => g.Id == person.AdminLevelId) == null)
                 return BadRequest($"Уровень админки с ID {person.AdminLevelId} не найден");
