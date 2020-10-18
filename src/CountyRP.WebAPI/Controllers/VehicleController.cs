@@ -56,6 +56,15 @@ namespace CountyRP.WebAPI.Controllers
             return Ok(MapToModel(vehicleDAO));
         }
 
+        [HttpGet]
+        [ProducesResponseType(typeof(Vehicle[]), StatusCodes.Status200OK)]
+        public IActionResult GetAll()
+        {
+            var vehiclesDAO = _propertyContext.Vehicles.AsNoTracking().ToArray();
+
+            return Ok(vehiclesDAO.Select(v => MapToModel(v)));
+        }
+
         [HttpGet("GetByPersonId/{personId}")]
         [ProducesResponseType(typeof(Vehicle), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
