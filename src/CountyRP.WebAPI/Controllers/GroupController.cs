@@ -58,7 +58,7 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(Group[]), StatusCodes.Status200OK)]
         public IActionResult GetAll()
         {
-            var groupsDAO = _groupContext.Groups.AsNoTracking();
+            var groupsDAO = _groupContext.Groups.AsNoTracking().ToArray();
 
             return Ok(groupsDAO.Select(g => MapToModel(g)));
         }

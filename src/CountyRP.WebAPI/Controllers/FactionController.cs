@@ -61,7 +61,7 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(Faction[]), StatusCodes.Status200OK)]
         public IActionResult GetAll()
         {
-            var factions = _factionContext.Factions.Select(f => MapToModel(f));
+            var factions = _factionContext.Factions.AsNoTracking().Select(f => MapToModel(f));
 
             return Ok(factions);
         }
