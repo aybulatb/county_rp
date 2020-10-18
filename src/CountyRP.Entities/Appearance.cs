@@ -1,4 +1,4 @@
-﻿namespace CountyRP.Entities
+﻿namespace CountyRP.DAO
 {
     public class Appearance
     {

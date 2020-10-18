@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
@@ -28,12 +29,12 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public IActionResult GetById(int id)
         {
-            var logUnit = _logContext.LogUnits.AsNoTracking().FirstOrDefault(lu => lu.Id == id);
+            var logUnitDAO = _logContext.LogUnits.AsNoTracking().FirstOrDefault(lu => lu.Id == id);
 
-            if (logUnit == null)
+            if (logUnitDAO == null)
                 return NotFound($"Лог с ID {id} не найден");
 
-            return Ok(MapToModel(logUnit));
+            return Ok(MapToModel(logUnitDAO));
         }
 
         [HttpGet("FilterBy")]
@@ -47,14 +48,14 @@ namespace CountyRP.WebAPI.Controllers
             if (count < 1 || count > 50)
                 return BadRequest("Количество логов на одной странице должно быть от 1 до 50");
 
-            IQueryable<Entities.LogUnit> query = _logContext.LogUnits;
+            IQueryable<DAO.LogUnit> query = _logContext.LogUnits;
 
             var choosenLogUnits = query
                     .OrderByDescending(lu => lu.DateTime)
                     .Where(lu => 
                         !string.IsNullOrWhiteSpace(login) ? lu.Login == login : true &&
                         !string.IsNullOrWhiteSpace(ip) ? lu.IP.Contains(ip) : true &&
-                        actionId != -1 ? lu.ActionId == (Entities.LogAction)actionId : true &&
+                        actionId != -1 ? lu.ActionId == (DAO.LogAction)actionId : true &&
                         !string.IsNullOrWhiteSpace(commentPart) ? lu.Comment.Contains(commentPart) : true
                     )
                     .Skip((page - 1) * count)
@@ -78,46 +79,43 @@ namespace CountyRP.WebAPI.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(LogUnit), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        public IActionResult Create([FromBody]LogUnit logUnit)
+        public async Task<IActionResult> Create([FromBody]LogUnit logUnit)
         {
             var error = CheckParams(logUnit);
             if (error != null)
                 return error;
 
-            var logUnitEntity = MapToEntity(logUnit);
-            logUnitEntity.Id = 0;
+            var logUnitDAO = MapToDAO(logUnit);
+            logUnitDAO.Id = 0;
 
-            _logContext.LogUnits.Add(logUnitEntity);
-            _logContext.SaveChanges();
+            _logContext.LogUnits.Add(logUnitDAO);
+            await _logContext.SaveChangesAsync();
 
-            return Created("", MapToModel(logUnitEntity));
+            return Created("", MapToModel(logUnitDAO));
         }
 
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(LogUnit), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult Edit(int id, [FromBody]LogUnit logUnit)
+        public async Task<IActionResult> Edit(int id, [FromBody]LogUnit logUnit)
         {
             if (logUnit.Id != id)
                 return BadRequest($"Указанный ID {id} не соответствует ID {logUnit.Id} лога");
 
-            var logUnitEntity = _logContext.LogUnits.SingleOrDefault(lu => lu.Id == id);
+            var logUnitDAO = _logContext.LogUnits.AsNoTracking().SingleOrDefault(lu => lu.Id == id);
 
-            if (logUnitEntity == null)
+            if (logUnitDAO == null)
                 return NotFound($"Лог с ID {id} не найден");
 
             var error = CheckParams(logUnit);
             if (error != null)
                 return error;
 
-            logUnitEntity.DateTime = logUnit.DateTime;
-            logUnitEntity.Login = logUnit.Login;
-            logUnitEntity.IP = logUnit.IP;
-            logUnitEntity.ActionId = (Entities.LogAction)logUnit.ActionId;
-            logUnitEntity.Comment = logUnit.Comment;
+            logUnitDAO = MapToDAO(logUnit);
 
-            _logContext.SaveChanges();
+            _logContext.LogUnits.Update(logUnitDAO);
+            await _logContext.SaveChangesAsync();
 
             return Ok(logUnit);
         }
@@ -125,33 +123,33 @@ namespace CountyRP.WebAPI.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var logUnit = _logContext.LogUnits.SingleOrDefault(lu => lu.Id == id);
+            var logUnitDAO = _logContext.LogUnits.SingleOrDefault(lu => lu.Id == id);
 
-            if (logUnit == null)
+            if (logUnitDAO == null)
                 return NotFound($"Лог с ID {id} не найден");
 
-            _logContext.LogUnits.Remove(logUnit);
-            _logContext.SaveChanges();
+            _logContext.LogUnits.Remove(logUnitDAO);
+            await _logContext.SaveChangesAsync();
 
             return Ok();
         }
 
-        private Entities.LogUnit MapToEntity(LogUnit lu)
+        private DAO.LogUnit MapToDAO(LogUnit lu)
         {
-            return new Entities.LogUnit
+            return new DAO.LogUnit
             {
                 Id = lu.Id,
                 DateTime = lu.DateTime,
                 Login = lu.Login,
                 IP = lu.IP,
-                ActionId = (Entities.LogAction)lu.ActionId,
+                ActionId = (DAO.LogAction)lu.ActionId,
                 Comment = lu.Comment
             };
         }
 
-        private LogUnit MapToModel(Entities.LogUnit lu)
+        private LogUnit MapToModel(DAO.LogUnit lu)
         {
             return new LogUnit
             {

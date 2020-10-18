@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 using CountyRP.Models;
-using CountyRP.WebAPI.Extensions;
 using CountyRP.WebAPI.Models;
 using CountyRP.WebAPI.Models.ViewModels;
 
@@ -25,7 +24,7 @@ namespace CountyRP.WebAPI.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(Faction), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        public IActionResult Create(Faction faction)
+        public async Task<IActionResult> Create([FromBody] Faction faction)
         {
             var result = CheckParams(faction);
             if (result != null)
@@ -37,10 +36,10 @@ namespace CountyRP.WebAPI.Controllers
                 return BadRequest($"Фракции с ID {faction.Id} уже существует");
             }
 
-            Entities.Faction factionEntity = new Entities.Faction().Format(faction);
+            var factionDAO = MapToDAO(faction);
 
-            _factionContext.Factions.Add(factionEntity);
-            _factionContext.SaveChanges();
+            _factionContext.Factions.Add(factionDAO);
+            await _factionContext.SaveChangesAsync();
 
             return Created("", faction);
         }
@@ -50,21 +49,19 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public IActionResult GetById(string id)
         {
-            Entities.Faction faction = _factionContext.Factions.FirstOrDefault(f => f.Id == id);
+            var factionDAO = _factionContext.Factions.FirstOrDefault(f => f.Id == id);
 
-            if (faction == null)
+            if (factionDAO == null)
                 return NotFound($"Фракции с ID {id} не найдена");
 
-            return Ok(new Faction().Format(faction));
+            return Ok(MapToModel(factionDAO));
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(List<Faction>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Faction[]), StatusCodes.Status200OK)]
         public IActionResult GetAll()
         {
-            List<Faction> factions = _factionContext.Factions
-                .Select(f => new Faction().Format(f))
-                .ToList();
+            var factions = _factionContext.Factions.Select(f => MapToModel(f));
 
             return Ok(factions);
         }
@@ -80,7 +77,7 @@ namespace CountyRP.WebAPI.Controllers
             if (count < 1 || count > 50)
                 return BadRequest("Количество групп на одной странице должно быть от 1 до 50");
 
-            IQueryable<Entities.Faction> query = _factionContext.Factions;
+            IQueryable<DAO.Faction> query = _factionContext.Factions;
             if (!string.IsNullOrWhiteSpace(id))
                 query = query.Where(f => f.Id.Contains(id));
             if (!string.IsNullOrWhiteSpace(name))
@@ -96,7 +93,7 @@ namespace CountyRP.WebAPI.Controllers
                 Items = query
                     .Skip((page - 1) * count)
                     .Take(count)
-                    .Select(f => new Faction().Format(f))
+                    .Select(f => MapToModel(f))
                     .ToList(),
                 AllAmount = allAmount,
                 Page = page,
@@ -108,7 +105,7 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(Faction), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult Edit(string id, Faction faction)
+        public async Task<IActionResult> Edit(string id, [FromBody] Faction faction)
         {
             if (id != faction.Id)
                 return BadRequest($"Указанный ID {id} не соответствует ID {faction.Id} фракции");
@@ -123,8 +120,8 @@ namespace CountyRP.WebAPI.Controllers
             if (result != null)
                 return result;
 
-            _factionContext.Factions.Update(new Entities.Faction().Format(faction));
-            _factionContext.SaveChanges();
+            _factionContext.Factions.Update(MapToDAO(faction));
+            await _factionContext.SaveChangesAsync();
 
             return Ok(faction);
         }
@@ -132,16 +129,15 @@ namespace CountyRP.WebAPI.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult Delete(string id)
+        public async Task<IActionResult> Delete(string id)
         {
-            Entities.Faction faction = _factionContext.Factions
-                .FirstOrDefault(f => f.Id == id);
+            var factionDAO = _factionContext.Factions.FirstOrDefault(f => f.Id == id);
 
-            if (faction == null)
+            if (factionDAO == null)
                 return NotFound($"Фракция с ID {id} не найдена");
 
-            _factionContext.Factions.Remove(faction);
-            _factionContext.SaveChanges();
+            _factionContext.Factions.Remove(factionDAO);
+            await _factionContext.SaveChangesAsync();
 
             return Ok();
         }
@@ -177,6 +173,28 @@ namespace CountyRP.WebAPI.Controllers
             faction.Name = faction.Name?.Trim();
             for (int i = 0; i < faction.Ranks?.Length; i++)
                 faction.Ranks[i] = faction.Ranks[i]?.Trim();
+        }
+
+        private DAO.Faction MapToDAO(Faction faction)
+        {
+            return new DAO.Faction
+            {
+                Id = faction.Id,
+                Name = faction.Name,
+                Ranks = faction.Ranks?.Select(r => r).ToArray(),
+                Type = faction.Type
+            };
+        }
+
+        private Faction MapToModel(DAO.Faction faction)
+        {
+            return new Faction
+            {
+                Id = faction.Id,
+                Name = faction.Name,
+                Ranks = faction.Ranks?.Select(r => r).ToArray(),
+                Type = faction.Type
+            };
         }
     }
 }

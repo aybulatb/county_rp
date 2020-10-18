@@ -1,9 +1,10 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 using CountyRP.Models;
-using CountyRP.WebAPI.Extensions;
 using CountyRP.WebAPI.Models;
 
 namespace CountyRP.WebAPI.Controllers
@@ -26,18 +27,18 @@ namespace CountyRP.WebAPI.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(Teleport), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        public IActionResult Create([FromBody]Teleport teleport)
+        public async Task<IActionResult> Create([FromBody] Teleport teleport)
         {
             var result = CheckParams(teleport);
             if (result != null)
                 return result;
 
-            Entities.Teleport teleportEntity = new Entities.Teleport().Format(teleport);
+            var teleportDAO = MapToDAO(teleport);
 
-            _propertyContext.Teleports.Add(teleportEntity);
-            _propertyContext.SaveChanges();
+            _propertyContext.Teleports.Add(teleportDAO);
+            await _propertyContext.SaveChangesAsync();
 
-            teleport.Id = teleportEntity.Id;
+            teleport.Id = teleportDAO.Id;
 
             return Ok(teleport);
         }
@@ -47,18 +48,18 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public IActionResult Get(int id)
         {
-            Entities.Teleport teleport = _propertyContext.Teleports.FirstOrDefault(t => t.Id == id);
-            if (teleport == null)
+            var teleportDAO = _propertyContext.Teleports.AsNoTracking().FirstOrDefault(t => t.Id == id);
+            if (teleportDAO == null)
                 return NotFound($"Телепорт с ID {id} не найден");
 
-            return Ok(new Teleport().Format(teleport));
+            return Ok(MapToModel(teleportDAO));
         }
 
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(Teleport), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult Edit(int id, [FromBody]Teleport teleport)
+        public async Task<IActionResult> Edit(int id, [FromBody] Teleport teleport)
         {
             if (id != teleport.Id)
                 return BadRequest($"Указанный ID {id} не соответствует ID телепорта {teleport.Id}");
@@ -67,14 +68,14 @@ namespace CountyRP.WebAPI.Controllers
             if (result != null)
                 return result;
 
-            Entities.Teleport teleportEntity = _propertyContext.Teleports.FirstOrDefault(t => t.Id == id);
-            if (teleportEntity == null)
+            var teleportDAO = _propertyContext.Teleports.AsNoTracking().FirstOrDefault(t => t.Id == id);
+            if (teleportDAO == null)
                 return NotFound($"Телепорт с ID {id} не найден");
 
-            teleportEntity = teleportEntity.Format(teleport);
+            teleportDAO = MapToDAO(teleport);
 
-            _propertyContext.Teleports.Update(teleportEntity);
-            _propertyContext.SaveChanges();
+            _propertyContext.Teleports.Update(teleportDAO);
+            await _propertyContext.SaveChangesAsync();
 
             return Ok(teleport);
         }
@@ -82,14 +83,14 @@ namespace CountyRP.WebAPI.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            Entities.Teleport teleport = _propertyContext.Teleports.FirstOrDefault(t => t.Id == id);
-            if (teleport == null)
+            var teleportDAO = _propertyContext.Teleports.FirstOrDefault(t => t.Id == id);
+            if (teleportDAO == null)
                 return NotFound($"Телепорт с ID {id} не найден");
 
-            _propertyContext.Teleports.Remove(teleport);
-            _propertyContext.SaveChanges();
+            _propertyContext.Teleports.Remove(teleportDAO);
+            await _propertyContext.SaveChangesAsync();
 
             return Ok();
         }
@@ -134,6 +135,48 @@ namespace CountyRP.WebAPI.Controllers
         private void TrimParams(Teleport teleport)
         {
             teleport.Name = teleport.Name?.Trim();
+        }
+
+        private DAO.Teleport MapToDAO(Teleport teleport)
+        {
+            return new DAO.Teleport
+            {
+                Id = teleport.Id,
+                Name = teleport.Name,
+                EntrancePosition = teleport.EntrancePosition?.Select(ep => ep).ToArray(),
+                EntranceDimension = teleport.EntranceDimension,
+                ExitPosition = teleport.ExitPosition?.Select(ep => ep).ToArray(),
+                ExitDimension = teleport.ExitDimension,
+                TypeMarker = teleport.TypeMarker,
+                ColorMarker = teleport.ColorMarker?.Select(cm => cm).ToArray(),
+                TypeBlip = teleport.TypeBlip,
+                ColorBlip = teleport.ColorBlip,
+                FactionId = teleport.FactionId,
+                GangId = teleport.GangId,
+                RoomId = teleport.RoomId,
+                Lock = teleport.Lock
+            };
+        }
+
+        private Teleport MapToModel(DAO.Teleport teleport)
+        {
+            return new Teleport
+            {
+                Id = teleport.Id,
+                Name = teleport.Name,
+                EntrancePosition = teleport.EntrancePosition?.Select(ep => ep).ToArray(),
+                EntranceDimension = teleport.EntranceDimension,
+                ExitPosition = teleport.ExitPosition?.Select(ep => ep).ToArray(),
+                ExitDimension = teleport.ExitDimension,
+                TypeMarker = teleport.TypeMarker,
+                ColorMarker = teleport.ColorMarker?.Select(cm => cm).ToArray(),
+                TypeBlip = teleport.TypeBlip,
+                ColorBlip = teleport.ColorBlip,
+                FactionId = teleport.FactionId,
+                GangId = teleport.GangId,
+                RoomId = teleport.RoomId,
+                Lock = teleport.Lock
+            };
         }
     }
 }

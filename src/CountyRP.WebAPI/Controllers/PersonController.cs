@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 
 using CountyRP.Models;
-using CountyRP.WebAPI.Extensions;
 using CountyRP.WebAPI.Models;
 using CountyRP.WebAPI.Models.ViewModels;
 
@@ -29,7 +29,7 @@ namespace CountyRP.WebAPI.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(Person), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        public IActionResult Create([FromBody] Person person)
+        public async Task<IActionResult> Create([FromBody] Person person)
         {
             var result = CheckParams(person);
             if (result != null)
@@ -38,12 +38,12 @@ namespace CountyRP.WebAPI.Controllers
             if (_playerContext.Persons.FirstOrDefault(p => p.Name == person.Name) != null)
                 return BadRequest($"Имя {person.Name} уже занято");
 
-            Entities.Person personEntity = new Entities.Person().Format(person);
+            var personDAO = MapToDAO(person);
 
-            _playerContext.Persons.Add(personEntity);
-            _playerContext.SaveChanges();
+            _playerContext.Persons.Add(personDAO);
+            await _playerContext.SaveChangesAsync();
 
-            person.Id = personEntity.Id;
+            person.Id = personDAO.Id;
 
             return Created("", person);
         }
@@ -53,12 +53,12 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public IActionResult GetById(int id)
         {
-            Entities.Person person = _playerContext.Persons.FirstOrDefault(p => p.Id == id);
+            var personDAO = _playerContext.Persons.AsNoTracking().FirstOrDefault(p => p.Id == id);
 
-            if (person == null)
+            if (personDAO == null)
                 return NotFound($"Персонаж с ID {id} не найден");
 
-            return Ok(new Person().Format(person));
+            return Ok(MapToModel(personDAO));
         }
 
         [HttpGet("GetByName/{name}")]
@@ -66,25 +66,25 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public IActionResult GetByName(string name)
         {
-            Entities.Person person = _playerContext.Persons.FirstOrDefault(p => p.Name == name);
+            var personDAO = _playerContext.Persons.AsNoTracking().FirstOrDefault(p => p.Name == name);
 
-            if (person == null)
+            if (personDAO == null)
                 return NotFound($"Персонаж с именем {name} не найден");
 
-            return Ok(new Person().Format(person));
+            return Ok(MapToModel(personDAO));
         }
 
         [HttpGet("GetAllByPlayerId/{playerId}")]
-        [ProducesResponseType(typeof(List<Person>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Person[]), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public IActionResult GetAllByPlayerId(int playerId)
         {
-            List<Entities.Person> persons = _playerContext.Persons.Where(p => p.PlayerId == playerId).ToList();
+            var personsDAO = _playerContext.Persons.Where(p => p.PlayerId == playerId);
 
-            if (persons == null)
+            if (personsDAO == null)
                 return NotFound($"Персонажи, привязанные к игроку с ID {playerId}, не найдены");
 
-            return Ok(persons.Select(p => new Person().Format(p)));
+            return Ok(personsDAO.Select(p => MapToModel(p)));
         }
 
         [HttpGet("FilterBy")]
@@ -98,7 +98,7 @@ namespace CountyRP.WebAPI.Controllers
             if (count < 1 || count > 50)
                 return BadRequest("Количество персонажей на одной странице должно быть от 1 до 50");
 
-            IQueryable<Entities.Person> query = _playerContext.Persons;
+            IQueryable<DAO.Person> query = _playerContext.Persons;
             if (!string.IsNullOrWhiteSpace(name))
                 query = query.Where(p => p.Name.Contains(name));
 
@@ -112,7 +112,7 @@ namespace CountyRP.WebAPI.Controllers
                 Items = query
                     .Skip((page - 1) * count)
                     .Take(count)
-                    .Select(p => new Person().Format(p))
+                    .Select(p => MapToModel(p))
                     .ToList(),
                 AllAmount = allAmount,
                 Page = page,
@@ -124,7 +124,7 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(Person), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult Update(int id, [FromBody] Person person)
+        public async Task<IActionResult> Update(int id, [FromBody] Person person)
         {
             if (id != person.Id)
                 return BadRequest($"Указанный ID {id} не соответствует ID персонажа {person.Id}");
@@ -133,18 +133,18 @@ namespace CountyRP.WebAPI.Controllers
             if (result != null)
                 return result;
 
-            Entities.Person personEntity = _playerContext.Persons.FirstOrDefault(p => p.Id == id);
-            if (personEntity == null)
+            var personDAO = _playerContext.Persons.AsNoTracking().FirstOrDefault(p => p.Id == id);
+            if (personDAO == null)
                 return NotFound($"Персонаж с ID {id} не найден");
 
-            if (person.Name != personEntity.Name
-                && _playerContext.Persons.FirstOrDefault(p => p.Name == person.Name) == null)
+            if (person.Name != personDAO.Name
+                && _playerContext.Persons.FirstOrDefault(p => p.Name == person.Name) != null)
                 return BadRequest($"Имя {person.Name} уже занято");
 
-            personEntity = personEntity.Format(person);
+            personDAO = MapToDAO(person);
 
-            _playerContext.Persons.Update(personEntity);
-            _playerContext.SaveChanges();
+            _playerContext.Persons.Update(personDAO);
+            await _playerContext.SaveChangesAsync();
 
             return Ok(person);
         }
@@ -152,14 +152,14 @@ namespace CountyRP.WebAPI.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            Entities.Person person = _playerContext.Persons.FirstOrDefault(p => p.Id == id);
-            if (person == null)
+            var personDAO = _playerContext.Persons.FirstOrDefault(p => p.Id == id);
+            if (personDAO == null)
                 return NotFound($"Персонаж с ID {id} не найден");
 
-            _playerContext.Persons.Remove(person);
-            _playerContext.SaveChanges();
+            _playerContext.Persons.Remove(personDAO);
+            await _playerContext.SaveChangesAsync();
 
             return Ok();
         }
@@ -204,6 +204,42 @@ namespace CountyRP.WebAPI.Controllers
                 return BadRequest($"Группировка с ID {person.GroupId} не найдена");
 
             return null;
+        }
+
+        private DAO.Person MapToDAO(Person person)
+        {
+            return new DAO.Person
+            {
+                Id = person.Id,
+                Name = person.Name,
+                PlayerId = person.PlayerId,
+                RegDate = person.RegDate,
+                LastDate = person.LastDate,
+                AdminLevelId = person.AdminLevelId,
+                FactionId = person.FactionId,
+                GroupId = person.GroupId,
+                Leader = person.Leader,
+                Rank = person.Rank,
+                Position = person.Position?.Select(p => p).ToArray()
+            };
+        }
+
+        private Person MapToModel(DAO.Person person)
+        {
+            return new Person
+            {
+                Id = person.Id,
+                Name = person.Name,
+                PlayerId = person.PlayerId,
+                RegDate = person.RegDate,
+                LastDate = person.LastDate,
+                AdminLevelId = person.AdminLevelId,
+                FactionId = person.FactionId,
+                GroupId = person.GroupId,
+                Leader = person.Leader,
+                Rank = person.Rank,
+                Position = person.Position?.Select(p => p).ToArray()
+            };
         }
     }
 }

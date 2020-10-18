@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -23,53 +24,54 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public IActionResult GetById(int id)
         {
-            var inventory = _inventoryContext.Inventories.AsNoTracking().FirstOrDefault(i => i.Id == id);
+            var inventoryDAO = _inventoryContext.Inventories.AsNoTracking().FirstOrDefault(i => i.Id == id);
 
-            if (inventory == null)
+            if (inventoryDAO == null)
                 return NotFound($"Инвентарь с ID {id} не найден");
 
-            return Ok(MapToContract(inventory));
+            return Ok(MapToContract(inventoryDAO));
         }
 
         [HttpPost]
         [ProducesResponseType(typeof(Contracts.Inventory), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        public IActionResult Create([FromBody] Contracts.Inventory inventory)
+        public async Task<IActionResult> Create([FromBody] Contracts.Inventory inventory)
         {
             var error = CheckParams(inventory);
             if (error != null)
                 return error;
 
-            var inventoryEntity = MapToEntity(inventory);
-            inventoryEntity.Id = 0;
+            var inventoryDAO = MapToDAO(inventory);
+            inventoryDAO.Id = 0;
 
-            _inventoryContext.Inventories.Add(inventoryEntity);
-            _inventoryContext.SaveChanges();
+            _inventoryContext.Inventories.Add(inventoryDAO);
+            await _inventoryContext.SaveChangesAsync();
 
-            return Created("", MapToContract(inventoryEntity));
+            return Created("", MapToContract(inventoryDAO));
         }
 
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(Contracts.Inventory), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult Edit(int id, [FromBody] Contracts.Inventory inventory)
+        public async Task<IActionResult> Edit(int id, [FromBody] Contracts.Inventory inventory)
         {
             if (inventory.Id != id)
                 return BadRequest($"Указанный ID {id} не соответствует ID {inventory.Id} инвентаря");
 
-            var inventoryEntity = _inventoryContext.Inventories.FirstOrDefault(i => i.Id == id);
+            var inventoryDAO = _inventoryContext.Inventories.AsNoTracking().FirstOrDefault(i => i.Id == id);
 
-            if (inventoryEntity == null)
+            if (inventoryDAO == null)
                 return NotFound($"Инвентарь с ID {id} не найден");
 
             var error = CheckParams(inventory);
             if (error != null)
                 return error;
 
-            inventoryEntity.Slots = inventory.Slots.Select(s => MapSlotToEntity(s)).ToArray();
+            inventoryDAO.Slots = inventory.Slots.Select(s => MapSlotToDAO(s)).ToArray();
 
-            _inventoryContext.SaveChanges();
+            _inventoryContext.Inventories.Update(inventoryDAO);
+            await _inventoryContext.SaveChangesAsync();
 
             return Ok(inventory);
         }
@@ -77,29 +79,29 @@ namespace CountyRP.WebAPI.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var inventory = _inventoryContext.Inventories.FirstOrDefault(sb => sb.Id == id);
+            var inventoryDAO = _inventoryContext.Inventories.FirstOrDefault(sb => sb.Id == id);
 
-            if (inventory == null)
+            if (inventoryDAO == null)
                 return NotFound($"Инвентарь с ID {id} не найден");
 
-            _inventoryContext.Inventories.Remove(inventory);
-            _inventoryContext.SaveChanges();
+            _inventoryContext.Inventories.Remove(inventoryDAO);
+            await _inventoryContext.SaveChangesAsync();
 
             return Ok();
         }
 
-        private Entities.Inventory MapToEntity(Contracts.Inventory inv)
+        private DAO.Inventory MapToDAO(Contracts.Inventory inv)
         {
-            return new Entities.Inventory
+            return new DAO.Inventory
             {
                 Id = inv.Id,
-                Slots = inv.Slots.Select(s => MapSlotToEntity(s)).ToArray()
+                Slots = inv.Slots.Select(s => MapSlotToDAO(s)).ToArray()
             };
         }
 
-        private Contracts.Inventory MapToContract(Entities.Inventory i)
+        private Contracts.Inventory MapToContract(DAO.Inventory i)
         {
             return new Contracts.Inventory
             {
@@ -113,11 +115,11 @@ namespace CountyRP.WebAPI.Controllers
             return null;
         }
 
-        private Contracts.Slot MapSlotToContract(Entities.Slot slot)
+        private Contracts.Slot MapSlotToContract(DAO.Slot slot)
         {
             switch (slot.Type)
             {
-                case Entities.InventorySlotType.Base:
+                case DAO.InventorySlotType.Base:
                     {
                         return new Contracts.Slot 
                         { 
@@ -126,9 +128,9 @@ namespace CountyRP.WebAPI.Controllers
                             Type = (Contracts.InventorySlotType)slot.Type 
                         };
                     }
-                case Entities.InventorySlotType.Backpack:
+                case DAO.InventorySlotType.Backpack:
                     {
-                        var cs = slot as Entities.BackpackSlot;
+                        var cs = slot as DAO.BackpackSlot;
                         return new Contracts.BackpackSlot 
                         { 
                             ItemId = cs.ItemId, 
@@ -142,27 +144,27 @@ namespace CountyRP.WebAPI.Controllers
             return null;
         }
 
-        private Entities.Slot MapSlotToEntity(Contracts.Slot slot)
+        private DAO.Slot MapSlotToDAO(Contracts.Slot slot)
         {
             switch (slot.Type)
             {
                 case Contracts.InventorySlotType.Base:
                     {
-                        return new Entities.Slot 
+                        return new DAO.Slot 
                         { 
                             ItemId = slot.ItemId,
                             Amount = slot.Amount, 
-                            Type = (Entities.InventorySlotType)slot.Type
+                            Type = (DAO.InventorySlotType)slot.Type
                         };
                     }
                 case Contracts.InventorySlotType.Backpack:
                     {
                         var cs = slot as Contracts.BackpackSlot;
-                        return new Entities.BackpackSlot 
+                        return new DAO.BackpackSlot 
                         { 
                             ItemId = cs.ItemId, 
                             Amount = cs.Amount, 
-                            Type = (Entities.InventorySlotType)cs.Type, 
+                            Type = (DAO.InventorySlotType)cs.Type, 
                             Id = cs.Id 
                         };
                     }

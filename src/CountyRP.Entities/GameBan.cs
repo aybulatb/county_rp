@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CountyRP.Entities
+namespace CountyRP.DAO
 {
     public class GameBan
     {

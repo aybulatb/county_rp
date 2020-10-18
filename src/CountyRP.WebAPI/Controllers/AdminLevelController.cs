@@ -1,11 +1,12 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 using CountyRP.Models;
-using CountyRP.WebAPI.Extensions;
 using CountyRP.WebAPI.Models;
 using CountyRP.WebAPI.Models.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace CountyRP.WebAPI.Controllers
 {
@@ -23,7 +24,7 @@ namespace CountyRP.WebAPI.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(AdminLevel), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        public IActionResult Create([FromBody]AdminLevel adminLevel)
+        public async Task<IActionResult> Create([FromBody] AdminLevel adminLevel)
         {
             var result = CheckParams(adminLevel);
             if (result != null)
@@ -32,10 +33,10 @@ namespace CountyRP.WebAPI.Controllers
             if (_adminLevelContext.AdminLevels.FirstOrDefault(al => al.Id == adminLevel.Id) != null)
                 return BadRequest($"Уровень админки с ID {adminLevel.Id} уже существует");
 
-            Entities.AdminLevel adminLevelEntity = new Entities.AdminLevel().Format(adminLevel);
+            var adminLevelDAO = MapToDAO(adminLevel);
 
-            _adminLevelContext.AdminLevels.Add(adminLevelEntity);
-            _adminLevelContext.SaveChanges();
+            _adminLevelContext.AdminLevels.Add(adminLevelDAO);
+            await _adminLevelContext.SaveChangesAsync();
 
             return Created("", adminLevel);
         }
@@ -43,14 +44,14 @@ namespace CountyRP.WebAPI.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(AdminLevel), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult Get(string id)
+        public IActionResult GetById(string id)
         {
-            Entities.AdminLevel adminLevel = _adminLevelContext.AdminLevels.FirstOrDefault(al => al.Id == id);
+            var adminLevelDAO = _adminLevelContext.AdminLevels.FirstOrDefault(al => al.Id == id);
 
-            if (adminLevel == null)
+            if (adminLevelDAO == null)
                 return NotFound($"Уровень админки с ID {id} не найден");
 
-            return Ok(new AdminLevel().Format(adminLevel));
+            return Ok(MapToModel(adminLevelDAO));
         }
 
         [HttpGet("FilterBy")]
@@ -64,7 +65,7 @@ namespace CountyRP.WebAPI.Controllers
             if (count < 1 || count > 50)
                 return BadRequest("Количество админских уровней на одной странице должно быть от 1 до 50");
 
-            IQueryable<Entities.AdminLevel> query = _adminLevelContext.AdminLevels;
+            IQueryable<DAO.AdminLevel> query = _adminLevelContext.AdminLevels;
             if (!string.IsNullOrWhiteSpace(id))
                 query = query.Where(al => al.Id.Contains(id));
             if (!string.IsNullOrWhiteSpace(name))
@@ -80,7 +81,7 @@ namespace CountyRP.WebAPI.Controllers
                 Items = query
                     .Skip((page - 1) * count)
                     .Take(count)
-                    .Select(al => new AdminLevel().Format(al))
+                    .Select(al => MapToModel(al))
                     .ToList(),
                 AllAmount = allAmount,
                 Page = page,
@@ -92,7 +93,7 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(AdminLevel), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult Edit(string id, [FromBody]AdminLevel adminLevel)
+        public async Task<IActionResult> Edit(string id, [FromBody] AdminLevel adminLevel)
         {
             if (id != adminLevel.Id)
                 return BadRequest($"Указанный ID {id} не соответствует ID уровня админки {adminLevel}");
@@ -101,12 +102,13 @@ namespace CountyRP.WebAPI.Controllers
             if (result != null)
                 return result;
 
-            Entities.AdminLevel adminLevelEntity = _adminLevelContext.AdminLevels.FirstOrDefault(al => al.Id == id);
-            if (adminLevelEntity == null)
+            var adminLevelDAO = _adminLevelContext.AdminLevels.AsNoTracking().FirstOrDefault(al => al.Id == id);
+            if (adminLevelDAO == null)
                 return NotFound($"Уровень админки с ID {id} не найден");
 
-            adminLevelEntity.Format(adminLevel);
-            _adminLevelContext.SaveChanges();
+            adminLevelDAO = MapToDAO(adminLevel);
+            _adminLevelContext.AdminLevels.Update(adminLevelDAO);
+            await _adminLevelContext.SaveChangesAsync();
 
             return Ok(adminLevel);
         }
@@ -114,14 +116,15 @@ namespace CountyRP.WebAPI.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult Delete(string id)
+        public async Task<IActionResult> Delete(string id)
         {
-            Entities.AdminLevel adminLevel = _adminLevelContext.AdminLevels.FirstOrDefault(al => al.Id == id);
+            var adminLevel = _adminLevelContext.AdminLevels.FirstOrDefault(al => al.Id == id);
 
             if (adminLevel == null)
                 return NotFound($"Уровень админки с ID {id} не найден");
 
             _adminLevelContext.AdminLevels.Remove(adminLevel);
+            await _adminLevelContext.SaveChangesAsync();
 
             return Ok();
         }
@@ -143,6 +146,26 @@ namespace CountyRP.WebAPI.Controllers
         {
             adminLevel.Id = adminLevel.Id?.Trim();
             adminLevel.Name = adminLevel.Name?.Trim();
+        }
+
+        private DAO.AdminLevel MapToDAO(AdminLevel adminLevel)
+        {
+            return new DAO.AdminLevel
+            {
+                Id = adminLevel.Id,
+                Name = adminLevel.Name,
+                Ban = adminLevel.Ban
+            };
+        }
+
+        private AdminLevel MapToModel(DAO.AdminLevel adminLevel)
+        {
+            return new AdminLevel
+            {
+                Id = adminLevel.Id,
+                Name = adminLevel.Name,
+                Ban = adminLevel.Ban
+            };
         }
     }
 }

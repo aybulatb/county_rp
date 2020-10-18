@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
@@ -28,12 +29,12 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public IActionResult GetById(int id)
         {
-            var gameBan = _banContext.GameBans.AsNoTracking().FirstOrDefault(sb => sb.Id == id);
+            var gameBanDAO = _banContext.GameBans.AsNoTracking().FirstOrDefault(gb => gb.Id == id);
 
-            if (gameBan == null)
+            if (gameBanDAO == null)
                 return NotFound($"Бан в игре с ID {id} не найден");
 
-            return Ok(MapToModel(gameBan));
+            return Ok(MapToModel(gameBanDAO));
         }
 
         [HttpGet("FilterBy")]
@@ -47,7 +48,7 @@ namespace CountyRP.WebAPI.Controllers
             if (count < 1 || count > 50)
                 return BadRequest("Количество банов на одной странице должно быть от 1 до 50");
 
-            IQueryable<Entities.GameBan> query = _banContext.GameBans;
+            IQueryable<DAO.GameBan> query = _banContext.GameBans;
 
             int allAmount = query.Count();
             int maxPage = (allAmount % count == 0) ? allAmount / count : allAmount / count + 1;
@@ -62,7 +63,7 @@ namespace CountyRP.WebAPI.Controllers
 
             return Ok(new FilteredModels<GameBan>
             {
-                Items = choosenGameBans.Select(sb => MapToModel(sb)).ToList(),
+                Items = choosenGameBans.Select(gb => MapToModel(gb)).ToList(),
                 AllAmount = allAmount,
                 Page = page,
                 MaxPage = maxPage
@@ -72,48 +73,43 @@ namespace CountyRP.WebAPI.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(GameBan), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        public IActionResult Create([FromBody]GameBan gameBan)
+        public async Task<IActionResult> Create([FromBody]GameBan gameBan)
         {
             var error = CheckParams(gameBan);
             if (error != null)
                 return error;
 
-            var gameBanEntity = MapToEntity(gameBan);
-            gameBanEntity.Id = 0;
+            var gameBanDAO = MapToDAO(gameBan);
+            gameBanDAO.Id = 0;
 
-            _banContext.GameBans.Add(gameBanEntity);
-            _banContext.SaveChanges();
+            _banContext.GameBans.Add(gameBanDAO);
+            await _banContext.SaveChangesAsync();
 
-            return Created("", MapToModel(gameBanEntity));
+            return Created("", MapToModel(gameBanDAO));
         }
 
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(GameBan), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult Edit(int id, [FromBody]GameBan gameBan)
+        public async Task<IActionResult> Edit(int id, [FromBody] GameBan gameBan)
         {
             if (gameBan.Id != id)
                 return BadRequest($"Указанный ID {id} не соответствует ID {gameBan.Id} бана в игре");
 
-            var gameBanEntity = _banContext.GameBans.FirstOrDefault(sb => sb.Id == id);
+            var gameBanDAO = _banContext.GameBans.AsNoTracking().FirstOrDefault(gb => gb.Id == id);
 
-            if (gameBanEntity == null)
+            if (gameBanDAO == null)
                 return NotFound($"Бан в игре с ID {id} не найден");
 
             var error = CheckParams(gameBan);
             if (error != null)
                 return error;
 
-            gameBanEntity.PlayerId = gameBan.PlayerId;
-            gameBanEntity.PersonId = gameBan.PersonId;
-            gameBanEntity.AdminId = gameBan.AdminId;
-            gameBanEntity.StartDateTime = gameBan.StartDateTime;
-            gameBanEntity.FinishDateTime = gameBan.FinishDateTime;
-            gameBanEntity.IP = gameBan.IP;
-            gameBanEntity.Reason = gameBan.Reason;
+            gameBanDAO = MapToDAO(gameBan);
 
-            _banContext.SaveChanges();
+            _banContext.GameBans.Update(gameBanDAO);
+            await _banContext.SaveChangesAsync();
 
             return Ok(gameBan);
         }
@@ -121,47 +117,17 @@ namespace CountyRP.WebAPI.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var gameBan = _banContext.GameBans.FirstOrDefault(sb => sb.Id == id);
+            var gameBanDAO = _banContext.GameBans.FirstOrDefault(gb => gb.Id == id);
 
-            if (gameBan == null)
+            if (gameBanDAO == null)
                 return NotFound($"Бан в игре с ID {id} не найден");
 
-            _banContext.GameBans.Remove(gameBan);
-            _banContext.SaveChanges();
+            _banContext.GameBans.Remove(gameBanDAO);
+            await _banContext.SaveChangesAsync();
 
             return Ok();
-        }
-
-        private Entities.GameBan MapToEntity(GameBan sb)
-        {
-            return new Entities.GameBan
-            {
-                Id = sb.Id,
-                PlayerId = sb.PlayerId,
-                PersonId = sb.PersonId,
-                AdminId = sb.AdminId,
-                StartDateTime = sb.StartDateTime,
-                FinishDateTime = sb.FinishDateTime,
-                IP = sb.IP,
-                Reason = sb.Reason
-            };
-        }
-
-        private GameBan MapToModel(Entities.GameBan sb)
-        {
-            return new GameBan
-            {
-                Id = sb.Id,
-                PlayerId = sb.PlayerId,
-                PersonId = sb.PersonId,
-                AdminId = sb.AdminId,
-                StartDateTime = sb.StartDateTime,
-                FinishDateTime = sb.FinishDateTime,
-                IP = sb.IP,
-                Reason = sb.Reason
-            };
         }
 
         private IActionResult CheckParams(GameBan gameBan)
@@ -188,6 +154,36 @@ namespace CountyRP.WebAPI.Controllers
                 return BadRequest("IP должен быть в формате 255.255.255.255");
 
             return null;
+        }
+
+        private DAO.GameBan MapToDAO(GameBan gameBan)
+        {
+            return new DAO.GameBan
+            {
+                Id = gameBan.Id,
+                PlayerId = gameBan.PlayerId,
+                PersonId = gameBan.PersonId,
+                AdminId = gameBan.AdminId,
+                StartDateTime = gameBan.StartDateTime,
+                FinishDateTime = gameBan.FinishDateTime,
+                IP = gameBan.IP,
+                Reason = gameBan.Reason
+            };
+        }
+
+        private GameBan MapToModel(DAO.GameBan gameBan)
+        {
+            return new GameBan
+            {
+                Id = gameBan.Id,
+                PlayerId = gameBan.PlayerId,
+                PersonId = gameBan.PersonId,
+                AdminId = gameBan.AdminId,
+                StartDateTime = gameBan.StartDateTime,
+                FinishDateTime = gameBan.FinishDateTime,
+                IP = gameBan.IP,
+                Reason = gameBan.Reason
+            };
         }
     }
 }

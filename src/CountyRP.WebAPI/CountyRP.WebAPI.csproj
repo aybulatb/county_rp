@@ -13,7 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CountyRP.Entities\CountyRP.Entities.csproj" />
+    <ProjectReference Include="..\CountyRP.Entities\CountyRP.DAO.csproj" />
+    <ProjectReference Include="..\CountyRP.Models\CountyRP.Models.csproj" />
   </ItemGroup>
 
 

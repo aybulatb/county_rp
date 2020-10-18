@@ -1,10 +1,11 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 using CountyRP.Models;
-using CountyRP.WebAPI.Extensions;
 using CountyRP.WebAPI.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CountyRP.WebAPI.Controllers
 {
@@ -24,18 +25,18 @@ namespace CountyRP.WebAPI.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(Business), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        public IActionResult Create([FromBody]Business business)
+        public async Task<IActionResult> Create([FromBody] Business business)
         {
             var result = CheckParams(business);
             if (result != null)
                 return result;
 
-            Entities.Business businessEntity = new Entities.Business().Format(business);
+            var businessDAO = MapToDAO(business);
 
-            _propertyContext.Businesses.Add(businessEntity);
-            _propertyContext.SaveChanges();
+            _propertyContext.Businesses.Add(businessDAO);
+            await _propertyContext.SaveChangesAsync();
 
-            business.Id = businessEntity.Id;
+            business.Id = businessDAO.Id;
 
             return Ok(business);
         }
@@ -45,35 +46,34 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public IActionResult Get(int id)
         {
-            Entities.Business business = _propertyContext.Businesses
-                .FirstOrDefault(b => b.Id == id);
-            if (business == null)
+            var businessDAO = _propertyContext.Businesses.FirstOrDefault(b => b.Id == id);
+            if (businessDAO == null)
                 return NotFound($"Бизнес с ID {id} не найден");
 
-            return Ok(new Business().Format(business));
+            return Ok(MapToModel(businessDAO));
         }
 
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(Business), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult Edit(int id, [FromBody]Business business)
+        public async Task<IActionResult> Edit(int id, [FromBody] Business business)
         {
             if (id != business.Id)
                 return BadRequest($"Указанный ID {id} не соответствует ID бизнеса {business.Id}");
 
-            Entities.Business businessEntity = _propertyContext.Businesses.FirstOrDefault(b => b.Id == id);
-            if (businessEntity == null)
+            var businessDAO = _propertyContext.Businesses.AsNoTracking().FirstOrDefault(b => b.Id == id);
+            if (businessDAO == null)
                 return NotFound($"Бизнес с ID {id} не найден");
 
             var result = CheckParams(business);
             if (result != null)
                 return result;
 
-            businessEntity = businessEntity.Format(business);
+            businessDAO = MapToDAO(business);
 
-            _propertyContext.Businesses.Update(businessEntity);
-            _propertyContext.SaveChanges();
+            _propertyContext.Businesses.Update(businessDAO);
+            await _propertyContext.SaveChangesAsync();
 
             return Ok(business);
         }
@@ -81,14 +81,14 @@ namespace CountyRP.WebAPI.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            Entities.Business business = _propertyContext.Businesses.FirstOrDefault(b => b.Id == id);
-            if (business == null)
+            var businessDAO = _propertyContext.Businesses.FirstOrDefault(b => b.Id == id);
+            if (businessDAO == null)
                 return NotFound($"Бизнес с ID {id} не найден");
 
-            _propertyContext.Businesses.Remove(business);
-            _propertyContext.SaveChanges();
+            _propertyContext.Businesses.Remove(businessDAO);
+            await _propertyContext.SaveChangesAsync();
 
             return Ok();
         }
@@ -123,6 +123,40 @@ namespace CountyRP.WebAPI.Controllers
         private void TrimParams(Business business)
         {
             business.Name = business.Name?.Trim();
+        }
+
+        private DAO.Business MapToDAO(Business business)
+        {
+            return new DAO.Business
+            {
+                Id = business.Id,
+                Name = business.Name,
+                EntrancePosition = business.EntrancePosition?.Select(ep => ep).ToArray(),
+                EntranceDimension = business.EntranceDimension,
+                ExitPosition = business.ExitPosition?.Select(ep => ep).ToArray(),
+                ExitDimension = business.ExitDimension,
+                OwnerId = business.OwnerId,
+                Lock = business.Lock,
+                Type = business.Type,
+                Price = business.Price
+            };
+        }
+
+        private Business MapToModel(DAO.Business business)
+        {
+            return new Business
+            {
+                Id = business.Id,
+                Name = business.Name,
+                EntrancePosition = business.EntrancePosition?.Select(ep => ep).ToArray(),
+                EntranceDimension = business.EntranceDimension,
+                ExitPosition = business.ExitPosition?.Select(ep => ep).ToArray(),
+                ExitDimension = business.ExitDimension,
+                OwnerId = business.OwnerId,
+                Lock = business.Lock,
+                Type = business.Type,
+                Price = business.Price
+            };
         }
     }
 }

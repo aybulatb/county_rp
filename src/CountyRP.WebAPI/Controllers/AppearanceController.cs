@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -35,68 +36,43 @@ namespace CountyRP.WebAPI.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(Appearance), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        public IActionResult Create([FromBody]Appearance appearance)
+        public async Task<IActionResult> Create([FromBody]Appearance appearance)
         {
             var error = CheckParams(appearance);
             if (error != null)
                 return error;
 
-            var appearanceEntity = MapToEntity(appearance);
-            appearanceEntity.Id = 0;
+            var appearanceDAO = MapToDAO(appearance);
+            appearanceDAO.Id = 0;
 
-            _appearanceContext.Appearances.Add(appearanceEntity);
-            _appearanceContext.SaveChanges();
+            _appearanceContext.Appearances.Add(appearanceDAO);
+            await _appearanceContext.SaveChangesAsync();
 
-            return Created("", MapToModel(appearanceEntity));
+            return Created("", MapToModel(appearanceDAO));
         }
 
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(Appearance), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult Edit(int id, [FromBody]Appearance appearance)
+        public async Task<IActionResult> Edit(int id, [FromBody]Appearance appearance)
         {
             if (appearance.Id != id)
                 return BadRequest($"Указанный ID {id} не соответствует ID {appearance.Id} внешности");
 
-            var appearanceEntity = _appearanceContext.Appearances.FirstOrDefault(a => a.Id == id);
+            var appearanceDAO = _appearanceContext.Appearances.AsNoTracking().FirstOrDefault(a => a.Id == id);
 
-            if (appearanceEntity == null)
+            if (appearanceDAO == null)
                 return NotFound($"Внешность с ID {id} не найдена");
 
             var error = CheckParams(appearance);
             if (error != null)
                 return error;
 
-            appearanceEntity.Gender = appearance.Gender;
-            appearanceEntity.MotherBlend = appearance.MotherBlend;
-            appearanceEntity.FatherBlend = appearance.FatherBlend;
-            appearanceEntity.BlendShape = appearance.BlendShape;
-            appearanceEntity.BlendSkin = appearance.BlendSkin;
-            appearanceEntity.EyeColor = appearance.EyeColor;
-            appearanceEntity.HairColor = appearance.HairColor;
-            appearanceEntity.HairHighlight = appearance.HairHighlight;
-            appearanceEntity.NoseWidth = appearance.NoseWidth;
-            appearanceEntity.NoseHeight = appearance.NoseHeight;
-            appearanceEntity.NoseBridge = appearance.NoseBridge;
-            appearanceEntity.NoseTip = appearance.NoseTip;
-            appearanceEntity.NoseBridgeShift = appearance.NoseBridgeShift;
-            appearanceEntity.BrowHeight = appearance.BrowHeight;
-            appearanceEntity.BrowWidth = appearance.BrowWidth;
-            appearanceEntity.CBoneHeight = appearance.CBoneHeight;
-            appearanceEntity.CBoneWidth = appearance.CBoneWidth;
-            appearanceEntity.CheekWidth = appearance.CheekWidth;
-            appearanceEntity.EyeColor = appearance.EyeColor;
-            appearanceEntity.Lips = appearance.Lips;
-            appearanceEntity.JawWidth = appearance.JawWidth;
-            appearanceEntity.JawHeight = appearance.JawHeight;
-            appearanceEntity.ChinLength = appearance.ChinLength;
-            appearanceEntity.ChinPos = appearance.ChinPos;
-            appearanceEntity.ChinWidth = appearance.ChinWidth;
-            appearanceEntity.ChinShape = appearance.ChinShape;
-            appearanceEntity.NeckWidth = appearance.NeckWidth;
+            appearanceDAO = MapToDAO(appearance);
 
-            _appearanceContext.SaveChanges();
+            _appearanceContext.Appearances.Update(appearanceDAO);
+            await _appearanceContext.SaveChangesAsync();
 
             return Ok(appearance);
         }
@@ -104,7 +80,7 @@ namespace CountyRP.WebAPI.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             var appearance = _appearanceContext.Appearances.FirstOrDefault(a => a.Id == id);
 
@@ -112,78 +88,78 @@ namespace CountyRP.WebAPI.Controllers
                 return NotFound($"Внешность с ID {id} не найдена");
 
             _appearanceContext.Appearances.Remove(appearance);
-            _appearanceContext.SaveChanges();
+            await _appearanceContext.SaveChangesAsync();
 
             return Ok();
         }
 
-        private Entities.Appearance MapToEntity(Appearance a)
+        private DAO.Appearance MapToDAO(Appearance appearance)
         {
-            return new Entities.Appearance
+            return new DAO.Appearance
             {
-                Id = a.Id,
-                Gender = a.Gender,
-                MotherBlend = a.MotherBlend,
-                FatherBlend = a.FatherBlend,
-                BlendShape = a.BlendShape,
-                BlendSkin = a.BlendSkin,
-                EyeColor = a.EyeColor,
-                HairColor = a.HairColor,
-                HairHighlight = a.HairHighlight,
-                NoseWidth = a.NoseWidth,
-                NoseHeight = a.NoseHeight,
-                NoseBridge = a.NoseBridge,
-                NoseTip = a.NoseTip,
-                NoseBridgeShift = a.NoseBridgeShift,
-                BrowHeight = a.BrowHeight,
-                BrowWidth = a.BrowWidth,
-                CBoneHeight = a.CBoneHeight,
-                CBoneWidth = a.CBoneWidth,
-                CheekWidth = a.CheekWidth,
-                Eyes = a.Eyes,
-                Lips = a.Lips,
-                JawWidth = a.JawWidth,
-                JawHeight = a.JawHeight,
-                ChinLength = a.ChinLength,
-                ChinPos = a.ChinPos,
-                ChinWidth = a.ChinWidth,
-                ChinShape = a.ChinShape,
-                NeckWidth = a.NeckWidth
+                Id = appearance.Id,
+                Gender = appearance.Gender,
+                MotherBlend = appearance.MotherBlend,
+                FatherBlend = appearance.FatherBlend,
+                BlendShape = appearance.BlendShape,
+                BlendSkin = appearance.BlendSkin,
+                EyeColor = appearance.EyeColor,
+                HairColor = appearance.HairColor,
+                HairHighlight = appearance.HairHighlight,
+                NoseWidth = appearance.NoseWidth,
+                NoseHeight = appearance.NoseHeight,
+                NoseBridge = appearance.NoseBridge,
+                NoseTip = appearance.NoseTip,
+                NoseBridgeShift = appearance.NoseBridgeShift,
+                BrowHeight = appearance.BrowHeight,
+                BrowWidth = appearance.BrowWidth,
+                CBoneHeight = appearance.CBoneHeight,
+                CBoneWidth = appearance.CBoneWidth,
+                CheekWidth = appearance.CheekWidth,
+                Eyes = appearance.Eyes,
+                Lips = appearance.Lips,
+                JawWidth = appearance.JawWidth,
+                JawHeight = appearance.JawHeight,
+                ChinLength = appearance.ChinLength,
+                ChinPos = appearance.ChinPos,
+                ChinWidth = appearance.ChinWidth,
+                ChinShape = appearance.ChinShape,
+                NeckWidth = appearance.NeckWidth
         };
         }
 
-        private Appearance MapToModel(Entities.Appearance a)
+        private Appearance MapToModel(DAO.Appearance appearance)
         {
             return new Appearance
             {
-                Id = a.Id,
-                Gender = a.Gender,
-                MotherBlend = a.MotherBlend,
-                FatherBlend = a.FatherBlend,
-                BlendShape = a.BlendShape,
-                BlendSkin = a.BlendSkin,
-                EyeColor = a.EyeColor,
-                HairColor = a.HairColor,
-                HairHighlight = a.HairHighlight,
-                NoseWidth = a.NoseWidth,
-                NoseHeight = a.NoseHeight,
-                NoseBridge = a.NoseBridge,
-                NoseTip = a.NoseTip,
-                NoseBridgeShift = a.NoseBridgeShift,
-                BrowHeight = a.BrowHeight,
-                BrowWidth = a.BrowWidth,
-                CBoneHeight = a.CBoneHeight,
-                CBoneWidth = a.CBoneWidth,
-                CheekWidth = a.CheekWidth,
-                Eyes = a.Eyes,
-                Lips = a.Lips,
-                JawWidth = a.JawWidth,
-                JawHeight = a.JawHeight,
-                ChinLength = a.ChinLength,
-                ChinPos = a.ChinPos,
-                ChinWidth = a.ChinWidth,
-                ChinShape = a.ChinShape,
-                NeckWidth = a.NeckWidth
+                Id = appearance.Id,
+                Gender = appearance.Gender,
+                MotherBlend = appearance.MotherBlend,
+                FatherBlend = appearance.FatherBlend,
+                BlendShape = appearance.BlendShape,
+                BlendSkin = appearance.BlendSkin,
+                EyeColor = appearance.EyeColor,
+                HairColor = appearance.HairColor,
+                HairHighlight = appearance.HairHighlight,
+                NoseWidth = appearance.NoseWidth,
+                NoseHeight = appearance.NoseHeight,
+                NoseBridge = appearance.NoseBridge,
+                NoseTip = appearance.NoseTip,
+                NoseBridgeShift = appearance.NoseBridgeShift,
+                BrowHeight = appearance.BrowHeight,
+                BrowWidth = appearance.BrowWidth,
+                CBoneHeight = appearance.CBoneHeight,
+                CBoneWidth = appearance.CBoneWidth,
+                CheekWidth = appearance.CheekWidth,
+                Eyes = appearance.Eyes,
+                Lips = appearance.Lips,
+                JawWidth = appearance.JawWidth,
+                JawHeight = appearance.JawHeight,
+                ChinLength = appearance.ChinLength,
+                ChinPos = appearance.ChinPos,
+                ChinWidth = appearance.ChinWidth,
+                ChinShape = appearance.ChinShape,
+                NeckWidth = appearance.NeckWidth
             };
         }
 
