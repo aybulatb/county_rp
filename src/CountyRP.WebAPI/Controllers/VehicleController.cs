@@ -60,7 +60,7 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(Vehicle[]), StatusCodes.Status200OK)]
         public IActionResult GetAll()
         {
-            var vehiclesDAO = _propertyContext.Vehicles.AsNoTracking().ToArray();
+            var vehiclesDAO = _propertyContext.Vehicles.AsNoTracking().OrderBy(v => v.Id).ToArray();
 
             return Ok(vehiclesDAO.Select(v => MapToModel(v)));
         }

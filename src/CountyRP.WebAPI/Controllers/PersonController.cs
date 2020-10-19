@@ -79,7 +79,7 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public IActionResult GetAllByPlayerId(int playerId)
         {
-            var personsDAO = _playerContext.Persons.Where(p => p.PlayerId == playerId);
+            var personsDAO = _playerContext.Persons.AsNoTracking().Where(p => p.PlayerId == playerId).ToArray();
 
             if (personsDAO == null)
                 return NotFound($"Персонажи, привязанные к игроку с ID {playerId}, не найдены");
