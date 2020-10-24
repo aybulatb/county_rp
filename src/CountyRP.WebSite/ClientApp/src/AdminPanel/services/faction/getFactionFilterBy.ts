@@ -1,4 +1,4 @@
-import { Faction } from 'AdminPanel/services/faction/Faction';
+import { Faction } from 'AdminPanel/types';
 
 
 type SearchResult = {
@@ -10,14 +10,15 @@ type SearchResult = {
 }
 
 export async function getFactionFilterBy(page: number = 1, id: string = '', name: string = '') {
-  let url = `https://www.county-rp.ru/api/Admin/Faction/FilterBy?page=${page}`;
+  const apiUrl = process.env.REACT_APP_API_URL;
+  let url = `${apiUrl}Faction/FilterBy?page=${page}`;
   url += id ? `&id=${id}` : '';
   url += name ? `&name=${name}` : '';
 
   const response = await fetch(url);
 
   if (!response.ok)
-    throw new Error(`${response.statusText}`);
+    throw new Error(`${response.status}: ${response.statusText}`);
 
   const json: SearchResult = await response.json();
 

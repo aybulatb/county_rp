@@ -4,6 +4,7 @@ export async function deleteGroup(oldId: string) {
 
   const response = await fetch(url, {
     method: 'DELETE',
+    mode: 'cors'
   });
 
   if (!response.ok)

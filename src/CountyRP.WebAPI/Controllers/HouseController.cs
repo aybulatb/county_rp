@@ -1,9 +1,10 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 using CountyRP.Models;
-using CountyRP.WebAPI.Extensions;
 using CountyRP.WebAPI.Models;
 
 namespace CountyRP.WebAPI.Controllers
@@ -24,7 +25,7 @@ namespace CountyRP.WebAPI.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(House), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        public IActionResult Create([FromBody]House house)
+        public async Task<IActionResult> Create([FromBody] House house)
         {
             var result = CheckParams(house);
             if (result != null)
@@ -32,12 +33,12 @@ namespace CountyRP.WebAPI.Controllers
 
             house.Id = 0;
 
-            Entities.House houseEntity = new Entities.House().Format(house);
+            var houseDAO = MapToDAO(house);
 
-            _propertyContext.Houses.Add(houseEntity);
-            _propertyContext.SaveChanges();
+            _propertyContext.Houses.Add(houseDAO);
+            await _propertyContext.SaveChangesAsync();
 
-            house.Id = houseEntity.Id;
+            house.Id = houseDAO.Id;
 
             return Created("", house);
         }
@@ -47,18 +48,18 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public IActionResult Get(int id)
         {
-            Entities.House house = _propertyContext.Houses.FirstOrDefault(h => h.Id == id);
-            if (house == null)
+            var houseDAO = _propertyContext.Houses.AsNoTracking().FirstOrDefault(h => h.Id == id);
+            if (houseDAO == null)
                 return NotFound($"Дом с ID {id} не найден");
 
-            return Ok(new House().Format(house));
+            return Ok(MapToModel(houseDAO));
         }
 
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(House), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult Edit(int id, [FromBody]House house)
+        public async Task<IActionResult> Edit(int id, [FromBody] House house)
         {
             if (id != house.Id)
                 return BadRequest($"Указанный ID {id} не соответствует ID дома {house.Id}");
@@ -67,14 +68,14 @@ namespace CountyRP.WebAPI.Controllers
             if (result != null)
                 return result;
 
-            Entities.House houseEntity = _propertyContext.Houses.FirstOrDefault(h => h.Id == id);
-            if (houseEntity == null)
+            var houseDAO = _propertyContext.Houses.AsNoTracking().FirstOrDefault(h => h.Id == id);
+            if (houseDAO == null)
                 return NotFound($"Дом с ID {id} не найден");
 
-            houseEntity = houseEntity.Format(house);
+            houseDAO = MapToDAO(house);
 
-            _propertyContext.Houses.Update(houseEntity);
-            _propertyContext.SaveChanges();
+            _propertyContext.Houses.Update(houseDAO);
+            await _propertyContext.SaveChangesAsync();
 
             return Ok(house);
         }
@@ -82,14 +83,14 @@ namespace CountyRP.WebAPI.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            Entities.House house = _propertyContext.Houses.FirstOrDefault(h => h.Id == id);
-            if (house == null)
+            var houseDAO = _propertyContext.Houses.FirstOrDefault(h => h.Id == id);
+            if (houseDAO == null)
                 return NotFound($"Дом с ID {id} не найден");
 
-            _propertyContext.Houses.Remove(house);
-            _propertyContext.SaveChanges();
+            _propertyContext.Houses.Remove(houseDAO);
+            await _propertyContext.SaveChangesAsync();
 
             return Ok();
         }
@@ -116,6 +117,36 @@ namespace CountyRP.WebAPI.Controllers
                 return BadRequest($"Персонаж с ID {house.OwnerId} не найден");
 
             return null;
+        }
+
+        private DAO.House MapToDAO(House house)
+        {
+            return new DAO.House
+            {
+                Id = house.Id,
+                EntrancePosition = house.EntrancePosition?.Select(ep => ep).ToArray(),
+                EntranceDimension = house.EntranceDimension,
+                ExitPosition = house.ExitPosition?.Select(ep => ep).ToArray(),
+                ExitDimension = house.ExitDimension,
+                OwnerId = house.OwnerId,
+                Lock = house.Lock,
+                Price = house.Price
+            };
+        }
+
+        private House MapToModel(DAO.House house)
+        {
+            return new House
+            {
+                Id = house.Id,
+                EntrancePosition = house.EntrancePosition?.Select(ep => ep).ToArray(),
+                EntranceDimension = house.EntranceDimension,
+                ExitPosition = house.ExitPosition?.Select(ep => ep).ToArray(),
+                ExitDimension = house.ExitDimension,
+                OwnerId = house.OwnerId,
+                Lock = house.Lock,
+                Price = house.Price
+            };
         }
     }
 }

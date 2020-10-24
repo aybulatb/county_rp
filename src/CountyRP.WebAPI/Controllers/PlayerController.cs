@@ -1,12 +1,12 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 
 using CountyRP.Models;
-using CountyRP.WebAPI.Extensions;
 using CountyRP.WebAPI.Models;
 using CountyRP.WebAPI.Models.ViewModels;
-using Microsoft.EntityFrameworkCore;
 
 namespace CountyRP.WebAPI.Controllers
 {
@@ -27,12 +27,12 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public IActionResult GetById(int id)
         {
-            Entities.Player player = _playerContext.Players.FirstOrDefault(p => p.Id == id);
+            var playerDAO = _playerContext.Players.AsNoTracking().FirstOrDefault(p => p.Id == id);
 
-            if (player == null)
+            if (playerDAO == null)
                 return NotFound($"Игрок с ID {id} не найден");
 
-            return Ok(new Player().Format(player));
+            return Ok(MapToModel(playerDAO));
         }
 
         [HttpGet("GetByLogin/{login}")]
@@ -40,12 +40,12 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public IActionResult GetByLogin(string login)
         {
-            Entities.Player player = _playerContext.Players.FirstOrDefault(p => p.Login == login);
+            var playerDAO = _playerContext.Players.AsNoTracking().FirstOrDefault(p => p.Login == login);
 
-            if (player == null)
+            if (playerDAO == null)
                 return NotFound($"Игрок с логином {login} не найден");
 
-            return Ok(new Player().Format(player));
+            return Ok(MapToModel(playerDAO));
         }
 
         [HttpGet("FilterBy")]
@@ -59,13 +59,13 @@ namespace CountyRP.WebAPI.Controllers
             if (count < 1 || count > 50)
                 return BadRequest("Количество игроков на одной странице должно быть от 1 до 50");
 
-            IQueryable<Entities.Player> query = _playerContext.Players;
+            IQueryable<DAO.Player> query = _playerContext.Players;
             if (!string.IsNullOrWhiteSpace(login))
                 query = query.Where(p => p.Login.Contains(login));
 
             int allAmount = query.Count();
             int maxPage = (allAmount % count == 0) ? allAmount / count : allAmount / count + 1;
-            if (page > maxPage)
+            if (page > maxPage && maxPage > 0)
                 page = maxPage;
 
             return Ok(new FilteredModels<Player>
@@ -73,7 +73,7 @@ namespace CountyRP.WebAPI.Controllers
                 Items = query
                     .Skip((page - 1) * count)
                     .Take(count)
-                    .Select(p => new Player().Format(p))
+                    .Select(p => MapToModel(p))
                     .ToList(),
                 AllAmount = allAmount,
                 Page = page,
@@ -86,19 +86,19 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public IActionResult TryAuthorize(string login, string password)
         {
-            Entities.Player player = _playerContext.Players
+            var playerDAO = _playerContext.Players.AsNoTracking()
                 .FirstOrDefault(p => p.Login == login && p.Password == password);
 
-            if (player == null)
+            if (playerDAO == null)
                 return BadRequest("Неправильно указаны либо логин, либо пароль");
 
-            return Ok(new Player().Format(player));
+            return Ok(MapToModel(playerDAO));
         }
 
         [HttpPost]
         [ProducesResponseType(typeof(Player), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        public IActionResult Register([FromBody]Player player)
+        public async Task<IActionResult> Register([FromBody] Player player)
         {
             var result = CheckParams(player);
             if (result != null)
@@ -110,10 +110,12 @@ namespace CountyRP.WebAPI.Controllers
                 return BadRequest($"Игрок с логином {player.Login} уже существует");
             }
 
-            Entities.Player playerEntity = new Entities.Player().Format(player);
+            var playerDAO = MapToDAO(player);
 
-            _playerContext.Players.Add(playerEntity);
-            _playerContext.SaveChanges();
+            _playerContext.Players.Add(playerDAO);
+            await _playerContext.SaveChangesAsync();
+
+            player.Id = playerDAO.Id;
 
             return Created("", player);
         }
@@ -122,30 +124,31 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(Player), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult Edit(int id, [FromBody]Player player)
+        public async Task<IActionResult> Edit(int id, [FromBody] Player player)
         {
             if (id != player.Id)
                 return BadRequest($"Указанный ID {id} не соответствует ID игрока {player.Id}");
 
-            Entities.Player playerEntity = _playerContext.Players.FirstOrDefault(p => p.Id == player.Id);
+            var playerDAO = _playerContext.Players.AsNoTracking().FirstOrDefault(p => p.Id == player.Id);
 
-            if (playerEntity == null)
+            if (playerDAO == null)
                 return NotFound($"Игрок с ID {player.Id} не существует");
 
             var result = CheckParams(player);
             if (result != null)
                 return result;
 
-            if (playerEntity.Login != player.Login && 
+            if (playerDAO.Login != player.Login && 
                 _playerContext.Players
                 .FirstOrDefault(p => p.Login == player.Login) != null)
             {
                 return BadRequest($"Игрок с логином {player.Login} уже существует");
             }
 
-            playerEntity = playerEntity.Format(player);
+            playerDAO = MapToDAO(player);
 
-            _playerContext.SaveChanges();
+            _playerContext.Players.Update(playerDAO);
+            await _playerContext.SaveChangesAsync();
 
             return Ok(player);
         }
@@ -154,15 +157,15 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult SetLogin(int id, string login)
+        public async Task<IActionResult> SetLogin(int id, string login)
         {
             var result = CheckLogin(login);
             if (result != null)
                 return result;
 
-            Entities.Player player = _playerContext.Players.FirstOrDefault(p => p.Id == id);
+            var playerDAO = _playerContext.Players.FirstOrDefault(p => p.Id == id);
 
-            if (player == null)
+            if (playerDAO == null)
                 return NotFound($"Игрок с ID {id} не найден");
 
             if (_playerContext.Players
@@ -171,8 +174,8 @@ namespace CountyRP.WebAPI.Controllers
                 return BadRequest($"Игрок с логином {login} уже существует");
             }
 
-            player.Login = login;
-            _playerContext.SaveChanges();
+            playerDAO.Login = login;
+            await _playerContext.SaveChangesAsync();
 
             return Ok();
         }
@@ -181,19 +184,19 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult SetPassword(int id, string password)
+        public async Task<IActionResult> SetPassword(int id, string password)
         {
             var result = CheckPassword(password);
             if (result != null)
                 return result;
 
-            Entities.Player player = _playerContext.Players.FirstOrDefault(p => p.Id == id);
+            var playerDAO = _playerContext.Players.FirstOrDefault(p => p.Id == id);
 
-            if (player == null)
+            if (playerDAO == null)
                 return NotFound($"Игрок с ID {id} не найден");
 
-            player.Password = password;
-            _playerContext.SaveChanges();
+            playerDAO.Password = password;
+            await _playerContext.SaveChangesAsync();
 
             return Ok();
         }
@@ -201,15 +204,15 @@ namespace CountyRP.WebAPI.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            Entities.Player player = _playerContext.Players.FirstOrDefault(p => p.Id == id);
+            var playerDAO = _playerContext.Players.FirstOrDefault(p => p.Id == id);
 
-            if (player == null)
+            if (playerDAO == null)
                 return NotFound($"Игрок с ID {id} не найден");
 
-            _playerContext.Players.Remove(player);
-            _playerContext.SaveChanges();
+            _playerContext.Players.Remove(playerDAO);
+            await _playerContext.SaveChangesAsync();
 
             return Ok();
         }
@@ -256,6 +259,28 @@ namespace CountyRP.WebAPI.Controllers
         private void TrimParams(Player player)
         {
             player.Login = player.Login?.Trim();
+        }
+
+        private DAO.Player MapToDAO(Player player)
+        {
+            return new DAO.Player
+            {
+                Id = player.Id,
+                Login = player.Login,
+                Password = player.Password,
+                GroupId = player.GroupId
+            };
+        }
+
+        private Player MapToModel(DAO.Player player)
+        {
+            return new Player
+            {
+                Id = player.Id,
+                Login = player.Login,
+                Password = player.Password,
+                GroupId = player.GroupId
+            };
         }
     }
 }

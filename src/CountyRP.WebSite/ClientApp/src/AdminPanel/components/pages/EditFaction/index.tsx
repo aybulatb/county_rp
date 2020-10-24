@@ -1,24 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory, NavLink, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-
 import BlueButton from 'AdminPanel/components/atoms/BlueButton';
+import WhiteButton from 'AdminPanel/components/atoms/WhiteButton';
 import Input from 'AdminPanel/components/atoms/Input';
 import EditPage from 'AdminPanel/components/templates/Edit';
 import ColorPalette from 'AdminPanel/components/molecules/ColorPalette';
-
-import { getFaction } from 'AdminPanel/services/faction/getFaction';
-import { editFaction } from 'AdminPanel/services/faction/editFaction';
-
+import { getFaction } from 'AdminPanel/services';
+import { editFaction } from 'AdminPanel/services';
+import { deleteFaction } from 'AdminPanel/services';
 import { routes } from 'AdminPanel/routes';
-
-import { Faction } from 'AdminPanel/services/faction/Faction';
+import { handlerFactory, handlerFetchError } from 'AdminPanel/utils/handlerFactory';
 
 
 const BlueButtonWithMargin = styled(BlueButton)`
   margin-left: 10px;
 `;
 
+const StyledWhiteButton = styled(WhiteButton)`
+  margin-left: 10px;
+`;
 
 export default () => {
   const { id } = useParams<{ id: string }>();
@@ -32,26 +33,21 @@ export default () => {
   const history = useHistory();
   const prevLocation = routes.faction;
 
-  const editHandler = async () => {
-    try {
-      const newFaction: Faction = {
-        id: factionId,
-        name: factionName,
-        color: factionColor,
-        ranks: factionRanks.split(','),
-        type: factionType
-      }
+  const handleEdit = handlerFactory(
+    () => editFaction(id, {
+      id: factionId,
+      name: factionName,
+      color: factionColor,
+      ranks: factionRanks.split(','),
+      type: factionType
+    }),
+    () => history.push(prevLocation)
+  );
 
-      const fetchResult = await editFaction(id, newFaction);
-
-      if (fetchResult === 0) {
-        history.push(prevLocation)
-      }
-
-    } catch (error) {
-      console.dir(error);
-    }
-  }
+  const handleDelete = handlerFactory(
+    () => deleteFaction(id),
+    () => history.push(prevLocation)
+  )
 
   useEffect(() => {
     (async () => {
@@ -65,10 +61,11 @@ export default () => {
 
       } catch (error) {
         console.log(error);
+        handlerFetchError(error);
+        history.push(prevLocation);
       }
     })();
-  }, [id]);
-
+  }, [history, id, prevLocation]);
 
   return (
     <EditPage
@@ -101,10 +98,15 @@ export default () => {
       buttons={
         <>
           <BlueButton as={NavLink} to={prevLocation}>
-              Отмена
+            Отмена
           </BlueButton>
-          <BlueButtonWithMargin onClick={editHandler}>
-              Сохранить
+
+          <StyledWhiteButton onClick={handleDelete}>
+            Удалить
+          </StyledWhiteButton>
+          
+          <BlueButtonWithMargin onClick={handleEdit}>
+            Сохранить
           </BlueButtonWithMargin>
         </>
       }

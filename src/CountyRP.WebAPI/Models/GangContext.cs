@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-using CountyRP.Entities;
+using CountyRP.DAO;
 
 namespace CountyRP.WebAPI.Models
 {

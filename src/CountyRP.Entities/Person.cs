@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
 
-namespace CountyRP.Entities
+namespace CountyRP.DAO
 {
     public class Person
     {

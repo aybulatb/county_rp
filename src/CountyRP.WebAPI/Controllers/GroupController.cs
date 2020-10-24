@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 using CountyRP.Models;
-using CountyRP.WebAPI.Extensions;
 using CountyRP.WebAPI.Models;
 using CountyRP.WebAPI.Models.ViewModels;
 
@@ -25,7 +24,7 @@ namespace CountyRP.WebAPI.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(Group), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        public IActionResult Create([FromBody]Group group)
+        public async Task<IActionResult> Create([FromBody] Group group)
         {
             var result = CheckParams(group);
             if (result != null)
@@ -34,10 +33,10 @@ namespace CountyRP.WebAPI.Controllers
             if (_groupContext.Groups.FirstOrDefault(g => g.Id == group.Id) != null)
                 return BadRequest($"Группа с ID {group.Id} уже существует");
 
-            Entities.Group groupEntity = new Entities.Group().Format(group);
+            var groupDAO = MapToDAO(group);
 
-            _groupContext.Groups.Add(groupEntity);
-            _groupContext.SaveChanges();
+            _groupContext.Groups.Add(groupDAO);
+            await _groupContext.SaveChangesAsync();
 
             return Created("", group);
         }
@@ -47,21 +46,21 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public IActionResult GetById(string id)
         {
-            Entities.Group group = _groupContext.Groups.FirstOrDefault(g => g.Id == id);
+            var groupDAO = _groupContext.Groups.AsNoTracking().FirstOrDefault(g => g.Id == id);
 
-            if (group == null)
+            if (groupDAO == null)
                 return NotFound($"Группа с ID {id} не найдена");
 
-            return Ok(new Group().Format(group));
+            return Ok(MapToModel(groupDAO));
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(List<Group>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Group[]), StatusCodes.Status200OK)]
         public IActionResult GetAll()
         {
-            List<Entities.Group> group = _groupContext.Groups.ToList();
+            var groupsDAO = _groupContext.Groups.AsNoTracking().ToArray();
 
-            return Ok(group.Select(g => new Group().Format(g)).ToList());
+            return Ok(groupsDAO.Select(g => MapToModel(g)));
         }
 
         [HttpGet("FilterBy")]
@@ -75,7 +74,7 @@ namespace CountyRP.WebAPI.Controllers
             if (count < 1 || count > 50)
                 return BadRequest("Количество групп на одной странице должно быть от 1 до 50");
 
-            IQueryable<Entities.Group> query = _groupContext.Groups;
+            IQueryable<DAO.Group> query = _groupContext.Groups;
             if (!string.IsNullOrWhiteSpace(id))
                 query = query.Where(g => g.Id.Contains(id));
             if (!string.IsNullOrWhiteSpace(name))
@@ -83,7 +82,7 @@ namespace CountyRP.WebAPI.Controllers
 
             int allAmount = query.Count();
             int maxPage = (allAmount % count == 0) ? allAmount / count : allAmount / count + 1;
-            if (page > maxPage)
+            if (page > maxPage && maxPage > 0)
                 page = maxPage;
 
             return Ok(new FilteredModels<Group>
@@ -91,7 +90,7 @@ namespace CountyRP.WebAPI.Controllers
                 Items = query
                     .Skip((page - 1) * count)
                     .Take(count)
-                    .Select(g => new Group().Format(g))
+                    .Select(g => MapToModel(g))
                     .ToList(),
                 AllAmount = allAmount,
                 Page = page,
@@ -110,25 +109,25 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(Group), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult Edit(string id, Group group)
+        public async Task<IActionResult> Edit(string id, [FromBody] Group group)
         {
             if (id != group.Id)
                 return BadRequest($"Указанный ID {id} не соответствует ID группы {group.Id}");
 
-            Entities.Group groupEntity = _groupContext.Groups.AsNoTracking()
+            var groupDAO = _groupContext.Groups.AsNoTracking()
                 .FirstOrDefault(g => g.Id == id);
 
-            if (groupEntity == null)
+            if (groupDAO == null)
                 return NotFound($"Группа с ID {id} не найдена");
 
             var result = CheckParams(group);
             if (result != null)
                 return result;
 
-            groupEntity = groupEntity.Format(group);
+            groupDAO = MapToDAO(group);
 
-            _groupContext.Groups.Update(groupEntity);
-            _groupContext.SaveChanges();
+            _groupContext.Groups.Update(groupDAO);
+            await _groupContext.SaveChangesAsync();
 
             return Ok(group);
         }
@@ -136,15 +135,15 @@ namespace CountyRP.WebAPI.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult Delete(string id)
+        public async Task<IActionResult> Delete(string id)
         {
-            Entities.Group group = _groupContext.Groups.FirstOrDefault(g => g.Id == id);
+            var groupDAO = _groupContext.Groups.FirstOrDefault(g => g.Id == id);
 
-            if (group == null)
+            if (groupDAO == null)
                 return NotFound($"Группа с ID {id} не найдена");
 
-            _groupContext.Groups.Remove(group);
-            _groupContext.SaveChanges();
+            _groupContext.Groups.Remove(groupDAO);
+            await _groupContext.SaveChangesAsync();
 
             return Ok();
         }
@@ -170,6 +169,28 @@ namespace CountyRP.WebAPI.Controllers
             group.Id = group.Id?.Trim();
             group.Name = group.Name?.Trim();
             group.Color = group.Color?.Trim();
+        }
+
+        private DAO.Group MapToDAO(Group group)
+        {
+            return new DAO.Group
+            {
+                Id = group.Id,
+                Name = group.Name,
+                Color = group.Color,
+                AdminPanel = group.AdminPanel
+            };
+        }
+
+        private Group MapToModel(DAO.Group group)
+        {
+            return new Group
+            {
+                Id = group.Id,
+                Name = group.Name,
+                Color = group.Color,
+                AdminPanel = group.AdminPanel
+            };
         }
     }
 }

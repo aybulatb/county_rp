@@ -1,0 +1,65 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Testing <Checkbox /> matches snapshot 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c0 input[type='checkbox'] {
+  display: none;
+  outline: none;
+}
+
+.c1 {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  padding: 2px;
+  margin-right: 10px;
+  border: 1px solid #8a8a8a;
+  border-radius: 5px;
+  background-color: white;
+  box-sizing: border-box;
+  outline: none;
+  cursor: pointer;
+}
+
+.c2 {
+  width: 100%;
+  height: 100%;
+  border-radius: 2px;
+  background: #0653c0;
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
+}
+
+<div
+  className="c0"
+>
+  <input
+    checked={true}
+    id="test"
+    onChange={[Function]}
+    type="checkbox"
+  />
+  <label
+    className="c1"
+    htmlFor="test"
+  >
+    <div
+      checked={true}
+      className="c2"
+    />
+  </label>
+</div>
+`;

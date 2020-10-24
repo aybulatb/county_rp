@@ -7,7 +7,7 @@ export async function deleteFaction(id: string) {
   });
 
   if (!response.ok)
-    throw new Error(`${response.statusText}`);
+    throw new Error(`${response.status}: ${response.statusText}`);
 
   return 0;
 }

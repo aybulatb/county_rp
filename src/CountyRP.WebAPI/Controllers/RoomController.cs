@@ -1,9 +1,10 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 using CountyRP.Models;
-using CountyRP.WebAPI.Extensions;
 using CountyRP.WebAPI.Models;
 
 namespace CountyRP.WebAPI.Controllers
@@ -24,18 +25,18 @@ namespace CountyRP.WebAPI.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(Room), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        public IActionResult Create([FromBody]Room room)
+        public async Task<IActionResult> Create([FromBody] Room room)
         {
             var result = CheckParams(room);
             if (result != null)
                 return result;
 
-            Entities.Room roomEntity = new Entities.Room().Format(room);
+            var roomDAO = MapToDAO(room);
 
-            _propertyContext.Rooms.Add(roomEntity);
-            _propertyContext.SaveChanges();
+            _propertyContext.Rooms.Add(roomDAO);
+            await _propertyContext.SaveChangesAsync();
 
-            room.Id = roomEntity.Id;
+            room.Id = roomDAO.Id;
 
             return Created("", room);
         }
@@ -45,18 +46,18 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public IActionResult Get(int id)
         {
-            Entities.Room room = _propertyContext.Rooms.FirstOrDefault(r => r.Id == id);
-            if (room == null)
+            var roomDAO = _propertyContext.Rooms.AsNoTracking().FirstOrDefault(r => r.Id == id);
+            if (roomDAO == null)
                 return NotFound($"Помещение с ID {id} не найдено");
 
-            return Ok(new Room().Format(room));
+            return Ok(MapToModel(roomDAO));
         }
 
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(Room), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult Edit(int id, [FromBody]Room room)
+        public async Task<IActionResult> Edit(int id, [FromBody] Room room)
         {
             if (id != room.Id)
                 return BadRequest($"Указанный ID {id} не соответствует ID помещения {room.Id}");
@@ -65,14 +66,14 @@ namespace CountyRP.WebAPI.Controllers
             if (result != null)
                 return result;
 
-            Entities.Room roomEntity = _propertyContext.Rooms.FirstOrDefault(r => r.Id == id);
-            if (roomEntity == null)
+            var roomDAO = _propertyContext.Rooms.AsNoTracking().FirstOrDefault(r => r.Id == id);
+            if (roomDAO == null)
                 return NotFound($"Помещение с ID {id} не найдено");
 
-            roomEntity = roomEntity.Format(room);
+            roomDAO = MapToDAO(room);
 
-            _propertyContext.Rooms.Update(roomEntity);
-            _propertyContext.SaveChanges();
+            _propertyContext.Rooms.Update(roomDAO);
+            await _propertyContext.SaveChangesAsync();
 
             return Ok(room);
         }
@@ -80,14 +81,14 @@ namespace CountyRP.WebAPI.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            Entities.Room room = _propertyContext.Rooms.FirstOrDefault(r => r.Id == id);
-            if (room == null)
+            var roomDAO = _propertyContext.Rooms.FirstOrDefault(r => r.Id == id);
+            if (roomDAO == null)
                 return NotFound($"Помещение с ID {id} не найдено");
 
-            _propertyContext.Rooms.Remove(room);
-            _propertyContext.SaveChanges();
+            _propertyContext.Rooms.Remove(roomDAO);
+            await _propertyContext.SaveChangesAsync();
 
             return Ok();
         }
@@ -128,6 +129,52 @@ namespace CountyRP.WebAPI.Controllers
         private void TrimParams(Room room)
         {
             room.Name = room.Name?.Trim();
+        }
+
+        private DAO.Room MapToDAO(Room room)
+        {
+            return new DAO.Room
+            {
+                Id = room.Id,
+                Name = room.Name,
+                EntrancePosition = room.EntrancePosition?.Select(ep => ep).ToArray(),
+                EntranceDimension = room.EntranceDimension,
+                ExitPosition = room.ExitPosition?.Select(ep => ep).ToArray(),
+                ExitDimension = room.ExitDimension,
+                TypeMarker = room.TypeMarker,
+                ColorMarker = room.ColorMarker?.Select(cm => cm).ToArray(),
+                TypeBlip = room.TypeBlip,
+                ColorBlip = room.ColorBlip,
+                GroupId = room.GroupId,
+                Lock = room.Lock,
+                Price = room.Price,
+                LastPayment = room.LastPayment,
+                SafePosition = room.SafePosition?.Select(sf => sf).ToArray(),
+                SafeDimension = room.SafeDimension
+            };
+        }
+
+        private Room MapToModel(DAO.Room room)
+        {
+            return new Room
+            {
+                Id = room.Id,
+                Name = room.Name,
+                EntrancePosition = room.EntrancePosition?.Select(ep => ep).ToArray(),
+                EntranceDimension = room.EntranceDimension,
+                ExitPosition = room.ExitPosition?.Select(ep => ep).ToArray(),
+                ExitDimension = room.ExitDimension,
+                TypeMarker = room.TypeMarker,
+                ColorMarker = room.ColorMarker?.Select(cm => cm).ToArray(),
+                TypeBlip = room.TypeBlip,
+                ColorBlip = room.ColorBlip,
+                GroupId = room.GroupId,
+                Lock = room.Lock,
+                Price = room.Price,
+                LastPayment = room.LastPayment,
+                SafePosition = room.SafePosition?.Select(sf => sf).ToArray(),
+                SafeDimension = room.SafeDimension
+            };
         }
     }
 }

@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.3" />
     <PackageReference Include="NSwag.AspNetCore" Version="13.3.0" />
@@ -12,7 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CountyRP.Entities\CountyRP.Entities.csproj" />
+    <ProjectReference Include="..\CountyRP.Entities\CountyRP.DAO.csproj" />
+    <ProjectReference Include="..\CountyRP.Models\CountyRP.Models.csproj" />
   </ItemGroup>
 
 

@@ -1,9 +1,10 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 
 using CountyRP.Models;
-using CountyRP.WebAPI.Extensions;
 using CountyRP.WebAPI.Models;
 
 namespace CountyRP.WebAPI.Controllers
@@ -26,20 +27,20 @@ namespace CountyRP.WebAPI.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(Vehicle), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        public IActionResult Create(Vehicle createVehicle)
+        public async Task<IActionResult> Create([FromBody] Vehicle vehicle)
         {
-            var result = CheckParams(createVehicle);
+            var result = CheckParams(vehicle);
             if (result != null)
                 return result;
 
-            Entities.Vehicle vehicle = new Entities.Vehicle().Format(createVehicle);
+            var vehicleDAO = MapToDAO(vehicle);
 
-            _propertyContext.Vehicles.Add(vehicle);
-            _propertyContext.SaveChanges();
+            _propertyContext.Vehicles.Add(vehicleDAO);
+            await _propertyContext.SaveChangesAsync();
 
-            createVehicle.Format(vehicle);
+            vehicle = MapToModel(vehicleDAO);
 
-            return Created("", createVehicle);
+            return Created("", vehicle);
         }
 
         [HttpGet("GetById/{id}")]
@@ -47,12 +48,21 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public IActionResult GetById(int id)
         {
-            Entities.Vehicle vehicle = _propertyContext.Vehicles.FirstOrDefault(v => v.Id == id);
+            var vehicleDAO = _propertyContext.Vehicles.AsNoTracking().FirstOrDefault(v => v.Id == id);
 
-            if (vehicle == null)
+            if (vehicleDAO == null)
                 return NotFound($"Транспортное средство с ID {id} не найдено");
 
-            return Ok(new Vehicle().Format(vehicle));
+            return Ok(MapToModel(vehicleDAO));
+        }
+
+        [HttpGet]
+        [ProducesResponseType(typeof(Vehicle[]), StatusCodes.Status200OK)]
+        public IActionResult GetAll()
+        {
+            var vehiclesDAO = _propertyContext.Vehicles.AsNoTracking().OrderBy(v => v.Id).ToArray();
+
+            return Ok(vehiclesDAO.Select(v => MapToModel(v)));
         }
 
         [HttpGet("GetByPersonId/{personId}")]
@@ -60,36 +70,35 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public IActionResult GetByPersonId(int personId)
         {
-            Entities.Vehicle vehicle = _propertyContext.Vehicles.FirstOrDefault(v => v.OwnerId == personId);
+            var vehicleDAO = _propertyContext.Vehicles.FirstOrDefault(v => v.OwnerId == personId);
 
-            if (vehicle == null)
+            if (vehicleDAO == null)
                 return NotFound($"Транспортное средство с владельцем с ID {personId} не найдено");
 
-            return Ok(new Vehicle().Format(vehicle));
+            return Ok(MapToModel(vehicleDAO));
         }
 
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(Vehicle), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult Edit(int id, Vehicle vehicle)
+        public async Task<IActionResult> Edit(int id, [FromBody] Vehicle vehicle)
         {
             if (id != vehicle.Id)
                 return BadRequest($"Указанный ID {id} не соответствует ID {vehicle.Id} транспортного средства");
 
-            Entities.Vehicle existingVehicle = _propertyContext.Vehicles
-                .FirstOrDefault(v => v.Id == vehicle.Id);
-            if (existingVehicle == null)
+            var vehicleDAO = _propertyContext.Vehicles.AsNoTracking().FirstOrDefault(v => v.Id == vehicle.Id);
+            if (vehicleDAO == null)
                 return NotFound($"Транспортное средство с ID {vehicle.Id} не найдено");
 
             var result = CheckParams(vehicle);
             if (result != null)
                 return result;
 
-            existingVehicle.Format(vehicle);
+            vehicleDAO = MapToDAO(vehicle);
 
-            _propertyContext.Vehicles.Update(existingVehicle);
-            _propertyContext.SaveChanges();
+            _propertyContext.Vehicles.Update(vehicleDAO);
+            await _propertyContext.SaveChangesAsync();
 
             return Ok(vehicle);
         }
@@ -97,16 +106,15 @@ namespace CountyRP.WebAPI.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            Entities.Vehicle vehicle = _propertyContext.Vehicles
-                .FirstOrDefault(v => v.Id == id);
+            var vehicleDAO = _propertyContext.Vehicles.FirstOrDefault(v => v.Id == id);
 
-            if (vehicle == null)
+            if (vehicleDAO == null)
                 return NotFound($"Транспортное средство с ID {id} не найдено");
 
-            _propertyContext.Vehicles.Remove(vehicle);
-            _propertyContext.SaveChanges();
+            _propertyContext.Vehicles.Remove(vehicleDAO);
+            await _propertyContext.SaveChangesAsync();
 
             return Ok();
         }
@@ -140,6 +148,44 @@ namespace CountyRP.WebAPI.Controllers
                 return BadRequest($"Фракция с ID {vehicle.FactionId} не найдена");
 
             return null;
+        }
+
+        private DAO.Vehicle MapToDAO(Vehicle vehicle)
+        {
+            return new DAO.Vehicle
+            {
+                Id = vehicle.Id,
+                Model = vehicle.Model,
+                Position = vehicle.Position?.Select(p => p).ToArray(),
+                Rotation = vehicle.Rotation,
+                Dimension = vehicle.Dimension,
+                Color1 = vehicle.Color1,
+                Color2 = vehicle.Color2,
+                Fuel = vehicle.Fuel,
+                OwnerId = vehicle.OwnerId,
+                FactionId = vehicle.FactionId,
+                Lock = vehicle.Lock,
+                LicensePlate = vehicle.LicensePlate
+            };
+        }
+
+        private Vehicle MapToModel(DAO.Vehicle vehicle)
+        {
+            return new Vehicle
+            {
+                Id = vehicle.Id,
+                Model = vehicle.Model,
+                Position = vehicle.Position?.Select(p => p).ToArray(),
+                Rotation = vehicle.Rotation,
+                Dimension = vehicle.Dimension,
+                Color1 = vehicle.Color1,
+                Color2 = vehicle.Color2,
+                Fuel = vehicle.Fuel,
+                OwnerId = vehicle.OwnerId,
+                FactionId = vehicle.FactionId,
+                Lock = vehicle.Lock,
+                LicensePlate = vehicle.LicensePlate
+            };
         }
     }
 }

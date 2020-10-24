@@ -1,4 +1,5 @@
 using System.Net.Http;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -8,9 +9,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
+using CountyRP.Extra;
 using CountyRP.WebSite.Services;
 using CountyRP.WebSite.Services.Interfaces;
-using CountyRP.Extra;
 
 namespace CountyRP.WebSite
 {
@@ -36,8 +37,19 @@ namespace CountyRP.WebSite
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
+                    options.Events.OnRedirectToLogin = async (context) =>
+                    {
+                        context.Response.StatusCode = 401;
+                        await Task.CompletedTask;
+                    };
+                    options.Events.OnRedirectToAccessDenied = async (context) =>
+                    {
+                        context.Response.StatusCode = 403;
+                        await Task.CompletedTask;
+                    };
                     options.ExpireTimeSpan = System.TimeSpan.FromDays(365);
-                });
+                }
+            );
 
             HttpClient httpClient = new HttpClient();
             services.AddSingleton(new PlayerClient(httpClient));
@@ -46,6 +58,9 @@ namespace CountyRP.WebSite
             services.AddSingleton(new FactionClient(httpClient));
             services.AddSingleton(new GroupClient(httpClient));
             services.AddSingleton(new AdminLevelClient(httpClient));
+            services.AddSingleton(new LogClient(httpClient));
+            services.AddSingleton(new SiteBanClient(httpClient));
+            services.AddSingleton(new GameBanClient(httpClient));
 
             services.AddTransient<IPlayerAdapter, PlayerAdapter>();
             services.AddTransient<IPersonAdapter, PersonAdapter>();
@@ -53,6 +68,9 @@ namespace CountyRP.WebSite
             services.AddTransient<IFactionAdapter, FactionAdapter>();
             services.AddTransient<IGroupAdapter, GroupAdapter>();
             services.AddTransient<IAdminLevelAdapter, AdminLevelAdapter>();
+            services.AddTransient<ILogAdapter, LogAdapter>();
+            services.AddTransient<ISiteBanAdapter, SiteBanAdapter>();
+            services.AddTransient<IGameBanAdapter, GameBanAdapter>();
 
             // Register the Swagger services
             services.AddSwaggerDocument();
