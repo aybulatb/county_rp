@@ -94,17 +94,20 @@ namespace CountyRP.WebSite
                 app.UseHsts();
             }
 
-            if (env.IsStaging())
-            {
-                // Подключаем CORS
-                app.UseCors(builder => builder.AllowAnyOrigin());
-            }
-
             //app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
             app.UseRouting();
+
+            if (env.IsStaging() || env.IsDevelopment())
+            {
+                // Подключаем CORS
+                app.UseCors(builder => builder
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader());
+            }
 
             // Register the Swagger generator and the Swagger UI middlewares
             if (!env.IsDevelopment())
