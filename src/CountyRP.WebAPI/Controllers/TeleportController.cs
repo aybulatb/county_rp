@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 using CountyRP.Models;
 using CountyRP.WebAPI.Models;
+using CountyRP.WebAPI.Models.ViewModels;
 
 namespace CountyRP.WebAPI.Controllers
 {
@@ -43,6 +44,16 @@ namespace CountyRP.WebAPI.Controllers
             return Ok(teleport);
         }
 
+        [HttpGet]
+        [ProducesResponseType(typeof(Teleport[]), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        public IActionResult GetAll()
+        {
+            var teleportsDAO = _propertyContext.Teleports.AsNoTracking().ToArray();
+
+            return Ok(teleportsDAO.Select(t => MapToModel(t)));
+        }
+
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(Teleport), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
@@ -53,6 +64,39 @@ namespace CountyRP.WebAPI.Controllers
                 return NotFound($"Телепорт с ID {id} не найден");
 
             return Ok(MapToModel(teleportDAO));
+        }
+
+        [HttpGet("FilterBy")]
+        [ProducesResponseType(typeof(FilteredModels<Teleport>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        public IActionResult FilterBy(int page, int count)
+        {
+            if (page < 1)
+                return BadRequest("Номер страницы телепортов не может быть меньше 1");
+
+            if (count < 1 || count > 50)
+                return BadRequest("Количество телепортов на одной странице должно быть от 1 до 50");
+
+            IQueryable<DAO.Teleport> query = _propertyContext.Teleports;
+
+            int allAmount = _propertyContext.Teleports.Count();
+            int maxPage = (allAmount % count == 0) ? allAmount / count : allAmount / count + 1;
+            if (page > maxPage && maxPage > 0)
+                page = maxPage;
+
+            var choosenTeleports = query
+                    .Skip((page - 1) * count)
+                    .Take(count)
+                    .Select(sb => sb)
+                    .ToList();
+
+            return Ok(new FilteredModels<Teleport>
+            {
+                Items = choosenTeleports.Select(t => MapToModel(t)).ToList(),
+                AllAmount = allAmount,
+                Page = page,
+                MaxPage = maxPage
+            });
         }
 
         [HttpPut("{id}")]
@@ -99,8 +143,8 @@ namespace CountyRP.WebAPI.Controllers
         {
             TrimParams(teleport);
 
-            if (teleport.Name == null || teleport.Name.Length < 3 || teleport.Name.Length > 32)
-                return BadRequest("Название должно быть от 3 до 32 символов");
+            if (teleport.Name == null || teleport.Name.Length > 32)
+                return BadRequest("Название должно быть до 32 символов");
 
             if (teleport.EntrancePosition == null || teleport.EntrancePosition.Length != 3)
                 return BadRequest("Количество координат входа должно быть равно 3");
