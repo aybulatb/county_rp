@@ -5,7 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.9" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CountyRP.Forum.Domain\CountyRP.Forum.Domain.csproj" />
+    <ProjectReference Include="..\CountyRP.Forum.Infrastructure\CountyRP.Forum.Infrastructure.csproj" />
   </ItemGroup>
 
 

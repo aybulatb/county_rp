@@ -3,6 +3,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.EntityFrameworkCore;
+
+using CountyRP.Forum.Domain.Interfaces;
+using CountyRP.Forum.Infrastructure;
+using CountyRP.Forum.Domain;
 
 namespace CountyRP.Forum.WebAPI
 {
@@ -19,6 +24,13 @@ namespace CountyRP.Forum.WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            string connectionString = Configuration.GetConnectionString("DefaultConnection");
+            services.AddDbContext<ForumContext>(options => options.UseMySql(connectionString));
+            services.AddDbContext<TopicContext>(options => options.UseMySql(connectionString));
+
+            services.AddTransient<IForumRepository, ForumRepository>();
+            services.AddTransient<ITopicRepository, TopicRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
