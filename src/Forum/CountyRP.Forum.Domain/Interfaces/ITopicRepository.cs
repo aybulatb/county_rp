@@ -6,10 +6,10 @@ namespace CountyRP.Forum.Domain.Interfaces
     public interface ITopicRepository
     {
         // получение всех топиков
-        IEnumerable<Topic> GetById(int forumId);
+        Task<IEnumerable<Topic>> GetByForumId(int forumId);
         // создание топика
-        Task CreateTopic(Topic topic);
+        Task<Topic> CreateTopic(Topic topic);
         // редактирование топика
-        Task Edit(int topicId);
+        Task<Topic> Edit(int topicId);
     }
 }

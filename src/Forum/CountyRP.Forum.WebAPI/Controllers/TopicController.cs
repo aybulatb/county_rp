@@ -2,8 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 
-using CountyRP.Forum.Domain.Interfaces;
 using CountyRP.Forum.Domain;
+using CountyRP.Forum.Domain.Interfaces;
+using CountyRP.Forum.Domain.Exceptions;
 
 namespace CountyRP.Forum.WebAPI.Controllers
 {
@@ -19,19 +20,6 @@ namespace CountyRP.Forum.WebAPI.Controllers
         }
 
         /// <summary>
-        /// Получение всех тем на форуме id
-        /// </summary>
-        [HttpGet("Forum/{id}")]
-        [ProducesResponseType(typeof(Topic), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult GetById(int id)
-        {
-            var res = _topicRepository.GetById(id);
-
-            return Ok(res);
-        }
-
-        /// <summary>
         /// Создание темы на форуме
         /// </summary>
         [HttpPost(nameof(CreateTopic))]
@@ -39,9 +27,16 @@ namespace CountyRP.Forum.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateTopic([FromBody] Topic topic)
         {
-            await _topicRepository.CreateTopic(topic);
+            try
+            {
+                var createdTopic = await _topicRepository.CreateTopic(topic);
 
-            return Ok();
+                return Ok(createdTopic);
+            }
+            catch (Extra.ApiException ex)
+            {
+                throw new ForumException(ex.StatusCode, ex.Message);
+            }
         }
     }
 }
