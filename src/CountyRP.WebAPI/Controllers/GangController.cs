@@ -57,7 +57,7 @@ namespace CountyRP.WebAPI.Controllers
         public IActionResult GetAll()
         {
             var gangs = _gangContext.Gangs.AsNoTracking()
-                .Select(g => MapToModel(g));
+                .Select(g => MapToModel(g)).ToArray();
 
             return Ok(gangs);
         }
