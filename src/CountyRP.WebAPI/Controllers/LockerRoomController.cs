@@ -39,6 +39,16 @@ namespace CountyRP.WebAPI.Controllers
             return Created("", lockerRoom);
         }
 
+        [HttpGet]
+        [ProducesResponseType(typeof(LockerRoom[]), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        public IActionResult GetAll()
+        {
+            var lockerRoomsDAO = _factionContext.LockerRooms.AsNoTracking().ToArray();
+
+            return Ok(lockerRoomsDAO.Select(lr => MapToModel(lr)));
+        }
+
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(LockerRoom), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
