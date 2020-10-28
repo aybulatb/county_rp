@@ -41,6 +41,15 @@ namespace CountyRP.WebAPI.Controllers
             return Created("", room);
         }
 
+        [HttpGet]
+        [ProducesResponseType(typeof(Room[]), StatusCodes.Status200OK)]
+        public IActionResult Get()
+        {
+            var roomsDAO = _propertyContext.Rooms.AsNoTracking().ToArray();
+
+            return Ok(roomsDAO.Select(r => MapToModel(r)));
+        }
+
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(Room), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
