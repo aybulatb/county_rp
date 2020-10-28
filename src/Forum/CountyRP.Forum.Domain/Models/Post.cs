@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CountyRP.Forum.Domain
+namespace CountyRP.Forum.Domain.Models
 {
     public class Post
     {

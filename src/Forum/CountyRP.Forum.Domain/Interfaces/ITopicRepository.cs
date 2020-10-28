@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
+using CountyRP.Forum.Domain.Models;
+
 namespace CountyRP.Forum.Domain.Interfaces
 {
     public interface ITopicRepository
     {
-        // получение всех топиков
         Task<IEnumerable<Topic>> GetByForumId(int forumId);
-        // создание топика
         Task<Topic> CreateTopic(Topic topic);
-        // редактирование топика
-        Task<Topic> Edit(int topicId);
+        Task<Topic> Edit(Topic topic);
+        Task Delete(int id);
     }
 }

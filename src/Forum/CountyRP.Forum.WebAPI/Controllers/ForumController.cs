@@ -1,10 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 
-using CountyRP.Forum.Domain;
 using CountyRP.Forum.Domain.Interfaces;
-using CountyRP.Forum.Domain.Exceptions;
+using CountyRP.Forum.Domain.Models;
 
 namespace CountyRP.Forum.WebAPI.Controllers
 {
@@ -35,9 +35,9 @@ namespace CountyRP.Forum.WebAPI.Controllers
 
                 return Ok(forums);
             }
-            catch (Extra.ApiException ex)
+            catch (Exception ex)
             {
-                throw new ForumException(ex.StatusCode, ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -46,12 +46,19 @@ namespace CountyRP.Forum.WebAPI.Controllers
         /// </summary>
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(Topic), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetById(int id)
         {
-            var res = await _topicRepository.GetByForumId(id);
+            try
+            {
+                var topics = await _topicRepository.GetByForumId(id);
 
-            return Ok(res);
+                return Ok(topics);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         /// <summary>
@@ -68,9 +75,9 @@ namespace CountyRP.Forum.WebAPI.Controllers
 
                 return Ok(createdForum);
             }
-            catch (Extra.ApiException ex)
+            catch (Exception ex)
             {
-                throw new ForumException(ex.StatusCode, ex.Message);
+                return BadRequest(ex.Message);
             }
         }
     }

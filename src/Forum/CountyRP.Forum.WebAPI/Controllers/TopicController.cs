@@ -1,10 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 
-using CountyRP.Forum.Domain;
 using CountyRP.Forum.Domain.Interfaces;
-using CountyRP.Forum.Domain.Exceptions;
+using CountyRP.Forum.Domain.Models;
+using CountyRP.Forum.WebAPI.ViewModels;
 
 namespace CountyRP.Forum.WebAPI.Controllers
 {
@@ -33,9 +34,49 @@ namespace CountyRP.Forum.WebAPI.Controllers
 
                 return Ok(createdTopic);
             }
-            catch (Extra.ApiException ex)
+            catch (Exception ex)
             {
-                throw new ForumException(ex.StatusCode, ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut(nameof(EditTopic))]
+        [ProducesResponseType(typeof(Topic), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> EditTopic([FromBody] TopicViewModel topicViewModel)
+        {
+            try
+            {
+                var topic = new Topic
+                {
+                    Id = topicViewModel.Id,
+                    Caption = topicViewModel.Caption
+                };
+
+                var editedTopic = await _topicRepository.Edit(topic);
+
+                return Ok(editedTopic);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpDelete("DeleteTopic/{id}")]
+        [ProducesResponseType(typeof(Topic), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> DeleteTopic(int id)
+        {
+            try
+            {
+                await _topicRepository.Delete(id);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
     }
