@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 using CountyRP.Models;
 using CountyRP.WebSite.Exceptions;
@@ -22,8 +23,7 @@ namespace CountyRP.WebSite.Controllers
             _playerAdapter = playerAdapter;
         }
 
-        [HttpPost]
-        [Route("TryAuthorize")]
+        [HttpPost("TryAuthorize")]
         public async Task<IActionResult> TryAuthorize(string login, string password)
         {
             if (User.Identity.IsAuthenticated)
@@ -40,31 +40,40 @@ namespace CountyRP.WebSite.Controllers
                 return BadRequest(ex.Message);
             }
 
-            await Authenticate(player.Id, player.Password);
+            string jwt = Authenticate(player.Id, player.Login);
 
-            return Ok(player);
+            return Ok(new
+            {
+                access_token = jwt
+            });
         }
 
-        private async Task Authenticate(int id, string password)
+        [HttpGet("Logout")]
+        public IActionResult Logout()
+        {
+            return Ok();
+        }
+
+        private string Authenticate(int id, string login)
         {
             var claims = new List<Claim>
             {
                 new Claim("id", id.ToString()),
-                new Claim("password", password)
+                new Claim(ClaimsIdentity.DefaultNameClaimType, login)
             };
 
-            ClaimsIdentity identity = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
+            ClaimsIdentity identity = new ClaimsIdentity(claims, "Token");
 
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
-        }
+            var now = DateTime.UtcNow;
+            var jwt = new JwtSecurityToken(
+                    issuer: AuthOptions.ISSUER,
+                    notBefore: now,
+                    claims: identity.Claims,
+                    expires: now.Add(TimeSpan.FromDays(AuthOptions.LIFETIME)),
+                    signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
+            var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
 
-        [HttpGet]
-        [Route("Logout")]
-        public async Task<IActionResult> Logout()
-        {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-
-            return Ok();
+            return encodedJwt;
         }
     }
 }

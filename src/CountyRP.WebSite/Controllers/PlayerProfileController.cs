@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 using CountyRP.Models;
 using CountyRP.WebSite.Services.Interfaces;
@@ -19,8 +20,8 @@ namespace CountyRP.WebSite.Controllers
             _playerAdapter = playerAdapter;
         }
 
-        [HttpGet]
-        [Route("MiniInfo")]
+        [Authorize]
+        [HttpGet("MiniInfo")]
         public async Task<IActionResult> GetMiniInfo()
         {
             int id = User.Claims.GetId();
