@@ -56,10 +56,9 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(Gang[]), StatusCodes.Status200OK)]
         public IActionResult GetAll()
         {
-            var gangs = _gangContext.Gangs.AsNoTracking()
-                .Select(g => MapToModel(g));
+            var gangsDAO = _gangContext.Gangs.AsNoTracking().ToArray();
 
-            return Ok(gangs);
+            return Ok(gangsDAO.Select(g => MapToModel(g)));
         }
 
         [HttpPut("{id}")]

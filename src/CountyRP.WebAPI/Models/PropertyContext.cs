@@ -11,6 +11,7 @@ namespace CountyRP.WebAPI.Models
         public DbSet<Business> Businesses { get; set; }
         public DbSet<Teleport> Teleports { get; set; }
         public DbSet<Room> Rooms { get; set; }
+        public DbSet<ATM> ATMs { get; set; }
 
         public PropertyContext(DbContextOptions<PropertyContext> options)
             : base(options)

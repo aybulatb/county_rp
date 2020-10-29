@@ -41,12 +41,22 @@ namespace CountyRP.WebAPI.Controllers
             return Ok(business);
         }
 
+        [HttpGet]
+        [ProducesResponseType(typeof(Business[]), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        public IActionResult GetAll()
+        {
+            var businessesDAO = _propertyContext.Businesses.AsNoTracking().ToArray();
+
+            return Ok(businessesDAO.Select(b => MapToModel(b)));
+        }
+
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(Business), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public IActionResult Get(int id)
         {
-            var businessDAO = _propertyContext.Businesses.FirstOrDefault(b => b.Id == id);
+            var businessDAO = _propertyContext.Businesses.AsNoTracking().FirstOrDefault(b => b.Id == id);
             if (businessDAO == null)
                 return NotFound($"Бизнес с ID {id} не найден");
 

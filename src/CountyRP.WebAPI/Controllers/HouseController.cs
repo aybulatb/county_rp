@@ -43,6 +43,16 @@ namespace CountyRP.WebAPI.Controllers
             return Created("", house);
         }
 
+        [HttpGet]
+        [ProducesResponseType(typeof(House[]), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        public IActionResult GetAll()
+        {
+            var housesDAO = _propertyContext.Houses.AsNoTracking().ToArray();
+
+            return Ok(housesDAO.Select(h => MapToModel(h)));
+        }
+
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(House), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]

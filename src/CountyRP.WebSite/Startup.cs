@@ -1,6 +1,5 @@
 using System.Net.Http;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -8,6 +7,8 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
+using NSwag.Generation.Processors.Security;
 
 using CountyRP.Extra;
 using CountyRP.WebSite.Services;
@@ -34,24 +35,29 @@ namespace CountyRP.WebSite
                 configuration.RootPath = "ClientApp/build";
             });
 
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options =>
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
                 {
-                    options.Events.OnRedirectToLogin = async (context) =>
+                    options.RequireHttpsMetadata = false;
+                    options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        context.Response.StatusCode = 401;
-                        await Task.CompletedTask;
+                        ValidateIssuer = true,
+                        ValidIssuer = AuthOptions.ISSUER,
+
+                        ValidateAudience = false,
+
+                        ValidateLifetime = true,
+
+                        IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
+                        ValidateIssuerSigningKey = true,
                     };
-                    options.Events.OnRedirectToAccessDenied = async (context) =>
-                    {
-                        context.Response.StatusCode = 403;
-                        await Task.CompletedTask;
-                    };
-                    options.ExpireTimeSpan = System.TimeSpan.FromDays(365);
                 }
             );
 
+            var apiKey = Configuration.GetValue<string>("CommonWebAPIKey");
+
             HttpClient httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Add("api-key", apiKey);
             services.AddSingleton(new PlayerClient(httpClient));
             services.AddSingleton(new PersonClient(httpClient));
             services.AddSingleton(new AllPlayerClient(httpClient));
@@ -73,7 +79,21 @@ namespace CountyRP.WebSite
             services.AddTransient<IGameBanAdapter, GameBanAdapter>();
 
             // Register the Swagger services
-            services.AddSwaggerDocument();
+            // Register the Swagger services
+            services.AddSwaggerDocument(document =>
+            {
+                document.Title = "Sample API";
+                document.Version = "v1";
+                document.Description = "The sample API documentation description.";
+                document.DocumentProcessors.Add(new SecurityDefinitionAppender("JWT token", new NSwag.OpenApiSecurityScheme
+                {
+                    Type = NSwag.OpenApiSecuritySchemeType.ApiKey,
+                    Name = "Authorization",
+                    In = NSwag.OpenApiSecurityApiKeyLocation.Header,
+                    Description = "Copy 'Bearer ' + valid JWT token into field"
+                }));
+                document.OperationProcessors.Add(new OperationSecurityScopeProcessor("JWT token"));
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -94,38 +114,23 @@ namespace CountyRP.WebSite
                 app.UseHsts();
             }
 
-            if (env.IsStaging())
-            {
-                // Подключаем CORS
-                app.UseCors(builder => builder.AllowAnyOrigin());
-            }
-
             //app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
             app.UseRouting();
 
+            if (env.IsStaging() || env.IsDevelopment())
+            {
+                // Подключаем CORS
+                app.UseCors(builder => builder
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader());
+            }
+
             // Register the Swagger generator and the Swagger UI middlewares
-            if (!env.IsDevelopment())
-                app.UseOpenApi(configure =>
-                {
-                    configure.PostProcess = (document, _) =>
-                    {
-                        document.Info.Title = "County RP Site";
-                        document.Schemes = new[] { NSwag.OpenApiSchema.Https };
-                        document.Info.Description = "API сайта для фронтенда";
-                    };
-                });
-            else
-                app.UseOpenApi(configure =>
-                {
-                    configure.PostProcess = (document, _) =>
-                    {
-                        document.Info.Title = "County RP Site";
-                        document.Info.Description = "API сайта для фронтенда";
-                    };
-                });
+            app.UseOpenApi();
             app.UseSwaggerUi3();
 
             app.UseAuthentication();

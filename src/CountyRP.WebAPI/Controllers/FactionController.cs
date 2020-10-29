@@ -61,9 +61,9 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(Faction[]), StatusCodes.Status200OK)]
         public IActionResult GetAll()
         {
-            var factions = _factionContext.Factions.AsNoTracking().Select(f => MapToModel(f));
+            var factionsDAO = _factionContext.Factions.AsNoTracking().ToArray();
 
-            return Ok(factions);
+            return Ok(factionsDAO.Select(f => MapToModel(f)));
         }
 
         [HttpGet("FilterBy")]

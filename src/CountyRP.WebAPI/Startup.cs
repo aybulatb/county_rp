@@ -7,6 +7,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 
 using CountyRP.WebAPI.Models;
+using NSwag.Generation.Processors.Security;
+using System.Collections.Generic;
+using CountyRP.WebAPI.Extensions;
 
 namespace CountyRP.WebAPI
 {
@@ -18,6 +21,7 @@ namespace CountyRP.WebAPI
         }
 
         public IConfiguration Configuration { get; }
+        public List<string> APIKeys { get; set; }
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -35,8 +39,26 @@ namespace CountyRP.WebAPI
             services.AddDbContext<AppearanceContext>(options => options.UseMySql(connectionString));
             services.AddDbContext<InventoryContext>(options => options.UseMySql(connectionString));
 
+            APIKeys = new List<string>();
+            APIKeys.Add(Configuration.GetSection("AllowedServices:0:APIKey").Value);
+            APIKeys.Add(Configuration.GetSection("AllowedServices:1:APIKey").Value);
+            APIKeys.Add(Configuration.GetSection("AllowedServices:2:APIKey").Value);
+
             // Register the Swagger services
-            services.AddSwaggerDocument();
+            services.AddSwaggerDocument(document =>
+            {
+                document.Title = "Sample API";
+                document.Version = "v1";
+                document.Description = "The sample API documentation description.";
+                document.DocumentProcessors.Add(new SecurityDefinitionAppender("APIKey", new NSwag.OpenApiSecurityScheme
+                {
+                    Type = NSwag.OpenApiSecuritySchemeType.ApiKey,
+                    Name = "api-key",
+                    In = NSwag.OpenApiSecurityApiKeyLocation.Header,
+                    Description = "APIKey"
+                }));
+                document.OperationProcessors.Add(new OperationSecurityScopeProcessor("APIKey"));
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -56,26 +78,10 @@ namespace CountyRP.WebAPI
             app.UseRouting();
 
             // Register the Swagger generator and the Swagger UI middlewares
-            if (!env.IsDevelopment())
-                app.UseOpenApi(configure =>
-                {
-                    configure.PostProcess = (document, _) =>
-                    {
-                        document.Info.Title = "County RP Service";
-                        //document.Schemes = new[] { NSwag.OpenApiSchema.Https };
-                        document.Info.Description = "Общий сервис со всеми основными ресурсами";
-                    };
-                });
-            else
-                app.UseOpenApi(configure =>
-                {
-                    configure.PostProcess = (document, _) =>
-                    {
-                        document.Info.Title = "County RP Service";
-                        document.Info.Description = "Общий сервис со всеми основными ресурсами";
-                    };
-                });
+            app.UseOpenApi();
             app.UseSwaggerUi3();
+
+            app.UseAPIKeys(APIKeys);
 
             app.UseAuthorization();
 
