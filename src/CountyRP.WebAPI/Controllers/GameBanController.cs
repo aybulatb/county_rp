@@ -58,7 +58,7 @@ namespace CountyRP.WebAPI.Controllers
             var choosenGameBans = query
                     .Skip((page - 1) * count)
                     .Take(count)
-                    .Select(sb => sb)
+                    .Select(gb => gb)
                     .ToList();
 
             return Ok(new FilteredModels<GameBan>

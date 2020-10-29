@@ -88,13 +88,14 @@ namespace CountyRP.WebAPI.Controllers
             if (page > maxPage && maxPage > 0)
                 page = maxPage;
 
-            return Ok(new FilteredModels<Faction>
-            {
-                Items = query
+            var choosenFactions = query
                     .Skip((page - 1) * count)
                     .Take(count)
-                    .Select(f => MapToModel(f))
-                    .ToList(),
+                    .ToList();
+
+            return Ok(new FilteredModels<Faction>
+            {
+                Items = choosenFactions.Select(f => MapToModel(f)).ToList(),
                 AllAmount = allAmount,
                 Page = page,
                 MaxPage = maxPage

@@ -58,7 +58,6 @@ namespace CountyRP.WebAPI.Controllers
             var choosenSiteBans = query
                     .Skip((page - 1) * count)
                     .Take(count)
-                    .Select(sb => sb)
                     .ToList();
 
             return Ok(new FilteredModels<SiteBan>

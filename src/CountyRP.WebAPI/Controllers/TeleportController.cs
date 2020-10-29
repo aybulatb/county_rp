@@ -87,7 +87,6 @@ namespace CountyRP.WebAPI.Controllers
             var choosenTeleports = query
                     .Skip((page - 1) * count)
                     .Take(count)
-                    .Select(sb => sb)
                     .ToList();
 
             return Ok(new FilteredModels<Teleport>
