@@ -51,7 +51,10 @@ namespace CountyRP.WebSite
                 }
             );
 
+            var apiKey = Configuration.GetValue<string>("CommonWebAPIKey");
+
             HttpClient httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Add("api-key", apiKey);
             services.AddSingleton(new PlayerClient(httpClient));
             services.AddSingleton(new PersonClient(httpClient));
             services.AddSingleton(new AllPlayerClient(httpClient));
@@ -111,16 +114,19 @@ namespace CountyRP.WebSite
 
             // Register the Swagger generator and the Swagger UI middlewares
             if (!env.IsDevelopment())
+            {
                 app.UseOpenApi(configure =>
                 {
                     configure.PostProcess = (document, _) =>
                     {
                         document.Info.Title = "County RP Site";
-                        document.Schemes = new[] { NSwag.OpenApiSchema.Https };
+                        //document.Schemes = new[] { NSwag.OpenApiSchema.Https };
                         document.Info.Description = "API сайта для фронтенда";
                     };
                 });
+            }
             else
+            {
                 app.UseOpenApi(configure =>
                 {
                     configure.PostProcess = (document, _) =>
@@ -129,6 +135,7 @@ namespace CountyRP.WebSite
                         document.Info.Description = "API сайта для фронтенда";
                     };
                 });
+            }
             app.UseSwaggerUi3();
 
             app.UseAuthentication();
