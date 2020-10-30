@@ -15,5 +15,7 @@ namespace CountyRP.Models
         public bool Leader { get; set; }
         public int Rank { get; set; }
         public float[] Position { get; set; }
+        public int CommonInventoryId { get; set; }
+        public int PocketsInventoryId { get; set; }
     }
 }

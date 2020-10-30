@@ -81,7 +81,7 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
-            var inventoryDAO = _inventoryContext.Inventories.FirstOrDefault(sb => sb.Id == id);
+            var inventoryDAO = _inventoryContext.Inventories.FirstOrDefault(i => i.Id == id);
 
             if (inventoryDAO == null)
                 return NotFound($"Инвентарь с ID {id} не найден");

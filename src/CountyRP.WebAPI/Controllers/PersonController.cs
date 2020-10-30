@@ -221,7 +221,9 @@ namespace CountyRP.WebAPI.Controllers
                 GroupId = person.GroupId,
                 Leader = person.Leader,
                 Rank = person.Rank,
-                Position = person.Position?.Select(p => p).ToArray()
+                Position = person.Position?.ToArray(),
+                CommonInventoryId = person.CommonInventoryId,
+                PocketsInventoryId = person.PocketsInventoryId
             };
         }
 
@@ -239,7 +241,9 @@ namespace CountyRP.WebAPI.Controllers
                 GroupId = person.GroupId,
                 Leader = person.Leader,
                 Rank = person.Rank,
-                Position = person.Position?.Select(p => p).ToArray()
+                Position = person.Position?.ToArray(),
+                CommonInventoryId = person.CommonInventoryId,
+                PocketsInventoryId = person.PocketsInventoryId
             };
         }
     }

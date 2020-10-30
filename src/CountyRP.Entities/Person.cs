@@ -22,6 +22,8 @@ namespace CountyRP.DAO
             get { return JsonConvert.DeserializeObject<float[]>(_Position); }
             set { _Position = JsonConvert.SerializeObject(value); }
         }
+        public int CommonInventoryId { get; set; }
+        public int PocketsInventoryId { get; set; }
 
         [Column("Position")]
         public string _Position { get; set; }
