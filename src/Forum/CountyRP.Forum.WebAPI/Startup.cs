@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 using CountyRP.Forum.Domain.Interfaces;
 using CountyRP.Forum.Infrastructure;
-using CountyRP.Forum.Domain.Models;
+using CountyRP.Forum.Infrastructure.Models;
 
 namespace CountyRP.Forum.WebAPI
 {
@@ -33,6 +33,9 @@ namespace CountyRP.Forum.WebAPI
             services.AddTransient<IForumRepository, ForumRepository>();
             services.AddTransient<ITopicRepository, TopicRepository>();
             services.AddTransient<IPostRepository, PostRepository>();
+
+            // Register the Swagger services
+            services.AddSwaggerDocument();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,6 +49,27 @@ namespace CountyRP.Forum.WebAPI
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            if (!env.IsDevelopment())
+                app.UseOpenApi(configure =>
+                {
+                    configure.PostProcess = (document, _) =>
+                    {
+                        document.Info.Title = "County RP Forum";
+                        //document.Schemes = new[] { NSwag.OpenApiSchema.Https };
+                        document.Info.Description = "Сервис с ресурсами форума";
+                    };
+                });
+            else
+                app.UseOpenApi(configure =>
+                {
+                    configure.PostProcess = (document, _) =>
+                    {
+                        document.Info.Title = "County RP Forum";
+                        document.Info.Description = "Сервис с ресурсами форума";
+                    };
+                });
+            app.UseSwaggerUi3();
 
             app.UseAuthorization();
 
