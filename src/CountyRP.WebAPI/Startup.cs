@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -5,10 +6,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
+using NSwag.Generation.Processors.Security;
 
 using CountyRP.WebAPI.Models;
-using NSwag.Generation.Processors.Security;
-using System.Collections.Generic;
 using CountyRP.WebAPI.Extensions;
 
 namespace CountyRP.WebAPI
@@ -38,6 +38,7 @@ namespace CountyRP.WebAPI
             services.AddDbContext<LogContext>(options => options.UseMySql(connectionString));
             services.AddDbContext<AppearanceContext>(options => options.UseMySql(connectionString));
             services.AddDbContext<InventoryContext>(options => options.UseMySql(connectionString));
+            services.AddDbContext<BlackMarketContext>(options => options.UseMySql(connectionString));
 
             APIKeys = new List<string>();
             APIKeys.Add(Configuration.GetSection("AllowedServices:0:APIKey").Value);
