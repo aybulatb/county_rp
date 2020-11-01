@@ -21,7 +21,7 @@ namespace CountyRP.WebAPI.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(LogUnit), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(BlackMarketItem[]), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public IActionResult GetAll()
         {
