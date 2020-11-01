@@ -1,9 +1,9 @@
 # Архитектура приложения
 
 Проект включает в себя несколько веб-приложений:
-- [WebAPI] (https://github.com/KShaddix/county-rp/tree/master/src/CountyRP.WebAPI)
-- [WebSite] (https://github.com/KShaddix/county-rp/tree/master/src/CountyRP.WebSite)
-- [Forum] (https://github.com/KShaddix/county-rp/tree/master/src/Forum)
+- [WebAPI](https://github.com/KShaddix/county-rp/tree/master/src/CountyRP.WebAPI)
+- [WebSite](https://github.com/KShaddix/county-rp/tree/master/src/CountyRP.WebSite)
+- [Forum](https://github.com/KShaddix/county-rp/tree/master/src/Forum)
 - Игровая модификация (в другом репозитории)
 
 ![](img/app-arch.png)
