@@ -155,7 +155,34 @@ namespace CountyRP.WebAPI.Controllers
             {
                 Id = adminLevel.Id,
                 Name = adminLevel.Name,
-                Ban = adminLevel.Ban
+                Ban = adminLevel.Ban,
+                CreateVehicle = adminLevel.CreateVehicle,
+                EditVehicle = adminLevel.EditVehicle,
+                DeleteVehicle = adminLevel.DeleteVehicle,
+                CreateFaction = adminLevel.CreateFaction,
+                EditFaction = adminLevel.EditFaction,
+                DeleteFaction = adminLevel.DeleteFaction,
+                CreateHouse = adminLevel.CreateHouse,
+                EditHouse = adminLevel.EditHouse,
+                DeleteHouse = adminLevel.DeleteHouse,
+                CreateBusiness = adminLevel.CreateBusiness,
+                EditBusiness = adminLevel.EditBusiness,
+                DeleteBusiness = adminLevel.DeleteBusiness,
+                CreateTeleport = adminLevel.CreateTeleport,
+                EditTeleport = adminLevel.EditTeleport,
+                DeleteTeleport = adminLevel.DeleteTeleport,
+                CreateGang = adminLevel.CreateGang,
+                EditGang = adminLevel.EditGang,
+                DeleteGang = adminLevel.DeleteGang,
+                CreateLockerRoom = adminLevel.CreateLockerRoom,
+                EditLockerRoom = adminLevel.EditLockerRoom,
+                DeleteLockerRoom = adminLevel.DeleteLockerRoom,
+                CreateATM = adminLevel.CreateATM,
+                EditATM = adminLevel.EditATM,
+                DeleteATM = adminLevel.DeleteATM,
+                CreateRoom = adminLevel.CreateRoom,
+                EditRoom = adminLevel.EditRoom,
+                DeleteRoom = adminLevel.DeleteRoom
             };
         }
 
@@ -165,7 +192,34 @@ namespace CountyRP.WebAPI.Controllers
             {
                 Id = adminLevel.Id,
                 Name = adminLevel.Name,
-                Ban = adminLevel.Ban
+                Ban = adminLevel.Ban,
+                CreateVehicle = adminLevel.CreateVehicle,
+                EditVehicle = adminLevel.EditVehicle,
+                DeleteVehicle = adminLevel.DeleteVehicle,
+                CreateFaction = adminLevel.CreateFaction,
+                EditFaction = adminLevel.EditFaction,
+                DeleteFaction = adminLevel.DeleteFaction,
+                CreateHouse = adminLevel.CreateHouse,
+                EditHouse = adminLevel.EditHouse,
+                DeleteHouse = adminLevel.DeleteHouse,
+                CreateBusiness = adminLevel.CreateBusiness,
+                EditBusiness = adminLevel.EditBusiness,
+                DeleteBusiness = adminLevel.DeleteBusiness,
+                CreateTeleport = adminLevel.CreateTeleport,
+                EditTeleport = adminLevel.EditTeleport,
+                DeleteTeleport = adminLevel.DeleteTeleport,
+                CreateGang = adminLevel.CreateGang,
+                EditGang = adminLevel.EditGang,
+                DeleteGang = adminLevel.DeleteGang,
+                CreateLockerRoom = adminLevel.CreateLockerRoom,
+                EditLockerRoom = adminLevel.EditLockerRoom,
+                DeleteLockerRoom = adminLevel.DeleteLockerRoom,
+                CreateATM = adminLevel.CreateATM,
+                EditATM = adminLevel.EditATM,
+                DeleteATM = adminLevel.DeleteATM,
+                CreateRoom = adminLevel.CreateRoom,
+                EditRoom = adminLevel.EditRoom,
+                DeleteRoom = adminLevel.DeleteRoom
             };
         }
     }
