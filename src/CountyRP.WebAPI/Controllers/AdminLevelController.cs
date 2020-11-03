@@ -41,12 +41,21 @@ namespace CountyRP.WebAPI.Controllers
             return Created("", adminLevel);
         }
 
+        [HttpGet]
+        [ProducesResponseType(typeof(AdminLevel[]), StatusCodes.Status200OK)]
+        public IActionResult GetAll()
+        {
+            var adminLevelsDAO = _adminLevelContext.AdminLevels.AsNoTracking().ToArray();
+
+            return Ok(adminLevelsDAO.Select(al => MapToModel(al)));
+        }
+
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(AdminLevel), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public IActionResult GetById(string id)
         {
-            var adminLevelDAO = _adminLevelContext.AdminLevels.FirstOrDefault(al => al.Id == id);
+            var adminLevelDAO = _adminLevelContext.AdminLevels.AsNoTracking().FirstOrDefault(al => al.Id == id);
 
             if (adminLevelDAO == null)
                 return NotFound($"Уровень админки с ID {id} не найден");
