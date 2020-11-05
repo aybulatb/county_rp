@@ -70,10 +70,23 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public IActionResult GetByPersonId(int personId)
         {
-            var vehicleDAO = _propertyContext.Vehicles.FirstOrDefault(v => v.OwnerId == personId);
+            var vehicleDAO = _propertyContext.Vehicles.AsNoTracking().FirstOrDefault(v => v.OwnerId == personId);
 
             if (vehicleDAO == null)
                 return NotFound($"Транспортное средство с владельцем с ID {personId} не найдено");
+
+            return Ok(MapToModel(vehicleDAO));
+        }
+
+        [HttpGet("GetByLicensePlate/{licensePlate}")]
+        [ProducesResponseType(typeof(Vehicle), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        public IActionResult GetByLicensePlate(string licensePlate)
+        {
+            var vehicleDAO = _propertyContext.Vehicles.AsNoTracking().FirstOrDefault(v => v.LicensePlate == licensePlate);
+
+            if (vehicleDAO == null)
+                return NotFound($"Транспортное средство с номером {licensePlate} не найдено");
 
             return Ok(MapToModel(vehicleDAO));
         }
