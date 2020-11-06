@@ -12,5 +12,6 @@
         public int Price { get; set; }
         public float[] SafePosition { get; set; }
         public uint SafeDimension { get; set; }
+        public int SafeInventoryId { get; set; }
     }
 }

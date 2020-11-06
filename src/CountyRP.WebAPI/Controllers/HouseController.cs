@@ -145,7 +145,8 @@ namespace CountyRP.WebAPI.Controllers
                 Lock = house.Lock,
                 Price = house.Price,
                 SafePosition = house.SafePosition?.ToArray(),
-                SafeDimension = house.SafeDimension
+                SafeDimension = house.SafeDimension,
+                SafeInventoryId = house.SafeInventoryId
             };
         }
 
@@ -162,7 +163,8 @@ namespace CountyRP.WebAPI.Controllers
                 Lock = house.Lock,
                 Price = house.Price,
                 SafePosition = house.SafePosition?.ToArray(),
-                SafeDimension = house.SafeDimension
+                SafeDimension = house.SafeDimension,
+                SafeInventoryId = house.SafeInventoryId
             };
         }
     }

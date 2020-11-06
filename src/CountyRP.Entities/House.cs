@@ -30,6 +30,7 @@ namespace CountyRP.DAO
             set => _SafePosition = JsonConvert.SerializeObject(value);
         }
         public uint SafeDimension { get; set; }
+        public int SafeInventoryId { get; set; }
 
         [Column("EntrancePosition")]
         public string _EntrancePosition { get; set; }
