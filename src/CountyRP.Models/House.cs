@@ -10,5 +10,7 @@
         public int OwnerId { get; set; }
         public bool Lock { get; set; }
         public int Price { get; set; }
+        public float[] SafePosition { get; set; }
+        public uint SafeDimension { get; set; }
     }
 }

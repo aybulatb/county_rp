@@ -107,11 +107,14 @@ namespace CountyRP.WebAPI.Controllers
 
         private IActionResult CheckParams(House house)
         {
-            if (house.EntrancePosition == null || house.EntrancePosition.Length != 3)
+            if (house.EntrancePosition?.Length != 3)
                 return BadRequest("Количество координат входа должно быть равно 3");
 
-            if (house.ExitPosition == null || house.ExitPosition.Length != 3)
+            if (house.ExitPosition?.Length != 3)
                 return BadRequest("Количество координат выхода должно быть равно 3");
+
+            if (house.SafePosition?.Length != 3)
+                return BadRequest("Количество координат сейфа должно быть равно 3");
 
             var result = CheckOwner(house);
             if (result != null)
@@ -134,13 +137,15 @@ namespace CountyRP.WebAPI.Controllers
             return new DAO.House
             {
                 Id = house.Id,
-                EntrancePosition = house.EntrancePosition?.Select(ep => ep).ToArray(),
+                EntrancePosition = house.EntrancePosition?.ToArray(),
                 EntranceDimension = house.EntranceDimension,
-                ExitPosition = house.ExitPosition?.Select(ep => ep).ToArray(),
+                ExitPosition = house.ExitPosition?.ToArray(),
                 ExitDimension = house.ExitDimension,
                 OwnerId = house.OwnerId,
                 Lock = house.Lock,
-                Price = house.Price
+                Price = house.Price,
+                SafePosition = house.SafePosition?.ToArray(),
+                SafeDimension = house.SafeDimension
             };
         }
 
@@ -149,13 +154,15 @@ namespace CountyRP.WebAPI.Controllers
             return new House
             {
                 Id = house.Id,
-                EntrancePosition = house.EntrancePosition?.Select(ep => ep).ToArray(),
+                EntrancePosition = house.EntrancePosition?.ToArray(),
                 EntranceDimension = house.EntranceDimension,
-                ExitPosition = house.ExitPosition?.Select(ep => ep).ToArray(),
+                ExitPosition = house.ExitPosition?.ToArray(),
                 ExitDimension = house.ExitDimension,
                 OwnerId = house.OwnerId,
                 Lock = house.Lock,
-                Price = house.Price
+                Price = house.Price,
+                SafePosition = house.SafePosition?.ToArray(),
+                SafeDimension = house.SafeDimension
             };
         }
     }
