@@ -11,6 +11,7 @@ namespace CountyRP.Forum.Infrastructure
     public class ForumRepository : IForumRepository
     {
         private ForumContext _forumContext;
+
         public ForumRepository(ForumContext forumContext)
         {
             _forumContext = forumContext;
@@ -24,14 +25,13 @@ namespace CountyRP.Forum.Infrastructure
         }
 
         public async Task<ForumModel> CreateForum(ForumModel forum)
-        { 
+        {
             _forumContext.Forums.Add(forum);
 
             await _forumContext.SaveChangesAsync();
 
             return forum;
-            
-        }
 
+        }
     }
 }

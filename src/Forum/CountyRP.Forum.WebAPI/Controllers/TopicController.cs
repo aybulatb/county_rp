@@ -3,9 +3,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 
-using CountyRP.Forum.Domain.Interfaces;
 using CountyRP.Forum.Domain.Models;
 using CountyRP.Forum.WebAPI.ViewModels;
+using CountyRP.Forum.WebAPI.Services.Interfaces;
 
 namespace CountyRP.Forum.WebAPI.Controllers
 {
@@ -13,11 +13,31 @@ namespace CountyRP.Forum.WebAPI.Controllers
     [Route("[controller]")]
     public class TopicController : ControllerBase
     {
-        private readonly ITopicRepository _topicRepository;
+        private readonly ITopicService _topicService;
 
-        public TopicController(ITopicRepository topicRepository)
+        public TopicController(ITopicService topicService)
         {
-            _topicRepository = topicRepository;
+            _topicService = topicService;
+        }
+
+        /// <summary>
+        /// Получение всех тем на форуме id
+        /// </summary>
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(Topic), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetById(int id)
+        {
+            try
+            {
+                var topics = await _topicService.GetTopicsByForumId(id);
+
+                return Ok(topics);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         /// <summary>
@@ -30,7 +50,7 @@ namespace CountyRP.Forum.WebAPI.Controllers
         {
             try
             {
-                var createdTopic = await _topicRepository.CreateTopic(topic);
+                var createdTopic = await _topicService.CreateTopic(topic);
 
                 return Ok(createdTopic);
             }
@@ -53,7 +73,7 @@ namespace CountyRP.Forum.WebAPI.Controllers
                     Caption = topicViewModel.Caption
                 };
 
-                var editedTopic = await _topicRepository.Edit(topic);
+                var editedTopic = await _topicService.Edit(topic);
 
                 return Ok(editedTopic);
             }
@@ -70,7 +90,7 @@ namespace CountyRP.Forum.WebAPI.Controllers
         {
             try
             {
-                await _topicRepository.Delete(id);
+                await _topicService.Delete(id);
 
                 return Ok();
             }

@@ -3,8 +3,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 
-using CountyRP.Forum.Domain.Interfaces;
 using CountyRP.Forum.Domain.Models;
+using CountyRP.Forum.WebAPI.ViewModels;
+using CountyRP.Forum.WebAPI.Services.Interfaces;
 
 namespace CountyRP.Forum.WebAPI.Controllers
 {
@@ -12,15 +13,13 @@ namespace CountyRP.Forum.WebAPI.Controllers
     [Route("[controller]")]
     public class ForumController : ControllerBase
     {
-        private readonly IForumRepository _forumRepository;
-        private readonly ITopicRepository _topicRepository;
+        private readonly IForumService _forumService;
 
-        public ForumController(IForumRepository forumRepository, ITopicRepository topicRepository)
+        public ForumController(IForumService forumService)
         {
-            _forumRepository = forumRepository;
-            _topicRepository = topicRepository;
+            _forumService = forumService;
         }
-        
+
         /// <summary>
         /// Получение всех форумов
         /// </summary>
@@ -31,29 +30,9 @@ namespace CountyRP.Forum.WebAPI.Controllers
         {
             try
             {
-                var forums = await _forumRepository.GetAll();
+                var forums = await _forumService.GetAllForums();
 
                 return Ok(forums);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        /// <summary>
-        /// Получение всех тем на форуме id
-        /// </summary>
-        [HttpGet("{id}")]
-        [ProducesResponseType(typeof(Topic), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetById(int id)
-        {
-            try
-            {
-                var topics = await _topicRepository.GetByForumId(id);
-
-                return Ok(topics);
             }
             catch (Exception ex)
             {
@@ -71,9 +50,26 @@ namespace CountyRP.Forum.WebAPI.Controllers
         {
             try
             {
-                var createdForum = await _forumRepository.CreateForum(forum);
+                var createdForum = await _forumService.CreateForum(forum);
 
                 return Ok(createdForum);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet(nameof(GetForumsInfo))]
+        [ProducesResponseType(typeof(ForumInfoViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetForumsInfo()
+        {
+            try
+            {
+                var forumInfos = await _forumService.GetForumsInfo();
+
+                return Ok(forumInfos);
             }
             catch (Exception ex)
             {

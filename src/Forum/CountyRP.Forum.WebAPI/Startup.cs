@@ -1,3 +1,4 @@
+using System.Net.Http;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -8,6 +9,9 @@ using Microsoft.EntityFrameworkCore;
 using CountyRP.Forum.Domain.Interfaces;
 using CountyRP.Forum.Infrastructure;
 using CountyRP.Forum.Infrastructure.Models;
+using CountyRP.Extra;
+using CountyRP.Forum.WebAPI.Services.Interfaces;
+using CountyRP.Forum.WebAPI.Services;
 
 namespace CountyRP.Forum.WebAPI
 {
@@ -33,6 +37,10 @@ namespace CountyRP.Forum.WebAPI
             services.AddTransient<IForumRepository, ForumRepository>();
             services.AddTransient<ITopicRepository, TopicRepository>();
             services.AddTransient<IPostRepository, PostRepository>();
+            services.AddTransient<IForumService, ForumService>();
+
+            HttpClient httpClient = new HttpClient();
+            services.AddSingleton(new PlayerClient(httpClient));
 
             // Register the Swagger services
             services.AddSwaggerDocument();
@@ -71,6 +79,7 @@ namespace CountyRP.Forum.WebAPI
                 });
             app.UseSwaggerUi3();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

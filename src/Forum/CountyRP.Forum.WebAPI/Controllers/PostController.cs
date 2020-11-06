@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 using CountyRP.Forum.Domain.Interfaces;
 using CountyRP.Forum.Domain.Models;
