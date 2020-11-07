@@ -21,6 +21,7 @@ namespace CountyRP.DAO
         }
         public uint ExitDimension { get; set; }
         public int OwnerId { get; set; }
+        public int GarageId { get; set; }
         public bool Lock { get; set; }
         public int Price { get; set; }
         [NotMapped]

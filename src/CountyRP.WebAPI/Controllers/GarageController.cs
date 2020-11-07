@@ -107,19 +107,6 @@ namespace CountyRP.WebAPI.Controllers
             if (garage.EntrancePosition?.Length != 3)
                 return BadRequest("Количество координат входа должно быть равно 3");
 
-            var result = CheckOwner(garage);
-            if (result != null)
-                return result;
-
-            return null;
-        }
-
-        private IActionResult CheckOwner(Garage garage)
-        {
-            if (garage.HouseId != 0 && 
-                _propertyContext.Garages.FirstOrDefault(h => h.Id == garage.HouseId) == null)
-                return BadRequest($"Гараж с ID {garage.HouseId} не найден");
-
             return null;
         }
 
@@ -129,7 +116,6 @@ namespace CountyRP.WebAPI.Controllers
             {
                 Id = garage.Id,
                 Type = garage.Type,
-                HouseId = garage.HouseId,
                 EntrancePosition = garage.EntrancePosition?.ToArray(),
                 EntranceDimension = garage.EntranceDimension,
                 ExitDimension = garage.ExitDimension,
@@ -143,7 +129,6 @@ namespace CountyRP.WebAPI.Controllers
             {
                 Id = garage.Id,
                 Type = garage.Type,
-                HouseId = garage.HouseId,
                 EntrancePosition = garage.EntrancePosition?.ToArray(),
                 EntranceDimension = garage.EntranceDimension,
                 ExitDimension = garage.ExitDimension,

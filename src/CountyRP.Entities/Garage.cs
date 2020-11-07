@@ -7,7 +7,6 @@ namespace CountyRP.DAO
     {
         public int Id { get; set; }
         public int Type { get; set; }
-        public int HouseId { get; set; }
         [NotMapped]
         public float[] EntrancePosition 
         {

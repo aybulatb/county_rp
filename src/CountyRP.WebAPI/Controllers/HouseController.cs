@@ -120,6 +120,10 @@ namespace CountyRP.WebAPI.Controllers
             if (result != null)
                 return result;
 
+            if (house.GarageId != 0
+                && _propertyContext.Garages.FirstOrDefault(g => g.Id == house.GarageId) == null)
+                return BadRequest($"Гараж с ID {house.OwnerId} не найден");
+
             return null;
         }
 
@@ -142,6 +146,7 @@ namespace CountyRP.WebAPI.Controllers
                 ExitPosition = house.ExitPosition?.ToArray(),
                 ExitDimension = house.ExitDimension,
                 OwnerId = house.OwnerId,
+                GarageId = house.GarageId,
                 Lock = house.Lock,
                 Price = house.Price,
                 SafePosition = house.SafePosition?.ToArray(),
@@ -160,6 +165,7 @@ namespace CountyRP.WebAPI.Controllers
                 ExitPosition = house.ExitPosition?.ToArray(),
                 ExitDimension = house.ExitDimension,
                 OwnerId = house.OwnerId,
+                GarageId = house.GarageId,
                 Lock = house.Lock,
                 Price = house.Price,
                 SafePosition = house.SafePosition?.ToArray(),
