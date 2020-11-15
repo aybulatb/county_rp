@@ -33,5 +33,31 @@ namespace CountyRP.Forum.Infrastructure
             return forum;
 
         }
+
+        public async Task<ForumModel> GetForum(int id)
+        {
+            var forum = _forumContext.Forums.FirstOrDefault(f => f.Id == id);
+
+            return forum;
+        }
+
+        public async Task<ForumModel> Edit(int id, ForumModel forum)
+        {
+            var existingForum = _forumContext.Forums.FirstOrDefault(f => f.Id == id);
+            existingForum.Name = forum.Name;
+            existingForum.ParentId = forum.ParentId;
+
+            await _forumContext.SaveChangesAsync();
+
+            return existingForum;
+        }
+
+        public async Task Delete(int id)
+        {
+            var forum = _forumContext.Forums.FirstOrDefault(f => f.Id == id);
+            _forumContext.Forums.Remove(forum);
+
+            await _forumContext.SaveChangesAsync();
+        }
     }
 }

@@ -33,14 +33,19 @@ namespace CountyRP.Forum.WebAPI
             services.AddDbContext<ForumContext>(options => options.UseMySql(connectionString));
             services.AddDbContext<TopicContext>(options => options.UseMySql(connectionString));
             services.AddDbContext<PostContext>(options => options.UseMySql(connectionString));
+            services.AddDbContext<ModeratorContext>(options => options.UseMySql(connectionString));
 
             services.AddTransient<IForumRepository, ForumRepository>();
             services.AddTransient<ITopicRepository, TopicRepository>();
             services.AddTransient<IPostRepository, PostRepository>();
             services.AddTransient<IForumService, ForumService>();
+            services.AddTransient<ITopicService, TopicService>();
+            services.AddTransient<IModeratorRepository, ModeratorRepository>();
+            services.AddTransient<IModeratorService, ModeratorService>();
 
             HttpClient httpClient = new HttpClient();
             services.AddSingleton(new PlayerClient(httpClient));
+            services.AddSingleton(new GroupClient(httpClient));
 
             // Register the Swagger services
             services.AddSwaggerDocument();
@@ -84,7 +89,9 @@ namespace CountyRP.Forum.WebAPI
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller}/{action}/{id?}");
             });
         }
     }
