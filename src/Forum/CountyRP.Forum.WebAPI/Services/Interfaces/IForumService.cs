@@ -14,5 +14,6 @@ namespace CountyRP.Forum.WebAPI.Services.Interfaces
         Task<ForumModel> CreateForum(ForumViewModel forumViewModel);
         Task<IEnumerable<ForumInfoViewModel>> GetForumsInfo();
         Task Delete(int id);
+        Task<StatisticsViewModel> GetStatistics();
     }
 }

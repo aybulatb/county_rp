@@ -97,7 +97,7 @@ namespace CountyRP.Forum.WebAPI.Services
             Post lastPost = new Post();
             var topics = (await _topicRepository.GetByForumId(forum.Id)).ToArray();
             var allPosts = new List<Post>();
-            var moderators = new List<ModeratorViewModel>();
+            var moderators = new List<ModeratorInfoViewModel>();
 
             foreach (var topic in topics)
             {
@@ -108,7 +108,7 @@ namespace CountyRP.Forum.WebAPI.Services
             lastTopic = topics?.FirstOrDefault(t => t.Id == lastPost.TopicId);
             int postsCount = allPosts.Count();
 
-            var player = await _playerClient.GetByIdAsync(1);
+            var player = await _playerClient.GetByIdAsync(lastPost.UserId);
             var moders = await _moderatorRepository.GetAll();
 
             foreach (var moder in moders)
@@ -137,13 +137,13 @@ namespace CountyRP.Forum.WebAPI.Services
             };
         }
 
-        private async Task<ModeratorViewModel> CreateModeratorModel(Moderator moderator)
+        private async Task<ModeratorInfoViewModel> CreateModeratorModel(Moderator moderator)
         {
             if (moderator.EntityType.Equals(0))
             {
                 var moderGroup = await _groupClient.GetByIdAsync(moderator.EntityId.ToString());
 
-                return new ModeratorViewModel
+                return new ModeratorInfoViewModel
                 {
                     Id = moderator.Id,
                     Name = moderGroup.Name
@@ -153,7 +153,7 @@ namespace CountyRP.Forum.WebAPI.Services
             {
                 var moderPlayer = await _playerClient.GetByIdAsync(moderator.EntityId);
 
-                return new ModeratorViewModel
+                return new ModeratorInfoViewModel
                 {
                     Id = moderator.Id,
                     Name = moderPlayer.Login
@@ -161,6 +161,34 @@ namespace CountyRP.Forum.WebAPI.Services
             }
 
             return null;
+        }
+
+        public async Task<StatisticsViewModel> GetStatistics()
+        {
+            var forums = await _forumRepository.GetAll();
+            var topics = new List<Topic>();
+            var messages = new List<Post>();
+
+            foreach (var forum in forums)
+            {
+                topics.AddRange(await _topicRepository.GetByForumId(forum.Id));
+            }
+
+            foreach (var topic in topics)
+            {
+                messages.AddRange(await _postRepository.GetPosts(topic.Id));
+            }
+
+            var usersCount = messages.Select(m => m.UserId) //???
+                .ToArray()
+                .Count();
+
+            return new StatisticsViewModel
+            {
+                UsersCount = usersCount,
+                TopicsCount = topics.Count(),
+                MessageCount = messages.Count()
+            };
         }
     }
 }

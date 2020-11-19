@@ -30,9 +30,7 @@ namespace CountyRP.Forum.WebAPI.Controllers
         {
             try
             {
-                var forums = await _forumService.GetAllForums();
-
-                return Ok(forums);
+                return Ok(await _forumService.GetAllForums());
             }
             catch (Exception ex)
             {
@@ -50,9 +48,7 @@ namespace CountyRP.Forum.WebAPI.Controllers
         {
             try
             {
-                var forum = await _forumService.GetForumById(id);
-
-                return Ok(forum);
+                return Ok(await _forumService.GetForumById(id));
             }
             catch (Exception ex)
             {
@@ -70,9 +66,7 @@ namespace CountyRP.Forum.WebAPI.Controllers
         {
             try
             {
-                var editedForum = await _forumService.Edit(id, forumViewModel);
-
-                return Ok(editedForum);
+                return Ok(await _forumService.Edit(id, forumViewModel));
             }
             catch (Exception ex)
             {
@@ -90,9 +84,7 @@ namespace CountyRP.Forum.WebAPI.Controllers
         {
             try
             {
-                var createdForum = await _forumService.CreateForum(forumViewModel);
-
-                return Ok(createdForum);
+                return Ok(await _forumService.CreateForum(forumViewModel));
             }
             catch (Exception ex)
             {
@@ -130,9 +122,22 @@ namespace CountyRP.Forum.WebAPI.Controllers
         {
             try
             {
-                var forumFull = await _forumService.GetForumsInfo();
+                return Ok(await _forumService.GetForumsInfo());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
-                return Ok(forumFull);
+        [HttpGet("Statistics")]
+        [ProducesResponseType(typeof(StatisticsViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetStatistics()
+        {
+            try
+            {
+                return Ok(await _forumService.GetStatistics());
             }
             catch (Exception ex)
             {

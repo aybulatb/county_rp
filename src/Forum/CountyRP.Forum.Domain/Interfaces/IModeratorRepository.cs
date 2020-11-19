@@ -9,5 +9,8 @@ namespace CountyRP.Forum.Domain.Interfaces
     {
         Task<IEnumerable<Moderator>> GetAll();
         Task<Moderator> GetById(int id);
+        Task<Moderator> Create(Moderator moderator);
+        Task<Moderator> Edit(int id, Moderator moderator);
+        Task Delete(int id);
     }
 }
