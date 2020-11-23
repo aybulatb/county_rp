@@ -10,7 +10,7 @@ using CountyRP.Forum.WebAPI.Services.Interfaces;
 namespace CountyRP.Forum.WebAPI.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("Forum/api/[controller]")]
     public class TopicController : ControllerBase
     {
         private readonly ITopicService _topicService;
@@ -30,9 +30,7 @@ namespace CountyRP.Forum.WebAPI.Controllers
         {
             try
             {
-                var topics = await _topicService.GetTopicsByForumId(id);
-
-                return Ok(topics);
+                return Ok(await _topicService.GetTopicsByForumId(id));
             }
             catch (Exception ex)
             {
@@ -41,18 +39,16 @@ namespace CountyRP.Forum.WebAPI.Controllers
         }
 
         /// <summary>
-        /// Создание темы на форуме
+        /// Получить все темы с форума на странице page
         /// </summary>
-        [HttpPost(nameof(CreateTopic))]
-        [ProducesResponseType(typeof(Topic), StatusCodes.Status201Created)]
+        [HttpGet("{forumId}/{page}")]
+        [ProducesResponseType(typeof(TopicFilterViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> CreateTopic([FromBody] Topic topic)
+        public async Task<IActionResult> FilterBy(int forumId, int page)
         {
             try
             {
-                var createdTopic = await _topicService.CreateTopic(topic);
-
-                return Ok(createdTopic);
+                return Ok(await _topicService.FilterByPage(forumId, page));
             }
             catch (Exception ex)
             {
@@ -60,20 +56,34 @@ namespace CountyRP.Forum.WebAPI.Controllers
             }
         }
 
-        [HttpPut(nameof(EditTopic))]
+        [HttpPost]
+        [ProducesResponseType(typeof(Topic), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Create([FromBody] TopicCreateViewModel topic)
+        {
+            try
+            {
+                return Ok(await _topicService.CreateTopicAndMessage(topic));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut("{id}")]
         [ProducesResponseType(typeof(Topic), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> EditTopic([FromBody] TopicViewModel topicViewModel)
+        public async Task<IActionResult> Edit(int id, [FromBody] TopicEditViewModel topicViewModel)
         {
             try
             {
                 var topic = new Topic
                 {
-                    Id = topicViewModel.Id,
                     Caption = topicViewModel.Caption
                 };
 
-                var editedTopic = await _topicService.Edit(topic);
+                var editedTopic = await _topicService.Edit(id, topic);
 
                 return Ok(editedTopic);
             }
@@ -83,10 +93,10 @@ namespace CountyRP.Forum.WebAPI.Controllers
             }
         }
 
-        [HttpDelete("DeleteTopic/{id}")]
+        [HttpDelete("{id}")]
         [ProducesResponseType(typeof(Topic), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> DeleteTopic(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             try
             {

@@ -11,5 +11,6 @@ namespace CountyRP.Forum.Domain.Interfaces
         Task<Post> Create(Post post);
         Task<Post> Edit(Post post);
         Task Delete(int postId);
+        Task<Post> GetLastPostInTopic(int topicId);
     }
 }

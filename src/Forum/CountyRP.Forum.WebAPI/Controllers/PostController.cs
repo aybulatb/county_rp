@@ -10,7 +10,7 @@ using CountyRP.Forum.WebAPI.ViewModels;
 namespace CountyRP.Forum.WebAPI.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("Forum/api/[controller]")]
     public class PostController : ControllerBase
     {
         private readonly IPostRepository _postRepository;

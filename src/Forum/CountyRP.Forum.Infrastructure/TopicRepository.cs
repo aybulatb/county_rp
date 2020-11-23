@@ -33,9 +33,9 @@ namespace CountyRP.Forum.Infrastructure
             return topic;
         }
 
-        public async Task<Topic> Edit(Topic topic)
+        public async Task<Topic> Edit(int id, Topic topic)
         {
-            var existingTopic = _topicContext.Topics.FirstOrDefault(t => t.Id == topic.Id);
+            var existingTopic = _topicContext.Topics.FirstOrDefault(t => t.Id == id);
             existingTopic.Caption = topic.Caption;
 
             await _topicContext.SaveChangesAsync();

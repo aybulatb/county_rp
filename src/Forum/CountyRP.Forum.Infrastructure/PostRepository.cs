@@ -50,5 +50,10 @@ namespace CountyRP.Forum.Infrastructure
         {
             return _postContext.Posts.Where(p => p.TopicId == topicId).ToList();
         }
+
+        public async Task<Post> GetLastPostInTopic(int topicId)
+        {
+            return _postContext.Posts.OrderByDescending(p => p.CreationDateTime).FirstOrDefault();
+        }
     }
 }
