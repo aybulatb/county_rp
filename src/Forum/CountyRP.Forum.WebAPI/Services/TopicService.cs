@@ -46,11 +46,9 @@ namespace CountyRP.Forum.WebAPI.Services
                     CreateTopicFilterViewModel(topic, lastPost, player));
             }
 
-            var filteredTopics = topicsForFilter.OrderByDescending(t => t.LastPost.DateTime) // отсортировать по последнему сообщению в темах
+            return topicsForFilter.OrderByDescending(t => t.LastPost.DateTime) // отсортировать по последнему сообщению в темах
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize);
-
-            return filteredTopics;
         }
 
         private TopicFilterViewModel CreateTopicFilterViewModel(Topic topic, Post lastPost, Player player)

@@ -35,10 +35,11 @@ namespace CountyRP.Forum.Infrastructure
             await _postContext.SaveChangesAsync();
         }
 
-        public async Task<Post> Edit(Post post)
+        public async Task<Post> Edit(int id, Post post)
         {
-            var existingPost = _postContext.Posts.FirstOrDefault(p => p.Id == post.Id);
+            var existingPost = _postContext.Posts.FirstOrDefault(p => p.Id == id);
             existingPost.Text = post.Text;
+            existingPost.LastEditorid = post.LastEditorid;
             existingPost.EditionDateTime = DateTime.Now;
 
             await _postContext.SaveChangesAsync();
