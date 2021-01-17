@@ -21,28 +21,10 @@ namespace CountyRP.Forum.WebAPI.Controllers
         }
 
         /// <summary>
-        /// Получение всех тем на форуме id
-        /// </summary>
-        [HttpGet("{id}")]
-        [ProducesResponseType(typeof(Topic), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetById(int id)
-        {
-            try
-            {
-                return Ok(await _topicService.GetTopicsByForumId(id));
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        /// <summary>
         /// Получить все темы с форума на странице page
         /// </summary>
         [HttpGet("{forumId}/{page}")]
-        [ProducesResponseType(typeof(TopicFilterViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(TopicFilterViewModel[]), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> FilterBy(int forumId, int page)
         {

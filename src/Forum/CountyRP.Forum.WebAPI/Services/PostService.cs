@@ -8,6 +8,7 @@ using CountyRP.Forum.Domain.Models;
 using CountyRP.Forum.WebAPI.Services.Interfaces;
 using CountyRP.Forum.WebAPI.ViewModels;
 
+
 namespace CountyRP.Forum.WebAPI.Services
 {
     public class PostService : IPostService
@@ -22,13 +23,15 @@ namespace CountyRP.Forum.WebAPI.Services
             _playerClient = playerClient;
         }
 
-        public async Task<Post> Create(PostCreateViewModel postViewModel)
+        public async Task<Post> Create(PostCreateViewModel postModel)
         {
-            return await _postRepository.Create(new Post
+            var post = new Post
             {
-                TopicId = postViewModel.TopicId,
-                Text = postViewModel.Text
-            });
+                Text = postModel.Text,
+                TopicId = postModel.TopicId
+            };
+
+            return await _postRepository.Create(post);
         }
 
         public async Task Delete(int id)
@@ -36,15 +39,14 @@ namespace CountyRP.Forum.WebAPI.Services
             await _postRepository.Delete(id);
         }
 
-        public async Task<Post> Edit(int id, PostEditViewModel postViewModel)
+        public async Task<Post> Edit(int id, PostEditViewModel postModel)
         {
-            return await _postRepository.Edit(id, new Post
-            {
-                Text = postViewModel.Text
-            });
+            var post = new Post { Text = postModel.Text };
+
+            return await _postRepository.Edit(id, post);
         }
 
-        public async Task<IEnumerable<PostFilterViewModel>> FilterBy(int topicId, int page)
+        public async Task<IEnumerable<PostFilterViewModel>> Filter(int topicId, int page)
         {
             var posts = await _postRepository.GetPosts(topicId);
             int pageSize = 20;
@@ -53,8 +55,7 @@ namespace CountyRP.Forum.WebAPI.Services
 
             foreach (var post in posts)
             {
-                var player = await _playerClient.GetByIdAsync(post.Id);
-
+                var player = await _playerClient.GetByIdAsync(post.LastEditorid);
                 postsForFilter.Add(new PostFilterViewModel
                 {
                     Id = post.Id,
@@ -67,9 +68,16 @@ namespace CountyRP.Forum.WebAPI.Services
                 });
             }
 
-            return postsForFilter.OrderByDescending(t => t.DateTime)
+            var filteredPosts = postsForFilter.OrderByDescending(p => p.DateTime) // отсортировать по последнему сообщению в посте
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize);
+
+            return filteredPosts;
+        }
+
+        public async Task<IEnumerable<Post>> GetPosts(int topicId)
+        {
+            return await _postRepository.GetPosts(topicId);
         }
     }
 }

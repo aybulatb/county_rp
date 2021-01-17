@@ -24,7 +24,7 @@ namespace CountyRP.Forum.WebAPI.Controllers
         /// Получить список всех модераторов
         /// </summary>
         [HttpGet]
-        [ProducesResponseType(typeof(Moderator), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Moderator[]), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetAll()
         {
@@ -44,7 +44,7 @@ namespace CountyRP.Forum.WebAPI.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(Moderator), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> Get(int id)
         {
             try
             {

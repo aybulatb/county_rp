@@ -24,7 +24,7 @@ namespace CountyRP.Forum.WebAPI.Controllers
         /// Получение всех форумов
         /// </summary>
         [HttpGet]
-        [ProducesResponseType(typeof(ForumModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ForumModel[]), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetAll()
         {
@@ -116,7 +116,7 @@ namespace CountyRP.Forum.WebAPI.Controllers
         /// Получить все форумы с информацией о темах и т.д.
         /// </summary>
         [HttpGet("Full")]
-        [ProducesResponseType(typeof(ForumInfoViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ForumInfoViewModel[]), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetFullAll()
         {

@@ -1,4 +1,4 @@
-using System.Net.Http;
+п»їusing System.Net.Http;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -38,10 +38,11 @@ namespace CountyRP.Forum.WebAPI
             services.AddTransient<IForumRepository, ForumRepository>();
             services.AddTransient<ITopicRepository, TopicRepository>();
             services.AddTransient<IPostRepository, PostRepository>();
+            services.AddTransient<IModeratorRepository, ModeratorRepository>();
             services.AddTransient<IForumService, ForumService>();
             services.AddTransient<ITopicService, TopicService>();
-            services.AddTransient<IModeratorRepository, ModeratorRepository>();
             services.AddTransient<IModeratorService, ModeratorService>();
+            services.AddTransient<IPostService, PostService>();
 
             HttpClient httpClient = new HttpClient();
             services.AddSingleton(new PlayerClient(httpClient));
@@ -70,7 +71,7 @@ namespace CountyRP.Forum.WebAPI
                     {
                         document.Info.Title = "County RP Forum";
                         //document.Schemes = new[] { NSwag.OpenApiSchema.Https };
-                        document.Info.Description = "Сервис с ресурсами форума";
+                        document.Info.Description = "пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ";
                     };
                 });
             else
@@ -79,7 +80,7 @@ namespace CountyRP.Forum.WebAPI
                     configure.PostProcess = (document, _) =>
                     {
                         document.Info.Title = "County RP Forum";
-                        document.Info.Description = "Сервис с ресурсами форума";
+                        document.Info.Description = "пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ";
                     };
                 });
             app.UseSwaggerUi3();

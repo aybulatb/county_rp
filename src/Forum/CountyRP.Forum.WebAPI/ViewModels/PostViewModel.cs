@@ -1,8 +1,8 @@
 ﻿namespace CountyRP.Forum.WebAPI.ViewModels
 {
-    public class PostCreateViewModel
+    public class PostViewModel
     {
-        public int TopicId { get; set; }
+        public int Id { get; set; }
         public string Text { get; set; }
     }
 }

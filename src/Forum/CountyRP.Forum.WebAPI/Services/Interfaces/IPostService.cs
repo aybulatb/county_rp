@@ -8,9 +8,10 @@ namespace CountyRP.Forum.WebAPI.Services.Interfaces
 {
     public interface IPostService
     {
-        public Task<Post> Create(PostCreateViewModel postViewModel);
-        public Task<IEnumerable<PostFilterViewModel>> FilterBy(int topicId, int page);
-        public Task<Post> Edit(int id, PostEditViewModel postViewModel);
-        public Task Delete(int id);
+        Task<Post> Create(PostCreateViewModel postModel);
+        Task<IEnumerable<PostFilterViewModel>> Filter(int topicId, int page);
+        Task<Post> Edit(int id, PostEditViewModel postModel);
+        Task Delete(int id);
+        Task<IEnumerable<Post>> GetPosts(int topicId);
     }
 }

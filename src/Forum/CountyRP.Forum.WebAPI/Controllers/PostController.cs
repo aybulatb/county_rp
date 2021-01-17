@@ -27,7 +27,7 @@ namespace CountyRP.Forum.WebAPI.Controllers
         {
             try
             {
-                return Ok(_postService.Create(post));
+                return Ok(await _postService.Create(post));
             }
             catch (Exception ex)
             {
@@ -35,14 +35,14 @@ namespace CountyRP.Forum.WebAPI.Controllers
             }
         }
 
-        [HttpGet("{forumId}/{page}")]
-        [ProducesResponseType(typeof(PostFilterViewModel), StatusCodes.Status200OK)]
+        [HttpGet("{topicId}/{page}")]
+        [ProducesResponseType(typeof(Post[]), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> FilterBy(int topicId, int page)
         {
             try
             {
-                return Ok(await _postService.FilterBy(topicId, page));
+                return Ok(await _postService.Filter(topicId, page));
             }
             catch (Exception ex)
             {
@@ -53,11 +53,11 @@ namespace CountyRP.Forum.WebAPI.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(Post), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> EditPost(int id, [FromBody] PostEditViewModel postViewModel)
+        public async Task<IActionResult> EditPost(int id, [FromBody] PostEditViewModel post)
         {
             try
             {
-                return Ok(await _postService.Edit(id, postViewModel));
+                return Ok(await _postService.Edit(id, post));
             }
             catch (Exception ex)
             {
@@ -66,7 +66,7 @@ namespace CountyRP.Forum.WebAPI.Controllers
         }
 
         [HttpDelete("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Post), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> DeletePost(int id)
         {
