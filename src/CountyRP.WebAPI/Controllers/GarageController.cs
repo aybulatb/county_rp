@@ -118,6 +118,7 @@ namespace CountyRP.WebAPI.Controllers
                 Type = garage.Type,
                 EntrancePosition = garage.EntrancePosition?.ToArray(),
                 EntranceDimension = garage.EntranceDimension,
+                EntranceRotation = garage.EntranceRotation,
                 ExitDimension = garage.ExitDimension,
                 Lock = garage.Lock
             };
@@ -131,6 +132,7 @@ namespace CountyRP.WebAPI.Controllers
                 Type = garage.Type,
                 EntrancePosition = garage.EntrancePosition?.ToArray(),
                 EntranceDimension = garage.EntranceDimension,
+                EntranceRotation = garage.EntranceRotation,
                 ExitDimension = garage.ExitDimension,
                 Lock = garage.Lock
             };

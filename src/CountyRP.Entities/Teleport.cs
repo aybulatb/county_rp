@@ -33,6 +33,7 @@ namespace CountyRP.DAO
         public string FactionId { get; set; }
         public int GangId { get; set; }
         public int RoomId { get; set; }
+        public int BusinessId { get; set; }
         public bool Lock { get; set; }
 
         [Column("EntrancePosition")]

@@ -172,6 +172,10 @@ namespace CountyRP.WebAPI.Controllers
                 _gangContext.Gangs.FirstOrDefault(g => g.Id == teleport.GangId) == null)
                 return BadRequest($"Группировка с ID {teleport.GangId} не найдена");
 
+            if (teleport.BusinessId != 0 &&
+                _propertyContext.Businesses.FirstOrDefault(b => b.Id == teleport.BusinessId) == null)
+                return BadRequest($"Бизнес с ID {teleport.BusinessId} не найден");
+
             return null;
         }
 
@@ -197,6 +201,7 @@ namespace CountyRP.WebAPI.Controllers
                 FactionId = teleport.FactionId,
                 GangId = teleport.GangId,
                 RoomId = teleport.RoomId,
+                BusinessId = teleport.BusinessId,
                 Lock = teleport.Lock
             };
         }
@@ -218,6 +223,7 @@ namespace CountyRP.WebAPI.Controllers
                 FactionId = teleport.FactionId,
                 GangId = teleport.GangId,
                 RoomId = teleport.RoomId,
+                BusinessId = teleport.BusinessId,
                 Lock = teleport.Lock
             };
         }
