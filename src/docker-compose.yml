@@ -1,0 +1,21 @@
+version: '3.4'
+
+services:
+  countyrp.webapi:
+    image: ${DOCKER_REGISTRY-}countyrpwebapi
+    build:
+      context: .
+      dockerfile: CountyRP.WebAPI/Dockerfile
+
+  countyrp.website:
+    image: ${DOCKER_REGISTRY-}countyrpwebsite
+    build:
+      context: .
+      dockerfile: CountyRP.WebSite/Dockerfile
+
+  countyrp.forum.webapi:
+    image: ${DOCKER_REGISTRY-}countyrpforumwebapi
+    build:
+      context: .
+      dockerfile: Forum/CountyRP.Forum.WebAPI/Dockerfile
+

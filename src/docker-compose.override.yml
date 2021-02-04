@@ -1,0 +1,31 @@
+version: '3.4'
+
+services:
+  countyrp.webapi:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:9201;http://+:9200
+    ports:
+      - "9200:9200"
+      - "9201:9201"
+    volumes:
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+  countyrp.website:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:10001;http://+:10000
+    ports:
+      - "10000:10000"
+      - "10001:10001"
+    volumes:
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
+  countyrp.forum.webapi:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:10101;http://+:10100
+    ports:
+      - "10100:10100"
+      - "10101:10101"
+    volumes:
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
