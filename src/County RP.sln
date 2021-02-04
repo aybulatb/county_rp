@@ -3,21 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CountyRP.DAO", "src\CountyRP.Entities\CountyRP.DAO.csproj", "{FBB26CD6-6C1B-4869-8F0E-BC34F5A2EC17}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CountyRP.DAO", "CountyRP.Entities\CountyRP.DAO.csproj", "{FBB26CD6-6C1B-4869-8F0E-BC34F5A2EC17}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CountyRP.WebAPI", "src\CountyRP.WebAPI\CountyRP.WebAPI.csproj", "{875B62BA-7A40-42C6-8154-FA0063F72902}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CountyRP.WebAPI", "CountyRP.WebAPI\CountyRP.WebAPI.csproj", "{875B62BA-7A40-42C6-8154-FA0063F72902}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CountyRP.WebSite", "src\CountyRP.WebSite\CountyRP.WebSite.csproj", "{EAF85419-7FBF-44B8-A5CF-5800D76DE1A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CountyRP.WebSite", "CountyRP.WebSite\CountyRP.WebSite.csproj", "{EAF85419-7FBF-44B8-A5CF-5800D76DE1A3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CountyRP.Models", "src\CountyRP.Models\CountyRP.Models.csproj", "{381C2764-4F4C-482F-95C1-7158BCAF0B5F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CountyRP.Models", "CountyRP.Models\CountyRP.Models.csproj", "{381C2764-4F4C-482F-95C1-7158BCAF0B5F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Forum", "Forum", "{098D823D-B802-4C42-B8D1-A8CC3796B805}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CountyRP.Forum.WebAPI", "src\Forum\CountyRP.Forum.WebAPI\CountyRP.Forum.WebAPI.csproj", "{1B25999C-54C4-40ED-B10A-FFA55FF3A1D5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CountyRP.Forum.WebAPI", "Forum\CountyRP.Forum.WebAPI\CountyRP.Forum.WebAPI.csproj", "{1B25999C-54C4-40ED-B10A-FFA55FF3A1D5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CountyRP.Forum.Domain", "src\Forum\CountyRP.Forum.Domain\CountyRP.Forum.Domain.csproj", "{B9A3D2B2-9606-4CD9-9103-B26518C675EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CountyRP.Forum.Domain", "Forum\CountyRP.Forum.Domain\CountyRP.Forum.Domain.csproj", "{B9A3D2B2-9606-4CD9-9103-B26518C675EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CountyRP.Forum.Infrastructure", "src\Forum\CountyRP.Forum.Infrastructure\CountyRP.Forum.Infrastructure.csproj", "{0A142505-98FF-44DB-AE04-88716178FF8A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CountyRP.Forum.Infrastructure", "Forum\CountyRP.Forum.Infrastructure\CountyRP.Forum.Infrastructure.csproj", "{0A142505-98FF-44DB-AE04-88716178FF8A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
