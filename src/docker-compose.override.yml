@@ -1,19 +1,32 @@
 version: '3.4'
 
+volumes:
+  countyrp-sqldata:
+
 services:
+  mssql:
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Test1234
+    ports:
+      - "1433:1433"
+    volumes:
+      - countyrp-sqldata:/var/opt/mssql
+
   countyrp.webapi:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=https://+:9201;http://+:9200
+      - ASPNETCORE_URLS=https://0.0.0.0:9201;http://0.0.0.0:9200
     ports:
       - "9200:9200"
       - "9201:9201"
     volumes:
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
   countyrp.website:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=https://+:10001;http://+:10000
+      - ASPNETCORE_URLS=https://0.0.0.0:10001;http://0.0.0.0:10000
     ports:
       - "10000:10000"
       - "10001:10001"
@@ -23,7 +36,7 @@ services:
   countyrp.forum.webapi:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=https://+:10101;http://+:10100
+      - ASPNETCORE_URLS=https://0.0.0.0:10101;http://0.0.0.0:10100
     ports:
       - "10100:10100"
       - "10101:10101"
