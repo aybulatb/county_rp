@@ -17,6 +17,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://0.0.0.0:9201;http://0.0.0.0:9200
+      - ConnectionStrings__DefaultConnection=Server=mssql;Database=CountyRP.WebAPI;User Id=sa;Password=Test1234;
     ports:
       - "9200:9200"
       - "9201:9201"

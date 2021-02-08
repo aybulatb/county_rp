@@ -2,7 +2,7 @@
 
 using CountyRP.DAO;
 
-namespace CountyRP.WebAPI.Models
+namespace CountyRP.WebAPI.DbContexts
 {
     public class GroupContext : DbContext
     {
@@ -11,7 +11,7 @@ namespace CountyRP.WebAPI.Models
         public GroupContext(DbContextOptions<GroupContext> options)
             : base(options)
         {
-            Database.EnsureCreated();
+            Database.Migrate();
         }
     }
 }

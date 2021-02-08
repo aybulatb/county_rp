@@ -2,7 +2,7 @@
 
 using CountyRP.DAO;
 
-namespace CountyRP.WebAPI.Models
+namespace CountyRP.WebAPI.DbContexts
 {
     public class InventoryContext : DbContext
     {
@@ -11,7 +11,7 @@ namespace CountyRP.WebAPI.Models
         public InventoryContext(DbContextOptions<InventoryContext> options)
             : base(options)
         {
-            Database.EnsureCreated();
+            Database.Migrate();
         }
     }
 }

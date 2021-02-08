@@ -2,7 +2,7 @@
 
 using CountyRP.DAO;
 
-namespace CountyRP.WebAPI.Models
+namespace CountyRP.WebAPI.DbContexts
 {
     public class GangContext : DbContext
     {
@@ -11,7 +11,7 @@ namespace CountyRP.WebAPI.Models
         public GangContext(DbContextOptions<GangContext> options)
             : base(options)
         {
-            Database.EnsureCreated();
+            Database.Migrate();
         }
     }
 }

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 using CountyRP.Models;
-using CountyRP.WebAPI.Models;
+using CountyRP.WebAPI.DbContexts;
 
 namespace CountyRP.WebAPI.Controllers
 {

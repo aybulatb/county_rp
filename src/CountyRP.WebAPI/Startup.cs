@@ -8,7 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using NSwag.Generation.Processors.Security;
 
-using CountyRP.WebAPI.Models;
+using CountyRP.WebAPI.DbContexts;
 using CountyRP.WebAPI.Extensions;
 
 namespace CountyRP.WebAPI
@@ -28,17 +28,17 @@ namespace CountyRP.WebAPI
             services.AddControllers().AddNewtonsoftJson();
 
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<PlayerContext>(options => options.UseMySql(connectionString));
-            services.AddDbContext<FactionContext>(options => options.UseMySql(connectionString));
-            services.AddDbContext<GangContext>(options => options.UseMySql(connectionString));
-            services.AddDbContext<PropertyContext>(options => options.UseMySql(connectionString));
-            services.AddDbContext<GroupContext>(options => options.UseMySql(connectionString));
-            services.AddDbContext<AdminLevelContext>(options => options.UseMySql(connectionString));
-            services.AddDbContext<BanContext>(options => options.UseMySql(connectionString));
-            services.AddDbContext<LogContext>(options => options.UseMySql(connectionString));
-            services.AddDbContext<AppearanceContext>(options => options.UseMySql(connectionString));
-            services.AddDbContext<InventoryContext>(options => options.UseMySql(connectionString));
-            services.AddDbContext<BlackMarketContext>(options => options.UseMySql(connectionString));
+            services.AddDbContext<PlayerContext>(options => options.UseSqlServer(connectionString));
+            services.AddDbContext<FactionContext>(options => options.UseSqlServer(connectionString));
+            services.AddDbContext<GangContext>(options => options.UseSqlServer(connectionString));
+            services.AddDbContext<PropertyContext>(options => options.UseSqlServer(connectionString));
+            services.AddDbContext<GroupContext>(options => options.UseSqlServer(connectionString));
+            services.AddDbContext<AdminLevelContext>(options => options.UseSqlServer(connectionString));
+            services.AddDbContext<BanContext>(options => options.UseSqlServer(connectionString));
+            services.AddDbContext<LogContext>(options => options.UseSqlServer(connectionString));
+            services.AddDbContext<AppearanceContext>(options => options.UseSqlServer(connectionString));
+            services.AddDbContext<InventoryContext>(options => options.UseSqlServer(connectionString));
+            services.AddDbContext<BlackMarketContext>(options => options.UseSqlServer(connectionString));
 
             APIKeys = new List<string>();
             APIKeys.Add(Configuration.GetSection("AllowedServices:0:APIKey").Value);

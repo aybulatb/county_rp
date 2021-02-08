@@ -2,7 +2,7 @@
 
 using CountyRP.DAO;
 
-namespace CountyRP.WebAPI.Models
+namespace CountyRP.WebAPI.DbContexts
 {
     public class PropertyContext : DbContext
     {
@@ -17,7 +17,7 @@ namespace CountyRP.WebAPI.Models
         public PropertyContext(DbContextOptions<PropertyContext> options)
             : base(options)
         {
-            Database.EnsureCreated();
+            Database.Migrate();
         }
     }
 }

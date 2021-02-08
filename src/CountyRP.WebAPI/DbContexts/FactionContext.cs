@@ -2,7 +2,7 @@
 
 using CountyRP.DAO;
 
-namespace CountyRP.WebAPI.Models
+namespace CountyRP.WebAPI.DbContexts
 {
     public class FactionContext : DbContext
     {
@@ -12,7 +12,7 @@ namespace CountyRP.WebAPI.Models
         public FactionContext(DbContextOptions<FactionContext> options)
             : base(options)
         {
-            Database.EnsureCreated();
+            Database.Migrate();
         }
     }
 }

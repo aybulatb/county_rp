@@ -1,12 +1,12 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 using CountyRP.Models;
-using CountyRP.WebAPI.Models;
+using CountyRP.WebAPI.DbContexts;
 using CountyRP.WebAPI.Models.ViewModels;
-using Microsoft.EntityFrameworkCore;
 
 namespace CountyRP.WebAPI.Controllers
 {
