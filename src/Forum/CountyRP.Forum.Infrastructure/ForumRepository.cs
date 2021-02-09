@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 using CountyRP.Forum.Domain.Interfaces;
 using CountyRP.Forum.Domain.Models;
@@ -19,7 +20,9 @@ namespace CountyRP.Forum.Infrastructure
 
         public async Task<IEnumerable<ForumModel>> GetAll()
         {
-            var forums = _forumContext.Forums.Select(f => f).ToList();
+            var forums = await _forumContext.Forums
+                .Select(f => f)
+                .ToListAsync();
 
             return forums;
         }
@@ -36,7 +39,8 @@ namespace CountyRP.Forum.Infrastructure
 
         public async Task<ForumModel> GetForum(int id)
         {
-            var forum = _forumContext.Forums.FirstOrDefault(f => f.Id == id);
+            var forum = await _forumContext.Forums
+                .FirstOrDefaultAsync(f => f.Id == id);
 
             return forum;
         }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 using CountyRP.Forum.Domain.Interfaces;
 using CountyRP.Forum.Domain.Models;
@@ -50,12 +51,14 @@ namespace CountyRP.Forum.Infrastructure
 
         public async Task<IEnumerable<Moderator>> GetAll()
         {
-            return _moderatorContext.Moderators.ToArray();
+            return await _moderatorContext.Moderators
+                .ToArrayAsync();
         }
 
         public async Task<Moderator> GetById(int id)
         {
-            return _moderatorContext.Moderators.FirstOrDefault(m => m.Id == id);
+            return await _moderatorContext.Moderators
+                .FirstOrDefaultAsync(m => m.Id == id);
         }
 
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 using CountyRP.Forum.Domain.Interfaces;
 using CountyRP.Forum.Domain.Models;
@@ -49,12 +50,16 @@ namespace CountyRP.Forum.Infrastructure
 
         public async Task<IEnumerable<Post>> GetPosts(int topicId)
         {
-            return _postContext.Posts.Where(p => p.TopicId == topicId).ToList();
+            return await _postContext.Posts
+                .Where(p => p.TopicId == topicId)
+                .ToListAsync();
         }
 
         public async Task<Post> GetLastPostInTopic(int topicId)
         {
-            return _postContext.Posts.OrderByDescending(p => p.CreationDateTime).FirstOrDefault();
+            return await _postContext.Posts
+                .OrderByDescending(p => p.CreationDateTime)
+                .FirstOrDefaultAsync();
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 using CountyRP.Forum.Domain.Interfaces;
 using CountyRP.Forum.Domain.Models;
@@ -19,7 +20,9 @@ namespace CountyRP.Forum.Infrastructure
 
         public async Task<IEnumerable<Topic>> GetByForumId(int id)
         {
-            var topics = _topicContext.Topics.Where(t => t.ForumId == id).ToList();
+            var topics = await _topicContext.Topics
+                .Where(t => t.ForumId == id)
+                .ToListAsync();
 
             return topics;
         }
