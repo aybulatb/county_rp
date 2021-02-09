@@ -2,7 +2,7 @@
 
 using CountyRP.Forum.Domain.Models;
 
-namespace CountyRP.Forum.Infrastructure.Models
+namespace CountyRP.Forum.Infrastructure.DbContexts
 {
     public class PostContext : DbContext
     {
@@ -11,7 +11,7 @@ namespace CountyRP.Forum.Infrastructure.Models
         public PostContext(DbContextOptions<PostContext> options)
             : base(options)
         {
-            Database.EnsureCreated();
+            Database.Migrate();
         }
     }
 }

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 using CountyRP.Forum.Domain.Interfaces;
 using CountyRP.Forum.Domain.Models;
-using CountyRP.Forum.Infrastructure.Models;
+using CountyRP.Forum.Infrastructure.DbContexts;
 
 namespace CountyRP.Forum.Infrastructure
 {

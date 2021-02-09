@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 using CountyRP.Forum.Domain.Interfaces;
 using CountyRP.Forum.Infrastructure;
-using CountyRP.Forum.Infrastructure.Models;
+using CountyRP.Forum.Infrastructure.DbContexts;
 using CountyRP.Extra;
 using CountyRP.Forum.WebAPI.Services.Interfaces;
 using CountyRP.Forum.WebAPI.Services;
@@ -30,10 +30,10 @@ namespace CountyRP.Forum.WebAPI
             services.AddControllers();
 
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<ForumContext>(options => options.UseMySql(connectionString));
-            services.AddDbContext<TopicContext>(options => options.UseMySql(connectionString));
-            services.AddDbContext<PostContext>(options => options.UseMySql(connectionString));
-            services.AddDbContext<ModeratorContext>(options => options.UseMySql(connectionString));
+            services.AddDbContext<ForumContext>(options => options.UseSqlServer(connectionString));
+            services.AddDbContext<TopicContext>(options => options.UseSqlServer(connectionString));
+            services.AddDbContext<PostContext>(options => options.UseSqlServer(connectionString));
+            services.AddDbContext<ModeratorContext>(options => options.UseSqlServer(connectionString));
 
             services.AddTransient<IForumRepository, ForumRepository>();
             services.AddTransient<ITopicRepository, TopicRepository>();

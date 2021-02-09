@@ -17,9 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CountyRP.Forum.WebAPI", "Fo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CountyRP.Forum.Domain", "Forum\CountyRP.Forum.Domain\CountyRP.Forum.Domain.csproj", "{B9A3D2B2-9606-4CD9-9103-B26518C675EC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CountyRP.Forum.Infrastructure", "Forum\CountyRP.Forum.Infrastructure\CountyRP.Forum.Infrastructure.csproj", "{0A142505-98FF-44DB-AE04-88716178FF8A}"
-EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{C73EE339-758F-4519-956C-217BCADA2B1F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CountyRP.Forum.Infrastructure", "Forum\CountyRP.Forum.Infrastructure\CountyRP.Forum.Infrastructure.csproj", "{1F656507-DE3D-4CB1-BCD5-E923E1633D00}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,14 +51,14 @@ Global
 		{B9A3D2B2-9606-4CD9-9103-B26518C675EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B9A3D2B2-9606-4CD9-9103-B26518C675EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B9A3D2B2-9606-4CD9-9103-B26518C675EC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0A142505-98FF-44DB-AE04-88716178FF8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0A142505-98FF-44DB-AE04-88716178FF8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0A142505-98FF-44DB-AE04-88716178FF8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0A142505-98FF-44DB-AE04-88716178FF8A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C73EE339-758F-4519-956C-217BCADA2B1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C73EE339-758F-4519-956C-217BCADA2B1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C73EE339-758F-4519-956C-217BCADA2B1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C73EE339-758F-4519-956C-217BCADA2B1F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F656507-DE3D-4CB1-BCD5-E923E1633D00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F656507-DE3D-4CB1-BCD5-E923E1633D00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F656507-DE3D-4CB1-BCD5-E923E1633D00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F656507-DE3D-4CB1-BCD5-E923E1633D00}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -66,7 +66,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{1B25999C-54C4-40ED-B10A-FFA55FF3A1D5} = {098D823D-B802-4C42-B8D1-A8CC3796B805}
 		{B9A3D2B2-9606-4CD9-9103-B26518C675EC} = {098D823D-B802-4C42-B8D1-A8CC3796B805}
-		{0A142505-98FF-44DB-AE04-88716178FF8A} = {098D823D-B802-4C42-B8D1-A8CC3796B805}
+		{1F656507-DE3D-4CB1-BCD5-E923E1633D00} = {098D823D-B802-4C42-B8D1-A8CC3796B805}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E26ED3B6-A3EB-4EFD-B598-98B535ACF636}
