@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace CountyRP.WebAPI.Migrations
+namespace CountyRP.WebAPI.Migrations.AdminLevel
 {
     public partial class InitialCreate : Migration
     {

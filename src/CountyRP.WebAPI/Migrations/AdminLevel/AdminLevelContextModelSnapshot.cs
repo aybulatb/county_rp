@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace CountyRP.WebAPI.Migrations
+namespace CountyRP.WebAPI.Migrations.AdminLevel
 {
     [DbContext(typeof(AdminLevelContext))]
     partial class AdminLevelContextModelSnapshot : ModelSnapshot

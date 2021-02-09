@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace CountyRP.WebAPI.Migrations
+namespace CountyRP.WebAPI.Migrations.AdminLevel
 {
     [DbContext(typeof(AdminLevelContext))]
     [Migration("20210208181249_InitialCreate")]
