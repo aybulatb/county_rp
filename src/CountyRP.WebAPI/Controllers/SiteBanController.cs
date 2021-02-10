@@ -27,20 +27,24 @@ namespace CountyRP.WebAPI.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(SiteBan), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var siteBan = _banContext.SiteBans.AsNoTracking().FirstOrDefault(sb => sb.Id == id);
+            var siteBan = await _banContext.SiteBans
+                .AsNoTracking()
+                .FirstOrDefaultAsync(sb => sb.Id == id);
 
             if (siteBan == null)
                 return NotFound($"Бан на сайте с ID {id} не найден");
 
-            return Ok(MapToModel(siteBan));
+            return Ok(
+                MapToModel(siteBan)
+            );
         }
 
         [HttpGet("FilterBy")]
         [ProducesResponseType(typeof(FilteredModels<SiteBan>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        public IActionResult FilterBy(int page, int count)
+        public async Task<IActionResult> FilterBy(int page, int count)
         {
             if (page < 1)
                 return BadRequest("Номер страницы банов не может быть меньше 1");
@@ -50,19 +54,21 @@ namespace CountyRP.WebAPI.Controllers
 
             IQueryable<DAO.SiteBan> query = _banContext.SiteBans;
 
-            int allAmount = query.Count();
+            int allAmount = await query.CountAsync();
             int maxPage = (allAmount % count == 0) ? allAmount / count : allAmount / count + 1;
             if (page > maxPage && maxPage > 0)
                 page = maxPage;
 
-            var choosenSiteBans = query
+            var choosenSiteBans = await query
                     .Skip((page - 1) * count)
                     .Take(count)
-                    .ToList();
+                    .ToListAsync();
 
             return Ok(new FilteredModels<SiteBan>
             {
-                Items = choosenSiteBans.Select(sb => MapToModel(sb)).ToList(),
+                Items = choosenSiteBans
+                    .Select(sb => MapToModel(sb))
+                    .ToList(),
                 AllAmount = allAmount,
                 Page = page,
                 MaxPage = maxPage
@@ -74,14 +80,14 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Create([FromBody] SiteBan siteBan)
         {
-            var error = CheckParams(siteBan);
+            var error = await CheckParamsAsync(siteBan);
             if (error != null)
                 return error;
 
             var siteBanDAO = MapToDAO(siteBan);
             siteBanDAO.Id = 0;
 
-            _banContext.SiteBans.Add(siteBanDAO);
+            await _banContext.SiteBans.AddAsync(siteBanDAO);
             await _banContext.SaveChangesAsync();
 
             return Created("", MapToModel(siteBanDAO));
@@ -96,16 +102,18 @@ namespace CountyRP.WebAPI.Controllers
             if (siteBan.Id != id)
                 return BadRequest($"Указанный ID {id} не соответствует ID {siteBan.Id} бана на сайте");
 
-            var siteBanDAO = _banContext.SiteBans.AsNoTracking().FirstOrDefault(sb => sb.Id == id);
+            var isSiteBanExisted = await _banContext.SiteBans
+                .AsNoTracking()
+                .AnyAsync(sb => sb.Id == id);
 
-            if (siteBanDAO == null)
+            if (!isSiteBanExisted)
                 return NotFound($"Бан на сайте с ID {id} не найден");
 
-            var error = CheckParams(siteBan);
+            var error = await CheckParamsAsync(siteBan);
             if (error != null)
                 return error;
 
-            siteBanDAO = MapToDAO(siteBan);
+            var siteBanDAO = MapToDAO(siteBan);
 
             _banContext.SiteBans.Update(siteBanDAO);
             await _banContext.SaveChangesAsync();
@@ -118,7 +126,8 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
-            var siteBanDAO = _banContext.SiteBans.FirstOrDefault(sb => sb.Id == id);
+            var siteBanDAO = await _banContext.SiteBans
+                .FirstOrDefaultAsync(sb => sb.Id == id);
 
             if (siteBanDAO == null)
                 return NotFound($"Бан на сайте с ID {id} не найден");
@@ -157,12 +166,18 @@ namespace CountyRP.WebAPI.Controllers
             };
         }
 
-        private IActionResult CheckParams(SiteBan siteBan)
+        private async Task<IActionResult> CheckParamsAsync(SiteBan siteBan)
         {
-            if (_playerContext.Players.FirstOrDefault(p => p.Id == siteBan.PlayerId) == null)
+            var isPlayerExisted = await _playerContext.Players
+                .AnyAsync(p => p.Id == siteBan.PlayerId);
+
+            if (!isPlayerExisted)
                 return BadRequest($"Забаненный игрок с ID {siteBan.PlayerId} не найден");
 
-            if (_playerContext.Players.FirstOrDefault(p => p.Id == siteBan.AdminId) == null)
+            var isAdminPlayerExisted = await _playerContext.Players
+                .AnyAsync(p => p.Id == siteBan.AdminId);
+
+            if (!isAdminPlayerExisted)
                 return BadRequest($"Забанивший игрок с ID {siteBan.AdminId} не найден");
 
             if (siteBan.StartDateTime > siteBan.FinishDateTime)

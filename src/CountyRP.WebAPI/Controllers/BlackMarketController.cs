@@ -23,11 +23,16 @@ namespace CountyRP.WebAPI.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(BlackMarketItem[]), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var blackMarketItemsDAO = _blackMarketContext.BlackMarket.AsNoTracking().ToArray();
+            var blackMarketItemsDAO = await _blackMarketContext.BlackMarket
+                .AsNoTracking()
+                .ToArrayAsync();
 
-            return Ok(blackMarketItemsDAO.Select(bmi => MapToModel(bmi)));
+            return Ok(
+                blackMarketItemsDAO
+                    .Select(bmi => MapToModel(bmi))
+            );
         }
 
         [HttpPut("{id}")]
@@ -39,12 +44,14 @@ namespace CountyRP.WebAPI.Controllers
             if (blackMarketItem.Id != id)
                 return BadRequest($"Указанный ID {id} не соответствует ID {blackMarketItem.Id} предмета Чёрного рынка");
 
-            var blackMarketItemDAO = _blackMarketContext.BlackMarket.AsNoTracking().SingleOrDefault(bmi => bmi.Id == id);
+            var isBlackMarketItemExisted = await _blackMarketContext.BlackMarket
+                .AsNoTracking()
+                .AnyAsync(bmi => bmi.Id == id);
 
-            if (blackMarketItemDAO == null)
+            if (!isBlackMarketItemExisted)
                 return NotFound($"Предмет Чёрного рынка с ID {id} не найден");
 
-            blackMarketItemDAO = MapToDAO(blackMarketItem);
+            var blackMarketItemDAO = MapToDAO(blackMarketItem);
 
             _blackMarketContext.BlackMarket.Update(blackMarketItemDAO);
             await _blackMarketContext.SaveChangesAsync();

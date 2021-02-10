@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 using CountyRP.Models;
 using CountyRP.WebAPI.DbContexts;
@@ -30,12 +30,15 @@ namespace CountyRP.WebAPI.Controllers
             if (result != null)
                 return result;
 
-            if (_adminLevelContext.AdminLevels.FirstOrDefault(al => al.Id == adminLevel.Id) != null)
+            var isAdminLevelExisted = await _adminLevelContext.AdminLevels
+                .AsNoTracking()
+                .AnyAsync(al => al.Id == adminLevel.Id);
+            if (isAdminLevelExisted)
                 return BadRequest($"Уровень админки с ID {adminLevel.Id} уже существует");
 
             var adminLevelDAO = MapToDAO(adminLevel);
 
-            _adminLevelContext.AdminLevels.Add(adminLevelDAO);
+            await _adminLevelContext.AdminLevels.AddAsync(adminLevelDAO);
             await _adminLevelContext.SaveChangesAsync();
 
             return Created("", adminLevel);
@@ -43,30 +46,39 @@ namespace CountyRP.WebAPI.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(AdminLevel[]), StatusCodes.Status200OK)]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var adminLevelsDAO = _adminLevelContext.AdminLevels.AsNoTracking().ToArray();
+            var adminLevelsDAO = await _adminLevelContext.AdminLevels
+                .AsNoTracking()
+                .ToArrayAsync();
 
-            return Ok(adminLevelsDAO.Select(al => MapToModel(al)));
+            return Ok(
+                adminLevelsDAO
+                    .Select(al => MapToModel(al))
+            );
         }
 
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(AdminLevel), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult GetById(string id)
+        public async Task<IActionResult> GetById(string id)
         {
-            var adminLevelDAO = _adminLevelContext.AdminLevels.AsNoTracking().FirstOrDefault(al => al.Id == id);
+            var adminLevelDAO = await _adminLevelContext.AdminLevels
+                .AsNoTracking()
+                .FirstOrDefaultAsync(al => al.Id == id);
 
             if (adminLevelDAO == null)
                 return NotFound($"Уровень админки с ID {id} не найден");
 
-            return Ok(MapToModel(adminLevelDAO));
+            return Ok(
+                MapToModel(adminLevelDAO)
+            );
         }
 
         [HttpGet("FilterBy")]
         [ProducesResponseType(typeof(FilteredModels<AdminLevel>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        public IActionResult FilterBy(int page, int count, string id, string name)
+        public async Task<IActionResult> FilterBy(int page, int count, string id, string name)
         {
             if (page < 1)
                 return BadRequest("Номер страницы админских уровней не может быть меньше 1");
@@ -80,19 +92,21 @@ namespace CountyRP.WebAPI.Controllers
             if (!string.IsNullOrWhiteSpace(name))
                 query = query.Where(al => al.Name.Contains(name));
 
-            int allAmount = query.Count();
+            int allAmount = await query.CountAsync();
             int maxPage = (allAmount % count == 0) ? allAmount / count : allAmount / count + 1;
             if (page > maxPage && maxPage > 0)
                 page = maxPage;
 
-            var choosenAdminLevels = query
+            var choosenAdminLevels = await query
                     .Skip((page - 1) * count)
                     .Take(count)
-                    .ToList();
+                    .ToListAsync();
 
             return Ok(new FilteredModels<AdminLevel>
             {
-                Items = choosenAdminLevels.Select(al => MapToModel(al)).ToList(),
+                Items = choosenAdminLevels
+                    .Select(al => MapToModel(al))
+                    .ToList(),
                 AllAmount = allAmount,
                 Page = page,
                 MaxPage = maxPage
@@ -112,11 +126,13 @@ namespace CountyRP.WebAPI.Controllers
             if (result != null)
                 return result;
 
-            var adminLevelDAO = _adminLevelContext.AdminLevels.AsNoTracking().FirstOrDefault(al => al.Id == id);
-            if (adminLevelDAO == null)
+            var isAdminLevelExisted = await _adminLevelContext.AdminLevels
+                .AsNoTracking()
+                .AnyAsync(al => al.Id == id);
+            if (!isAdminLevelExisted)
                 return NotFound($"Уровень админки с ID {id} не найден");
 
-            adminLevelDAO = MapToDAO(adminLevel);
+            var adminLevelDAO = MapToDAO(adminLevel);
             _adminLevelContext.AdminLevels.Update(adminLevelDAO);
             await _adminLevelContext.SaveChangesAsync();
 
@@ -128,7 +144,8 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(string id)
         {
-            var adminLevel = _adminLevelContext.AdminLevels.FirstOrDefault(al => al.Id == id);
+            var adminLevel = await _adminLevelContext.AdminLevels
+                .FirstOrDefaultAsync(al => al.Id == id);
 
             if (adminLevel == null)
                 return NotFound($"Уровень админки с ID {id} не найден");

@@ -30,12 +30,15 @@ namespace CountyRP.WebAPI.Controllers
             if (result != null)
                 return result;
 
-            if (_groupContext.Groups.FirstOrDefault(g => g.Id == group.Id) != null)
+            var isGroupExisted = await _groupContext.Groups
+                .AnyAsync(g => g.Id == group.Id);
+
+            if (!isGroupExisted)
                 return BadRequest($"Группа с ID {group.Id} уже существует");
 
             var groupDAO = MapToDAO(group);
 
-            _groupContext.Groups.Add(groupDAO);
+            await _groupContext.Groups.AddAsync(groupDAO);
             await _groupContext.SaveChangesAsync();
 
             return Created("", group);
@@ -44,29 +47,38 @@ namespace CountyRP.WebAPI.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(Group), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult GetById(string id)
+        public async Task<IActionResult> GetById(string id)
         {
-            var groupDAO = _groupContext.Groups.AsNoTracking().FirstOrDefault(g => g.Id == id);
+            var groupDAO = await _groupContext.Groups
+                .AsNoTracking()
+                .FirstOrDefaultAsync(g => g.Id == id);
 
             if (groupDAO == null)
                 return NotFound($"Группа с ID {id} не найдена");
 
-            return Ok(MapToModel(groupDAO));
+            return Ok(
+                MapToModel(groupDAO)
+            );
         }
 
         [HttpGet]
         [ProducesResponseType(typeof(Group[]), StatusCodes.Status200OK)]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var groupsDAO = _groupContext.Groups.AsNoTracking().ToArray();
+            var groupsDAO = await _groupContext.Groups
+                .AsNoTracking()
+                .ToArrayAsync();
 
-            return Ok(groupsDAO.Select(g => MapToModel(g)));
+            return Ok(
+                groupsDAO
+                    .Select(g => MapToModel(g))
+            );
         }
 
         [HttpGet("FilterBy")]
         [ProducesResponseType(typeof(FilteredModels<Group>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        public IActionResult FilterBy(int page, int count, string id, string name)
+        public async Task<IActionResult> FilterBy(int page, int count, string id, string name)
         {
             if (page < 1)
                 return BadRequest("Номер страницы групп не может быть меньше 1");
@@ -80,19 +92,21 @@ namespace CountyRP.WebAPI.Controllers
             if (!string.IsNullOrWhiteSpace(name))
                 query = query.Where(g => g.Name.Contains(name));
 
-            int allAmount = query.Count();
+            int allAmount = await query.CountAsync();
             int maxPage = (allAmount % count == 0) ? allAmount / count : allAmount / count + 1;
             if (page > maxPage && maxPage > 0)
                 page = maxPage;
 
-            var choosenGroups = query
+            var choosenGroups = await query
                     .Skip((page - 1) * count)
                     .Take(count)
-                    .ToList();
+                    .ToListAsync();
 
             return Ok(new FilteredModels<Group>
             {
-                Items = choosenGroups.Select(g => MapToModel(g)).ToList(),
+                Items = choosenGroups
+                    .Select(g => MapToModel(g))
+                    .ToList(),
                 AllAmount = allAmount,
                 Page = page,
                 MaxPage = maxPage
@@ -101,9 +115,12 @@ namespace CountyRP.WebAPI.Controllers
 
         [HttpGet("Count")]
         [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
-        public IActionResult GetCount()
+        public async Task<IActionResult> GetCount()
         {
-            return Ok(_groupContext.Groups?.Count() ?? 0);
+            int count = await _groupContext.Groups
+                .CountAsync();
+
+            return Ok(count);
         }
 
         [HttpPut("{id}")]
@@ -115,17 +132,18 @@ namespace CountyRP.WebAPI.Controllers
             if (id != group.Id)
                 return BadRequest($"Указанный ID {id} не соответствует ID группы {group.Id}");
 
-            var groupDAO = _groupContext.Groups.AsNoTracking()
-                .FirstOrDefault(g => g.Id == id);
+            var isGroupExisted = await _groupContext.Groups
+                .AsNoTracking()
+                .AnyAsync(g => g.Id == id);
 
-            if (groupDAO == null)
+            if (!isGroupExisted)
                 return NotFound($"Группа с ID {id} не найдена");
 
             var result = CheckParams(group);
             if (result != null)
                 return result;
 
-            groupDAO = MapToDAO(group);
+            var groupDAO = MapToDAO(group);
 
             _groupContext.Groups.Update(groupDAO);
             await _groupContext.SaveChangesAsync();
@@ -138,7 +156,8 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(string id)
         {
-            var groupDAO = _groupContext.Groups.FirstOrDefault(g => g.Id == id);
+            var groupDAO = await _groupContext.Groups
+                .FirstOrDefaultAsync(g => g.Id == id);
 
             if (groupDAO == null)
                 return NotFound($"Группа с ID {id} не найдена");

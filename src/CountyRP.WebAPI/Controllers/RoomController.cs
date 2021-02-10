@@ -27,13 +27,13 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Create([FromBody] Room room)
         {
-            var result = CheckParams(room);
+            var result = await CheckParamsAsync(room);
             if (result != null)
                 return result;
 
             var roomDAO = MapToDAO(room);
 
-            _propertyContext.Rooms.Add(roomDAO);
+            await _propertyContext.Rooms.AddAsync(roomDAO);
             await _propertyContext.SaveChangesAsync();
 
             room.Id = roomDAO.Id;
@@ -43,23 +43,32 @@ namespace CountyRP.WebAPI.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(Room[]), StatusCodes.Status200OK)]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            var roomsDAO = _propertyContext.Rooms.AsNoTracking().ToArray();
+            var roomsDAO = await _propertyContext.Rooms
+                .AsNoTracking()
+                .ToArrayAsync();
 
-            return Ok(roomsDAO.Select(r => MapToModel(r)));
+            return Ok(
+                roomsDAO
+                    .Select(r => MapToModel(r))
+            );
         }
 
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(Room), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            var roomDAO = _propertyContext.Rooms.AsNoTracking().FirstOrDefault(r => r.Id == id);
+            var roomDAO = await _propertyContext.Rooms
+                .AsNoTracking()
+                .FirstOrDefaultAsync(r => r.Id == id);
             if (roomDAO == null)
                 return NotFound($"Помещение с ID {id} не найдено");
 
-            return Ok(MapToModel(roomDAO));
+            return Ok(
+                MapToModel(roomDAO)
+            );
         }
 
         [HttpPut("{id}")]
@@ -71,15 +80,17 @@ namespace CountyRP.WebAPI.Controllers
             if (id != room.Id)
                 return BadRequest($"Указанный ID {id} не соответствует ID помещения {room.Id}");
 
-            var result = CheckParams(room);
+            var result = await CheckParamsAsync(room);
             if (result != null)
                 return result;
 
-            var roomDAO = _propertyContext.Rooms.AsNoTracking().FirstOrDefault(r => r.Id == id);
-            if (roomDAO == null)
+            var isRoomExisted = await _propertyContext.Rooms
+                .AsNoTracking()
+                .AnyAsync(r => r.Id == id);
+            if (!isRoomExisted)
                 return NotFound($"Помещение с ID {id} не найдено");
 
-            roomDAO = MapToDAO(room);
+            var roomDAO = MapToDAO(room);
 
             _propertyContext.Rooms.Update(roomDAO);
             await _propertyContext.SaveChangesAsync();
@@ -92,7 +103,8 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
-            var roomDAO = _propertyContext.Rooms.FirstOrDefault(r => r.Id == id);
+            var roomDAO = await _propertyContext.Rooms
+                .FirstOrDefaultAsync(r => r.Id == id);
             if (roomDAO == null)
                 return NotFound($"Помещение с ID {id} не найдено");
 
@@ -102,7 +114,7 @@ namespace CountyRP.WebAPI.Controllers
             return Ok();
         }
 
-        private IActionResult CheckParams(Room room)
+        private async Task<IActionResult> CheckParamsAsync(Room room)
         {
             if (room.Name == null || room.Name.Length < 3 || room.Name.Length > 32)
                 return BadRequest("Название должно быть от 3 до 32 символов");
@@ -119,18 +131,22 @@ namespace CountyRP.WebAPI.Controllers
             if (room.SafePosition == null || room.SafePosition.Length != 3)
                 return BadRequest("Количество координат сейфа должно быть равно 3");
 
-            var result = CheckOwner(room);
+            var result = await CheckOwnerAsync(room);
             if (result != null)
                 return result;
 
             return null;
         }
 
-        private IActionResult CheckOwner(Room room)
+        private async Task<IActionResult> CheckOwnerAsync(Room room)
         {
-            if (room.GroupId != 0
-                && _gangContext.Gangs.FirstOrDefault(g => g.Id == room.GroupId) == null)
+            var isGangExisted = await _gangContext.Gangs
+                .AnyAsync(g => g.Id == room.GroupId);
+
+            if (room.GroupId != 0 && !isGangExisted)
                 return BadRequest($"Группировка с ID {room.GroupId} не найдена");
+
+            TrimParams(room);
 
             return null;
         }
@@ -146,19 +162,27 @@ namespace CountyRP.WebAPI.Controllers
             {
                 Id = room.Id,
                 Name = room.Name,
-                EntrancePosition = room.EntrancePosition?.Select(ep => ep).ToArray(),
+                EntrancePosition = room.EntrancePosition
+                    ?.Select(ep => ep)
+                    .ToArray(),
                 EntranceDimension = room.EntranceDimension,
-                ExitPosition = room.ExitPosition?.Select(ep => ep).ToArray(),
+                ExitPosition = room.ExitPosition
+                    ?.Select(ep => ep)
+                    .ToArray(),
                 ExitDimension = room.ExitDimension,
                 TypeMarker = room.TypeMarker,
-                ColorMarker = room.ColorMarker?.Select(cm => cm).ToArray(),
+                ColorMarker = room.ColorMarker
+                    ?.Select(cm => cm)
+                    .ToArray(),
                 TypeBlip = room.TypeBlip,
                 ColorBlip = room.ColorBlip,
                 GroupId = room.GroupId,
                 Lock = room.Lock,
                 Price = room.Price,
                 LastPayment = room.LastPayment,
-                SafePosition = room.SafePosition?.Select(sf => sf).ToArray(),
+                SafePosition = room.SafePosition
+                    ?.Select(sf => sf)
+                    .ToArray(),
                 SafeDimension = room.SafeDimension
             };
         }
@@ -169,19 +193,27 @@ namespace CountyRP.WebAPI.Controllers
             {
                 Id = room.Id,
                 Name = room.Name,
-                EntrancePosition = room.EntrancePosition?.Select(ep => ep).ToArray(),
+                EntrancePosition = room.EntrancePosition
+                    ?.Select(ep => ep)
+                    .ToArray(),
                 EntranceDimension = room.EntranceDimension,
-                ExitPosition = room.ExitPosition?.Select(ep => ep).ToArray(),
+                ExitPosition = room.ExitPosition
+                    ?.Select(ep => ep)
+                    .ToArray(),
                 ExitDimension = room.ExitDimension,
                 TypeMarker = room.TypeMarker,
-                ColorMarker = room.ColorMarker?.Select(cm => cm).ToArray(),
+                ColorMarker = room.ColorMarker
+                    ?.Select(cm => cm)
+                    .ToArray(),
                 TypeBlip = room.TypeBlip,
                 ColorBlip = room.ColorBlip,
                 GroupId = room.GroupId,
                 Lock = room.Lock,
                 Price = room.Price,
                 LastPayment = room.LastPayment,
-                SafePosition = room.SafePosition?.Select(sf => sf).ToArray(),
+                SafePosition = room.SafePosition
+                    ?.Select(sf => sf)
+                    .ToArray(),
                 SafeDimension = room.SafeDimension
             };
         }

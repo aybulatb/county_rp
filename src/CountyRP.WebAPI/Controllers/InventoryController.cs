@@ -22,14 +22,18 @@ namespace CountyRP.WebAPI.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(Contracts.Inventory), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var inventoryDAO = _inventoryContext.Inventories.AsNoTracking().FirstOrDefault(i => i.Id == id);
+            var inventoryDAO = await _inventoryContext.Inventories
+                .AsNoTracking()
+                .FirstOrDefaultAsync(i => i.Id == id);
 
             if (inventoryDAO == null)
                 return NotFound($"Инвентарь с ID {id} не найден");
 
-            return Ok(MapToContract(inventoryDAO));
+            return Ok(
+                MapToContract(inventoryDAO)
+            );
         }
 
         [HttpPost]
@@ -44,7 +48,7 @@ namespace CountyRP.WebAPI.Controllers
             var inventoryDAO = MapToDAO(inventory);
             inventoryDAO.Id = 0;
 
-            _inventoryContext.Inventories.Add(inventoryDAO);
+            await _inventoryContext.Inventories.AddAsync(inventoryDAO);
             await _inventoryContext.SaveChangesAsync();
 
             return Created("", MapToContract(inventoryDAO));
@@ -59,7 +63,9 @@ namespace CountyRP.WebAPI.Controllers
             if (inventory.Id != id)
                 return BadRequest($"Указанный ID {id} не соответствует ID {inventory.Id} инвентаря");
 
-            var inventoryDAO = _inventoryContext.Inventories.AsNoTracking().FirstOrDefault(i => i.Id == id);
+            var inventoryDAO = await _inventoryContext.Inventories
+                .AsNoTracking()
+                .FirstOrDefaultAsync(i => i.Id == id);
 
             if (inventoryDAO == null)
                 return NotFound($"Инвентарь с ID {id} не найден");
@@ -68,7 +74,9 @@ namespace CountyRP.WebAPI.Controllers
             if (error != null)
                 return error;
 
-            inventoryDAO.Slots = inventory.Slots.Select(s => MapSlotToDAO(s)).ToArray();
+            inventoryDAO.Slots = inventory.Slots
+                .Select(s => MapSlotToDAO(s))
+                .ToArray();
 
             _inventoryContext.Inventories.Update(inventoryDAO);
             await _inventoryContext.SaveChangesAsync();
@@ -81,7 +89,8 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
-            var inventoryDAO = _inventoryContext.Inventories.FirstOrDefault(i => i.Id == id);
+            var inventoryDAO = await _inventoryContext.Inventories
+                .FirstOrDefaultAsync(i => i.Id == id);
 
             if (inventoryDAO == null)
                 return NotFound($"Инвентарь с ID {id} не найден");
@@ -97,7 +106,9 @@ namespace CountyRP.WebAPI.Controllers
             return new DAO.Inventory
             {
                 Id = inv.Id,
-                Slots = inv.Slots.Select(s => MapSlotToDAO(s)).ToArray()
+                Slots = inv.Slots
+                    .Select(s => MapSlotToDAO(s))
+                    .ToArray()
             };
         }
 
@@ -106,7 +117,9 @@ namespace CountyRP.WebAPI.Controllers
             return new Contracts.Inventory
             {
                 Id = i.Id,
-                Slots = i.Slots.Select(s => MapSlotToContract(s)).ToArray()
+                Slots = i.Slots
+                    .Select(s => MapSlotToContract(s))
+                    .ToArray()
             };
         }
 

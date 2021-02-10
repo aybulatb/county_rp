@@ -29,16 +29,18 @@ namespace CountyRP.WebAPI.Controllers
             var result = CheckParams(faction);
             if (result != null)
                 return result;
-            
-            if (_factionContext.Factions
-                .FirstOrDefault(f => f.Id == faction.Id) != null)
+
+            var isFactionExisted = await _factionContext.Factions
+                .AnyAsync(f => f.Id == faction.Id);
+
+            if (isFactionExisted)
             {
                 return BadRequest($"Фракции с ID {faction.Id} уже существует");
             }
 
             var factionDAO = MapToDAO(faction);
 
-            _factionContext.Factions.Add(factionDAO);
+            await _factionContext.Factions.AddAsync(factionDAO);
             await _factionContext.SaveChangesAsync();
 
             return Created("", faction);
@@ -47,29 +49,37 @@ namespace CountyRP.WebAPI.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(Faction), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult GetById(string id)
+        public async Task<IActionResult> GetById(string id)
         {
-            var factionDAO = _factionContext.Factions.FirstOrDefault(f => f.Id == id);
+            var factionDAO = await _factionContext.Factions
+                .FirstOrDefaultAsync(f => f.Id == id);
 
             if (factionDAO == null)
                 return NotFound($"Фракции с ID {id} не найдена");
 
-            return Ok(MapToModel(factionDAO));
+            return Ok(
+                MapToModel(factionDAO)
+            );
         }
 
         [HttpGet]
         [ProducesResponseType(typeof(Faction[]), StatusCodes.Status200OK)]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var factionsDAO = _factionContext.Factions.AsNoTracking().ToArray();
+            var factionsDAO = await _factionContext.Factions
+                .AsNoTracking()
+                .ToArrayAsync();
 
-            return Ok(factionsDAO.Select(f => MapToModel(f)));
+            return Ok(
+                factionsDAO
+                    .Select(f => MapToModel(f))
+            );
         }
 
         [HttpGet("FilterBy")]
         [ProducesResponseType(typeof(FilteredModels<Faction>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        public IActionResult FilterBy(int page, int count, string id, string name)
+        public async Task<IActionResult> FilterBy(int page, int count, string id, string name)
         {
             if (page < 1)
                 return BadRequest("Номер страницы групп не может быть меньше 1");
@@ -83,19 +93,21 @@ namespace CountyRP.WebAPI.Controllers
             if (!string.IsNullOrWhiteSpace(name))
                 query = query.Where(f => f.Name.Contains(name));
 
-            int allAmount = query.Count();
+            int allAmount = await query.CountAsync();
             int maxPage = (allAmount % count == 0) ? allAmount / count : allAmount / count + 1;
             if (page > maxPage && maxPage > 0)
                 page = maxPage;
 
-            var choosenFactions = query
+            var choosenFactions = await query
                     .Skip((page - 1) * count)
                     .Take(count)
-                    .ToList();
+                    .ToListAsync();
 
             return Ok(new FilteredModels<Faction>
             {
-                Items = choosenFactions.Select(f => MapToModel(f)).ToList(),
+                Items = choosenFactions
+                    .Select(f => MapToModel(f))
+                    .ToList(),
                 AllAmount = allAmount,
                 Page = page,
                 MaxPage = maxPage
@@ -111,8 +123,11 @@ namespace CountyRP.WebAPI.Controllers
             if (id != faction.Id)
                 return BadRequest($"Указанный ID {id} не соответствует ID {faction.Id} фракции");
 
-            if (_factionContext.Factions.AsNoTracking()
-                .FirstOrDefault(f => f.Id == faction.Id) == null)
+            var isFactionExisted = await _factionContext.Factions
+                .AsNoTracking()
+                .AnyAsync(f => f.Id == faction.Id);
+
+            if (!isFactionExisted)
             {
                 return NotFound($"Фракции с ID {faction.Id} не найдена");
             }
@@ -132,7 +147,8 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(string id)
         {
-            var factionDAO = _factionContext.Factions.FirstOrDefault(f => f.Id == id);
+            var factionDAO = await _factionContext.Factions
+                .FirstOrDefaultAsync(f => f.Id == id);
 
             if (factionDAO == null)
                 return NotFound($"Фракция с ID {id} не найдена");
@@ -182,7 +198,9 @@ namespace CountyRP.WebAPI.Controllers
             {
                 Id = faction.Id,
                 Name = faction.Name,
-                Ranks = faction.Ranks?.Select(r => r).ToArray(),
+                Ranks = faction.Ranks
+                    ?.Select(r => r)
+                    .ToArray(),
                 Type = faction.Type
             };
         }

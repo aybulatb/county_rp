@@ -2,10 +2,10 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 using CountyRP.Models;
 using CountyRP.WebAPI.DbContexts;
-using Microsoft.EntityFrameworkCore;
 
 namespace CountyRP.WebAPI.Controllers
 {
@@ -27,13 +27,13 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Create([FromBody] Business business)
         {
-            var result = CheckParams(business);
+            var result = await CheckParamsAsync(business);
             if (result != null)
                 return result;
 
             var businessDAO = MapToDAO(business);
 
-            _propertyContext.Businesses.Add(businessDAO);
+            await _propertyContext.Businesses.AddAsync(businessDAO);
             await _propertyContext.SaveChangesAsync();
 
             business.Id = businessDAO.Id;
@@ -44,23 +44,32 @@ namespace CountyRP.WebAPI.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(Business[]), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var businessesDAO = _propertyContext.Businesses.AsNoTracking().ToArray();
+            var businessesDAO = await _propertyContext.Businesses
+                .AsNoTracking()
+                .ToArrayAsync();
 
-            return Ok(businessesDAO.Select(b => MapToModel(b)));
+            return Ok(
+                businessesDAO
+                    .Select(b => MapToModel(b))
+            );
         }
 
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(Business), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            var businessDAO = _propertyContext.Businesses.AsNoTracking().FirstOrDefault(b => b.Id == id);
+            var businessDAO = await _propertyContext.Businesses
+                .AsNoTracking()
+                .FirstOrDefaultAsync(b => b.Id == id);
             if (businessDAO == null)
                 return NotFound($"Бизнес с ID {id} не найден");
 
-            return Ok(MapToModel(businessDAO));
+            return Ok(
+                MapToModel(businessDAO)
+            );
         }
 
         [HttpPut("{id}")]
@@ -72,15 +81,17 @@ namespace CountyRP.WebAPI.Controllers
             if (id != business.Id)
                 return BadRequest($"Указанный ID {id} не соответствует ID бизнеса {business.Id}");
 
-            var businessDAO = _propertyContext.Businesses.AsNoTracking().FirstOrDefault(b => b.Id == id);
-            if (businessDAO == null)
+            var isBusinessExisted = await _propertyContext.Businesses
+                .AsNoTracking()
+                .AnyAsync(b => b.Id == id);
+            if (!isBusinessExisted)
                 return NotFound($"Бизнес с ID {id} не найден");
 
-            var result = CheckParams(business);
+            var result = await CheckParamsAsync(business);
             if (result != null)
                 return result;
 
-            businessDAO = MapToDAO(business);
+            var businessDAO = MapToDAO(business);
 
             _propertyContext.Businesses.Update(businessDAO);
             await _propertyContext.SaveChangesAsync();
@@ -93,7 +104,8 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
-            var businessDAO = _propertyContext.Businesses.FirstOrDefault(b => b.Id == id);
+            var businessDAO = await _propertyContext.Businesses
+                .FirstOrDefaultAsync(b => b.Id == id);
             if (businessDAO == null)
                 return NotFound($"Бизнес с ID {id} не найден");
 
@@ -103,8 +115,10 @@ namespace CountyRP.WebAPI.Controllers
             return Ok();
         }
 
-        private IActionResult CheckParams(Business business)
+        private async Task<IActionResult> CheckParamsAsync(Business business)
         {
+            TrimParams(business);
+
             if (business.Name == null || business.Name.Length < 3 || business.Name.Length > 32)
                 return BadRequest("Длина названия должна быть от 3 до 32 символов");
 
@@ -114,17 +128,19 @@ namespace CountyRP.WebAPI.Controllers
             if (business.ExitPosition == null || business.ExitPosition.Length != 3)
                 return BadRequest("Количество координат выхода должно быть равно 3");
 
-            var result = CheckOwner(business);
+            var result = await CheckOwnerAsync(business);
             if (result != null)
                 return result;
 
             return null;
         }
 
-        private IActionResult CheckOwner(Business business)
+        private async Task<IActionResult> CheckOwnerAsync(Business business)
         {
-            if (business.OwnerId != 0 &&
-                _playerContext.Persons.FirstOrDefault(p => p.Id == business.OwnerId) == null)
+            var isPersonExisted = await _playerContext.Persons
+                .AnyAsync(p => p.Id == business.OwnerId);
+
+            if (business.OwnerId != 0 && !isPersonExisted)
                 return BadRequest($"Персонаж с ID {business.OwnerId} не найден");
 
             return null;
@@ -141,9 +157,13 @@ namespace CountyRP.WebAPI.Controllers
             {
                 Id = business.Id,
                 Name = business.Name,
-                EntrancePosition = business.EntrancePosition?.Select(ep => ep).ToArray(),
+                EntrancePosition = business.EntrancePosition
+                    ?.Select(ep => ep)
+                    .ToArray(),
                 EntranceDimension = business.EntranceDimension,
-                ExitPosition = business.ExitPosition?.Select(ep => ep).ToArray(),
+                ExitPosition = business.ExitPosition
+                    ?.Select(ep => ep)
+                    .ToArray(),
                 ExitDimension = business.ExitDimension,
                 OwnerId = business.OwnerId,
                 Lock = business.Lock,
@@ -158,9 +178,13 @@ namespace CountyRP.WebAPI.Controllers
             {
                 Id = business.Id,
                 Name = business.Name,
-                EntrancePosition = business.EntrancePosition?.Select(ep => ep).ToArray(),
+                EntrancePosition = business.EntrancePosition
+                    ?.Select(ep => ep)
+                    .ToArray(),
                 EntranceDimension = business.EntranceDimension,
-                ExitPosition = business.ExitPosition?.Select(ep => ep).ToArray(),
+                ExitPosition = business.ExitPosition
+                    ?.Select(ep => ep)
+                    .ToArray(),
                 ExitDimension = business.ExitDimension,
                 OwnerId = business.OwnerId,
                 Lock = business.Lock,

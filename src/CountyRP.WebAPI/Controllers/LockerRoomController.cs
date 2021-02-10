@@ -25,13 +25,13 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Create([FromBody] LockerRoom lockerRoom)
         {
-            var result = CheckParams(lockerRoom);
+            var result = await CheckParamsAsync(lockerRoom);
             if (result != null)
                 return result;
 
             var lockerRoomDAO = MapToDAO(lockerRoom);
 
-            _factionContext.LockerRooms.Add(lockerRoomDAO);
+            await _factionContext.LockerRooms.AddAsync(lockerRoomDAO);
             await _factionContext.SaveChangesAsync();
 
             lockerRoom.Id = lockerRoomDAO.Id;
@@ -42,23 +42,32 @@ namespace CountyRP.WebAPI.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(LockerRoom[]), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var lockerRoomsDAO = _factionContext.LockerRooms.AsNoTracking().ToArray();
+            var lockerRoomsDAO = await _factionContext.LockerRooms
+                .AsNoTracking()
+                .ToArrayAsync();
 
-            return Ok(lockerRoomsDAO.Select(lr => MapToModel(lr)));
+            return Ok(
+                lockerRoomsDAO
+                    .Select(lr => MapToModel(lr))
+            );
         }
 
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(LockerRoom), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            var lockerRoomDAO = _factionContext.LockerRooms.AsNoTracking().FirstOrDefault(lr => lr.Id == id);
+            var lockerRoomDAO = await _factionContext.LockerRooms
+                .AsNoTracking()
+                .FirstOrDefaultAsync(lr => lr.Id == id);
             if (lockerRoomDAO == null)
                 return NotFound($"Раздевалка с ID {id} не найдена");
 
-            return Ok(MapToModel(lockerRoomDAO));
+            return Ok(
+                MapToModel(lockerRoomDAO)
+            );
         }
 
         [HttpPut("{id}")]
@@ -70,15 +79,17 @@ namespace CountyRP.WebAPI.Controllers
             if (id != lockerRoom.Id)
                 return BadRequest($"Указанный ID {id} не соответствует ID раздевалки {lockerRoom.Id}");
 
-            var result = CheckParams(lockerRoom);
+            var result = await CheckParamsAsync(lockerRoom);
             if (result != null)
                 return result;
 
-            var lockerRoomDAO = _factionContext.LockerRooms.AsNoTracking().FirstOrDefault(lr => lr.Id == id);
-            if (lockerRoomDAO == null)
+            var isLockerRoomExisted = await _factionContext.LockerRooms
+                .AsNoTracking()
+                .AnyAsync(lr => lr.Id == id);
+            if (!isLockerRoomExisted)
                 return NotFound($"Раздевалка с ID {id} не найдена");
 
-            lockerRoomDAO = MapToDAO(lockerRoom);
+            var lockerRoomDAO = MapToDAO(lockerRoom);
 
             _factionContext.LockerRooms.Update(lockerRoomDAO);
             await _factionContext.SaveChangesAsync();
@@ -91,7 +102,8 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
-            var lockerRoomDAO = _factionContext.LockerRooms.FirstOrDefault(lr => lr.Id == id);
+            var lockerRoomDAO = await _factionContext.LockerRooms
+                .FirstOrDefaultAsync(lr => lr.Id == id);
             if (lockerRoomDAO == null)
                 return NotFound($"Раздевалка с ID {id} не найдена");
 
@@ -101,7 +113,7 @@ namespace CountyRP.WebAPI.Controllers
             return Ok();
         }
 
-        private IActionResult CheckParams(LockerRoom lockerRoom)
+        private async Task<IActionResult> CheckParamsAsync(LockerRoom lockerRoom)
         {
             if (lockerRoom.Position == null || lockerRoom.Position.Length != 3)
                 return BadRequest("Количество координат должно быть равно 3");
@@ -109,18 +121,19 @@ namespace CountyRP.WebAPI.Controllers
             if (lockerRoom.ColorMarker == null || lockerRoom.ColorMarker.Length != 3)
                 return BadRequest("Количество цветов маркера должно быть равно 3");
 
-            var result = CheckOwner(lockerRoom);
+            var result = await CheckOwner(lockerRoom);
             if (result != null)
                 return result;
 
             return null;
         }
 
-        private IActionResult CheckOwner(LockerRoom lockerRoom)
+        private async Task<IActionResult> CheckOwner(LockerRoom lockerRoom)
         {
-            if (lockerRoom.FactionId == null ||
-                lockerRoom.FactionId != string.Empty &&
-                _factionContext.LockerRooms.FirstOrDefault(lr => lr.FactionId == lockerRoom.FactionId) == null)
+            var isFactionExisted = await _factionContext.LockerRooms
+                .AnyAsync(lr => lr.FactionId == lockerRoom.FactionId);
+
+            if (lockerRoom.FactionId == null || lockerRoom.FactionId != string.Empty && !isFactionExisted)
                 return BadRequest($"Фракция с ID {lockerRoom.FactionId} не найдена");
 
             return null;
@@ -131,10 +144,14 @@ namespace CountyRP.WebAPI.Controllers
             return new DAO.LockerRoom
             {
                 Id = lockerRoom.Id,
-                Position = lockerRoom.Position?.Select(p => p).ToArray(),
+                Position = lockerRoom.Position
+                    ?.Select(p => p)
+                    .ToArray(),
                 Dimension = lockerRoom.Dimension,
                 TypeMarker = lockerRoom.TypeMarker,
-                ColorMarker = lockerRoom.ColorMarker?.Select(cm => cm).ToArray(),
+                ColorMarker = lockerRoom.ColorMarker
+                    ?.Select(cm => cm)
+                    .ToArray(),
                 FactionId = lockerRoom.FactionId
             };
         }
@@ -144,10 +161,14 @@ namespace CountyRP.WebAPI.Controllers
             return new LockerRoom
             {
                 Id = lockerRoom.Id,
-                Position = lockerRoom.Position?.Select(p => p).ToArray(),
+                Position = lockerRoom.Position
+                    ?.Select(p => p)
+                    .ToArray(),
                 Dimension = lockerRoom.Dimension,
                 TypeMarker = lockerRoom.TypeMarker,
-                ColorMarker = lockerRoom.ColorMarker?.Select(cm => cm).ToArray(),
+                ColorMarker = lockerRoom.ColorMarker
+                    ?.Select(cm => cm)
+                    .ToArray(),
                 FactionId = lockerRoom.FactionId
             };
         }

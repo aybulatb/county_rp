@@ -33,7 +33,7 @@ namespace CountyRP.WebAPI.Controllers
 
             var garageDAO = MapToDAO(garage);
 
-            _propertyContext.Garages.Add(garageDAO);
+            await _propertyContext.Garages.AddAsync(garageDAO);
             await _propertyContext.SaveChangesAsync();
 
             garage.Id = garageDAO.Id;
@@ -43,23 +43,32 @@ namespace CountyRP.WebAPI.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(Garage[]), StatusCodes.Status200OK)]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var garagesDAO = _propertyContext.Garages.AsNoTracking().ToArray();
+            var garagesDAO = await _propertyContext.Garages
+                .AsNoTracking()
+                .ToArrayAsync();
 
-            return Ok(garagesDAO.Select(h => MapToModel(h)));
+            return Ok(
+                garagesDAO
+                    .Select(h => MapToModel(h))
+            );
         }
 
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(Garage), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            var garageDAO = _propertyContext.Garages.AsNoTracking().FirstOrDefault(g => g.Id == id);
+            var garageDAO = await _propertyContext.Garages
+                .AsNoTracking()
+                .FirstOrDefaultAsync(g => g.Id == id);
             if (garageDAO == null)
                 return NotFound($"Гараж с ID {id} не найден");
 
-            return Ok(MapToModel(garageDAO));
+            return Ok(
+                MapToModel(garageDAO)
+            );
         }
 
         [HttpPut("{id}")]
@@ -75,11 +84,13 @@ namespace CountyRP.WebAPI.Controllers
             if (result != null)
                 return result;
 
-            var garageDAO = _propertyContext.Garages.AsNoTracking().FirstOrDefault(g => g.Id == id);
-            if (garageDAO == null)
+            var isGarageExisted = await _propertyContext.Garages
+                .AsNoTracking()
+                .AnyAsync(g => g.Id == id);
+            if (!isGarageExisted)
                 return NotFound($"Гараж с ID {id} не найден");
 
-            garageDAO = MapToDAO(garage);
+            var garageDAO = MapToDAO(garage);
 
             _propertyContext.Garages.Update(garageDAO);
             await _propertyContext.SaveChangesAsync();
@@ -92,7 +103,8 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
-            var garageDAO = _propertyContext.Garages.FirstOrDefault(g => g.Id == id);
+            var garageDAO = await _propertyContext.Garages
+                .FirstOrDefaultAsync(g => g.Id == id);
             if (garageDAO == null)
                 return NotFound($"Гараж с ID {id} не найден");
 
@@ -116,7 +128,8 @@ namespace CountyRP.WebAPI.Controllers
             {
                 Id = garage.Id,
                 Type = garage.Type,
-                EntrancePosition = garage.EntrancePosition?.ToArray(),
+                EntrancePosition = garage.EntrancePosition
+                    ?.ToArray(),
                 EntranceDimension = garage.EntranceDimension,
                 EntranceRotation = garage.EntranceRotation,
                 ExitDimension = garage.ExitDimension,
@@ -130,7 +143,8 @@ namespace CountyRP.WebAPI.Controllers
             {
                 Id = garage.Id,
                 Type = garage.Type,
-                EntrancePosition = garage.EntrancePosition?.ToArray(),
+                EntrancePosition = garage.EntrancePosition
+                    ?.ToArray(),
                 EntranceDimension = garage.EntranceDimension,
                 EntranceRotation = garage.EntranceRotation,
                 ExitDimension = garage.ExitDimension,

@@ -25,33 +25,41 @@ namespace CountyRP.WebAPI.Controllers
         [HttpGet("GetById/{id}")]
         [ProducesResponseType(typeof(Player), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var playerDAO = _playerContext.Players.AsNoTracking().FirstOrDefault(p => p.Id == id);
+            var playerDAO = await _playerContext.Players
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Id == id);
 
             if (playerDAO == null)
                 return NotFound($"Игрок с ID {id} не найден");
 
-            return Ok(MapToModel(playerDAO));
+            return Ok(
+                MapToModel(playerDAO)
+            );
         }
 
         [HttpGet("GetByLogin/{login}")]
         [ProducesResponseType(typeof(Player), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult GetByLogin(string login)
+        public async Task<IActionResult> GetByLogin(string login)
         {
-            var playerDAO = _playerContext.Players.AsNoTracking().FirstOrDefault(p => p.Login == login);
+            var playerDAO = await _playerContext.Players
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Login == login);
 
             if (playerDAO == null)
                 return NotFound($"Игрок с логином {login} не найден");
 
-            return Ok(MapToModel(playerDAO));
+            return Ok(
+                MapToModel(playerDAO)
+            );
         }
 
         [HttpGet("FilterBy")]
         [ProducesResponseType(typeof(FilteredModels<Player>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        public IActionResult FilterBy(int page, int count, string login)
+        public async Task<IActionResult> FilterBy(int page, int count, string login)
         {
             if (page < 1)
                 return BadRequest("Номер страницы игроков не может быть меньше 1");
@@ -63,19 +71,21 @@ namespace CountyRP.WebAPI.Controllers
             if (!string.IsNullOrWhiteSpace(login))
                 query = query.Where(p => p.Login.Contains(login));
 
-            int allAmount = query.Count();
+            int allAmount = await query.CountAsync();
             int maxPage = (allAmount % count == 0) ? allAmount / count : allAmount / count + 1;
             if (page > maxPage && maxPage > 0)
                 page = maxPage;
 
-            var choosenPlayer = query
+            var choosenPlayer = await query
                     .Skip((page - 1) * count)
                     .Take(count)
-                    .ToList();
+                    .ToListAsync();
 
             return Ok(new FilteredModels<Player>
             {
-                Items = choosenPlayer.Select(p => MapToModel(p)).ToList(),
+                Items = choosenPlayer
+                    .Select(p => MapToModel(p))
+                    .ToList(),
                 AllAmount = allAmount,
                 Page = page,
                 MaxPage = maxPage
@@ -85,15 +95,18 @@ namespace CountyRP.WebAPI.Controllers
         [HttpGet("TryAuthorize")]
         [ProducesResponseType(typeof(Player), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        public IActionResult TryAuthorize(string login, string password)
+        public async Task<IActionResult> TryAuthorize(string login, string password)
         {
-            var playerDAO = _playerContext.Players.AsNoTracking()
-                .FirstOrDefault(p => p.Login == login && p.Password == password);
+            var playerDAO = await _playerContext.Players
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Login == login && p.Password == password);
 
             if (playerDAO == null)
                 return BadRequest("Неправильно указаны либо логин, либо пароль");
 
-            return Ok(MapToModel(playerDAO));
+            return Ok(
+                MapToModel(playerDAO)
+            );
         }
 
         [HttpPost]
@@ -101,19 +114,21 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Register([FromBody] Player player)
         {
-            var result = CheckParams(player);
+            var result = await CheckParamsAsync(player);
             if (result != null)
                 return result;
 
-            if (_playerContext.Players
-                .FirstOrDefault(p => p.Login == player.Login) != null)
+            var isPlayerExisted = await _playerContext.Players
+                .AnyAsync(p => p.Login == player.Login);
+
+            if (isPlayerExisted)
             {
                 return BadRequest($"Игрок с логином {player.Login} уже существует");
             }
 
             var playerDAO = MapToDAO(player);
 
-            _playerContext.Players.Add(playerDAO);
+            await _playerContext.Players.AddAsync(playerDAO);
             await _playerContext.SaveChangesAsync();
 
             player.Id = playerDAO.Id;
@@ -130,18 +145,21 @@ namespace CountyRP.WebAPI.Controllers
             if (id != player.Id)
                 return BadRequest($"Указанный ID {id} не соответствует ID игрока {player.Id}");
 
-            var playerDAO = _playerContext.Players.AsNoTracking().FirstOrDefault(p => p.Id == player.Id);
+            var playerDAO = await _playerContext.Players
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Id == player.Id);
 
             if (playerDAO == null)
                 return NotFound($"Игрок с ID {player.Id} не существует");
 
-            var result = CheckParams(player);
+            var result = await CheckParamsAsync(player);
             if (result != null)
                 return result;
 
-            if (playerDAO.Login != player.Login && 
-                _playerContext.Players
-                .FirstOrDefault(p => p.Login == player.Login) != null)
+            var isPlayerExisted = await _playerContext.Players
+                .AnyAsync(p => p.Login == player.Login);
+
+            if (playerDAO.Login != player.Login && isPlayerExisted)
             {
                 return BadRequest($"Игрок с логином {player.Login} уже существует");
             }
@@ -164,13 +182,16 @@ namespace CountyRP.WebAPI.Controllers
             if (result != null)
                 return result;
 
-            var playerDAO = _playerContext.Players.FirstOrDefault(p => p.Id == id);
+            var playerDAO = await _playerContext.Players
+                .FirstOrDefaultAsync(p => p.Id == id);
 
             if (playerDAO == null)
                 return NotFound($"Игрок с ID {id} не найден");
 
-            if (_playerContext.Players
-                .FirstOrDefault(p => p.Login == login) != null)
+            var isPlayerExisted = await _playerContext.Players
+                .AnyAsync(p => p.Login == login);
+
+            if (isPlayerExisted)
             {
                 return BadRequest($"Игрок с логином {login} уже существует");
             }
@@ -191,7 +212,8 @@ namespace CountyRP.WebAPI.Controllers
             if (result != null)
                 return result;
 
-            var playerDAO = _playerContext.Players.FirstOrDefault(p => p.Id == id);
+            var playerDAO = await _playerContext.Players
+                .FirstOrDefaultAsync(p => p.Id == id);
 
             if (playerDAO == null)
                 return NotFound($"Игрок с ID {id} не найден");
@@ -207,7 +229,8 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
-            var playerDAO = _playerContext.Players.FirstOrDefault(p => p.Id == id);
+            var playerDAO = await _playerContext.Players
+                .FirstOrDefaultAsync(p => p.Id == id);
 
             if (playerDAO == null)
                 return NotFound($"Игрок с ID {id} не найден");
@@ -219,7 +242,7 @@ namespace CountyRP.WebAPI.Controllers
         }
 
 
-        private IActionResult CheckParams(Player player)
+        private async Task<IActionResult> CheckParamsAsync(Player player)
         {
             TrimParams(player);
 
@@ -231,9 +254,10 @@ namespace CountyRP.WebAPI.Controllers
             if (result != null)
                 return result;
 
-            if (player.GroupId == null || 
-                _groupContext.Groups
-                .FirstOrDefault(g => g.Id == player.GroupId) == null)
+            var isGroupExisted = await _groupContext.Groups
+                .AnyAsync(g => g.Id == player.GroupId);
+
+            if (player.GroupId == null || !isGroupExisted)
             {
                 return BadRequest($"Группа с ID {player.GroupId} не существует");
             }

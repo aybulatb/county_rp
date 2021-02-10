@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -23,20 +22,24 @@ namespace CountyRP.WebAPI.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(Appearance), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var appearance = _appearanceContext.Appearances.AsNoTracking().FirstOrDefault(a => a.Id == id);
+            var appearance = await _appearanceContext.Appearances
+                .AsNoTracking()
+                .FirstOrDefaultAsync(a => a.Id == id);
 
             if (appearance == null)
                 return NotFound($"Внешность с ID {id} не найдена");
 
-            return Ok(MapToModel(appearance));
+            return Ok(
+                MapToModel(appearance)
+            );
         }
 
         [HttpPost]
         [ProducesResponseType(typeof(Appearance), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Create([FromBody]Appearance appearance)
+        public async Task<IActionResult> Create([FromBody] Appearance appearance)
         {
             var error = CheckParams(appearance);
             if (error != null)
@@ -45,7 +48,7 @@ namespace CountyRP.WebAPI.Controllers
             var appearanceDAO = MapToDAO(appearance);
             appearanceDAO.Id = 0;
 
-            _appearanceContext.Appearances.Add(appearanceDAO);
+            await _appearanceContext.Appearances.AddAsync(appearanceDAO);
             await _appearanceContext.SaveChangesAsync();
 
             return Created("", MapToModel(appearanceDAO));
@@ -55,21 +58,23 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(Appearance), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Edit(int id, [FromBody]Appearance appearance)
+        public async Task<IActionResult> Edit(int id, [FromBody] Appearance appearance)
         {
             if (appearance.Id != id)
                 return BadRequest($"Указанный ID {id} не соответствует ID {appearance.Id} внешности");
 
-            var appearanceDAO = _appearanceContext.Appearances.AsNoTracking().FirstOrDefault(a => a.Id == id);
+            var isAppearanceExistedAppearance = await _appearanceContext.Appearances
+                .AsNoTracking()
+                .AnyAsync(a => a.Id == id);
 
-            if (appearanceDAO == null)
+            if (!isAppearanceExistedAppearance)
                 return NotFound($"Внешность с ID {id} не найдена");
 
             var error = CheckParams(appearance);
             if (error != null)
                 return error;
 
-            appearanceDAO = MapToDAO(appearance);
+            var appearanceDAO = MapToDAO(appearance);
 
             _appearanceContext.Appearances.Update(appearanceDAO);
             await _appearanceContext.SaveChangesAsync();
@@ -82,7 +87,8 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
-            var appearance = _appearanceContext.Appearances.FirstOrDefault(a => a.Id == id);
+            var appearance = await _appearanceContext.Appearances
+                .FirstOrDefaultAsync(a => a.Id == id);
 
             if (appearance == null)
                 return NotFound($"Внешность с ID {id} не найдена");

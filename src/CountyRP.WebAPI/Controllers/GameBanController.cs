@@ -27,20 +27,24 @@ namespace CountyRP.WebAPI.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(GameBan), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var gameBanDAO = _banContext.GameBans.AsNoTracking().FirstOrDefault(gb => gb.Id == id);
+            var gameBanDAO = await _banContext.GameBans
+                .AsNoTracking()
+                .FirstOrDefaultAsync(gb => gb.Id == id);
 
             if (gameBanDAO == null)
                 return NotFound($"Бан в игре с ID {id} не найден");
 
-            return Ok(MapToModel(gameBanDAO));
+            return Ok(
+                MapToModel(gameBanDAO)
+            );
         }
 
         [HttpGet("FilterBy")]
         [ProducesResponseType(typeof(FilteredModels<GameBan>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        public IActionResult FilterBy(int page, int count)
+        public async Task<IActionResult> FilterBy(int page, int count)
         {
             if (page < 1)
                 return BadRequest("Номер страницы банов не может быть меньше 1");
@@ -50,20 +54,22 @@ namespace CountyRP.WebAPI.Controllers
 
             IQueryable<DAO.GameBan> query = _banContext.GameBans;
 
-            int allAmount = query.Count();
+            int allAmount = await query.CountAsync();
             int maxPage = (allAmount % count == 0) ? allAmount / count : allAmount / count + 1;
             if (page > maxPage && maxPage > 0)
                 page = maxPage;
 
-            var choosenGameBans = query
+            var choosenGameBans = await query
                     .Skip((page - 1) * count)
                     .Take(count)
                     .Select(gb => gb)
-                    .ToList();
+                    .ToListAsync();
 
             return Ok(new FilteredModels<GameBan>
             {
-                Items = choosenGameBans.Select(gb => MapToModel(gb)).ToList(),
+                Items = choosenGameBans
+                    .Select(gb => MapToModel(gb))
+                    .ToList(),
                 AllAmount = allAmount,
                 Page = page,
                 MaxPage = maxPage
@@ -73,16 +79,16 @@ namespace CountyRP.WebAPI.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(GameBan), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Create([FromBody]GameBan gameBan)
+        public async Task<IActionResult> Create([FromBody] GameBan gameBan)
         {
-            var error = CheckParams(gameBan);
+            var error = await CheckParamsAsync(gameBan);
             if (error != null)
                 return error;
 
             var gameBanDAO = MapToDAO(gameBan);
             gameBanDAO.Id = 0;
 
-            _banContext.GameBans.Add(gameBanDAO);
+            await _banContext.GameBans.AddAsync(gameBanDAO);
             await _banContext.SaveChangesAsync();
 
             return Created("", MapToModel(gameBanDAO));
@@ -97,12 +103,14 @@ namespace CountyRP.WebAPI.Controllers
             if (gameBan.Id != id)
                 return BadRequest($"Указанный ID {id} не соответствует ID {gameBan.Id} бана в игре");
 
-            var gameBanDAO = _banContext.GameBans.AsNoTracking().FirstOrDefault(gb => gb.Id == id);
+            var gameBanDAO = await _banContext.GameBans
+                .AsNoTracking()
+                .FirstOrDefaultAsync(gb => gb.Id == id);
 
             if (gameBanDAO == null)
                 return NotFound($"Бан в игре с ID {id} не найден");
 
-            var error = CheckParams(gameBan);
+            var error = await CheckParamsAsync(gameBan);
             if (error != null)
                 return error;
 
@@ -119,7 +127,8 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
-            var gameBanDAO = _banContext.GameBans.FirstOrDefault(gb => gb.Id == id);
+            var gameBanDAO = await _banContext.GameBans
+                .FirstOrDefaultAsync(gb => gb.Id == id);
 
             if (gameBanDAO == null)
                 return NotFound($"Бан в игре с ID {id} не найден");
@@ -130,18 +139,27 @@ namespace CountyRP.WebAPI.Controllers
             return Ok();
         }
 
-        private IActionResult CheckParams(GameBan gameBan)
+        private async Task<IActionResult> CheckParamsAsync(GameBan gameBan)
         {
             if (gameBan.PlayerId != 0 && gameBan.PersonId != 0)
                 return BadRequest($"Можно забанить только либо игрока, либо персонажа");
 
-            if (gameBan.PersonId == 0 && _playerContext.Players.FirstOrDefault(p => p.Id == gameBan.PlayerId) == null)
+            var isPlayerExisted = await _playerContext.Players
+                .AnyAsync(p => p.Id == gameBan.PlayerId);
+
+            if (gameBan.PersonId == 0 && !isPlayerExisted)
                 return BadRequest($"Забаненный игрок с ID {gameBan.PlayerId} не найден");
 
-            if (gameBan.PlayerId == 0 && _playerContext.Persons.FirstOrDefault(p => p.Id == gameBan.PersonId) == null)
+            var isPersonExisted = await _playerContext.Persons
+                .AnyAsync(p => p.Id == gameBan.PersonId);
+
+            if (gameBan.PlayerId == 0 && !isPersonExisted)
                 return BadRequest($"Забаненный персонаж с ID {gameBan.PersonId} не найден");
 
-            if (_playerContext.Players.FirstOrDefault(p => p.Id == gameBan.AdminId) == null)
+            var isAdminPlayerExisted = await _playerContext.Players
+                .AnyAsync(p => p.Id == gameBan.AdminId);
+
+            if (!isAdminPlayerExisted)
                 return BadRequest($"Забанивший игрок с ID {gameBan.AdminId} не найден");
 
             if (gameBan.StartDateTime > gameBan.FinishDateTime)

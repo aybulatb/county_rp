@@ -27,7 +27,7 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Create([FromBody] House house)
         {
-            var result = CheckParams(house);
+            var result = await CheckParamsAsync(house);
             if (result != null)
                 return result;
 
@@ -35,7 +35,7 @@ namespace CountyRP.WebAPI.Controllers
 
             var houseDAO = MapToDAO(house);
 
-            _propertyContext.Houses.Add(houseDAO);
+            await _propertyContext.Houses.AddAsync(houseDAO);
             await _propertyContext.SaveChangesAsync();
 
             house.Id = houseDAO.Id;
@@ -46,23 +46,32 @@ namespace CountyRP.WebAPI.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(House[]), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var housesDAO = _propertyContext.Houses.AsNoTracking().ToArray();
+            var housesDAO = await _propertyContext.Houses
+                .AsNoTracking()
+                .ToArrayAsync();
 
-            return Ok(housesDAO.Select(h => MapToModel(h)));
+            return Ok(
+                housesDAO
+                .Select(h => MapToModel(h))
+            );
         }
 
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(House), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            var houseDAO = _propertyContext.Houses.AsNoTracking().FirstOrDefault(h => h.Id == id);
+            var houseDAO = await _propertyContext.Houses
+                .AsNoTracking()
+                .FirstOrDefaultAsync(h => h.Id == id);
             if (houseDAO == null)
                 return NotFound($"Дом с ID {id} не найден");
 
-            return Ok(MapToModel(houseDAO));
+            return Ok(
+                MapToModel(houseDAO)
+            );
         }
 
         [HttpPut("{id}")]
@@ -74,15 +83,17 @@ namespace CountyRP.WebAPI.Controllers
             if (id != house.Id)
                 return BadRequest($"Указанный ID {id} не соответствует ID дома {house.Id}");
 
-            var result = CheckParams(house);
+            var result = await CheckParamsAsync(house);
             if (result != null)
                 return result;
 
-            var houseDAO = _propertyContext.Houses.AsNoTracking().FirstOrDefault(h => h.Id == id);
-            if (houseDAO == null)
+            var isHouseExisted = await _propertyContext.Houses
+                .AsNoTracking()
+                .AnyAsync(h => h.Id == id);
+            if (!isHouseExisted)
                 return NotFound($"Дом с ID {id} не найден");
 
-            houseDAO = MapToDAO(house);
+            var houseDAO = MapToDAO(house);
 
             _propertyContext.Houses.Update(houseDAO);
             await _propertyContext.SaveChangesAsync();
@@ -95,7 +106,8 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
-            var houseDAO = _propertyContext.Houses.FirstOrDefault(h => h.Id == id);
+            var houseDAO = await _propertyContext.Houses
+                .FirstOrDefaultAsync(h => h.Id == id);
             if (houseDAO == null)
                 return NotFound($"Дом с ID {id} не найден");
 
@@ -105,7 +117,7 @@ namespace CountyRP.WebAPI.Controllers
             return Ok();
         }
 
-        private IActionResult CheckParams(House house)
+        private async Task<IActionResult> CheckParamsAsync(House house)
         {
             if (house.EntrancePosition?.Length != 3)
                 return BadRequest("Количество координат входа должно быть равно 3");
@@ -116,21 +128,25 @@ namespace CountyRP.WebAPI.Controllers
             if (house.SafePosition?.Length != 3)
                 return BadRequest("Количество координат сейфа должно быть равно 3");
 
-            var result = CheckOwner(house);
+            var result = await CheckOwner(house);
             if (result != null)
                 return result;
 
-            if (house.GarageId != 0
-                && _propertyContext.Garages.FirstOrDefault(g => g.Id == house.GarageId) == null)
-                return BadRequest($"Гараж с ID {house.OwnerId} не найден");
+            var isGarageExistedWithId = await _propertyContext.Garages
+                .AnyAsync(g => g.Id == house.GarageId);
+
+            if (house.GarageId != 0 && !isGarageExistedWithId)
+                return BadRequest($"Гараж с ID {house.GarageId} не найден");
 
             return null;
         }
 
-        private IActionResult CheckOwner(House house)
+        private async Task<IActionResult> CheckOwner(House house)
         {
-            if (house.OwnerId != 0 
-                && _playerContext.Persons.FirstOrDefault(p => p.Id == house.OwnerId) == null)
+            var isPersonExisted = await _playerContext.Persons
+                .AnyAsync(p => p.Id == house.OwnerId);
+
+            if (house.OwnerId != 0 && !isPersonExisted)
                 return BadRequest($"Персонаж с ID {house.OwnerId} не найден");
 
             return null;
@@ -141,15 +157,18 @@ namespace CountyRP.WebAPI.Controllers
             return new DAO.House
             {
                 Id = house.Id,
-                EntrancePosition = house.EntrancePosition?.ToArray(),
+                EntrancePosition = house.EntrancePosition
+                    ?.ToArray(),
                 EntranceDimension = house.EntranceDimension,
-                ExitPosition = house.ExitPosition?.ToArray(),
+                ExitPosition = house.ExitPosition
+                    ?.ToArray(),
                 ExitDimension = house.ExitDimension,
                 OwnerId = house.OwnerId,
                 GarageId = house.GarageId,
                 Lock = house.Lock,
                 Price = house.Price,
-                SafePosition = house.SafePosition?.ToArray(),
+                SafePosition = house.SafePosition
+                    ?.ToArray(),
                 SafeDimension = house.SafeDimension,
                 SafeInventoryId = house.SafeInventoryId
             };
@@ -160,15 +179,18 @@ namespace CountyRP.WebAPI.Controllers
             return new House
             {
                 Id = house.Id,
-                EntrancePosition = house.EntrancePosition?.ToArray(),
+                EntrancePosition = house.EntrancePosition
+                    ?.ToArray(),
                 EntranceDimension = house.EntranceDimension,
-                ExitPosition = house.ExitPosition?.ToArray(),
+                ExitPosition = house.ExitPosition
+                    ?.ToArray(),
                 ExitDimension = house.ExitDimension,
                 OwnerId = house.OwnerId,
                 GarageId = house.GarageId,
                 Lock = house.Lock,
                 Price = house.Price,
-                SafePosition = house.SafePosition?.ToArray(),
+                SafePosition = house.SafePosition
+                    ?.ToArray(),
                 SafeDimension = house.SafeDimension,
                 SafeInventoryId = house.SafeInventoryId
             };

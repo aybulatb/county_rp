@@ -25,13 +25,13 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Create([FromBody] ATM atm)
         {
-            var result = CheckParams(atm);
+            var result = await CheckParamsAsync(atm);
             if (result != null)
                 return result;
 
             var atmDAO = MapToDAO(atm);
 
-            _propertyContext.ATMs.Add(atmDAO);
+            await _propertyContext.ATMs.AddAsync(atmDAO);
             await _propertyContext.SaveChangesAsync();
 
             atm.Id = atmDAO.Id;
@@ -42,23 +42,32 @@ namespace CountyRP.WebAPI.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(ATM[]), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var ATMsDAO = _propertyContext.ATMs.AsNoTracking().ToArray();
+            var ATMsDAO = await _propertyContext.ATMs
+                .AsNoTracking()
+                .ToArrayAsync();
 
-            return Ok(ATMsDAO.Select(a => MapToModel(a)));
+            return Ok(
+                ATMsDAO
+                    .Select(a => MapToModel(a))
+            );
         }
 
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(ATM), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            var atmDAO = _propertyContext.ATMs.AsNoTracking().FirstOrDefault(a => a.Id == id);
+            var atmDAO = await _propertyContext.ATMs
+                .AsNoTracking()
+                .FirstOrDefaultAsync(a => a.Id == id);
             if (atmDAO == null)
                 return NotFound($"Банкомат с ID {id} не найдена");
 
-            return Ok(MapToModel(atmDAO));
+            return Ok(
+                MapToModel(atmDAO)
+            );
         }
 
         [HttpPut("{id}")]
@@ -70,15 +79,17 @@ namespace CountyRP.WebAPI.Controllers
             if (id != atm.Id)
                 return BadRequest($"Указанный ID {id} не соответствует ID банкомата {atm.Id}");
 
-            var result = CheckParams(atm);
+            var result = await CheckParamsAsync(atm);
             if (result != null)
                 return result;
 
-            var atmDAO = _propertyContext.ATMs.AsNoTracking().FirstOrDefault(a => a.Id == id);
-            if (atmDAO == null)
+            var isAtmExisted = await _propertyContext.ATMs
+                .AsNoTracking()
+                .AnyAsync(a => a.Id == id);
+            if (!isAtmExisted)
                 return NotFound($"Банкомат с ID {id} не найден");
 
-            atmDAO = MapToDAO(atm);
+            var atmDAO = MapToDAO(atm);
 
             _propertyContext.ATMs.Update(atmDAO);
             await _propertyContext.SaveChangesAsync();
@@ -91,7 +102,8 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
-            var atmDAO = _propertyContext.ATMs.FirstOrDefault(a => a.Id == id);
+            var atmDAO = await _propertyContext.ATMs
+                .FirstOrDefaultAsync(a => a.Id == id);
             if (atmDAO == null)
                 return NotFound($"Банкомат с ID {id} не найдена");
 
@@ -101,22 +113,24 @@ namespace CountyRP.WebAPI.Controllers
             return Ok();
         }
 
-        private IActionResult CheckParams(ATM atm)
+        private async Task<IActionResult> CheckParamsAsync(ATM atm)
         {
             if (atm.Position == null || atm.Position.Length != 3)
                 return BadRequest("Количество координат должно быть равно 3");
 
-            var result = CheckOwner(atm);
+            var result = await CheckOwner(atm);
             if (result != null)
                 return result;
 
             return null;
         }
 
-        private IActionResult CheckOwner(ATM atm)
+        private async Task<IActionResult> CheckOwner(ATM atm)
         {
-            if (atm.BusinessId != 0 &&
-                _propertyContext.Businesses.FirstOrDefault(b => b.Id == atm.BusinessId) == null)
+            var isBusinessExisted = await _propertyContext.Businesses
+                .AnyAsync(b => b.Id == atm.BusinessId);
+
+            if (atm.BusinessId != 0 && !isBusinessExisted)
                 return BadRequest($"Бизнес с ID {atm.BusinessId} не найден");
 
             return null;
@@ -127,7 +141,9 @@ namespace CountyRP.WebAPI.Controllers
             return new DAO.ATM
             {
                 Id = atm.Id,
-                Position = atm.Position?.Select(p => p).ToArray(),
+                Position = atm.Position
+                    ?.Select(p => p)
+                    .ToArray(),
                 Dimension = atm.Dimension,
                 BusinessId = atm.BusinessId
             };
@@ -138,7 +154,9 @@ namespace CountyRP.WebAPI.Controllers
             return new ATM
             {
                 Id = atm.Id,
-                Position = atm.Position?.Select(p => p).ToArray(),
+                Position = atm.Position
+                    ?.Select(p => p)
+                    .ToArray(),
                 Dimension = atm.Dimension,
                 BusinessId = atm.BusinessId
             };

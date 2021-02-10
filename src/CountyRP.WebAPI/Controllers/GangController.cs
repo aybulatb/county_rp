@@ -31,7 +31,7 @@ namespace CountyRP.WebAPI.Controllers
 
             var gangDAO = MapToDAO(gang);
 
-            _gangContext.Gangs.Add(gangDAO);
+            await _gangContext.Gangs.AddAsync(gangDAO);
             await _gangContext.SaveChangesAsync();
 
             gang.Id = gangDAO.Id;
@@ -42,23 +42,32 @@ namespace CountyRP.WebAPI.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(Gang), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var gangDAO = _gangContext.Gangs.AsNoTracking().FirstOrDefault(g => g.Id == id);
+            var gangDAO = await _gangContext.Gangs
+                .AsNoTracking()
+                .FirstOrDefaultAsync(g => g.Id == id);
 
             if (gangDAO == null)
                 return NotFound($"Группировка с ID {id} не найдена");
 
-            return Ok(MapToModel(gangDAO));
+            return Ok(
+                MapToModel(gangDAO)
+            );
         }
 
         [HttpGet]
         [ProducesResponseType(typeof(Gang[]), StatusCodes.Status200OK)]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var gangsDAO = _gangContext.Gangs.AsNoTracking().ToArray();
+            var gangsDAO = await _gangContext.Gangs
+                .AsNoTracking()
+                .ToArrayAsync();
 
-            return Ok(gangsDAO.Select(g => MapToModel(g)));
+            return Ok(
+                gangsDAO
+                    .Select(g => MapToModel(g))
+            );
         }
 
         [HttpPut("{id}")]
@@ -70,15 +79,17 @@ namespace CountyRP.WebAPI.Controllers
             if (id != gang.Id)
                 return BadRequest($"Указанный ID {id} не соответствует ID {gang.Id} группировки");
 
-            var gangDAO = _gangContext.Gangs.AsNoTracking().FirstOrDefault(g => g.Id == id);
-            if (gangDAO == null)
+            var isGangExisted = await _gangContext.Gangs
+                .AsNoTracking()
+                .AnyAsync(g => g.Id == id);
+            if (!isGangExisted)
                 return NotFound($"Группировка с ID {id} не найдена");
 
             var result = CheckParams(gang);
             if (result != null)
                 return result;
 
-            gangDAO = MapToDAO(gang);
+            var gangDAO = MapToDAO(gang);
             _gangContext.Gangs.Update(gangDAO);
             await _gangContext.SaveChangesAsync();
 
@@ -90,7 +101,8 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
-            var gangDAO = _gangContext.Gangs.FirstOrDefault(g => g.Id == id);
+            var gangDAO = await _gangContext.Gangs
+                .FirstOrDefaultAsync(g => g.Id == id);
 
             if (gangDAO == null)
                 return NotFound($"Группировка с ID {id} не найдена");
@@ -137,7 +149,9 @@ namespace CountyRP.WebAPI.Controllers
                 Id = gang.Id,
                 Name = gang.Name,
                 Color = gang.Color,
-                Ranks = gang.Ranks?.Select(r => r).ToArray(),
+                Ranks = gang.Ranks
+                    ?.Select(r => r)
+                    .ToArray(),
                 Type = gang.Type
             };
         }
@@ -149,7 +163,9 @@ namespace CountyRP.WebAPI.Controllers
                 Id = gang.Id,
                 Name = gang.Name,
                 Color = gang.Color,
-                Ranks = gang.Ranks?.Select(r => r).ToArray(),
+                Ranks = gang.Ranks
+                    ?.Select(r => r)
+                    .ToArray(),
                 Type = gang.Type
             };
         }

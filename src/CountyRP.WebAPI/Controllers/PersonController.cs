@@ -31,16 +31,18 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Create([FromBody] Person person)
         {
-            var result = CheckParams(person);
+            var result = await CheckParamsAsync(person);
             if (result != null)
                 return result;
 
-            if (_playerContext.Persons.FirstOrDefault(p => p.Name == person.Name) != null)
+            var isPersonExisted = await _playerContext.Persons
+                .AnyAsync(p => p.Name == person.Name);
+            if (isPersonExisted)
                 return BadRequest($"Имя {person.Name} уже занято");
 
             var personDAO = MapToDAO(person);
 
-            _playerContext.Persons.Add(personDAO);
+            await _playerContext.Persons.AddAsync(personDAO);
             await _playerContext.SaveChangesAsync();
 
             person.Id = personDAO.Id;
@@ -51,46 +53,60 @@ namespace CountyRP.WebAPI.Controllers
         [HttpGet("GetById/{id}")]
         [ProducesResponseType(typeof(Person), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var personDAO = _playerContext.Persons.AsNoTracking().FirstOrDefault(p => p.Id == id);
+            var personDAO = await _playerContext.Persons
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Id == id);
 
             if (personDAO == null)
                 return NotFound($"Персонаж с ID {id} не найден");
 
-            return Ok(MapToModel(personDAO));
+            return Ok(
+                MapToModel(personDAO)
+            );
         }
 
         [HttpGet("GetByName/{name}")]
         [ProducesResponseType(typeof(Person), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult GetByName(string name)
+        public async Task<IActionResult> GetByName(string name)
         {
-            var personDAO = _playerContext.Persons.AsNoTracking().FirstOrDefault(p => p.Name == name);
+            var personDAO = await _playerContext.Persons
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Name == name);
 
             if (personDAO == null)
                 return NotFound($"Персонаж с именем {name} не найден");
 
-            return Ok(MapToModel(personDAO));
+            return Ok(
+                MapToModel(personDAO)
+            );
         }
 
         [HttpGet("GetAllByPlayerId/{playerId}")]
         [ProducesResponseType(typeof(Person[]), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult GetAllByPlayerId(int playerId)
+        public async Task<IActionResult> GetAllByPlayerId(int playerId)
         {
-            var personsDAO = _playerContext.Persons.AsNoTracking().Where(p => p.PlayerId == playerId).ToArray();
+            var personsDAO = await _playerContext.Persons
+                .AsNoTracking()
+                .Where(p => p.PlayerId == playerId)
+                .ToArrayAsync();
 
             if (personsDAO == null)
                 return NotFound($"Персонажи, привязанные к игроку с ID {playerId}, не найдены");
 
-            return Ok(personsDAO.Select(p => MapToModel(p)));
+            return Ok(
+                personsDAO
+                    .Select(p => MapToModel(p))
+            );
         }
 
         [HttpGet("FilterBy")]
         [ProducesResponseType(typeof(FilteredModels<Person>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        public IActionResult FilterBy(int page, int count, string name)
+        public async Task<IActionResult> FilterBy(int page, int count, string name)
         {
             if (page < 1)
                 return BadRequest("Номер страницы персонажей не может быть меньше 1");
@@ -102,19 +118,21 @@ namespace CountyRP.WebAPI.Controllers
             if (!string.IsNullOrWhiteSpace(name))
                 query = query.Where(p => p.Name.Contains(name));
 
-            int allAmount = query.Count();
+            int allAmount = await query.CountAsync();
             int maxPage = (allAmount % count == 0) ? allAmount / count : allAmount / count + 1;
             if (page > maxPage && maxPage > 0)
                 page = maxPage;
 
-            var choosenPersons = query
+            var choosenPersons = await query
                     .Skip((page - 1) * count)
                     .Take(count)
-                    .ToList();
+                    .ToListAsync();
 
             return Ok(new FilteredModels<Person>
             {
-                Items = choosenPersons.Select(p => MapToModel(p)).ToList(),
+                Items = choosenPersons
+                    .Select(p => MapToModel(p))
+                    .ToList(),
                 AllAmount = allAmount,
                 Page = page,
                 MaxPage = maxPage
@@ -130,16 +148,20 @@ namespace CountyRP.WebAPI.Controllers
             if (id != person.Id)
                 return BadRequest($"Указанный ID {id} не соответствует ID персонажа {person.Id}");
 
-            var result = CheckParams(person);
+            var result = await CheckParamsAsync(person);
             if (result != null)
                 return result;
 
-            var personDAO = _playerContext.Persons.AsNoTracking().FirstOrDefault(p => p.Id == id);
+            var personDAO = await _playerContext.Persons
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Id == id);
             if (personDAO == null)
                 return NotFound($"Персонаж с ID {id} не найден");
 
-            if (person.Name != personDAO.Name
-                && _playerContext.Persons.FirstOrDefault(p => p.Name == person.Name) != null)
+            var isPersonExisted = await _playerContext.Persons
+                .AnyAsync(p => p.Name == person.Name);
+
+            if (person.Name != personDAO.Name && isPersonExisted)
                 return BadRequest($"Имя {person.Name} уже занято");
 
             personDAO = MapToDAO(person);
@@ -155,7 +177,8 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
-            var personDAO = _playerContext.Persons.FirstOrDefault(p => p.Id == id);
+            var personDAO = await _playerContext.Persons
+                .FirstOrDefaultAsync(p => p.Id == id);
             if (personDAO == null)
                 return NotFound($"Персонаж с ID {id} не найден");
 
@@ -176,7 +199,7 @@ namespace CountyRP.WebAPI.Controllers
             return null;
         }
 
-        private IActionResult CheckParams(Person person)
+        private async Task<IActionResult> CheckParamsAsync(Person person)
         {
             var result = CheckName(person.Name);
             if (result != null)
@@ -185,23 +208,28 @@ namespace CountyRP.WebAPI.Controllers
             if (person.Position == null || person.Position.Length != 3)
                 return BadRequest("Количество координат позиции должно быть равно 3");
 
-            if (_playerContext.Players
-                .FirstOrDefault(p => p.Id == person.PlayerId) == null)
+            var isPlayerExisted = await _playerContext.Players
+                .AnyAsync(p => p.Id == person.PlayerId);
+
+            if (!isPlayerExisted)
                 return BadRequest($"Игрок с ID {person.PlayerId} не найден");
 
-            if (person.AdminLevelId == null ||
-                person.AdminLevelId != string.Empty &&
-                _adminLevelContext.AdminLevels
-                .FirstOrDefault(g => g.Id == person.AdminLevelId) == null)
+            var isAdminLevelExisted = await _adminLevelContext.AdminLevels
+                .AnyAsync(g => g.Id == person.AdminLevelId);
+
+            if (person.AdminLevelId == null || person.AdminLevelId != string.Empty && !isAdminLevelExisted)
                 return BadRequest($"Уровень админки с ID {person.AdminLevelId} не найден");
 
-            if (person.FactionId == null ||
-                person.FactionId != string.Empty &&
-                _factionContext.Factions.FirstOrDefault(f => f.Id == person.FactionId) == null)
+            var isFactionExisted = await _factionContext.Factions
+                .AnyAsync(f => f.Id == person.FactionId);
+
+            if (person.FactionId == null || person.FactionId != string.Empty && !isFactionExisted)
                 return BadRequest($"Фракция с ID {person.FactionId} не найдена");
 
-            if (person.GroupId != 0 &&
-                _gangContext.Gangs.FirstOrDefault(g => g.Id == person.GroupId) == null)
+            var isGangExisted = await _gangContext.Gangs
+                .AnyAsync(g => g.Id == person.GroupId);
+
+            if (person.GroupId != 0 && !isGangExisted)
                 return BadRequest($"Группировка с ID {person.GroupId} не найдена");
 
             return null;
@@ -221,7 +249,8 @@ namespace CountyRP.WebAPI.Controllers
                 GroupId = person.GroupId,
                 Leader = person.Leader,
                 Rank = person.Rank,
-                Position = person.Position?.ToArray(),
+                Position = person.Position
+                    ?.ToArray(),
                 CommonInventoryId = person.CommonInventoryId,
                 PocketsInventoryId = person.PocketsInventoryId
             };
@@ -241,7 +270,8 @@ namespace CountyRP.WebAPI.Controllers
                 GroupId = person.GroupId,
                 Leader = person.Leader,
                 Rank = person.Rank,
-                Position = person.Position?.ToArray(),
+                Position = person.Position
+                    ?.ToArray(),
                 CommonInventoryId = person.CommonInventoryId,
                 PocketsInventoryId = person.PocketsInventoryId
             };

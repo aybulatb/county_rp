@@ -29,13 +29,13 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Create([FromBody] Vehicle vehicle)
         {
-            var result = CheckParams(vehicle);
+            var result = await CheckParamsAsync(vehicle);
             if (result != null)
                 return result;
 
             var vehicleDAO = MapToDAO(vehicle);
 
-            _propertyContext.Vehicles.Add(vehicleDAO);
+            await _propertyContext.Vehicles.AddAsync(vehicleDAO);
             await _propertyContext.SaveChangesAsync();
 
             vehicle = MapToModel(vehicleDAO);
@@ -46,49 +46,67 @@ namespace CountyRP.WebAPI.Controllers
         [HttpGet("GetById/{id}")]
         [ProducesResponseType(typeof(Vehicle), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var vehicleDAO = _propertyContext.Vehicles.AsNoTracking().FirstOrDefault(v => v.Id == id);
+            var vehicleDAO = await _propertyContext.Vehicles
+                .AsNoTracking()
+                .FirstOrDefaultAsync(v => v.Id == id);
 
             if (vehicleDAO == null)
                 return NotFound($"Транспортное средство с ID {id} не найдено");
 
-            return Ok(MapToModel(vehicleDAO));
+            return Ok(
+                MapToModel(vehicleDAO)
+            );
         }
 
         [HttpGet]
         [ProducesResponseType(typeof(Vehicle[]), StatusCodes.Status200OK)]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var vehiclesDAO = _propertyContext.Vehicles.AsNoTracking().OrderBy(v => v.Id).ToArray();
+            var vehiclesDAO = await _propertyContext.Vehicles
+                .AsNoTracking()
+                .OrderBy(v => v.Id)
+                .ToArrayAsync();
 
-            return Ok(vehiclesDAO.Select(v => MapToModel(v)));
+            return Ok(
+                vehiclesDAO
+                    .Select(v => MapToModel(v))
+            );
         }
 
         [HttpGet("GetByPersonId/{personId}")]
         [ProducesResponseType(typeof(Vehicle), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult GetByPersonId(int personId)
+        public async Task<IActionResult> GetByPersonId(int personId)
         {
-            var vehicleDAO = _propertyContext.Vehicles.AsNoTracking().FirstOrDefault(v => v.OwnerId == personId);
+            var vehicleDAO = await _propertyContext.Vehicles
+                .AsNoTracking()
+                .FirstOrDefaultAsync(v => v.OwnerId == personId);
 
             if (vehicleDAO == null)
                 return NotFound($"Транспортное средство с владельцем с ID {personId} не найдено");
 
-            return Ok(MapToModel(vehicleDAO));
+            return Ok(
+                MapToModel(vehicleDAO)
+            );
         }
 
         [HttpGet("GetByLicensePlate/{licensePlate}")]
         [ProducesResponseType(typeof(Vehicle), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public IActionResult GetByLicensePlate(string licensePlate)
+        public async Task<IActionResult> GetByLicensePlate(string licensePlate)
         {
-            var vehicleDAO = _propertyContext.Vehicles.AsNoTracking().FirstOrDefault(v => v.LicensePlate == licensePlate);
+            var vehicleDAO = await _propertyContext.Vehicles
+                .AsNoTracking()
+                .FirstOrDefaultAsync(v => v.LicensePlate == licensePlate);
 
             if (vehicleDAO == null)
                 return NotFound($"Транспортное средство с номером {licensePlate} не найдено");
 
-            return Ok(MapToModel(vehicleDAO));
+            return Ok(
+                MapToModel(vehicleDAO)
+            );
         }
 
         [HttpPut("{id}")]
@@ -100,15 +118,17 @@ namespace CountyRP.WebAPI.Controllers
             if (id != vehicle.Id)
                 return BadRequest($"Указанный ID {id} не соответствует ID {vehicle.Id} транспортного средства");
 
-            var vehicleDAO = _propertyContext.Vehicles.AsNoTracking().FirstOrDefault(v => v.Id == vehicle.Id);
-            if (vehicleDAO == null)
+            var isVehicleExisted = await _propertyContext.Vehicles
+                .AsNoTracking()
+                .AnyAsync(v => v.Id == vehicle.Id);
+            if (!isVehicleExisted)
                 return NotFound($"Транспортное средство с ID {vehicle.Id} не найдено");
 
-            var result = CheckParams(vehicle);
+            var result = await CheckParamsAsync(vehicle);
             if (result != null)
                 return result;
 
-            vehicleDAO = MapToDAO(vehicle);
+            var vehicleDAO = MapToDAO(vehicle);
 
             _propertyContext.Vehicles.Update(vehicleDAO);
             await _propertyContext.SaveChangesAsync();
@@ -121,7 +141,8 @@ namespace CountyRP.WebAPI.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Delete(int id)
         {
-            var vehicleDAO = _propertyContext.Vehicles.FirstOrDefault(v => v.Id == id);
+            var vehicleDAO = await _propertyContext.Vehicles
+                .FirstOrDefaultAsync(v => v.Id == id);
 
             if (vehicleDAO == null)
                 return NotFound($"Транспортное средство с ID {id} не найдено");
@@ -133,7 +154,7 @@ namespace CountyRP.WebAPI.Controllers
         }
 
 
-        private IActionResult CheckParams(Vehicle vehicle)
+        private async Task<IActionResult> CheckParamsAsync(Vehicle vehicle)
         {
             if (vehicle.Position == null || vehicle.Position.Length != 3)
                 return BadRequest("Количество координат позиции должно быть равно 3");
@@ -142,22 +163,25 @@ namespace CountyRP.WebAPI.Controllers
                 !System.Text.RegularExpressions.Regex.IsMatch(vehicle.LicensePlate, @"^\d[A-Z]{3}\d\d\d$"))
                 return BadRequest("Номер транспортного средства должен соответствовать формату: ЦБББЦЦЦ");
 
-            var result = CheckOwner(vehicle);
+            var result = await CheckOwnerAsync(vehicle);
             if (result != null)
                 return result;
 
             return null;
         }
 
-        private IActionResult CheckOwner(Vehicle vehicle)
+        private async Task<IActionResult> CheckOwnerAsync(Vehicle vehicle)
         {
-            if (vehicle.OwnerId != 0 &&
-                _playerContext.Persons.FirstOrDefault(p => p.Id == vehicle.OwnerId) == null)
+            var isPersonExisted = await _playerContext.Persons
+                .AnyAsync(p => p.Id == vehicle.OwnerId);
+
+            if (vehicle.OwnerId != 0 && !isPersonExisted)
                 return BadRequest($"Персонаж с ID {vehicle.OwnerId} не найден");
 
-            if (vehicle.FactionId == null || 
-                vehicle.FactionId != string.Empty &&
-                _factionContext.Factions.FirstOrDefault(f => f.Id == vehicle.FactionId) == null)
+            var isFactionExisted = await _factionContext.Factions
+                .AnyAsync(f => f.Id == vehicle.FactionId);
+
+            if (vehicle.FactionId == null || vehicle.FactionId != string.Empty && !isFactionExisted)
                 return BadRequest($"Фракция с ID {vehicle.FactionId} не найдена");
 
             return null;
@@ -169,7 +193,9 @@ namespace CountyRP.WebAPI.Controllers
             {
                 Id = vehicle.Id,
                 Model = vehicle.Model,
-                Position = vehicle.Position?.Select(p => p).ToArray(),
+                Position = vehicle.Position
+                    ?.Select(p => p)
+                    .ToArray(),
                 Rotation = vehicle.Rotation,
                 Dimension = vehicle.Dimension,
                 Color1 = vehicle.Color1,
@@ -188,7 +214,9 @@ namespace CountyRP.WebAPI.Controllers
             {
                 Id = vehicle.Id,
                 Model = vehicle.Model,
-                Position = vehicle.Position?.Select(p => p).ToArray(),
+                Position = vehicle.Position
+                    ?.Select(p => p)
+                    .ToArray(),
                 Rotation = vehicle.Rotation,
                 Dimension = vehicle.Dimension,
                 Color1 = vehicle.Color1,
