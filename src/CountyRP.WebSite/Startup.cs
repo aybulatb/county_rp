@@ -56,9 +56,11 @@ namespace CountyRP.WebSite
 
             var apiKey = Configuration.GetValue<string>("CommonWebAPIKey");
 
+            var commonWebAPIBaseUrl = Configuration.GetValue<string>("CommonWebAPIBaseUrl");
+
             HttpClient httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.Add("api-key", apiKey);
-            services.AddSingleton(new PlayerClient(httpClient));
+            services.AddSingleton(new PlayerClient(httpClient, commonWebAPIBaseUrl));
             services.AddSingleton(new PersonClient(httpClient));
             services.AddSingleton(new AllPlayerClient(httpClient));
             services.AddSingleton(new FactionClient(httpClient));
