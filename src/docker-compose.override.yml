@@ -45,3 +45,15 @@ services:
       - "10101:10101"
     volumes:
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
+  countyrp.services.site:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://0.0.0.0:10501;http://0.0.0.0:10500
+      - ConnectionStrings__DefaultConnection=Server=mssql;Database=CountyRP.Services.Site;User Id=sa;Password=Test1234;
+    ports:
+      - "10500:10500"
+      - "10501:10501"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro

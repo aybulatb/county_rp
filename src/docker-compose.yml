@@ -25,3 +25,11 @@ services:
       dockerfile: Forum/CountyRP.Forum.WebAPI/Dockerfile
     depends_on:
       - mssql
+
+  countyrp.services.site:
+    image: ${DOCKER_REGISTRY-}countyrpservicesite
+    build:
+      context: .
+      dockerfile: Services/Site/Dockerfile
+    depends_on:
+      - mssql
