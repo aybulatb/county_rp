@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Http;
+using CountyRP.Services.Site.Converters;
 
 namespace Site.Controllers
 {
@@ -70,9 +71,14 @@ namespace Site.Controllers
                 return NotFound();
             }
 
-            var userDtoOut = await _siteRepository.UpdateUserAsync(id, userDtoIn);
+            var userDtoOut = UserDtoInConverter.ToDtoOut(
+                source: userDtoIn,
+                id: id
+            );
 
-            return Ok(userDtoOut);
+            var updatedUserDtoOut = await _siteRepository.UpdateUserAsync(userDtoOut);
+
+            return Ok(updatedUserDtoOut);
         }
 
         [HttpDelete("{id}")]

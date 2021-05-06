@@ -42,15 +42,15 @@ namespace CountyRP.Services.Site.Repositories
                 : null;
         }
 
-        public async Task<UserDtoOut> UpdateUserAsync(int id, UserDtoIn userDtoIn)
+        public async Task<UserDtoOut> UpdateUserAsync(UserDtoOut userDtoOut)
         {
-            var userDao = UserDtoInConverter.ToDb(id, userDtoIn);
+            var userDao = UserDtoOutConverter.ToDb(userDtoOut);
 
-            userDao = _siteDbContext.Users.Update(userDao)?.Entity;
+            var updatedUserDao = _siteDbContext.Users.Update(userDao)?.Entity;
             await _siteDbContext.SaveChangesAsync();
 
-            return (userDao != null)
-                ? UserDaoConverter.ToRepository(userDao)
+            return (updatedUserDao != null)
+                ? UserDaoConverter.ToRepository(updatedUserDao)
                 : null;
         }
 

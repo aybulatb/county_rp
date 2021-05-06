@@ -126,9 +126,10 @@ namespace CountyRP.WebSite
             {
                 // Подключаем CORS
                 app.UseCors(builder => builder
-                    .AllowAnyOrigin()
+                    .SetIsOriginAllowed(host => true)
                     .AllowAnyMethod()
-                    .AllowAnyHeader());
+                    .AllowAnyHeader()
+                    .AllowCredentials());
             }
 
             // Register the Swagger generator and the Swagger UI middlewares

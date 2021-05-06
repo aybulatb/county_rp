@@ -7,7 +7,7 @@ namespace CountyRP.Services.Site.Repositories
     {
         public Task<UserDtoOut> AddUserAsync(UserDtoIn userDtoIn);
 
-        public Task<UserDtoOut> UpdateUserAsync(int id, UserDtoIn userDtoIn);
+        public Task<UserDtoOut> UpdateUserAsync(UserDtoOut userDtoOut);
 
         public Task<UserDtoOut> GetUserByIdAsync(int id);
 

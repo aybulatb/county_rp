@@ -9,15 +9,22 @@ namespace CountyRP.Services.Site.Converters
             UserDtoIn source
         )
         {
-            return ToDb(0, source);
+            return new UserDao(
+                id: 0,
+                login: source.Login,
+                password: source.Password,
+                playerId: source.PlayerId,
+                forumUserId: source.ForumUserId,
+                groupId: source.GroupId
+            );
         }
 
-        public static UserDao ToDb(
-            int id,
-            UserDtoIn source
+        public static UserDtoOut ToDtoOut(
+            UserDtoIn source,
+            int id
         )
         {
-            return new UserDao(
+            return new UserDtoOut(
                 id: id,
                 login: source.Login,
                 password: source.Password,

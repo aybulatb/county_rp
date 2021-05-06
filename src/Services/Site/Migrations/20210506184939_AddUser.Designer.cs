@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CountyRP.Services.Site.Migrations
 {
     [DbContext(typeof(SiteDbContext))]
-    [Migration("20210505183604_AddUser")]
+    [Migration("20210506184939_AddUser")]
     partial class AddUser
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
