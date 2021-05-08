@@ -59,9 +59,9 @@ namespace CountyRP.Services.Site.Repositories
             var usersQuery = _siteDbContext
                 .Users
                 .Where(
-                    users =>
-                        filter.Login != null && users.Login.Contains(filter.Login) &&
-                        filter.GroupIds != null && filter.GroupIds.Contains(users.GroupId)
+                    user =>
+                        (filter.Login == null || user.Login.Contains(filter.Login)) &&
+                        (filter.GroupIds == null || filter.GroupIds.Contains(user.GroupId))
                 )
                 .AsQueryable();
 
@@ -85,7 +85,7 @@ namespace CountyRP.Services.Site.Repositories
         {
             var user = await _siteDbContext
                 .Users
-                .FindAsync(id);
+                .FirstAsync(user => user.Id == id);
 
             _siteDbContext.Users.Remove(user);
             await _siteDbContext.SaveChangesAsync();
