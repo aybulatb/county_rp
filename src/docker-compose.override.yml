@@ -57,3 +57,15 @@ services:
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
+  countyrp.services.forum:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://0.0.0.0:10511;http://0.0.0.0:10510
+      - ConnectionStrings__DefaultConnection=Server=mssql;Database=CountyRP.Services.Forum;User Id=sa;Password=Test1234;
+    ports:
+      - "10510:10510"
+      - "10511:10511"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
