@@ -27,6 +27,9 @@ namespace Site.Controllers
             _siteRepository = siteRepository;
         }
 
+        /// <summary>
+        /// Создать пользователя.
+        /// </summary>
         [HttpPost]
         [ProducesResponseType(typeof(UserDtoOut), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
@@ -64,6 +67,9 @@ namespace Site.Controllers
             );
         }
 
+        /// <summary>
+        /// Получить данные пользователя по ID.
+        /// </summary>
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(UserDtoOut), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
@@ -83,6 +89,9 @@ namespace Site.Controllers
             );
         }
 
+        /// <summary>
+        /// Получить данные пользователя по логину.
+        /// </summary>
         [HttpGet("ByLogin/{login}")]
         [ProducesResponseType(typeof(UserDtoOut), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
@@ -102,10 +111,45 @@ namespace Site.Controllers
             );
         }
 
+        /// <summary>
+        /// Аутентифицировать пользователя.
+        /// </summary>
+        [HttpPost("Authenticate")]
+        [ProducesResponseType(typeof(UserDtoOut), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Authenticate(string login, string password)
+        {
+            var userDtoOut = await _siteRepository.Authenticate(login, password);
+
+            if (userDtoOut == null)
+            {
+                return NotFound(
+                    ConstantMessages.UserInvalidAuthentication
+                );
+            }
+
+            return Ok(
+                UserDtoOutConverter.ToApi(userDtoOut)
+            );
+        }
+
+        /// <summary>
+        /// Получить отфильтрованный список пользователей.
+        /// </summary>
         [HttpGet("FilterBy")]
         [ProducesResponseType(typeof(PagedFilterResult<UserDtoOut>), StatusCodes.Status200OK)]
         public async Task<IActionResult> FilterBy([FromQuery] ApiUserFilterDtoIn filter)
         {
+            if (filter.Count < 1 || filter.Count > 100)
+            {
+                return BadRequest(ConstantMessages.InvalidCountItemPerPage);
+            }
+
+            if (filter.Page < 1)
+            {
+                return BadRequest(ConstantMessages.InvalidPageNumber);
+            }
+
             var filterDtoIn = ApiUserFilterDtoInConverter.ToRepository(filter);
 
             var filteredUsers = await _siteRepository.GetUsersByFilterAsync(filterDtoIn);
@@ -115,6 +159,9 @@ namespace Site.Controllers
             );
         }
 
+        /// <summary>
+        /// Изменить данные пользователя по ID.
+        /// </summary>
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(UserDtoOut), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
@@ -166,6 +213,9 @@ namespace Site.Controllers
             );
         }
 
+        /// <summary>
+        /// Удалить пользователя по ID.
+        /// </summary>
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(UserDtoOut), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]

@@ -15,6 +15,8 @@ namespace CountyRP.Services.Site.Repositories
 
         public Task<PagedFilterResult<UserDtoOut>> GetUsersByFilterAsync(UserFilterDtoIn filter);
 
+        public Task<UserDtoOut> Authenticate(string login, string password);
+
         public Task DeleteUserAsync(int id);
     }
 }
