@@ -18,20 +18,5 @@ namespace CountyRP.Services.Site.Converters
                 groupId: source.GroupId
             );
         }
-
-        public static UserDtoOut ToDtoOut(
-            UserDtoIn source,
-            int id
-        )
-        {
-            return new UserDtoOut(
-                id: id,
-                login: source.Login,
-                password: source.Password,
-                playerId: source.PlayerId,
-                forumUserId: source.ForumUserId,
-                groupId: source.GroupId
-            );
-        }
     }
 }
