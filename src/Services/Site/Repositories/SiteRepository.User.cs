@@ -74,6 +74,7 @@ namespace CountyRP.Services.Site.Repositories
             var filteredUsersDao = await usersQuery
                 .Skip(filter.Count * (filter.Page - 1))
                 .Take(filter.Count)
+                .OrderBy(user => user.Id)
                 .ToListAsync();
 
             return new PagedFilterResult<UserDtoOut>(

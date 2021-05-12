@@ -47,6 +47,7 @@ namespace CountyRP.Services.Site.Repositories
             var filteredGroupsDao = await groupsQuery
                 .Skip(filter.Count * (filter.Page - 1))
                 .Take(filter.Count)
+                .OrderBy(group => group.Id)
                 .ToListAsync();
 
             return new PagedFilterResult<GroupDtoOut>(
