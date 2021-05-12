@@ -1,11 +1,11 @@
 ﻿using CountyRP.Services.Site;
 using CountyRP.Services.Site.Converters;
-using CountyRP.Services.Site.Models;
 using CountyRP.Services.Site.Models.Api;
 using CountyRP.Services.Site.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -23,8 +23,8 @@ namespace Site.Controllers
             ISiteRepository siteRepository
         )
         {
-            _logger = logger;
-            _siteRepository = siteRepository;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _siteRepository = siteRepository ?? throw new ArgumentNullException(nameof(siteRepository));
         }
 
         /// <summary>
