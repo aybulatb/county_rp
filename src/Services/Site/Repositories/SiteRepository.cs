@@ -1,4 +1,5 @@
 ﻿using CountyRP.Services.Site.DbContexts;
+using System;
 
 namespace CountyRP.Services.Site.Repositories
 {
@@ -10,7 +11,7 @@ namespace CountyRP.Services.Site.Repositories
             SiteDbContext siteDbContext
         )
         {
-            _siteDbContext = siteDbContext;
+            _siteDbContext = siteDbContext ?? throw new ArgumentNullException(nameof(siteDbContext));
         }
     }
 }

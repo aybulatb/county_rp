@@ -58,6 +58,7 @@ namespace CountyRP.Services.Site.Repositories
         {
             var usersQuery = _siteDbContext
                 .Users
+                .AsNoTracking()
                 .Where(
                     user =>
                         (filter.Login == null || user.Login.Contains(filter.Login)) &&
