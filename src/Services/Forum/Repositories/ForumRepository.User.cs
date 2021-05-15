@@ -54,30 +54,30 @@ namespace CountyRP.Services.Forum.Repositories
                 : null;
         }
 
-        public async Task<PagedFilterResult<UserDtoOut>> GetUsersByFilterAsync(UserFilterDtoIn filter)
+        public async Task<PagedFilterResult<UserDtoOut>> GetUsersByFilterAsync(UserFilterDtoIn filterDtoIn)
         {
             var usersQuery = _forumDbContext
                 .Users
                 .Where(
                     user =>
-                        (filter.Login == null || user.Login.Contains(filter.Login)) &&
-                        (filter.GroupIds == null || filter.GroupIds.Contains(user.GroupId))
+                        (filterDtoIn.Login == null || user.Login.Contains(filterDtoIn.Login)) &&
+                        (filterDtoIn.GroupIds == null || filterDtoIn.GroupIds.Contains(user.GroupId))
                 )
                 .AsQueryable();
 
             var allCount = await usersQuery.CountAsync();
-            var maxPages = (allCount % filter.Count == 0)
-                ? allCount / filter.Count
-                : allCount / filter.Count + 1;
+            var maxPages = (allCount % filterDtoIn.Count == 0)
+                ? allCount / filterDtoIn.Count
+                : allCount / filterDtoIn.Count + 1;
 
             var filteredUsersDao = await usersQuery
-                .Skip(filter.Count * (filter.Page - 1))
-                .Take(filter.Count)
+                .Skip(filterDtoIn.Count * (filterDtoIn.Page - 1))
+                .Take(filterDtoIn.Count)
                 .ToListAsync();
 
             return new PagedFilterResult<UserDtoOut>(
                 allCount: allCount,
-                page: filter.Page,
+                page: filterDtoIn.Page,
                 maxPages: maxPages,
                 items: filteredUsersDao
                     .Select(UserDaoConverter.ToRepository)
