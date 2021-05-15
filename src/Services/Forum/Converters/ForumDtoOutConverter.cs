@@ -22,12 +22,13 @@ namespace CountyRP.Services.Forum.Converters
             ForumDtoOut source
         )
         {
-            return new ApiForumDtoOut(
-                id: source.Id,
-                name: source.Name,
-                parentId: source.ParentId,
-                order: source.Order
-            );
+            return new ApiForumDtoOut()
+            {
+                Id = source.Id,
+                Name = source.Name,
+                ParentId = source.ParentId,
+                Order = source.Order
+            };
         }
     }
 }

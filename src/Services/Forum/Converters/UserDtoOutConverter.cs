@@ -23,14 +23,15 @@ namespace CountyRP.Services.Forum.Converters
             UserDtoOut source
         )
         {
-            return new ApiUserDtoOut(
-                id: source.Id,
-                login: source.Login,
-                groupId: source.GroupId,
-                reputation: source.Reputation,
-                posts: source.Posts,
-                warnings: source.Warnings
-            );
+            return new ApiUserDtoOut()
+            {
+                Id = source.Id,
+                Login = source.Login,
+                GroupId = source.GroupId,
+                Reputation = source.Reputation,
+                Posts = source.Posts,
+                Warnings = source.Warnings
+            };
         }
     }
 }
