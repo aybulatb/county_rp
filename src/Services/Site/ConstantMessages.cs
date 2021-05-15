@@ -52,6 +52,8 @@
 
         public static string BanNotFoundById = "Бан с ID {0} не найден";
 
+        public static string BanNotFoundByUserId = "Бан с ID забаненного пользователя {0} не найден";
+
         public static string BanInvalidReasonLength = "Длина причина бана должна быть от 1 до 256 символов";
 
         public static string BanStartMoreThanFinish = "Дата начала бана не может быть позже даты окончания бана";

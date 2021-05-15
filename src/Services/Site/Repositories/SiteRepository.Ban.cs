@@ -30,6 +30,18 @@ namespace CountyRP.Services.Site.Repositories
                 : null;
         }
 
+        public async Task<BanDtoOut> GetBanByUserIdAsync(int userId)
+        {
+            var banDao = await _siteDbContext
+                .Bans
+                .AsNoTracking()
+                .FirstOrDefaultAsync(ban => ban.UserId == userId);
+
+            return (banDao != null)
+                ? BanDaoConverter.ToRepository(banDao)
+                : null;
+        }
+
         public async Task<BanDtoOut> UpdateBanAsync(BanDtoOut banDtoOut)
         {
             var banDao = BanDtoOutConverter.ToDb(banDtoOut);

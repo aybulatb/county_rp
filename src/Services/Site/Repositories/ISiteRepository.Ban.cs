@@ -9,6 +9,8 @@ namespace CountyRP.Services.Site.Repositories
 
         Task<BanDtoOut> GetBanAsync(int id);
 
+        Task<BanDtoOut> GetBanByUserIdAsync(int userId);
+
         Task<PagedFilterResult<BanDtoOut>> GetBansByFilterAsync(BanFilterDtoIn filter);
 
         Task<BanDtoOut> UpdateBanAsync(BanDtoOut banDtoOut);

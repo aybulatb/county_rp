@@ -23,11 +23,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CountyRP.Forum.Infrastructu
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{A4474237-784C-4130-8BE9-113764D4C8DF}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gateways", "Gateways", "{5783210D-4054-466A-BF22-DAFED3807216}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApiGateways", "ApiGateways", "{5783210D-4054-466A-BF22-DAFED3807216}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Site", "Services\Site\Site.csproj", "{655F6FDE-935C-4184-A14C-41369040BE81}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Forum", "Services\Forum\Forum.csproj", "{2362F302-7905-4320-B6BE-D2F87B7E2B02}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Forum", "Services\Forum\Forum.csproj", "{2362F302-7905-4320-B6BE-D2F87B7E2B02}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

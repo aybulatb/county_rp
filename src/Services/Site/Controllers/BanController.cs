@@ -140,6 +140,28 @@ namespace Site.Controllers
         }
 
         /// <summary>
+        /// Получить данные бана по ID забаненного пользователя.
+        /// </summary>
+        [HttpGet("ByUserId/{userId}")]
+        [ProducesResponseType(typeof(ApiBanDtoOut), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetByUserId(int userId)
+        {
+            var banDtoOut = await _siteRepository.GetBanByUserIdAsync(userId);
+
+            if (banDtoOut == null)
+            {
+                return NotFound(
+                    string.Format(ConstantMessages.BanNotFoundByUserId, userId)
+                );
+            }
+
+            return Ok(
+                BanDtoOutConverter.ToApi(banDtoOut)
+            );
+        }
+
+        /// <summary>
         /// Получить отфильтрованный список банов.
         /// </summary>
         [HttpGet("FilterBy")]
