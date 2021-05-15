@@ -8,6 +8,8 @@
 
         public static string InvalidPageNumber = "Номер страницы должен быть 1 и выше";
 
+        public static string InvalidIP = "IP должен соответствовать примеру: 127.0.0.1";
+
         // Пользователи
 
         public static string UserNotFoundById = "Пользователь с ID {0} не найден";
@@ -45,5 +47,23 @@
         public static string GroupInvalidMaxBan = "Максимальное количество часов бана у группы пользователей должно быть от {0} до {1}";
 
         public static string GroupNotFoundWithBanGroupId = "Группа пользователей с ID {0}, указанное в списке групп, которые можно банить, не найдена";
+
+        // Баны
+
+        public static string BanNotFoundById = "Бан с ID {0} не найден";
+
+        public static string BanInvalidReasonLength = "Длина причина бана должна быть от 1 до 256 символов";
+
+        public static string BanStartMoreThanFinish = "Дата начала бана не может быть позже даты окончания бана";
+
+        public static string BanBannedUserNotFound = "Забаненный пользователь с ID {0} не найден";
+
+        public static string BanAdminUserNotFound = "Администратор с ID {0} не найден";
+
+        public static string BanAdminGroupNotFound = "Группа пользователей администратора с ID {0} не найдена";
+
+        public static string BanInvalidMaxBan = "Количество часов бана для группы {0} не должно превышать {1}";
+
+        public static string BanAdminGroupCannotBan = "У группы пользователей с {0} нет прав на баны";
     }
 }

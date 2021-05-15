@@ -23,7 +23,7 @@ namespace CountyRP.Services.Site.Repositories
             var userDao = await _siteDbContext
                 .Users
                 .AsNoTracking()
-                .FirstOrDefaultAsync(users => users.Id == id);
+                .FirstOrDefaultAsync(user => user.Id == id);
 
             return (userDao != null) 
                 ? UserDaoConverter.ToRepository(userDao)
@@ -35,7 +35,7 @@ namespace CountyRP.Services.Site.Repositories
             var userDao = await _siteDbContext
                 .Users
                 .AsNoTracking()
-                .FirstOrDefaultAsync(users => users.Login == login);
+                .FirstOrDefaultAsync(user => user.Login == login);
 
             return (userDao != null)
                 ? UserDaoConverter.ToRepository(userDao)

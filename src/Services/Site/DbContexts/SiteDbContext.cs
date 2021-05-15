@@ -9,6 +9,8 @@ namespace CountyRP.Services.Site.DbContexts
 
         public DbSet<GroupDao> Groups { get; set; }
 
+        public DbSet<BanDao> Bans { get; set; }
+
         public SiteDbContext(
             DbContextOptions<SiteDbContext> options
         )
