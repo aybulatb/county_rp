@@ -17,5 +17,13 @@
         public static string UserInvalidGroupIdLength = "Длина id группы должна быть от 3 до 16 символов";
 
         public static string UserAlreadyExistedWithLogin = "Пользователь с таким логином уже существует";
+
+        public static string ForumInvalidNameLength = "Длина названия форума должна быть от 1 до 96 символов";
+
+        public static string ForumNotFoundById = "Форум с ID {0} не найден";
+
+        public static string TopicInvalidCaptionLength = "Длина заголовка темы должна быть от 1 до 128 символов";
+
+        public static string TopicNotFoundById = "Тема с ID {0} не найдена";
     }
 }

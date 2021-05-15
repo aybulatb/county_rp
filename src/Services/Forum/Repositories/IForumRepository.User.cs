@@ -8,7 +8,7 @@ namespace CountyRP.Services.Forum.Repositories
         /// <summary>
         /// Создать пользователя.
         /// </summary>
-        Task<UserDtoOut> AddUserAsync(UserDtoIn user);
+        Task<UserDtoOut> AddUserAsync(UserDtoIn userDtoIn);
 
         /// <summary>
         /// Получить данные пользователя по ID.
@@ -23,7 +23,7 @@ namespace CountyRP.Services.Forum.Repositories
         /// <summary>
         /// Получить отфильтрованный список пользователей.
         /// </summary>
-        Task<PagedFilterResult<UserDtoOut>> GetUsersByFilterAsync(UserFilterDtoIn filter);
+        Task<PagedFilterResult<UserDtoOut>> GetUsersByFilterAsync(UserFilterDtoIn filterDtoIn);
 
         /// <summary>
         /// Изменить данные пользователя по ID.

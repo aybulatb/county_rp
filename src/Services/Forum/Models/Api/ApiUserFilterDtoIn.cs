@@ -6,7 +6,7 @@ namespace CountyRP.Services.Forum.Models.Api
     {
         public string Login { get; set; }
 
-        public string SortingFlag { get; }
+        public string SortingFlag { get; set; }
 
         public IEnumerable<string> GroupIds { get; set; }
     }

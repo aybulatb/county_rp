@@ -10,12 +10,39 @@ namespace CountyRP.Services.Forum.Converters
             PagedFilterResult<UserDtoOut> source
         )
         {
-            return new ApiPagedFilterResult<ApiUserDtoOut>(
-                allCount: source.AllCount,
-                page: source.Page,
-                maxPages: source.MaxPages,
-                items: source.Items.Select(UserDtoOutConverter.ToApi)
-            );
+            return new ApiPagedFilterResult<ApiUserDtoOut>()
+            {
+                AllCount = source.AllCount,
+                Page = source.Page,
+                MaxPages = source.MaxPages,
+                Items = source.Items.Select(UserDtoOutConverter.ToApi)
+            };
+        }
+
+        public static ApiPagedFilterResult<ApiForumDtoOut> ToApi(
+            PagedFilterResult<ForumDtoOut> source
+        )
+        {
+            return new ApiPagedFilterResult<ApiForumDtoOut>()
+            {
+                AllCount = source.AllCount,
+                Page = source.Page,
+                MaxPages = source.MaxPages,
+                Items = source.Items.Select(ForumDtoOutConverter.ToApi)
+            };
+        }
+
+        public static ApiPagedFilterResult<ApiTopicDtoOut> ToApi(
+            PagedFilterResult<TopicDtoOut> source
+        )
+        {
+            return new ApiPagedFilterResult<ApiTopicDtoOut>() 
+            { 
+                AllCount = source.AllCount, 
+                Page = source.Page, 
+                MaxPages = source.MaxPages, 
+                Items = source.Items.Select(TopicDtoOutConverter.ToApi) 
+            };
         }
     }
 }

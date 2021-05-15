@@ -4,25 +4,12 @@ namespace CountyRP.Services.Forum.Models.Api
 {
     public class ApiPagedFilterResult<T>
     {
-        public int AllCount { get; }
+        public int AllCount { get; set; }
 
-        public int Page { get; }
+        public int Page { get; set; }
 
-        public int MaxPages { get; }
+        public int MaxPages { get; set; }
 
-        public IEnumerable<T> Items { get; }
-
-        public ApiPagedFilterResult(
-            int allCount,
-            int page,
-            int maxPages,
-            IEnumerable<T> items
-        )
-        {
-            AllCount = allCount;
-            Page = page;
-            MaxPages = maxPages;
-            Items = items;
-        }
+        public IEnumerable<T> Items { get; set; }
     }
 }

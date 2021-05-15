@@ -2,33 +2,16 @@
 {
     public class ApiUserDtoOut
     {
-        public int Id { get; }
+        public int Id { get; set; }
 
-        public string Login { get; }
+        public string Login { get; set; }
 
-        public string GroupId { get; }
+        public string GroupId { get; set; }
 
-        public int Reputation { get; }
+        public int Reputation { get; set; }
 
-        public int Posts { get; }
+        public int Posts { get; set; }
 
-        public int Warnings { get; }
-
-        public ApiUserDtoOut(
-            int id,
-            string login,
-            string groupId,
-            int reputation,
-            int posts,
-            int warnings
-        )
-        {
-            Id = id;
-            Login = login;
-            GroupId = groupId;
-            Reputation = reputation;
-            Posts = posts;
-            Warnings = warnings;
-        }
+        public int Warnings { get; set; }
     }
 }

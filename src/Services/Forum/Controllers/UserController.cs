@@ -30,7 +30,7 @@ namespace CountyRP.Services.Forum.Controllers
         /// Создать пользователя.
         /// </summary>
         [HttpPost]
-        [ProducesResponseType(typeof(UserDtoOut), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ApiUserDtoOut), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Create([FromBody] ApiUserDtoIn apiUserDtoIn)
         {
@@ -68,7 +68,7 @@ namespace CountyRP.Services.Forum.Controllers
         /// Получить данные пользователя по ID.
         /// </summary>
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(UserDtoOut), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiUserDtoOut), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById(int id)
         {
@@ -90,6 +90,8 @@ namespace CountyRP.Services.Forum.Controllers
         /// Получить данные пользователя по логину.
         /// </summary>
         [HttpGet("ByLogin/{login}")]
+        [ProducesResponseType(typeof(ApiUserDtoOut), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetByLogin(string login)
         {
             var userDtoOut = await _forumRepository.GetUserByLoginAsync(login);
@@ -110,7 +112,7 @@ namespace CountyRP.Services.Forum.Controllers
         /// Получить отфильтрованный список пользователей.
         /// </summary>
         [HttpGet("FilterBy")]
-        [ProducesResponseType(typeof(PagedFilterResult<UserDtoOut>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(PagedFilterResult<ApiUserDtoOut>), StatusCodes.Status200OK)]
         public async Task<IActionResult> Filterby([FromQuery] ApiUserFilterDtoIn filter)
         {
             if (filter.Count < 1 || filter.Count > 100)
@@ -136,7 +138,7 @@ namespace CountyRP.Services.Forum.Controllers
         /// Изменить данные пользователя по ID.
         /// </summary>
         [HttpPut("{id}")]
-        [ProducesResponseType(typeof(UserDtoOut), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiUserDtoOut), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Edit(int id, [FromBody] ApiUserDtoIn apiUserDtoIn)
@@ -188,7 +190,7 @@ namespace CountyRP.Services.Forum.Controllers
         /// Удалить пользователя по ID.
         /// </summary>
         [HttpDelete("{id}")]
-        [ProducesResponseType(typeof(UserDtoOut), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {

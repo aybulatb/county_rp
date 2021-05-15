@@ -1,4 +1,6 @@
 ﻿using CountyRP.Services.Forum.DbContexts;
+using CountyRP.Services.Forum.Models;
+using System.Threading.Tasks;
 
 namespace CountyRP.Services.Forum.Repositories
 {
