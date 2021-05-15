@@ -1,5 +1,4 @@
-﻿using CountyRP.Services.Site;
-using CountyRP.Services.Site.Converters;
+﻿using CountyRP.Services.Site.Converters;
 using CountyRP.Services.Site.Models.Api;
 using CountyRP.Services.Site.Repositories;
 using Microsoft.AspNetCore.Http;
@@ -9,7 +8,7 @@ using System;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace Site.Controllers
+namespace CountyRP.Services.Site.Controllers
 {
     [ApiController]
     [Route("[controller]")]

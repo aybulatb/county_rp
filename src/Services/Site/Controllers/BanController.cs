@@ -9,7 +9,7 @@ using System;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace Site.Controllers
+namespace CountyRP.Services.Site.Controllers
 {
     [ApiController]
     [Route("[controller]")]

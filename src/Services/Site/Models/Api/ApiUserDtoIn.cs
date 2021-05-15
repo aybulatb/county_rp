@@ -2,29 +2,14 @@
 {
     public class ApiUserDtoIn
     {
-        public string Login { get; }
+        public string Login { get; set; }
 
-        public string Password { get; }
+        public string Password { get; set; }
 
-        public int PlayerId { get; }
+        public int PlayerId { get; set; }
 
-        public int ForumUserId { get; }
+        public int ForumUserId { get; set; }
 
-        public string GroupId { get; }
-
-        public ApiUserDtoIn(
-            string login,
-            string password,
-            int playerId,
-            int forumUserId,
-            string groupId
-        )
-        {
-            Login = login;
-            Password = password;
-            PlayerId = playerId;
-            ForumUserId = forumUserId;
-            GroupId = groupId;
-        }
+        public string GroupId { get; set; }
     }
 }
