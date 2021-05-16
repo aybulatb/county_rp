@@ -86,7 +86,7 @@ namespace CountyRP.Services.Site.Repositories
             );
         }
 
-        public async Task<UserDtoOut> Authenticate(string login, string password)
+        public async Task<UserDtoOut> AuthenticateAsync(string login, string password)
         {
             var userDao = await _siteDbContext
                 .Users

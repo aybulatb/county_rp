@@ -120,7 +120,7 @@ namespace CountyRP.Services.Site.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Authenticate(string login, string password)
         {
-            var userDtoOut = await _siteRepository.Authenticate(login, password);
+            var userDtoOut = await _siteRepository.AuthenticateAsync(login, password);
 
             if (userDtoOut == null)
             {
@@ -139,6 +139,7 @@ namespace CountyRP.Services.Site.Controllers
         /// </summary>
         [HttpGet("FilterBy")]
         [ProducesResponseType(typeof(ApiPagedFilterResult<ApiUserDtoOut>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> FilterBy([FromQuery] ApiUserFilterDtoIn filter)
         {
             if (filter.Count < 1 || filter.Count > 100)

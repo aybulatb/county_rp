@@ -128,6 +128,7 @@ namespace CountyRP.Services.Site.Controllers
         /// </summary>
         [HttpGet("FilterBy")]
         [ProducesResponseType(typeof(ApiPagedFilterResult<ApiGroupDtoOut>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> FilterBy([FromQuery] ApiGroupFilterDtoIn filter)
         {
             if (filter.Count < 1 || filter.Count > 100)

@@ -166,6 +166,7 @@ namespace CountyRP.Services.Site.Controllers
         /// </summary>
         [HttpGet("FilterBy")]
         [ProducesResponseType(typeof(ApiPagedFilterResult<ApiBanDtoOut>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> FilterBy([FromQuery] ApiBanFilterDtoIn filter)
         {
             if (filter.Count < 1 || filter.Count > 100)
