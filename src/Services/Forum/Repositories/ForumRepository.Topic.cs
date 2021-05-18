@@ -23,7 +23,7 @@ namespace CountyRP.Services.Forum.Repositories
             var topicDao = await _forumDbContext
                 .Topics
                 .AsNoTracking()
-                .FirstOrDefaultAsync(topic => topic.Id == id);
+                .FirstOrDefaultAsync(topic => topic.Id.Equals(id));
 
             return (topicDao != null)
                 ? TopicDaoConverter.ToRepository(topicDao)

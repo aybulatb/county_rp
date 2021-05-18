@@ -23,7 +23,7 @@ namespace CountyRP.Services.Forum.Repositories
             var userDao = await _forumDbContext
                 .Users
                 .AsNoTracking()
-                .FirstOrDefaultAsync(users => users.Id == id);
+                .FirstOrDefaultAsync(users => users.Id.Equals(id));
 
             return (userDao != null)
                 ? UserDaoConverter.ToRepository(userDao)

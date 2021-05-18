@@ -44,5 +44,31 @@ namespace CountyRP.Services.Forum.Converters
                 Items = source.Items.Select(TopicDtoOutConverter.ToApi) 
             };
         }
+
+        public static ApiPagedFilterResult<ApiPostDtoOut> ToApi(
+            PagedFilterResult<PostDtoOut> source
+        )
+        {
+            return new ApiPagedFilterResult<ApiPostDtoOut>()
+            {
+                AllCount = source.AllCount,
+                Page = source.Page,
+                MaxPages = source.MaxPages,
+                Items = source.Items.Select(PostDtoOutConverter.ToApi)
+            };
+        }
+
+        public static ApiPagedFilterResult<ApiModeratorDtoOut> ToApi(
+            PagedFilterResult<ModeratorDtoOut> source
+        )
+        {
+            return new ApiPagedFilterResult<ApiModeratorDtoOut>()
+            {
+                AllCount = source.AllCount,
+                Page = source.Page,
+                MaxPages = source.MaxPages,
+                Items = source.Items.Select(ModeratorDtoOutConverter.ToApi)
+            };
+        }
     }
 }

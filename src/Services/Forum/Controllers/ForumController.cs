@@ -92,7 +92,7 @@ namespace CountyRP.Services.Forum.Controllers
         /// </summary>
         [HttpGet("FilterBy")]
         [ProducesResponseType(typeof(PagedFilterResult<ApiForumDtoOut>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> Filterby([FromQuery] ApiForumFilterDtoIn filter)
+        public async Task<IActionResult> FilterBy([FromQuery] ApiForumFilterDtoIn filter)
         {
             if (filter.Count < 1 || filter.Count > 100)
             {

@@ -25,5 +25,9 @@
         public static string TopicInvalidCaptionLength = "Длина заголовка темы должна быть от 1 до 128 символов";
 
         public static string TopicNotFoundById = "Тема с ID {0} не найдена";
+
+        public static string PostNotFoundById = "Сообщение с ID {0} не найдено";
+
+        public static string ModeratorNotFoundById = "Модератор с ID {0} не найден";
     }
 }

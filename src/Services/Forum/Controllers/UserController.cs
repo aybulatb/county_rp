@@ -113,7 +113,7 @@ namespace CountyRP.Services.Forum.Controllers
         /// </summary>
         [HttpGet("FilterBy")]
         [ProducesResponseType(typeof(PagedFilterResult<ApiUserDtoOut>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> Filterby([FromQuery] ApiUserFilterDtoIn filter)
+        public async Task<IActionResult> FilterBy([FromQuery] ApiUserFilterDtoIn filter)
         {
             if (filter.Count < 1 || filter.Count > 100)
             {
