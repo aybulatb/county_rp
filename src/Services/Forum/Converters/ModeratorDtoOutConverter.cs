@@ -4,7 +4,7 @@ using CountyRP.Services.Forum.Models.Api;
 
 namespace CountyRP.Services.Forum.Converters
 {
-    internal class ModeratorDtoOutConverter
+    internal static class ModeratorDtoOutConverter
     {
         public static ModeratorDao ToDb(
             ModeratorDtoOut source

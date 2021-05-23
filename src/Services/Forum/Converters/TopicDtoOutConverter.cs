@@ -4,7 +4,7 @@ using CountyRP.Services.Forum.Models.Api;
 
 namespace CountyRP.Services.Forum.Converters
 {
-    internal class TopicDtoOutConverter
+    internal static class TopicDtoOutConverter
     {
         public static TopicDao ToDb(
             TopicDtoOut source

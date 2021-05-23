@@ -29,5 +29,7 @@
         public static string PostNotFoundById = "Сообщение с ID {0} не найдено";
 
         public static string ModeratorNotFoundById = "Модератор с ID {0} не найден";
+
+        public static string InvalidTextLength = "Длина должна быть от 1 до 128 символов";
     }
 }

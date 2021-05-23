@@ -4,7 +4,7 @@ using CountyRP.Services.Forum.Models.Api;
 
 namespace CountyRP.Services.Forum.Converters
 {
-    internal class PostDtoOutConverter
+    internal static class PostDtoOutConverter
     {
         public static PostDao ToDb(
             PostDtoOut source

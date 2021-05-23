@@ -3,7 +3,7 @@ using CountyRP.Services.Forum.Models;
 
 namespace CountyRP.Services.Forum.Converters
 {
-    internal class TopicDtoInConverter
+    internal static class TopicDtoInConverter
     {
         public static TopicDao ToDb(
             TopicDtoIn source

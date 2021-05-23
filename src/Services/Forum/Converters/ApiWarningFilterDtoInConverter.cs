@@ -3,16 +3,16 @@ using CountyRP.Services.Forum.Models.Api;
 
 namespace CountyRP.Services.Forum.Converters
 {
-    internal static class ApiTopicFilterDtoInConverter
+    internal static class ApiWarningFilterDtoInConverter
     {
-        public static TopicFilterDtoIn ToRepository(
-            ApiTopicFilterDtoIn source
+        public static WarningFilterDtoIn ToRepository(
+            ApiWarningFilterDtoIn source
         )
         {
-            return new TopicFilterDtoIn(
+            return new WarningFilterDtoIn(
                 count: source.Count,
                 page: source.Page,
-                forumId: source.ForumId
+                userId: source.UserId
             );
         }
     }

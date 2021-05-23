@@ -3,7 +3,7 @@ using CountyRP.Services.Forum.Models.Api;
 
 namespace CountyRP.Services.Forum.Converters
 {
-    internal class ApiModeratorFilterDtoInConverter
+    internal static class ApiModeratorFilterDtoInConverter
     {
         public static ModeratorFilterDtoIn ToRepository(
             ApiModeratorFilterDtoIn source

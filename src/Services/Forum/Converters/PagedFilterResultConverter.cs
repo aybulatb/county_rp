@@ -70,5 +70,31 @@ namespace CountyRP.Services.Forum.Converters
                 Items = source.Items.Select(ModeratorDtoOutConverter.ToApi)
             };
         }
+
+        public static ApiPagedFilterResult<ApiReputationDtoOut> ToApi(
+            PagedFilterResult<ReputationDtoOut> source
+        )
+        {
+            return new ApiPagedFilterResult<ApiReputationDtoOut>()
+            {
+                AllCount = source.AllCount,
+                Page = source.Page,
+                MaxPages = source.MaxPages,
+                Items = source.Items.Select(ReputationDtoOutConverter.ToApi)
+            };
+        }
+
+        public static ApiPagedFilterResult<ApiWarningDtoOut> ToApi(
+            PagedFilterResult<WarningDtoOut> source
+        )
+        {
+            return new ApiPagedFilterResult<ApiWarningDtoOut>()
+            {
+                AllCount = source.AllCount,
+                Page = source.Page,
+                MaxPages = source.MaxPages,
+                Items = source.Items.Select(WarningDtoOutConverter.ToApi)
+            };
+        }
     }
 }

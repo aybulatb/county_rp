@@ -3,7 +3,7 @@ using CountyRP.Services.Forum.Models.Api;
 
 namespace CountyRP.Services.Forum.Converters
 {
-    public class ApiTopicDtoInConverter
+    internal static class ApiTopicDtoInConverter
     {
         public static TopicDtoIn ToRepository(
             ApiTopicDtoIn source
