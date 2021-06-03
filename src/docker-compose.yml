@@ -41,3 +41,11 @@ services:
       dockerfile: Services/Forum/Dockerfile
     depends_on:
       - mssql
+
+  countyrp.services.logs:
+    image: ${DOCKER_REGISTRY-}countyrpservicelogs
+    build:
+      context: .
+      dockerfile: Services/Logs/Dockerfile
+    depends_on:
+      - mssql
