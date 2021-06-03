@@ -34,6 +34,7 @@ namespace CountyRP.Services.Forum.Repositories
                 : allCount / reputationFilterDtoIn.Count + 1;
 
             var filteredReputationsDao = await reputationsQuery
+                .OrderByDescending(reputation => reputation.DateTime)
                 .Skip(reputationFilterDtoIn.Count * (reputationFilterDtoIn.Page - 1))
                 .Take(reputationFilterDtoIn.Count)
                 .ToListAsync();

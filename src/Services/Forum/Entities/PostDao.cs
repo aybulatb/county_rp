@@ -22,6 +22,13 @@ namespace CountyRP.Services.Forum.Entities
 
         public DateTimeOffset EditionDateTime { get; set; }
 
+        /// <summary>
+        /// Конструктор для EF
+        /// </summary>
+        public PostDao()
+        {
+        }
+
         public PostDao(
             int id,
             string text,

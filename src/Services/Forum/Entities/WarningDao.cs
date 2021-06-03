@@ -23,6 +23,13 @@ namespace CountyRP.Services.Forum.Entities
         [MaxLength(128)]
         public string Text { get; set; }
 
+        /// <summary>
+        /// Конструктор для EF
+        /// </summary>
+        public WarningDao()
+        {
+        }
+
         public WarningDao(
             int id,
             int userId,

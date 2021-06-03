@@ -49,6 +49,7 @@ namespace CountyRP.Services.Forum.Repositories
                 : allCount / moderatorFilterDtoIn.Count + 1;
 
             var filteredModeratorsDao = await moderatorsQuery
+                .OrderBy(moderator => moderator.Id)
                 .Skip(moderatorFilterDtoIn.Count * (moderatorFilterDtoIn.Page - 1))
                 .Take(moderatorFilterDtoIn.Count)
                 .ToListAsync();

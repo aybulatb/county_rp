@@ -13,6 +13,13 @@ namespace CountyRP.Services.Forum.Entities
 
         public int ForumId { get; set; }
 
+        /// <summary>
+        /// Конструктор для EF
+        /// </summary>
+        public TopicDao()
+        {
+        }
+
         public TopicDao(
             int id,
             string caption,

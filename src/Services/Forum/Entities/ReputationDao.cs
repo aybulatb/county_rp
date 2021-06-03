@@ -18,9 +18,15 @@ namespace CountyRP.Services.Forum.Entities
 
         public int Action { get; set; }
 
-
         [MaxLength(128)]
         public string Text { get; set; }
+
+        /// <summary>
+        /// Конструктор для EF
+        /// </summary>
+        public ReputationDao()
+        {
+        }
 
         public ReputationDao(
             int id,

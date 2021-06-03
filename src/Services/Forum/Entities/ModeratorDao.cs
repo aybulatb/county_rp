@@ -27,6 +27,12 @@ namespace CountyRP.Services.Forum.Entities
 
         public bool DeletePosts { get; set; }
 
+        /// <summary>
+        /// Конструктор для EF
+        /// </summary>
+        public ModeratorDao()
+        {
+        }
 
         public ModeratorDao(
             int id,

@@ -57,6 +57,7 @@ namespace CountyRP.Services.Forum.Repositories
                 : allCount / filterDtoIn.Count + 1;
 
             var filteredForumsDao = await forumsQuery
+                .OrderBy(forum => forum.Id)
                 .Skip(filterDtoIn.Count * (filterDtoIn.Page - 1))
                 .Take(filterDtoIn.Count)
                 .ToListAsync();

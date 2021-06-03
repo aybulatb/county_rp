@@ -23,6 +23,13 @@ namespace CountyRP.Services.Forum.Entities
 
         public int Warnings { get; set; }
 
+        /// <summary>
+        /// Конструктор для EF
+        /// </summary>
+        public UserDao()
+        {
+        }
+
         public UserDao(
             int id,
             string login,

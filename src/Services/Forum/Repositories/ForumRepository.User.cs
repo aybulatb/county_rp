@@ -59,6 +59,7 @@ namespace CountyRP.Services.Forum.Repositories
         {
             var usersQuery = _forumDbContext
                 .Users
+                .AsNoTracking()
                 .Where(
                     user =>
                         (filterDtoIn.Login == null || user.Login.Contains(filterDtoIn.Login)) &&
@@ -72,6 +73,7 @@ namespace CountyRP.Services.Forum.Repositories
                 : allCount / filterDtoIn.Count + 1;
 
             var filteredUsersDao = await usersQuery
+                .OrderBy(user => user.Id)
                 .Skip(filterDtoIn.Count * (filterDtoIn.Page - 1))
                 .Take(filterDtoIn.Count)
                 .ToListAsync();

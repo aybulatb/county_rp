@@ -34,6 +34,7 @@ namespace CountyRP.Services.Forum.Repositories
                 : allCount / warningFilterDtoIn.Count + 1;
 
             var filteredWarningsDao = await warningsQuery
+                .OrderByDescending(warning => warning.DateTime)
                 .Skip(warningFilterDtoIn.Count * (warningFilterDtoIn.Page - 1))
                 .Take(warningFilterDtoIn.Count)
                 .ToListAsync();

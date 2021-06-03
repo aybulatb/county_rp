@@ -50,6 +50,7 @@ namespace CountyRP.Services.Forum.Repositories
                 : allCount / postFilterDtoIn.Count + 1;
 
             var filteredPostsDao = await postsQuery
+                .OrderBy(post => post.CreationDateTime)
                 .Skip(postFilterDtoIn.Count * (postFilterDtoIn.Page - 1))
                 .Take(postFilterDtoIn.Count)
                 .ToListAsync();
