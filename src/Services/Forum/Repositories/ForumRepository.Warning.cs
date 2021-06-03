@@ -22,6 +22,7 @@ namespace CountyRP.Services.Forum.Repositories
         {
             var warningsQuery = _forumDbContext
                 .Warnings
+                .AsNoTracking()
                 .Where(
                     warning => warning.UserId.Equals(warningFilterDtoIn.UserId)
                 )

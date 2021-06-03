@@ -45,6 +45,7 @@ namespace CountyRP.Services.Forum.Repositories
         {
             var forumsQuery = _forumDbContext
                 .Forums
+                .AsNoTracking()
                 .Where(
                     forum => forum.ParentId.Equals(filterDtoIn.ParentId)
                 )

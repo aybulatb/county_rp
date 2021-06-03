@@ -22,6 +22,7 @@ namespace CountyRP.Services.Forum.Repositories
         {
             var reputationsQuery = _forumDbContext
                 .Reputations
+                .AsNoTracking()
                 .Where(
                     reputation => reputation.UserId.Equals(reputationFilterDtoIn.UserId)
                 )

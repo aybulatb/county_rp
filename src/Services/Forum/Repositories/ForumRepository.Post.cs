@@ -34,6 +34,7 @@ namespace CountyRP.Services.Forum.Repositories
         {
             var postsQuery = _forumDbContext
                 .Posts
+                .AsNoTracking()
                 .Where(
                     post =>
                         (postFilterDtoIn.Text == null || post.Text.Contains(postFilterDtoIn.Text)) &&

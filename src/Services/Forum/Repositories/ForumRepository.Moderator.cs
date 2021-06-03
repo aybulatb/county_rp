@@ -34,6 +34,7 @@ namespace CountyRP.Services.Forum.Repositories
         {
             var moderatorsQuery = _forumDbContext
                 .Moderators
+                .AsNoTracking()
                 .Where(
                     moderator =>
                         moderatorFilterDtoIn.EntityId.Equals(moderator.EntityId) &&
