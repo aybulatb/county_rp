@@ -81,3 +81,11 @@ services:
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
+  countyrp.gateways.adminpanel.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://0.0.0.0:11001;http://0.0.0.0:11000
+    ports:
+      - "11000:11000"
+      - "11001:11001"

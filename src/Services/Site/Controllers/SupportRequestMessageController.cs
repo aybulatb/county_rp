@@ -39,7 +39,8 @@ namespace CountyRP.Services.Site.Controllers
 
             var supportRequestMessageDtoOut = await _siteRepository.AddSupportRequestMessageAsync(supportRequestMessageDtoIn);
 
-            return Ok(
+            return Created(
+                string.Empty,
                 SupportRequestMessageDtoOutConverter.ToApi(supportRequestMessageDtoOut)
             );
         }

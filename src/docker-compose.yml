@@ -49,3 +49,9 @@ services:
       dockerfile: Services/Logs/Dockerfile
     depends_on:
       - mssql
+
+  countyrp.gateways.adminpanel.api:
+    image: ${DOCKER_REGISTRY-}countyrpgatewayadminpanelapi
+    build:
+      context: .
+      dockerfile: Gateways/AdminPanel/AdminPanel.API/Dockerfile
