@@ -90,11 +90,8 @@ namespace CountyRP.Services.Site.Repositories
                         (filter.Ids == null || filter.Ids.Contains(supportRequestMessage.Id)) &&
                         (!filter.TopicId.HasValue || supportRequestMessage.TopicId == filter.TopicId.Value) &&
                         (!filter.UserId.HasValue || supportRequestMessage.UserId == filter.UserId.Value)
-                    );
-
-            query = query
-                .Skip((filter.Page - 1) * filter.Count)
-                .Take(filter.Count);
+                    )
+                .OrderBy(supportRequestMessage => supportRequestMessage.CreationDate);
 
             return query;
         }

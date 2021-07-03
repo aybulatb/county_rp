@@ -4,7 +4,9 @@
     {
         // Общие сообщения
 
-        public static string InvalidCountItemPerPage = "Количество записей на странице должно быть от 1 до 100";
+        public static string CountItemPerPageMoreThan100 = "Количество записей на странице должно быть от 1 до 100";
+
+        public static string InvalidCountItemPerPage = "Количество записей на странице должно быть 1 и больше";
 
         public static string InvalidPageNumber = "Номер страницы должен быть 1 и выше";
 
@@ -69,6 +71,8 @@
         public static string BanAdminGroupCannotBan = "У группы пользователей с {0} нет прав на баны";
 
         // Обращения пользователей
+
+        public static string SupportRequestMessageNotFoundById = "Сообщение из обращения с ID {0} не найдено";
 
         public static string SupportRequestTopicNotFoundCreatorUser = "Пользователь-создатель обращения с ID {0} не найден";
 

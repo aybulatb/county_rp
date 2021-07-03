@@ -20,7 +20,7 @@ namespace CountyRP.Services.Site.Converters
             );
         }
 
-        public static ApiSupportRequestMessageDtoOut ToRepository(
+        public static ApiSupportRequestMessageDtoOut ToApi(
             SupportRequestMessageDtoOut source
         )
         {

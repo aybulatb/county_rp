@@ -96,7 +96,7 @@ namespace CountyRP.Services.Forum.Controllers
         {
             if (filter.Count < 1 || filter.Count > 100)
             {
-                return BadRequest(ConstantMessages.InvalidCountItemPerPage);
+                return BadRequest(ConstantMessages.CountItemPerPageMoreThan100);
             }
 
             if (filter.Page < 1)

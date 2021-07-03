@@ -4,7 +4,7 @@
     {
         // Общие сообщения
 
-        public static string InvalidCountItemPerPage = "Количество записей на странице должно быть от 1 до 100";
+        public static string CountItemPerPageMoreThan100 = "Количество записей на странице должно быть от 1 до 100";
 
         public static string InvalidPageNumber = "Номер страницы должен быть 1 и выше";
 

@@ -2,7 +2,7 @@
 {
     internal static class ConstantMessages
     {
-        public static string InvalidCountItemPerPage = "Количество страниц должно быть от 1 до 100";
+        public static string CountItemPerPageMoreThan100 = "Количество страниц должно быть от 1 до 100";
 
         public static string InvalidPageNumber = "Номер страницы должен быть 1 и выше";
 

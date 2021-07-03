@@ -11,8 +11,8 @@ namespace CountyRP.Services.Site.Converters
         {
             return new ApiSupportRequestTopicWithFirstAndLastMessagesDtoOut(
                 topic: SupportRequestTopicDtoOutConverter.ToApi(source.Topic),
-                firstMessage: SupportRequestMessageDtoOutConverter.ToRepository(source.FirstMessage),
-                lastMessage: SupportRequestMessageDtoOutConverter.ToRepository(source.LastMessage)
+                firstMessage: SupportRequestMessageDtoOutConverter.ToApi(source.FirstMessage),
+                lastMessage: SupportRequestMessageDtoOutConverter.ToApi(source.LastMessage)
             );
         }
     }
