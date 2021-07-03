@@ -67,5 +67,11 @@
         public static string BanInvalidMaxBan = "Количество часов бана для группы {0} не должно превышать {1}";
 
         public static string BanAdminGroupCannotBan = "У группы пользователей с {0} нет прав на баны";
+
+        // Обращения пользователей
+
+        public static string SupportRequestTopicNotFoundCreatorUser = "Пользователь-создатель обращения с ID {0} не найден";
+
+        public static string SupportRequestTopicNotFoundRefUser = "Ссылочный пользователь, указанный в обращении с ID {0}, не найден";
     }
 }

@@ -28,7 +28,12 @@ namespace CountyRP.Services.Site
 
             services.AddControllers();
 
-            services.AddSwaggerDocument();
+            services.AddSwaggerDocument(document =>
+            {
+                document.Title = "County RP Site Service API";
+                document.Version = "v1";
+                document.Description = "The County RP Site Service API documentation description.";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

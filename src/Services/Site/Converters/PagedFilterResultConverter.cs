@@ -41,5 +41,17 @@ namespace CountyRP.Services.Site.Converters
                 items: source.Items.Select(BanDtoOutConverter.ToApi)
             );
         }
+
+        public static ApiPagedFilterResult<ApiSupportRequestTopicWithFirstAndLastMessagesDtoOut> ToApi(
+            PagedFilterResult<SupportRequestTopicWithFirstAndLastMessagesDtoOut> source
+        )
+        {
+            return new ApiPagedFilterResult<ApiSupportRequestTopicWithFirstAndLastMessagesDtoOut>(
+                allCount: source.AllCount,
+                page: source.Page,
+                maxPages: source.MaxPages,
+                items: source.Items.Select(SupportRequestTopicWithFirstAndLastMessagesDtoOutConverter.ToApi)
+            );
+        }
     }
 }

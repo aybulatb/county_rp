@@ -11,6 +11,10 @@ namespace CountyRP.Services.Site.DbContexts
 
         public DbSet<BanDao> Bans { get; set; }
 
+        public DbSet<SupportRequestTopicDao> SupportRequestTopics { get; set; }
+
+        public DbSet<SupportRequestMessageDao> SupportRequestMessages { get; set; }
+
         public SiteDbContext(
             DbContextOptions<SiteDbContext> options
         )
