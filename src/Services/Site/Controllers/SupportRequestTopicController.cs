@@ -94,7 +94,7 @@ namespace CountyRP.Services.Site.Controllers
         {
             var supportRequestTopicFilterDtoIn = ApiSupportRequestTopicFilterDtoInConverter.ToRepository(apiSupportRequestTopicFilterDtoIn);
 
-            var supportRequestTopicsByFirstAndLastMessages = await _siteRepository.GetSupportRequestTopicsByFilterByFirstMessagesAsync(supportRequestTopicFilterDtoIn);
+            var supportRequestTopicsByFirstAndLastMessages = await _siteRepository.GetSupportRequestTopicsByFilterByLastMessagesAsync(supportRequestTopicFilterDtoIn);
 
             return Ok(
                 PagedFilterResultConverter.ToApi(supportRequestTopicsByFirstAndLastMessages)

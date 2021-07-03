@@ -78,7 +78,7 @@ namespace CountyRP.Services.Site.Repositories
             );
         }
 
-        public async Task<PagedFilterResult<SupportRequestTopicWithFirstAndLastMessagesDtoOut>> GetSupportRequestTopicsByFilterByFirstMessagesAsync(
+        public async Task<PagedFilterResult<SupportRequestTopicWithFirstAndLastMessagesDtoOut>> GetSupportRequestTopicsByFilterByLastMessagesAsync(
             SupportRequestTopicFilterDtoIn filter
         )
         {
@@ -92,7 +92,7 @@ namespace CountyRP.Services.Site.Repositories
                 ? SupportRequestTopicStatusDtoConverter.ToDb(filter.Status.Value)
                 : null;
 
-            var supportRequestTopicByFirstMessagesQuery = _siteDbContext
+            var supportRequestTopicByFilterByLastMessagesQuery = _siteDbContext
                 .SupportRequestMessages
                 .AsNoTracking()
                 .Select(supportRequestMessage => supportRequestMessage.TopicId).Distinct()
@@ -128,10 +128,10 @@ namespace CountyRP.Services.Site.Repositories
                         (!filter.RefUserId.HasValue || supportRequestTopic.Topic.RefUserId == filter.RefUserId)
                     );
 
-            var allCount = await supportRequestTopicByFirstMessagesQuery.CountAsync();
+            var allCount = await supportRequestTopicByFilterByLastMessagesQuery.CountAsync();
             var maxPages = allCount / filter.Count;
 
-            var filteredSupportRequestTopicsWithMessageDao = await supportRequestTopicByFirstMessagesQuery
+            var filteredSupportRequestTopicsWithMessageDao = await supportRequestTopicByFilterByLastMessagesQuery
                 .Skip((filter.Page - 1) * filter.Count)
                 .Take(filter.Count)
                 .ToListAsync();

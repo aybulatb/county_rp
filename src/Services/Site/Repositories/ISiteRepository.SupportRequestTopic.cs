@@ -11,7 +11,7 @@ namespace CountyRP.Services.Site.Repositories
 
         Task<PagedFilterResult<SupportRequestTopicDtoOut>> GetSupportRequestTopicsByFilterAsync(SupportRequestTopicFilterDtoIn filter);
 
-        Task<PagedFilterResult<SupportRequestTopicWithFirstAndLastMessagesDtoOut>> GetSupportRequestTopicsByFilterByFirstMessagesAsync(SupportRequestTopicFilterDtoIn filter);
+        Task<PagedFilterResult<SupportRequestTopicWithFirstAndLastMessagesDtoOut>> GetSupportRequestTopicsByFilterByLastMessagesAsync(SupportRequestTopicFilterDtoIn filter);
 
         Task<SupportRequestTopicDtoOut> UpdateSupportRequestTopicAsync(SupportRequestTopicDtoOut supportRequestTopicDtoOut);
 
