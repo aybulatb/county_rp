@@ -61,17 +61,31 @@ namespace CountyRP.Services.Site.Repositories
                 );
 
             var allCount = await supportRequestTopicQuery.CountAsync();
-            var maxPages = allCount / filter.Count;
+            var maxPages = filter.Count.HasValue
+                ?
+                    (allCount % filter.Count.Value == 0)
+                        ? allCount / filter.Count.Value
+                        : allCount / filter.Count.Value + 1
+                : 1;
+
+            supportRequestTopicQuery = supportRequestTopicQuery
+                .OrderBy(ban => ban.Id);
+
+            if (filter.Count.HasValue && filter.Page.HasValue)
+            {
+                supportRequestTopicQuery = supportRequestTopicQuery
+                    .Skip(filter.Count.Value * (filter.Page.Value - 1))
+                    .Take(filter.Count.Value);
+            }
 
             var filteredSupportRequestTopicsDao = await supportRequestTopicQuery
-                .OrderBy(supportRequestTopic => supportRequestTopic.Id)
-                .Skip((filter.Page - 1) * filter.Count)
-                .Take(filter.Count)
                 .ToListAsync();
 
             return new PagedFilterResult<SupportRequestTopicDtoOut>(
                 allCount: allCount,
-                page: filter.Page,
+                page: filter.Page.HasValue
+                    ? filter.Page.Value
+                    : 1,
                 maxPages: maxPages,
                 items: filteredSupportRequestTopicsDao
                     .Select(SupportRequestTopicDaoConverter.ToRepository)
@@ -129,16 +143,28 @@ namespace CountyRP.Services.Site.Repositories
                     );
 
             var allCount = await supportRequestTopicByFilterByLastMessagesQuery.CountAsync();
-            var maxPages = allCount / filter.Count;
+            var maxPages = filter.Count.HasValue && filter.Count.Value != 0
+                 ?
+                     (allCount % filter.Count.Value == 0)
+                         ? allCount / filter.Count.Value
+                         : allCount / filter.Count.Value + 1
+                 : 1;
+
+            if (filter.Count.HasValue && filter.Page.HasValue && filter.Count.Value > 0 && filter.Page.Value > 0)
+            {
+                supportRequestTopicByFilterByLastMessagesQuery = supportRequestTopicByFilterByLastMessagesQuery
+                    .Skip(filter.Count.Value * (filter.Page.Value - 1))
+                    .Take(filter.Count.Value);
+            }
 
             var filteredSupportRequestTopicsWithMessageDao = await supportRequestTopicByFilterByLastMessagesQuery
-                .Skip((filter.Page - 1) * filter.Count)
-                .Take(filter.Count)
                 .ToListAsync();
 
             return new PagedFilterResult<SupportRequestTopicWithFirstAndLastMessagesDtoOut>(
                 allCount: allCount,
-                page: filter.Page,
+                page: filter.Page.HasValue
+                    ? filter.Page.Value
+                    : 1,
                 maxPages: maxPages,
                 items: filteredSupportRequestTopicsWithMessageDao
                     .Select(SupportRequestTopicWithMessageDaoConverter.ToRepository)

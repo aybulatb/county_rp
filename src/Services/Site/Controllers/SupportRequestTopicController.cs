@@ -1,4 +1,5 @@
 ﻿using CountyRP.Services.Site.Converters;
+using CountyRP.Services.Site.Models;
 using CountyRP.Services.Site.Models.Api;
 using CountyRP.Services.Site.Repositories;
 using Microsoft.AspNetCore.Http;
@@ -88,6 +89,7 @@ namespace CountyRP.Services.Site.Controllers
         /// Постранично получить обращения по фильтру.
         /// </summary>
         [HttpGet("ByFilterByLastMessages")]
+        [ProducesResponseType(typeof(ApiPagedFilterResult<ApiSupportRequestTopicWithFirstAndLastMessagesDtoOut>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetByFilterByLastMessages(
             [FromQuery] ApiSupportRequestTopicFilterDtoIn apiSupportRequestTopicFilterDtoIn
         )
@@ -99,6 +101,55 @@ namespace CountyRP.Services.Site.Controllers
             return Ok(
                 PagedFilterResultConverter.ToApi(supportRequestTopicsByFirstAndLastMessages)
             );
+        }
+
+        ///// <summary>
+        ///// Изменить обращение.
+        ///// </summary>
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> Edit(
+        //    [FromQuery] int id,
+        //    [FromBody] ApiSupportRequestTopicDtoIn apiSupportRequestTopicDtoIn
+        //)
+        //{
+        //    var supportRequestTopic = await _siteRepository.GetSupportRequestTopicAsync(id);
+
+        //    if (supportRequestTopic == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+            
+        //}
+
+        /// <summary>
+        /// Удалить обращение с сообщениями.
+        /// </summary>
+        [HttpDelete("{id}")]
+        [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var supportRequestTopic = await _siteRepository.GetSupportRequestTopicAsync(id);
+
+            if (supportRequestTopic == null)
+            {
+                return NotFound();
+            }
+
+            await _siteRepository.DeleteSupportRequestTopicAsync(id);
+
+            await _siteRepository.DeleteSupportRequestMessagesAsync(
+                filter: new SupportRequestMessageFilterDtoIn(
+                    count: null,
+                    page: null,
+                    ids: null,
+                    topicId: id,
+                    userId: null
+                )
+            );
+
+            return Ok();
         }
     }
 }

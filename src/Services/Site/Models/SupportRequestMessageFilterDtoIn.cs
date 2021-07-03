@@ -11,8 +11,8 @@ namespace CountyRP.Services.Site.Models
         public int? UserId { get; }
 
         public SupportRequestMessageFilterDtoIn(
-            int count,
-            int page,
+            int? count,
+            int? page,
             IList<int> ids,
             int? topicId,
             int? userId

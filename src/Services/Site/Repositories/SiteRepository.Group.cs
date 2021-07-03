@@ -38,21 +38,34 @@ namespace CountyRP.Services.Site.Repositories
                 .Where(
                     group =>
                         filter.Name == null || group.Name == filter.Name
-                )
-                .AsQueryable();
+                );
 
             var allCount = await groupsQuery.CountAsync();
-            var maxPages = allCount / filter.Count;
+            var maxPages = filter.Count.HasValue && filter.Count.Value != 0
+                ?
+                    (allCount % filter.Count.Value == 0)
+                        ? allCount / filter.Count.Value
+                        : allCount / filter.Count.Value + 1
+                : 1;
+
+            groupsQuery = groupsQuery
+                .OrderBy(group => group.Id);
+
+            if (filter.Count.HasValue && filter.Page.HasValue && filter.Count.Value > 0 && filter.Page.Value > 0)
+            {
+                groupsQuery = groupsQuery
+                    .Skip(filter.Count.Value * (filter.Page.Value - 1))
+                    .Take(filter.Count.Value);
+            }
 
             var filteredGroupsDao = await groupsQuery
-                .Skip(filter.Count * (filter.Page - 1))
-                .Take(filter.Count)
-                .OrderBy(group => group.Id)
                 .ToListAsync();
 
             return new PagedFilterResult<GroupDtoOut>(
                 allCount: allCount,
-                page: filter.Page,
+                page: filter.Page.HasValue
+                    ? filter.Page.Value
+                    : 1,
                 maxPages: maxPages,
                 items: filteredGroupsDao
                     .Select(GroupDaoConverter.ToRepository)

@@ -33,9 +33,12 @@ namespace CountyRP.Services.Site.Repositories
             var query = GetSupportRequestMessageQuery(filter);
 
             var allCount = await query.CountAsync();
-            var maxPages = (allCount % filter.Count == 0)
-                ? allCount / filter.Count
-                : allCount / filter.Count + 1;
+            var maxPages = filter.Count.HasValue && filter.Count.Value != 0
+                ?
+                    (allCount % filter.Count.Value == 0)
+                        ? allCount / filter.Count.Value
+                        : allCount / filter.Count.Value + 1
+                : 1;
 
             query = GetSupportRequestMessageQueryWithPaging(filter, query);
 
@@ -45,7 +48,9 @@ namespace CountyRP.Services.Site.Repositories
 
             return new PagedFilterResult<SupportRequestMessageDtoOut>(
                 allCount: allCount,
-                page: filter.Page,
+                page: filter.Page.HasValue
+                    ? filter.Page.Value
+                    : 1,
                 maxPages: maxPages,
                 items: filteredSupportRequestMessages
                     .Select(SupportRequestMessageDaoConverter.ToRepository)
@@ -101,9 +106,14 @@ namespace CountyRP.Services.Site.Repositories
             IQueryable<SupportRequestMessageDao> query
         )
         {
-            var queryWithPaging = query
-                .Skip((filter.Page - 1) * filter.Count)
-                .Take(filter.Count);
+            var queryWithPaging = query;
+
+            if (filter.Count.HasValue && filter.Page.HasValue && filter.Count.Value > 0 && filter.Page.Value > 0)
+            {
+                queryWithPaging = queryWithPaging
+                    .Skip(filter.Count.Value * (filter.Page.Value - 1))
+                    .Take(filter.Count.Value);
+            }
 
             return queryWithPaging;
         }
