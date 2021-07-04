@@ -54,7 +54,7 @@ services:
     image: ${DOCKER_REGISTRY-}countyrpservicelogs
     build:
       context: .
-      dockerfile: Services/Logs/Dockerfile
+      dockerfile: Services/Logs/Logs.API/Dockerfile
     depends_on:
       - mssql
 

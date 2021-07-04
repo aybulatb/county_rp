@@ -10,6 +10,7 @@ namespace CountyRP.Services.Logs.API.Converters
         )
         {
             return new LogUnitFilterDtoIn(
+                ids: source.Ids,
                 count: source.Count,
                 page: source.Page,
                 startDateTime: source.StartDateTime,

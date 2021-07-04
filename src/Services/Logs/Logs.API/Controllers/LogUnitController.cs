@@ -1,10 +1,12 @@
 ﻿using CountyRP.Services.Logs.API.Converters;
 using CountyRP.Services.Logs.API.Models.Api;
+using CountyRP.Services.Logs.Infrastructure.Models;
 using CountyRP.Services.Logs.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -95,16 +97,28 @@ namespace CountyRP.Services.Logs.API.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteById(int id)
         {
-            var existedLogUnit = await _logsRepository.GetLogUnitAsync(id);
+            var filter = new LogUnitFilterDtoIn(
+                count: 1,
+                page: 1,
+                ids: new[] { id },
+                startDateTime: null,
+                finishDateTime: null,
+                login: null,
+                ip: null,
+                actionId: null,
+                text: null
+            );
 
-            if (existedLogUnit == null)
+            var existedLogUnit = await _logsRepository.GetLogUnitsByFilterAsync(filter);
+
+            if (!existedLogUnit.Items.Any())
             {
                 return NotFound(
                     string.Format(ConstantMessages.LogUnitNotFoundById, id)
                 );
             }
 
-            await _logsRepository.DeleteLogUnitByIdAsync(id);
+            await _logsRepository.DeleteLogUnitsAsync(filter);
 
             return Ok();
         }
@@ -113,10 +127,22 @@ namespace CountyRP.Services.Logs.API.Controllers
         /// Удалить все логи, которые старше времени dateTime.
         /// </summary>
         [HttpDelete("ByTime/{dateTime}")]
-        [ProducesResponseType(typeof(ApiLogUnitDtoOut), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
         public async Task<IActionResult> DeleteByTime(DateTimeOffset dateTime)
         {
-            await _logsRepository.DeleteLogUnitsByTimeAsync(dateTime);
+            await _logsRepository.DeleteLogUnitsAsync(
+                filter: new LogUnitFilterDtoIn(
+                    count: null,
+                    page: null,
+                    ids: null,
+                    startDateTime: null,
+                    finishDateTime: dateTime,
+                    login: null,
+                    ip: null,
+                    actionId: null,
+                    text: null
+                )
+            );
 
             return Ok();
         }

@@ -2,13 +2,13 @@
 {
     public class PagedFilterDtoIn
     {
-        public int Count { get; }
+        public int? Count { get; }
 
-        public int Page { get; }
+        public int? Page { get; }
 
         public PagedFilterDtoIn(
-            int count,
-            int page
+            int? count,
+            int? page
         )
         {
             Count = count;
