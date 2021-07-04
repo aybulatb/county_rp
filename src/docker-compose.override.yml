@@ -70,6 +70,18 @@ services:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
 
+  countyrp.services.game:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://0.0.0.0:10531;http://0.0.0.0:10530
+      - ConnectionStrings__DefaultConnection=Server=mssql;Database=CountyRP.Services.Game;User Id=sa;Password=Test1234;
+    ports:
+      - "10530:10530"
+      - "10531:10531"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
   countyrp.services.logs:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development

@@ -30,7 +30,7 @@ services:
     image: ${DOCKER_REGISTRY-}countyrpservicesite
     build:
       context: .
-      dockerfile: Services/Site/Dockerfile
+      dockerfile: Services/Site/Site.API/Dockerfile
     depends_on:
       - mssql
 
@@ -39,6 +39,14 @@ services:
     build:
       context: .
       dockerfile: Services/Forum/Dockerfile
+    depends_on:
+      - mssql
+
+  countyrp.services.game:
+    image: ${DOCKER_REGISTRY-}countyrpservicegame
+    build:
+      context: .
+      dockerfile: Services/Game/Game.API/Dockerfile
     depends_on:
       - mssql
 

@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <UserSecretsId>7b200d07-2661-4ed4-accc-4b62ee82ee9c</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..\..</DockerfileContext>
+    <AssemblyName>CountyRP.Services.Game.API</AssemblyName>
+    <RootNamespace>CountyRP.Services.Game.API</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Game.Infrastructure\Game.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+
+</Project>
