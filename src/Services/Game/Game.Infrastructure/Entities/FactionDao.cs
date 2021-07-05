@@ -7,12 +7,17 @@ namespace CountyRP.Services.Game.Infrastructure.Entities
     public class FactionDao
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [MaxLength(16)]
         public string Id { get; private set; }
 
         [MaxLength(64)]
         public string Name { get; set; }
+
+        /// <summary>
+        /// Цвет формата RRGGBB.
+        /// </summary>
+        [MaxLength(6)]
+        public string Color { get; set; }
 
         [NotMapped]
         public string[] Ranks
@@ -36,12 +41,14 @@ namespace CountyRP.Services.Game.Infrastructure.Entities
         public FactionDao(
             string id,
             string name,
+            string color,
             string[] ranks,
             FactionTypeDao type
         )
         {
             Id = id;
             Name = name;
+            Color = color;
             Ranks = ranks;
             Type = type;
         }

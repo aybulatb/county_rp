@@ -10,6 +10,7 @@ namespace CountyRP.Services.Game.Infrastructure.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; private set; }
 
+        [MaxLength(64)]
         public string Name { get; set; }
 
         [NotMapped]
@@ -32,10 +33,13 @@ namespace CountyRP.Services.Game.Infrastructure.Entities
 
         public int OwnerId { get; set; }
 
-        public bool Lock { get; set; }
+        public bool LockDoors { get; set; }
 
         public BusinessTypeDao Type { get; set; }
 
+        /// <summary>
+        /// Государственная стоимость.
+        /// </summary>
         public int Price { get; set; }
 
         [Column("EntrancePosition")]
@@ -59,7 +63,7 @@ namespace CountyRP.Services.Game.Infrastructure.Entities
             float[] exitPosition,
             uint exitDimension,
             int ownerId,
-            bool lockState,
+            bool lockDoors,
             BusinessTypeDao type,
             int price
         )
@@ -71,7 +75,7 @@ namespace CountyRP.Services.Game.Infrastructure.Entities
             ExitPosition = exitPosition;
             ExitDimension = exitDimension;
             OwnerId = ownerId;
-            Lock = lockState;
+            LockDoors = lockDoors;
             Type = type;
             Price = price;
         }

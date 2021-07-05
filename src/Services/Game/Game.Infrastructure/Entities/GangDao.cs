@@ -10,8 +10,13 @@ namespace CountyRP.Services.Game.Infrastructure.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; private set; }
 
+        [MaxLength(64)]
         public string Name { get; set; }
 
+        /// <summary>
+        /// Цвет формата RRGGBB.
+        /// </summary>
+        [MaxLength(6)]
         public string Color { get; set; }
 
         [NotMapped]

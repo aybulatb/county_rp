@@ -31,10 +31,12 @@ namespace CountyRP.Services.Game.Infrastructure.Entities
 
         public int OwnerId { get; set; }
 
+        [MaxLength(16)]
         public string FactionId { get; set; }
 
-        public bool Lock { get; set; }
+        public bool LockDoors { get; set; }
 
+        [MaxLength(7)]
         public string LicensePlate { get; set; }
 
         [Column("Position")]
@@ -57,7 +59,7 @@ namespace CountyRP.Services.Game.Infrastructure.Entities
             double fuel,
             int ownerId,
             string factionId,
-            bool lockState,
+            bool lockDoors,
             string licensePlate
         )
         {
@@ -70,7 +72,7 @@ namespace CountyRP.Services.Game.Infrastructure.Entities
             Fuel = fuel;
             OwnerId = ownerId;
             FactionId = factionId;
-            Lock = lockState;
+            LockDoors = lockDoors;
             LicensePlate = licensePlate;
         }
     }

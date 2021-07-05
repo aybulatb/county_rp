@@ -28,6 +28,7 @@ namespace CountyRP.Services.Game.Infrastructure.Entities
             set { _ColorMarker = JsonConvert.SerializeObject(value); }
         }
 
+        [MaxLength(16)]
         public string FactionId { get; set; }
 
         [Column("Position")]

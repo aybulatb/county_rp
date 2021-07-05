@@ -11,6 +11,7 @@ namespace CountyRP.Services.Game.Infrastructure.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; private set; }
 
+        [MaxLength(64)]
         public string Name { get; set; }
 
         [NotMapped]
@@ -33,6 +34,9 @@ namespace CountyRP.Services.Game.Infrastructure.Entities
 
         public int TypeMarker { get; set; }
 
+        /// <summary>
+        /// RGB-цвета маркера на карте.
+        /// </summary>
         [NotMapped]
         public int[] ColorMarker
         {
@@ -44,9 +48,9 @@ namespace CountyRP.Services.Game.Infrastructure.Entities
 
         public byte ColorBlip { get; set; }
 
-        public int GroupId { get; set; }
+        public int GangId { get; set; }
 
-        public bool Lock { get; set; }
+        public bool LockDoors { get; set; }
 
         public int Price { get; set; }
 
@@ -91,8 +95,8 @@ namespace CountyRP.Services.Game.Infrastructure.Entities
             int[] colorMarker,
             int typeBlip,
             byte colorBlip,
-            int groupId,
-            bool lockState,
+            int gangId,
+            bool lockDoors,
             int price,
             DateTimeOffset lastPaymentDate,
             float[] safePosition,
@@ -109,8 +113,8 @@ namespace CountyRP.Services.Game.Infrastructure.Entities
             ColorMarker = colorMarker;
             TypeBlip = typeBlip;
             ColorBlip = colorBlip;
-            GroupId = groupId;
-            Lock = lockState;
+            GangId = gangId;
+            LockDoors = lockDoors;
             Price = price;
             LastPaymentDate = lastPaymentDate;
             SafePosition = safePosition;

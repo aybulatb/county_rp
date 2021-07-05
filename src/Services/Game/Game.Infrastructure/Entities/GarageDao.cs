@@ -21,10 +21,16 @@ namespace CountyRP.Services.Game.Infrastructure.Entities
 
         public uint EntranceDimension { get; set; }
 
+        /// <summary>
+        /// Угол поворота при телепортации на вход.
+        /// </summary>
         public float EntranceRotation { get; set; }
 
         public uint ExitDimension { get; set; }
 
+        /// <summary>
+        /// Состояние дверей.
+        /// </summary>
         public bool Lock { get; set; }
 
         [Column("EntrancePosition")]

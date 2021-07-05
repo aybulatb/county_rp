@@ -32,8 +32,14 @@ namespace CountyRP.Services.Game.Infrastructure.Entities
 
         public int GarageId { get; set; }
 
-        public bool Lock { get; set; }
+        /// <summary>
+        /// Состояние дверей.
+        /// </summary>
+        public bool LockDoors { get; set; }
 
+        /// <summary>
+        /// Государственная стоимость.
+        /// </summary>
         public int Price { get; set; }
 
         [NotMapped]
@@ -45,6 +51,9 @@ namespace CountyRP.Services.Game.Infrastructure.Entities
 
         public uint SafeDimension { get; set; }
 
+        /// <summary>
+        /// Идентификатор инвентаря, представляемого сейфом.
+        /// </summary>
         public int SafeInventoryId { get; set; }
 
         [Column("EntrancePosition")]
@@ -71,7 +80,7 @@ namespace CountyRP.Services.Game.Infrastructure.Entities
             uint exitDimension,
             int ownerId,
             int garageId,
-            bool lockState,
+            bool lockDoors,
             int price,
             float[] safePosition,
             uint safeDimension,
@@ -85,7 +94,7 @@ namespace CountyRP.Services.Game.Infrastructure.Entities
             ExitDimension = exitDimension;
             OwnerId = ownerId;
             GarageId = garageId;
-            Lock = lockState;
+            LockDoors = lockDoors;
             Price = price;
             SafePosition = safePosition;
             SafeDimension = safeDimension;

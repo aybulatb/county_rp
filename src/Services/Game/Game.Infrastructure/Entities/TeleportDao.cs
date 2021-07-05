@@ -10,6 +10,7 @@ namespace CountyRP.Services.Game.Infrastructure.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; private set; }
 
+        [MaxLength(64)]
         public string Name { get; set; }
 
         [NotMapped]
@@ -32,6 +33,9 @@ namespace CountyRP.Services.Game.Infrastructure.Entities
 
         public int TypeMarker { get; set; }
 
+        /// <summary>
+        /// RGB-цвета маркера на карте.
+        /// </summary>
         [NotMapped]
         public int[] ColorMarker
         {
@@ -43,6 +47,7 @@ namespace CountyRP.Services.Game.Infrastructure.Entities
 
         public byte ColorBlip { get; set; }
 
+        [MaxLength(16)]
         public string FactionId { get; set; }
 
         public int GangId { get; set; }
@@ -51,7 +56,7 @@ namespace CountyRP.Services.Game.Infrastructure.Entities
 
         public int BusinessId { get; set; }
 
-        public bool Lock { get; set; }
+        public bool LockDoors { get; set; }
 
         [Column("EntrancePosition")]
         public string _EntrancePosition { get; set; }
@@ -84,7 +89,7 @@ namespace CountyRP.Services.Game.Infrastructure.Entities
             int gangId,
             int roomId,
             int businessId,
-            bool lockState
+            bool lockDoors
         )
         {
             Id = id;
@@ -101,7 +106,7 @@ namespace CountyRP.Services.Game.Infrastructure.Entities
             GangId = gangId;
             RoomId = roomId;
             BusinessId = businessId;
-            Lock = lockState;
+            LockDoors = lockDoors;
         }
     }
 }
