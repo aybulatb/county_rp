@@ -58,8 +58,8 @@ services:
     depends_on:
       - mssql
 
-  countyrp.gateways.adminpanel.api:
-    image: ${DOCKER_REGISTRY-}countyrpgatewayadminpanelapi
+  countyrp.apigateways.adminpanel.api:
+    image: ${DOCKER_REGISTRY-}countyrpapigatewayadminpanelapi
     build:
       context: .
-      dockerfile: Gateways/AdminPanel/AdminPanel.API/Dockerfile
+      dockerfile: ApiGateways/AdminPanel/AdminPanel.API/Dockerfile

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CountyRP.Gateways.AdminPanel.API.Models.Api
+namespace CountyRP.ApiGateways.AdminPanel.API.Controllers
 {
-    public class ApiSupportRequestMessageDtoOut
+    public class SupportRequestTopicController
     {
     }
 }

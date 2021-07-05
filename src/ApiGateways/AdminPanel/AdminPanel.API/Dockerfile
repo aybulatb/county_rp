@@ -20,4 +20,4 @@ RUN dotnet publish "AdminPanel.API.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "CountyRP.Gateways.AdminPanel.API.dll"]
+ENTRYPOINT ["dotnet", "CountyRP.ApiGateways.AdminPanel.API.dll"]

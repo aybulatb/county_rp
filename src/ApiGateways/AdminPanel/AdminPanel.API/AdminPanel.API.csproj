@@ -5,8 +5,8 @@
     <UserSecretsId>50ad7d69-6972-4ab6-8dfc-969dbd682445</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>..\..\..</DockerfileContext>
-    <AssemblyName>CountyRP.Gateways.AdminPanel.API</AssemblyName>
-    <RootNamespace>CountyRP.Gateways.AdminPanel.API</RootNamespace>
+    <AssemblyName>CountyRP.ApiGateways.AdminPanel.API</AssemblyName>
+    <RootNamespace>CountyRP.ApiGateways.AdminPanel.API</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

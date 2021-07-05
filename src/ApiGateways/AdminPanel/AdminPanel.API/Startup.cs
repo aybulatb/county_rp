@@ -1,6 +1,6 @@
-using CountyRP.Gateways.AdminPanel.Infrastructure.RestClient.ServiceSite;
-using CountyRP.Gateways.AdminPanel.Infrastructure.Services;
-using CountyRP.Gateways.AdminPanel.Infrastructure.Services.Interfaces;
+using CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClient.ServiceSite;
+using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services;
+using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -15,7 +15,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace CountyRP.Gateways.AdminPanel.API
+namespace CountyRP.ApiGateways.AdminPanel.API
 {
     public class Startup
     {

@@ -1,9 +1,9 @@
-﻿using CountyRP.Gateways.AdminPanel.Infrastructure.Models;
-using CountyRP.Gateways.AdminPanel.Infrastructure.RestClient.ServiceSite;
-using CountyRP.Gateways.AdminPanel.Infrastructure.Services.Interfaces;
+﻿using CountyRP.ApiGateways.AdminPanel.Infrastructure.Models;
+using CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClient.ServiceSite;
+using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Interfaces;
 using System.Threading.Tasks;
 
-namespace CountyRP.Gateways.AdminPanel.Infrastructure.Services
+namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.Services
 {
     public class SupportRequestMessageSiteService : ISupportRequestMessageSiteService
     {

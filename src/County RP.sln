@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CountyRP.Forum.Infrastructu
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{A4474237-784C-4130-8BE9-113764D4C8DF}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gateways", "Gateways", "{5783210D-4054-466A-BF22-DAFED3807216}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApiGateways", "ApiGateways", "{5783210D-4054-466A-BF22-DAFED3807216}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Site.API", "Services\Site\Site.API\Site.API.csproj", "{655F6FDE-935C-4184-A14C-41369040BE81}"
 EndProject
@@ -33,11 +33,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Site.API.UnitTests", "Servi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logs.API", "Services\Logs\Logs.API\Logs.API.csproj", "{9240EBBF-48FB-453E-9212-4DACA9C09CC3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdminPanel.API", "Gateways\AdminPanel\AdminPanel.API\AdminPanel.API.csproj", "{929A37C8-FC9F-4E2D-BA92-474E18D371DC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdminPanel.API", "ApiGateways\AdminPanel\AdminPanel.API\AdminPanel.API.csproj", "{929A37C8-FC9F-4E2D-BA92-474E18D371DC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AdminPanel", "AdminPanel", "{483F4AD9-D958-474F-9B70-98F94EB3D824}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdminPanel.Infrastructure", "Gateways\AdminPanel\AdminPanel.Infrastructure\AdminPanel.Infrastructure.csproj", "{FBF53FAD-D150-4338-A1A5-CA1A876499F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdminPanel.Infrastructure", "ApiGateways\AdminPanel\AdminPanel.Infrastructure\AdminPanel.Infrastructure.csproj", "{FBF53FAD-D150-4338-A1A5-CA1A876499F6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Site", "Site", "{416FEDD8-8623-4BC6-B39F-CD7EB1C7D51C}"
 EndProject

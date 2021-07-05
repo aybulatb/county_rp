@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <AssemblyName>CountyRP.Gateways.AdminPanel.Infrastructure</AssemblyName>
-    <RootNamespace>CountyRP.Gateways.AdminPanel.Infrastructure</RootNamespace>
+    <AssemblyName>CountyRP.ApiGateways.AdminPanel.Infrastructure</AssemblyName>
+    <RootNamespace>CountyRP.ApiGateways.AdminPanel.Infrastructure</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

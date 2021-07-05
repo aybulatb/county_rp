@@ -1,12 +1,12 @@
-﻿using CountyRP.Gateways.AdminPanel.API.Models.Api;
-using CountyRP.Gateways.AdminPanel.Infrastructure.Services.Interfaces;
+﻿using CountyRP.ApiGateways.AdminPanel.API.Models.Api;
+using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CountyRP.Gateways.AdminPanel.API.Controllers
+namespace CountyRP.ApiGateways.AdminPanel.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]

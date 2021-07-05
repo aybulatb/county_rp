@@ -59,7 +59,7 @@
       "WrapResponseMethods": [],
       "GenerateResponseClasses": true,
       "ResponseClass": "SwaggerResponse",
-      "Namespace": "CountyRP.Gateways.AdminPanel.Infrastructure.RestClient.ServiceSite",
+      "Namespace": "CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClient.ServiceSite",
       "RequiredPropertiesMustBeDefined": true,
       "DateType": "System.DateTimeOffset",
       "JsonConverters": null,
