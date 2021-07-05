@@ -26,7 +26,7 @@ namespace CountyRP.Services.Game.Infrastructure.Entities
         [MaxLength(16)]
         public string FactionId { get; set; }
 
-        public int GroupId { get; set; }
+        public int GangId { get; set; }
 
         public bool Leader { get; set; }
 
@@ -61,7 +61,7 @@ namespace CountyRP.Services.Game.Infrastructure.Entities
             DateTime lastVisitDate,
             string adminLevelId,
             string factionId,
-            int groupId,
+            int gangId,
             bool leader,
             int rank,
             float[] position,
@@ -76,7 +76,7 @@ namespace CountyRP.Services.Game.Infrastructure.Entities
             LastVisitDate = lastVisitDate;
             AdminLevelId = adminLevelId;
             FactionId = factionId;
-            GroupId = groupId;
+            GangId = gangId;
             Leader = leader;
             Rank = rank;
             Position = position;
