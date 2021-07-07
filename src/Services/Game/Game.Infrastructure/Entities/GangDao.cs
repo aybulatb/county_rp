@@ -31,6 +31,9 @@ namespace CountyRP.Services.Game.Infrastructure.Entities
         [Column("Ranks")]
         public string _Ranks { get; set; }
 
+        /// <summary>
+        /// Конструктор для EF.
+        /// </summary>
         public GangDao()
         {
         }

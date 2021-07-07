@@ -18,7 +18,7 @@ namespace CountyRP.Services.Game.Infrastructure.Entities
 
         public DateTimeOffset RegistrationDate { get; set; }
 
-        public DateTime LastVisitDate { get; set; }
+        public DateTimeOffset LastVisitDate { get; set; }
 
         [MaxLength(16)]
         public string AdminLevelId { get; set; }
@@ -57,8 +57,8 @@ namespace CountyRP.Services.Game.Infrastructure.Entities
             int id,
             string name,
             int playerId,
-            DateTime registrationDate,
-            DateTime lastVisitDate,
+            DateTimeOffset registrationDate,
+            DateTimeOffset lastVisitDate,
             string adminLevelId,
             string factionId,
             int gangId,

@@ -31,7 +31,7 @@ namespace CountyRP.Services.Game.Infrastructure.Entities
         /// <summary>
         /// Состояние дверей.
         /// </summary>
-        public bool Lock { get; set; }
+        public bool LockDoors { get; set; }
 
         [Column("EntrancePosition")]
         public string _EntrancePosition { get; set; }
@@ -50,7 +50,7 @@ namespace CountyRP.Services.Game.Infrastructure.Entities
             uint entranceDimension,
             float entranceRotation,
             uint exitDimension,
-            bool lockState
+            bool lockDoors
         )
         {
             Id = id;
@@ -59,7 +59,7 @@ namespace CountyRP.Services.Game.Infrastructure.Entities
             EntranceDimension = entranceDimension;
             EntranceRotation = entranceRotation;
             ExitDimension = exitDimension;
-            Lock = lockState;
+            LockDoors = lockDoors;
         }
     }
 }
