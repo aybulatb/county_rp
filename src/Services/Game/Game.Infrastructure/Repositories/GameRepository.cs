@@ -2,7 +2,7 @@
 
 namespace CountyRP.Services.Game.Infrastructure.Repositories
 {
-    public partial class GameRepository
+    public partial class GameRepository : IGameRepository
     {
         private readonly GameDbContext _gameDbContext;
 
