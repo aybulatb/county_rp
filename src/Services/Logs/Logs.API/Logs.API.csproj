@@ -4,7 +4,7 @@
     <TargetFramework>net5.0</TargetFramework>
     <UserSecretsId>37eea114-9380-46e2-b707-73d350690504</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <DockerfileContext>..\..</DockerfileContext>
+    <DockerfileContext>..\..\..</DockerfileContext>
     <AssemblyName>CountyRP.Services.Logs.API</AssemblyName>
     <RootNamespace>CountyRP.Services.Logs.API</RootNamespace>
   </PropertyGroup>

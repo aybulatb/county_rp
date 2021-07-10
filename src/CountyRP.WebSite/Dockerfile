@@ -2,8 +2,8 @@
 
 FROM mcr.microsoft.com/dotnet/aspnet:5.0-buster-slim AS base
 WORKDIR /app
-EXPOSE 80
-EXPOSE 443
+EXPOSE 9200
+EXPOSE 9201
 
 # Prevent 'Warning: apt-key output should not be parsed (stdout is not a terminal)'
 ENV APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1

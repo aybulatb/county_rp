@@ -4,7 +4,7 @@
     <TargetFramework>net5.0</TargetFramework>
     <UserSecretsId>66918256-c033-405a-af8d-d9e9f930b3d5</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <DockerfileContext>..\..</DockerfileContext>
+    <DockerfileContext>..\..\..</DockerfileContext>
     <AssemblyName>CountyRP.Services.Site.API.API</AssemblyName>
     <RootNamespace>CountyRP.Services.Site.API.API</RootNamespace>
     <DockerComposeProjectPath>..\..\docker-compose.dcproj</DockerComposeProjectPath>

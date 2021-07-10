@@ -1,8 +1,8 @@
 using AutoFixture;
-using CountyRP.Services.Site.Controllers;
-using CountyRP.Services.Site.Models;
-using CountyRP.Services.Site.Models.Api;
-using CountyRP.Services.Site.Repositories;
+using CountyRP.Services.Site.API.Controllers;
+using CountyRP.Services.Site.API.Models.Api;
+using CountyRP.Services.Site.Infrastructure.Models;
+using CountyRP.Services.Site.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
