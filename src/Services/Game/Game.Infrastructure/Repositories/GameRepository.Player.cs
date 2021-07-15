@@ -51,6 +51,25 @@ namespace CountyRP.Services.Game.Infrastructure.Repositories
                 );
         }
 
+        public async Task<PlayerDtoOut> UpdatePlayerAsync(EditedPlayerDtoIn editedPlayerDtoIn)
+        {
+            var existedPlayerDao = await _gameDbContext
+                .Players
+                .AsNoTracking()
+                .FirstAsync(player => player.Id == editedPlayerDtoIn.Id);
+
+            var editedPlayerDao = EditedPlayerDtoInConverter.ToDb(
+                source: editedPlayerDtoIn,
+                playerDtoOut: PlayerDaoConverter.ToRepository(existedPlayerDao)
+            );
+
+            var playerDao = _gameDbContext.Players.Update(editedPlayerDao)?.Entity;
+
+            await _gameDbContext.SaveChangesAsync();
+
+            return PlayerDaoConverter.ToRepository(playerDao);
+        }
+
         public async Task DeletePlayerByFilter(PlayerFilterDtoIn filter)
         {
             var query = GetPlayersQuery(filter)
@@ -77,7 +96,8 @@ namespace CountyRP.Services.Game.Infrastructure.Repositories
                        (filter.FinishRegistrationDate == null || player.RegistrationDate > filter.FinishRegistrationDate) &&
                        (filter.StartLastVisitDate == null || player.LastVisitDate > filter.StartLastVisitDate) &&
                        (filter.FinishLastVisitDate == null || player.LastVisitDate > filter.FinishLastVisitDate)
-               );
+               )
+               .OrderByDescending(player => player.Id);
         }
 
         private IQueryable<PlayerDao> GetPlayersQueryWithPaging(IQueryable<PlayerDao> query, PlayerFilterDtoIn filter)

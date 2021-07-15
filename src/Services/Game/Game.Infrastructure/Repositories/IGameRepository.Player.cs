@@ -9,6 +9,8 @@ namespace CountyRP.Services.Game.Infrastructure.Repositories
 
         public Task<PagedFilterResultDtoOut<PlayerDtoOut>> GetPlayersByFilter(PlayerFilterDtoIn filter);
 
+        public Task<PlayerDtoOut> UpdatePlayerAsync(EditedPlayerDtoIn editedPlayerDtoIn);
+
         public Task DeletePlayerByFilter(PlayerFilterDtoIn filter);
     }
 }
