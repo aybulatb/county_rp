@@ -129,10 +129,25 @@ namespace CountyRP.Services.Game.API.Controllers
         }
 
         [HttpGet("FilterBy")]
+        [ProducesResponseType(typeof(ApiPagedFilterResultDtoOut<ApiPlayerDtoOut>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> FilterBy(
             [FromQuery] ApiPlayerFilterDtoIn apiPlayerFilterDtoIn
         )
         {
+            if (apiPlayerFilterDtoIn.Count < 1)
+            {
+                return BadRequest(
+                    ConstantMessages.InvalidCountItemPerPage
+                );
+            }
+            if (apiPlayerFilterDtoIn.Page < 1)
+            {
+                return BadRequest(
+                    ConstantMessages.InvalidPageNumber
+                );
+            }
+
             var filter = ApiPlayerFilterDtoInConverter.ToRepository(apiPlayerFilterDtoIn);
 
             var players = await _gameRepository.GetPlayersByFilter(filter);

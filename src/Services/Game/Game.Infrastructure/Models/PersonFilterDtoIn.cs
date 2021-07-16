@@ -25,9 +25,9 @@ namespace CountyRP.Services.Game.Infrastructure.Models
 
         public IEnumerable<int> GangIds { get; }
 
-        public bool Leader { get; }
+        public bool? Leader { get; }
 
-        public int Rank { get; }
+        public int? Rank { get; }
 
         public PersonFilterDtoIn(
             int? count,
@@ -42,8 +42,8 @@ namespace CountyRP.Services.Game.Infrastructure.Models
             IEnumerable<string> adminLevelIds,
             IEnumerable<string> factionIds,
             IEnumerable<int> gangIds,
-            bool leader,
-            int rank
+            bool? leader,
+            int? rank
         )
             : base(count, page)
         {

@@ -18,5 +18,18 @@ namespace CountyRP.Services.Game.API.Converters
                     .Select(PlayerDtoOutConverter.ToApi)
                 );
         }
+
+        public static ApiPagedFilterResultDtoOut<ApiPersonDtoOut> ToApi(
+            PagedFilterResultDtoOut<PersonDtoOut> source
+        )
+        {
+            return new ApiPagedFilterResultDtoOut<ApiPersonDtoOut>(
+                allCount: source.AllCount,
+                page: source.Page,
+                maxPages: source.MaxPages,
+                items: source.Items
+                    .Select(PersonDtoOutConverter.ToApi)
+                );
+        }
     }
 }

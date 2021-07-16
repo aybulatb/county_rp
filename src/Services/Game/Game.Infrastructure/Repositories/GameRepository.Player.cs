@@ -42,9 +42,7 @@ namespace CountyRP.Services.Game.Infrastructure.Repositories
 
             return new PagedFilterResultDtoOut<PlayerDtoOut>(
                 allCount: allCount,
-                page: filter.Page.HasValue
-                    ? filter.Page.Value
-                    : 1,
+                page: filter.Page ?? 1,
                 maxPages: maxPages,
                 items: filteredPlayers
                     .Select(PlayerDaoConverter.ToRepository)
@@ -97,7 +95,7 @@ namespace CountyRP.Services.Game.Infrastructure.Repositories
                        (filter.StartLastVisitDate == null || player.LastVisitDate > filter.StartLastVisitDate) &&
                        (filter.FinishLastVisitDate == null || player.LastVisitDate > filter.FinishLastVisitDate)
                )
-               .OrderByDescending(player => player.Id);
+               .OrderBy(player => player.Id);
         }
 
         private IQueryable<PlayerDao> GetPlayersQueryWithPaging(IQueryable<PlayerDao> query, PlayerFilterDtoIn filter)
