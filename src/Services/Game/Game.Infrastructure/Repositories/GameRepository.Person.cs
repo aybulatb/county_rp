@@ -105,7 +105,7 @@ namespace CountyRP.Services.Game.Infrastructure.Repositories
 
         private IQueryable<PersonDao> GetPersonsQueryWithPaging(IQueryable<PersonDao> query, PersonFilterDtoIn filter)
         {
-            if (filter.Page.HasValue && filter.Count.HasValue && filter.Count.Value > 0 && filter.Page > 0)
+            if (filter.Page.HasValue && filter.Count.HasValue && filter.Count.Value > 0 && filter.Page.Value > 0)
             {
                 query = query
                    .Skip((filter.Page.Value - 1) * filter.Count.Value)

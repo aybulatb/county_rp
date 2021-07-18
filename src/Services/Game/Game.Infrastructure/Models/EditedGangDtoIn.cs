@@ -1,8 +1,8 @@
 ﻿namespace CountyRP.Services.Game.Infrastructure.Models
 {
-    public class FactionDtoOut
+    public class EditedGangDtoIn
     {
-        public string Id { get; }
+        public int Id { get; }
 
         public string Name { get; }
 
@@ -13,17 +13,16 @@
 
         public string[] Ranks { get; }
 
-        public FactionTypeDto Type { get; }
+        public GangTypeDto Type { get; }
 
-        public FactionDtoOut(
-            string id,
+        public EditedGangDtoIn(
+            int id,
             string name,
             string color,
             string[] ranks,
-            FactionTypeDto type
+            GangTypeDto type
         )
         {
-            Id = id;
             Name = name;
             Color = color;
             Ranks = ranks;

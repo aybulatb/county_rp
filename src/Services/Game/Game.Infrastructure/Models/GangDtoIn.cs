@@ -1,4 +1,6 @@
-﻿namespace CountyRP.Services.Game.Infrastructure.Models
+﻿using System;
+
+namespace CountyRP.Services.Game.Infrastructure.Models
 {
     public class GangDtoIn
     {
@@ -13,17 +15,21 @@
 
         public GangTypeDto Type { get; }
 
+        public DateTimeOffset CreatedDate { get; }
+
         public GangDtoIn(
             string name,
             string color,
             string[] ranks,
-            GangTypeDto type
+            GangTypeDto type,
+            DateTimeOffset createdDate
         )
         {
             Name = name;
             Color = color;
             Ranks = ranks;
             Type = type;
+            CreatedDate = createdDate;
         }
     }
 }

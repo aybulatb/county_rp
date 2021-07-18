@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -28,6 +29,8 @@ namespace CountyRP.Services.Game.Infrastructure.Entities
 
         public GangTypeDao Type { get; set; }
 
+        public DateTimeOffset CreatedDate { get; set; }
+
         [Column("Ranks")]
         public string _Ranks { get; set; }
 
@@ -43,7 +46,8 @@ namespace CountyRP.Services.Game.Infrastructure.Entities
             string name,
             string color,
             string[] ranks,
-            GangTypeDao type
+            GangTypeDao type,
+            DateTimeOffset createdDate
         )
         {
             Id = id;
@@ -51,6 +55,7 @@ namespace CountyRP.Services.Game.Infrastructure.Entities
             Color = color;
             Ranks = ranks;
             Type = type;
+            CreatedDate = createdDate;
         }
     }
 }
