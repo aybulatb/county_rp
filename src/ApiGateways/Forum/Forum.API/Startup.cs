@@ -1,13 +1,14 @@
-using CountyRP.Services.Forum.Infrastructure.DbContexts;
-using CountyRP.Services.Forum.Infrastructure.Repositories;
+using CountyRP.ApiGateways.Forum.Infrastructure.Services;
+using CountyRP.ApiGateways.Forum.Infrastructure.Services.Interfaces;
+using CountyRP.Gateways.Forum.Infrastructure.RestClients.ServiceForum;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Net.Http;
 
-namespace CountyRP.Services.Forum.API
+namespace Forum.API
 {
     public class Startup
     {
@@ -20,16 +21,19 @@ namespace CountyRP.Services.Forum.API
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var connectionString = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<ForumDbContext>(options => options.UseSqlServer(connectionString));
+            HttpClient httpClient = new();
+            services.AddSingleton(new ForumClient(httpClient)
+            {
+                BaseUrl = "https://localhost:10502"
+            });
+            services.AddTransient<IForumService, ForumService>();
 
-            services.AddTransient<IForumRepository, ForumRepository>();
             services.AddControllers();
             services.AddSwaggerDocument(document =>
             {
-                document.Title = "County RP Forum Service API";
+                document.Title = "County RP Forum Gateway API";
                 document.Version = "v1";
-                document.Description = "The County RP Forum Service API documentation description.";
+                document.Description = "The County RP Forum Gateway API documentation description.";
             });
         }
 

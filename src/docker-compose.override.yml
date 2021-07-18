@@ -90,3 +90,11 @@ services:
     ports:
       - "11000:11000"
       - "11001:11001"
+
+  countyrp.apigateways.forum.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://0.0.0.0:11011;http://0.0.0.0:11010
+    ports:
+      - "11010:11010"
+      - "11011:11011"

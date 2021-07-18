@@ -1,0 +1,1668 @@
+﻿{
+  "x-generator": "NSwag v13.10.9.0 (NJsonSchema v10.4.1.0 (Newtonsoft.Json v13.0.0.0))",
+  "swagger": "2.0",
+  "info": {
+    "title": "County RP Site Service API",
+    "description": "The County RP Site Service API documentation description.",
+    "version": "v1"
+  },
+  "host": "localhost:5001",
+  "schemes": [
+    "https"
+  ],
+  "produces": [
+    "text/plain",
+    "application/json",
+    "text/json"
+  ],
+  "paths": {
+    "/Ban": {
+      "post": {
+        "tags": [
+          "Ban"
+        ],
+        "operationId": "Ban_Create",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "name": "apiBanDtoIn",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiBanDtoIn"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "201": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiBanDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/Ban/{id}": {
+      "get": {
+        "tags": [
+          "Ban"
+        ],
+        "operationId": "Ban_GetById",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiBanDtoOut"
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Ban"
+        ],
+        "operationId": "Ban_Edit",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "name": "apiBanDtoIn",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiBanDtoIn"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiBanDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Ban"
+        ],
+        "operationId": "Ban_Delete",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiBanDtoOut"
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/Ban/ByUserId/{userId}": {
+      "get": {
+        "tags": [
+          "Ban"
+        ],
+        "operationId": "Ban_GetByUserId",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiBanDtoOut"
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/Ban/FilterBy": {
+      "get": {
+        "tags": [
+          "Ban"
+        ],
+        "operationId": "Ban_FilterBy",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "StartDateTime",
+            "in": "query",
+            "format": "date-time",
+            "x-nullable": true
+          },
+          {
+            "type": "string",
+            "name": "FinishDateTime",
+            "in": "query",
+            "format": "date-time",
+            "x-nullable": true
+          },
+          {
+            "type": "integer",
+            "name": "Count",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "type": "integer",
+            "name": "Page",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiPagedFilterResultOfApiBanDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/Group": {
+      "post": {
+        "tags": [
+          "Group"
+        ],
+        "operationId": "Group_Create",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "name": "apiGroupDtoIn",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiGroupDtoIn"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiGroupDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/Group/{id}": {
+      "get": {
+        "tags": [
+          "Group"
+        ],
+        "operationId": "Group_GetById",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiGroupDtoOut"
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Group"
+        ],
+        "operationId": "Group_Edit",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "type": "string",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "x-nullable": true
+          },
+          {
+            "name": "apiUpdateGroupDtoIn",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiUpdateGroupDtoIn"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiGroupDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Group"
+        ],
+        "operationId": "Group_Delete",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiGroupDtoOut"
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/Group/FilterBy": {
+      "get": {
+        "tags": [
+          "Group"
+        ],
+        "operationId": "Group_FilterBy",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "Name",
+            "in": "query",
+            "x-nullable": true
+          },
+          {
+            "type": "integer",
+            "name": "Count",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "type": "integer",
+            "name": "Page",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiPagedFilterResultOfApiGroupDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/SupportRequestMessage": {
+      "post": {
+        "tags": [
+          "SupportRequestMessage"
+        ],
+        "operationId": "SupportRequestMessage_Create",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "name": "apiSupportRequestMessageDtoIn",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiSupportRequestMessageDtoIn"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "201": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiSupportRequestMessageDtoOut"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "SupportRequestMessage"
+        ],
+        "operationId": "SupportRequestMessage_Delete",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/SupportRequestMessage/ByFilter": {
+      "get": {
+        "tags": [
+          "SupportRequestMessage"
+        ],
+        "operationId": "SupportRequestMessage_GetByFilter",
+        "parameters": [
+          {
+            "type": "array",
+            "name": "Ids",
+            "in": "query",
+            "collectionFormat": "multi",
+            "x-nullable": true,
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "type": "integer",
+            "name": "TopicId",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": true
+          },
+          {
+            "type": "integer",
+            "name": "UserId",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": true
+          },
+          {
+            "type": "integer",
+            "name": "Count",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "type": "integer",
+            "name": "Page",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiPagedFilterResultOfApiSupportRequestMessageDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/SupportRequestTopic": {
+      "post": {
+        "tags": [
+          "SupportRequestTopic"
+        ],
+        "operationId": "SupportRequestTopic_CreateTopicWithMessage",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "name": "apiSupportRequestTopicWithMessageDtoIn",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiSupportRequestTopicWithMessageDtoIn"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "201": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiSupportRequestTopicDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/SupportRequestTopic/ByFilterByLastMessages": {
+      "get": {
+        "tags": [
+          "SupportRequestTopic"
+        ],
+        "operationId": "SupportRequestTopic_GetByFilterByLastMessages",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "Type",
+            "in": "query",
+            "x-schema": {
+              "$ref": "#/definitions/ApiSupportRequestTopicTypeDto"
+            },
+            "x-nullable": true,
+            "enum": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          {
+            "type": "integer",
+            "name": "Status",
+            "in": "query",
+            "x-schema": {
+              "$ref": "#/definitions/ApiSupportRequestTopicStatusDto"
+            },
+            "x-nullable": true,
+            "enum": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          {
+            "type": "integer",
+            "name": "CreatorUserId",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": true
+          },
+          {
+            "type": "integer",
+            "name": "RefUserId",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": true
+          },
+          {
+            "type": "integer",
+            "name": "Count",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "type": "integer",
+            "name": "Page",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiPagedFilterResultOfApiSupportRequestTopicWithFirstAndLastMessagesDtoOut"
+            }
+          }
+        }
+      }
+    },
+    "/SupportRequestTopic/{id}": {
+      "delete": {
+        "tags": [
+          "SupportRequestTopic"
+        ],
+        "operationId": "SupportRequestTopic_Delete",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/User": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "User_Create",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "name": "apiUserDtoIn",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiUserDtoIn"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "201": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiUserDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/User/{id}": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "User_GetById",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiUserDtoOut"
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "User_Edit",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "name": "apiUserDtoIn",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiUserDtoIn"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiUserDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "User_Delete",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiUserDtoOut"
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/User/ByLogin/{login}": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "User_GetByLogin",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "login",
+            "in": "path",
+            "required": true,
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiUserDtoOut"
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/User/Authenticate": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "User_Authenticate",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "login",
+            "in": "query",
+            "x-nullable": true
+          },
+          {
+            "type": "string",
+            "name": "password",
+            "in": "query",
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiUserDtoOut"
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/User/FilterBy": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "User_FilterBy",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "Login",
+            "in": "query",
+            "x-nullable": true
+          },
+          {
+            "type": "array",
+            "name": "GroupIds",
+            "in": "query",
+            "collectionFormat": "multi",
+            "x-nullable": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "type": "integer",
+            "name": "Count",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "type": "integer",
+            "name": "Page",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiPagedFilterResultOfApiUserDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "ApiBanDtoOut": {
+      "type": "object",
+      "required": [
+        "id",
+        "userId",
+        "adminId",
+        "startDateTime",
+        "finishDateTime"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "userId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "adminId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "startDateTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "finishDateTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "ip": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        }
+      }
+    },
+    "ApiBanDtoIn": {
+      "type": "object",
+      "required": [
+        "userId",
+        "adminId",
+        "startDateTime",
+        "finishDateTime"
+      ],
+      "properties": {
+        "userId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "adminId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "startDateTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "finishDateTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "ip": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        }
+      }
+    },
+    "ApiPagedFilterResultOfApiBanDtoOut": {
+      "type": "object",
+      "required": [
+        "allCount",
+        "page",
+        "maxPages"
+      ],
+      "properties": {
+        "allCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "page": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "maxPages": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ApiBanDtoOut"
+          }
+        }
+      }
+    },
+    "ApiGroupDtoOut": {
+      "type": "object",
+      "required": [
+        "admin",
+        "adminPanel",
+        "createUsers",
+        "deleteUsers",
+        "changeLogin",
+        "changeGroup",
+        "editGroups",
+        "maxBan",
+        "seeLogs"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "color": {
+          "type": "string"
+        },
+        "admin": {
+          "type": "boolean"
+        },
+        "adminPanel": {
+          "type": "boolean"
+        },
+        "createUsers": {
+          "type": "boolean"
+        },
+        "deleteUsers": {
+          "type": "boolean"
+        },
+        "changeLogin": {
+          "type": "boolean"
+        },
+        "changeGroup": {
+          "type": "boolean"
+        },
+        "editGroups": {
+          "type": "boolean"
+        },
+        "maxBan": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "banGroupIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "seeLogs": {
+          "type": "boolean"
+        }
+      }
+    },
+    "ApiGroupDtoIn": {
+      "type": "object",
+      "required": [
+        "admin",
+        "adminPanel",
+        "createUsers",
+        "deleteUsers",
+        "changeLogin",
+        "changeGroup",
+        "editGroups",
+        "maxBan",
+        "seeLogs"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "color": {
+          "type": "string"
+        },
+        "admin": {
+          "type": "boolean"
+        },
+        "adminPanel": {
+          "type": "boolean"
+        },
+        "createUsers": {
+          "type": "boolean"
+        },
+        "deleteUsers": {
+          "type": "boolean"
+        },
+        "changeLogin": {
+          "type": "boolean"
+        },
+        "changeGroup": {
+          "type": "boolean"
+        },
+        "editGroups": {
+          "type": "boolean"
+        },
+        "maxBan": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "banGroupIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "seeLogs": {
+          "type": "boolean"
+        }
+      }
+    },
+    "ApiPagedFilterResultOfApiGroupDtoOut": {
+      "type": "object",
+      "required": [
+        "allCount",
+        "page",
+        "maxPages"
+      ],
+      "properties": {
+        "allCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "page": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "maxPages": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ApiGroupDtoOut"
+          }
+        }
+      }
+    },
+    "ApiUpdateGroupDtoIn": {
+      "type": "object",
+      "required": [
+        "admin",
+        "adminPanel",
+        "createUsers",
+        "deleteUsers",
+        "changeLogin",
+        "changeGroup",
+        "editGroups",
+        "maxBan",
+        "seeLogs"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "color": {
+          "type": "string"
+        },
+        "admin": {
+          "type": "boolean"
+        },
+        "adminPanel": {
+          "type": "boolean"
+        },
+        "createUsers": {
+          "type": "boolean"
+        },
+        "deleteUsers": {
+          "type": "boolean"
+        },
+        "changeLogin": {
+          "type": "boolean"
+        },
+        "changeGroup": {
+          "type": "boolean"
+        },
+        "editGroups": {
+          "type": "boolean"
+        },
+        "maxBan": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "banGroupIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "seeLogs": {
+          "type": "boolean"
+        }
+      }
+    },
+    "ApiSupportRequestMessageDtoOut": {
+      "type": "object",
+      "required": [
+        "id",
+        "topicId",
+        "userId",
+        "creationDate"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "topicId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "text": {
+          "type": "string"
+        },
+        "userId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "editionDate": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "ApiSupportRequestMessageDtoIn": {
+      "type": "object",
+      "required": [
+        "topicId",
+        "userId",
+        "creationDate",
+        "editionDate"
+      ],
+      "properties": {
+        "topicId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "text": {
+          "type": "string"
+        },
+        "userId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "editionDate": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "ApiPagedFilterResultOfApiSupportRequestMessageDtoOut": {
+      "type": "object",
+      "required": [
+        "allCount",
+        "page",
+        "maxPages"
+      ],
+      "properties": {
+        "allCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "page": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "maxPages": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ApiSupportRequestMessageDtoOut"
+          }
+        }
+      }
+    },
+    "ApiSupportRequestTopicDtoOut": {
+      "type": "object",
+      "required": [
+        "id",
+        "type",
+        "status",
+        "creatorUserId",
+        "creationDate",
+        "showRefUser"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "type": {
+          "$ref": "#/definitions/ApiSupportRequestTopicTypeDto"
+        },
+        "caption": {
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/definitions/ApiSupportRequestTopicStatusDto"
+        },
+        "creatorUserId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "refUserId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "showRefUser": {
+          "type": "boolean"
+        }
+      }
+    },
+    "ApiSupportRequestTopicTypeDto": {
+      "type": "integer",
+      "description": "",
+      "x-enumNames": [
+        "Unknown",
+        "Report",
+        "ReportOnAdmin",
+        "Unban"
+      ],
+      "enum": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    "ApiSupportRequestTopicStatusDto": {
+      "type": "integer",
+      "description": "",
+      "x-enumNames": [
+        "Unknown",
+        "New",
+        "Closed",
+        "Consideration"
+      ],
+      "enum": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    "ApiSupportRequestTopicWithMessageDtoIn": {
+      "type": "object",
+      "required": [
+        "type",
+        "status",
+        "creatorUserId",
+        "creationDate",
+        "showRefUser"
+      ],
+      "properties": {
+        "type": {
+          "$ref": "#/definitions/ApiSupportRequestTopicTypeDto"
+        },
+        "caption": {
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/definitions/ApiSupportRequestTopicStatusDto"
+        },
+        "creatorUserId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "refUserId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "showRefUser": {
+          "type": "boolean"
+        },
+        "text": {
+          "type": "string"
+        }
+      }
+    },
+    "ApiPagedFilterResultOfApiSupportRequestTopicWithFirstAndLastMessagesDtoOut": {
+      "type": "object",
+      "required": [
+        "allCount",
+        "page",
+        "maxPages"
+      ],
+      "properties": {
+        "allCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "page": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "maxPages": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ApiSupportRequestTopicWithFirstAndLastMessagesDtoOut"
+          }
+        }
+      }
+    },
+    "ApiSupportRequestTopicWithFirstAndLastMessagesDtoOut": {
+      "type": "object",
+      "properties": {
+        "topic": {
+          "$ref": "#/definitions/ApiSupportRequestTopicDtoOut"
+        },
+        "firstMessage": {
+          "$ref": "#/definitions/ApiSupportRequestMessageDtoOut"
+        },
+        "lastMessage": {
+          "$ref": "#/definitions/ApiSupportRequestMessageDtoOut"
+        }
+      }
+    },
+    "ApiUserDtoOut": {
+      "type": "object",
+      "required": [
+        "id",
+        "playerId",
+        "forumUserId"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "login": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "playerId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "forumUserId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "groupId": {
+          "type": "string"
+        }
+      }
+    },
+    "ApiUserDtoIn": {
+      "type": "object",
+      "required": [
+        "playerId",
+        "forumUserId"
+      ],
+      "properties": {
+        "login": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "playerId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "forumUserId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "groupId": {
+          "type": "string"
+        }
+      }
+    },
+    "ApiPagedFilterResultOfApiUserDtoOut": {
+      "type": "object",
+      "required": [
+        "allCount",
+        "page",
+        "maxPages"
+      ],
+      "properties": {
+        "allCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "page": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "maxPages": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ApiUserDtoOut"
+          }
+        }
+      }
+    }
+  }
+}

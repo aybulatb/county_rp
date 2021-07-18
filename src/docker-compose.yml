@@ -30,7 +30,7 @@ services:
     image: ${DOCKER_REGISTRY-}countyrpserviceforum
     build:
       context: .
-      dockerfile: Services/Forum/Dockerfile
+      dockerfile: Services/Forum/Forum.API/Dockerfile
     depends_on:
       - mssql
 
@@ -55,3 +55,9 @@ services:
     build:
       context: .
       dockerfile: ApiGateways/AdminPanel/AdminPanel.API/Dockerfile
+
+  countyrp.apigateways.forum.api:
+    image: ${DOCKER_REGISTRY-}countyrpapigatewayforumapi
+    build:
+      context: .
+      dockerfile: ApiGateways/Forum/Forum.API/Dockerfile
