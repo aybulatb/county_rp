@@ -1,0 +1,2093 @@
+﻿{
+  "x-generator": "NSwag v13.11.3.0 (NJsonSchema v10.4.4.0 (Newtonsoft.Json v10.0.0.0))",
+  "swagger": "2.0",
+  "info": {
+    "title": "County RP Forum Service API",
+    "description": "The best Forum Service API ever",
+    "version": "v1"
+  },
+  "host": "localhost:5001",
+  "schemes": [
+    "https"
+  ],
+  "produces": [
+    "text/plain",
+    "application/json",
+    "text/json"
+  ],
+  "paths": {
+    "/Forum": {
+      "post": {
+        "tags": [
+          "Forum"
+        ],
+        "operationId": "Forum_Create",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "name": "apiForumDtoIn",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiForumDtoIn"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "201": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiForumDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Forum"
+        ],
+        "operationId": "Forum_Get",
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ApiForumDtoOut"
+              }
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/Forum/{id}": {
+      "get": {
+        "tags": [
+          "Forum"
+        ],
+        "operationId": "Forum_GetById",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiForumDtoOut"
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Forum"
+        ],
+        "operationId": "Forum_Edit",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "name": "apiForumDtoIn",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiForumDtoIn"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiForumDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Forum"
+        ],
+        "operationId": "Forum_Delete",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/Forum/FilterBy": {
+      "get": {
+        "tags": [
+          "Forum"
+        ],
+        "operationId": "Forum_FilterBy",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "ParentId",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "type": "integer",
+            "name": "Count",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "type": "integer",
+            "name": "Page",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/PagedFilterResultOfApiForumDtoOut"
+            }
+          }
+        }
+      }
+    },
+    "/Moderator": {
+      "post": {
+        "tags": [
+          "Moderator"
+        ],
+        "operationId": "Moderator_Create",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "name": "apiModeratorDtoIn",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiModeratorDtoIn"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "201": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiModeratorDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/Moderator/{id}": {
+      "get": {
+        "tags": [
+          "Moderator"
+        ],
+        "operationId": "Moderator_GetById",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiModeratorDtoOut"
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Moderator"
+        ],
+        "operationId": "Moderator_Edit",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "name": "apiModeratorDtoIn",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiModeratorDtoIn"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiModeratorDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Moderator"
+        ],
+        "operationId": "Moderator_Delete",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/Moderator/FilterBy": {
+      "get": {
+        "tags": [
+          "Moderator"
+        ],
+        "operationId": "Moderator_FilterBy",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "EntityId",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "type": "integer",
+            "name": "EntityType",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "type": "integer",
+            "name": "ForumId",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "type": "integer",
+            "name": "Count",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "type": "integer",
+            "name": "Page",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/PagedFilterResultOfApiModeratorDtoOut"
+            }
+          }
+        }
+      }
+    },
+    "/Post": {
+      "post": {
+        "tags": [
+          "Post"
+        ],
+        "operationId": "Post_Create",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "name": "apiPostDtoIn",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiPostDtoIn"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "201": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiPostDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/Post/{id}": {
+      "get": {
+        "tags": [
+          "Post"
+        ],
+        "operationId": "Post_GetById",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiPostDtoOut"
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Post"
+        ],
+        "operationId": "Post_Edit",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "name": "apiPostDtoIn",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiPostDtoIn"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiPostDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Post"
+        ],
+        "operationId": "Post_Delete",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/Post/FilterBy": {
+      "get": {
+        "tags": [
+          "Post"
+        ],
+        "operationId": "Post_FilterBy",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "Text",
+            "in": "query",
+            "x-nullable": true
+          },
+          {
+            "type": "integer",
+            "name": "UserId",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "type": "string",
+            "name": "CreationDateTime",
+            "in": "query",
+            "format": "date-time",
+            "x-nullable": false
+          },
+          {
+            "type": "string",
+            "name": "EditionDateTime",
+            "in": "query",
+            "format": "date-time",
+            "x-nullable": false
+          },
+          {
+            "type": "integer",
+            "name": "Count",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "type": "integer",
+            "name": "Page",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/PagedFilterResultOfApiPostDtoOut"
+            }
+          }
+        }
+      }
+    },
+    "/Post/ByTopicId/{topicId}": {
+      "delete": {
+        "tags": [
+          "Post"
+        ],
+        "operationId": "Post_DeleteByForumId",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "topicId",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/Reputation": {
+      "post": {
+        "tags": [
+          "Reputation"
+        ],
+        "operationId": "Reputation_Create",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "name": "apiReputationDtoIn",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiReputationDtoIn"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "201": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiReputationDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/Reputation/FilterBy": {
+      "get": {
+        "tags": [
+          "Reputation"
+        ],
+        "operationId": "Reputation_FilterBy",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "UserId",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "type": "integer",
+            "name": "Count",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "type": "integer",
+            "name": "Page",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/PagedFilterResultOfApiReputationDtoOut"
+            }
+          }
+        }
+      }
+    },
+    "/Reputation/{id}": {
+      "delete": {
+        "tags": [
+          "Reputation"
+        ],
+        "operationId": "Reputation_Delete",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/Reputation/ByUserId/{userId}": {
+      "delete": {
+        "tags": [
+          "Reputation"
+        ],
+        "operationId": "Reputation_DeleteByForumId",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/Topic": {
+      "post": {
+        "tags": [
+          "Topic"
+        ],
+        "operationId": "Topic_Create",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "name": "apiTopicDtoIn",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiTopicDtoIn"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "201": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiTopicDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/Topic/{id}": {
+      "get": {
+        "tags": [
+          "Topic"
+        ],
+        "operationId": "Topic_GetById",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiTopicDtoOut"
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Topic"
+        ],
+        "operationId": "Topic_Edit",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "name": "apiTopicDtoIn",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiTopicDtoIn"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiTopicDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Topic"
+        ],
+        "operationId": "Topic_Delete",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/Topic/FilterBy": {
+      "get": {
+        "tags": [
+          "Topic"
+        ],
+        "operationId": "Topic_FilterBy",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "ForumId",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "type": "integer",
+            "name": "Count",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "type": "integer",
+            "name": "Page",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/PagedFilterResultOfApiTopicDtoOut"
+            }
+          }
+        }
+      }
+    },
+    "/Topic/ByForumId/{forumId}": {
+      "delete": {
+        "tags": [
+          "Topic"
+        ],
+        "operationId": "Topic_DeleteByForumId",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "forumId",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/User": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "User_Create",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "name": "apiUserDtoIn",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiUserDtoIn"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "201": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiUserDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/User/{id}": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "User_GetById",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiUserDtoOut"
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "User_Edit",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "name": "apiUserDtoIn",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiUserDtoIn"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiUserDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "User_Delete",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/User/ByLogin/{login}": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "User_GetByLogin",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "login",
+            "in": "path",
+            "required": true,
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiUserDtoOut"
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/User/FilterBy": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "User_FilterBy",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "Login",
+            "in": "query",
+            "x-nullable": true
+          },
+          {
+            "type": "string",
+            "name": "SortingFlag",
+            "in": "query",
+            "x-nullable": true
+          },
+          {
+            "type": "array",
+            "name": "GroupIds",
+            "in": "query",
+            "collectionFormat": "multi",
+            "x-nullable": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "type": "integer",
+            "name": "Count",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "type": "integer",
+            "name": "Page",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/PagedFilterResultOfApiUserDtoOut"
+            }
+          }
+        }
+      }
+    },
+    "/Warning": {
+      "post": {
+        "tags": [
+          "Warning"
+        ],
+        "operationId": "Warning_Create",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "name": "apiWarningDtoIn",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiWarningDtoIn"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "201": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiWarningDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/Warning/FilterBy": {
+      "get": {
+        "tags": [
+          "Warning"
+        ],
+        "operationId": "Warning_FilterBy",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "UserId",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "type": "integer",
+            "name": "Count",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "type": "integer",
+            "name": "Page",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/PagedFilterResultOfApiWarningDtoOut"
+            }
+          }
+        }
+      }
+    },
+    "/Warning/{id}": {
+      "delete": {
+        "tags": [
+          "Warning"
+        ],
+        "operationId": "Warning_Delete",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/Warning/ByUserId/{userId}": {
+      "delete": {
+        "tags": [
+          "Warning"
+        ],
+        "operationId": "Warning_DeleteByForumId",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "ApiForumDtoOut": {
+      "type": "object",
+      "required": [
+        "id",
+        "parentId",
+        "order"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "parentId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "order": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "ApiForumDtoIn": {
+      "type": "object",
+      "required": [
+        "parentId",
+        "order"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "parentId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "order": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "PagedFilterResultOfApiForumDtoOut": {
+      "type": "object",
+      "required": [
+        "allCount",
+        "page",
+        "maxPages"
+      ],
+      "properties": {
+        "allCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "page": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "maxPages": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ApiForumDtoOut"
+          }
+        }
+      }
+    },
+    "ApiModeratorDtoOut": {
+      "type": "object",
+      "required": [
+        "id",
+        "entityId",
+        "entityType",
+        "forumId",
+        "createTopics",
+        "createPosts",
+        "read",
+        "editPosts",
+        "deleteTopics",
+        "deletePosts"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "entityId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "entityType": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "forumId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "createTopics": {
+          "type": "boolean"
+        },
+        "createPosts": {
+          "type": "boolean"
+        },
+        "read": {
+          "type": "boolean"
+        },
+        "editPosts": {
+          "type": "boolean"
+        },
+        "deleteTopics": {
+          "type": "boolean"
+        },
+        "deletePosts": {
+          "type": "boolean"
+        }
+      }
+    },
+    "ApiModeratorDtoIn": {
+      "type": "object",
+      "required": [
+        "entityId",
+        "entityType",
+        "forumId",
+        "createTopics",
+        "createPosts",
+        "read",
+        "editPosts",
+        "deleteTopics",
+        "deletePosts"
+      ],
+      "properties": {
+        "entityId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "entityType": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "forumId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "createTopics": {
+          "type": "boolean"
+        },
+        "createPosts": {
+          "type": "boolean"
+        },
+        "read": {
+          "type": "boolean"
+        },
+        "editPosts": {
+          "type": "boolean"
+        },
+        "deleteTopics": {
+          "type": "boolean"
+        },
+        "deletePosts": {
+          "type": "boolean"
+        }
+      }
+    },
+    "PagedFilterResultOfApiModeratorDtoOut": {
+      "type": "object",
+      "required": [
+        "allCount",
+        "page",
+        "maxPages"
+      ],
+      "properties": {
+        "allCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "page": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "maxPages": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ApiModeratorDtoOut"
+          }
+        }
+      }
+    },
+    "ApiPostDtoOut": {
+      "type": "object",
+      "required": [
+        "id",
+        "topicId",
+        "userId",
+        "lastEditorId",
+        "creationDateTime",
+        "editionDateTime"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "text": {
+          "type": "string"
+        },
+        "topicId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "userId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "lastEditorId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "creationDateTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "editionDateTime": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "ApiPostDtoIn": {
+      "type": "object",
+      "required": [
+        "topicId",
+        "userId",
+        "lastEditorid",
+        "creationDateTime",
+        "editionDateTime"
+      ],
+      "properties": {
+        "text": {
+          "type": "string"
+        },
+        "topicId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "userId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "lastEditorid": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "creationDateTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "editionDateTime": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "PagedFilterResultOfApiPostDtoOut": {
+      "type": "object",
+      "required": [
+        "allCount",
+        "page",
+        "maxPages"
+      ],
+      "properties": {
+        "allCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "page": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "maxPages": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ApiPostDtoOut"
+          }
+        }
+      }
+    },
+    "ApiReputationDtoOut": {
+      "type": "object",
+      "required": [
+        "id",
+        "userId",
+        "changedByUserId",
+        "dateTime",
+        "action"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "userId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "changedByUserId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "dateTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "action": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "text": {
+          "type": "string"
+        }
+      }
+    },
+    "ApiReputationDtoIn": {
+      "type": "object",
+      "required": [
+        "userId",
+        "changedByUserId",
+        "dateTime",
+        "action"
+      ],
+      "properties": {
+        "userId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "changedByUserId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "dateTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "action": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "text": {
+          "type": "string"
+        }
+      }
+    },
+    "PagedFilterResultOfApiReputationDtoOut": {
+      "type": "object",
+      "required": [
+        "allCount",
+        "page",
+        "maxPages"
+      ],
+      "properties": {
+        "allCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "page": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "maxPages": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ApiReputationDtoOut"
+          }
+        }
+      }
+    },
+    "ApiTopicDtoOut": {
+      "type": "object",
+      "required": [
+        "id",
+        "forumId"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "caption": {
+          "type": "string"
+        },
+        "forumId": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "ApiTopicDtoIn": {
+      "type": "object",
+      "required": [
+        "forumId"
+      ],
+      "properties": {
+        "caption": {
+          "type": "string"
+        },
+        "forumId": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "PagedFilterResultOfApiTopicDtoOut": {
+      "type": "object",
+      "required": [
+        "allCount",
+        "page",
+        "maxPages"
+      ],
+      "properties": {
+        "allCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "page": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "maxPages": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ApiTopicDtoOut"
+          }
+        }
+      }
+    },
+    "ApiUserDtoOut": {
+      "type": "object",
+      "required": [
+        "id",
+        "reputation",
+        "posts",
+        "warnings"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "login": {
+          "type": "string"
+        },
+        "groupId": {
+          "type": "string"
+        },
+        "reputation": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "posts": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "warnings": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "ApiUserDtoIn": {
+      "type": "object",
+      "required": [
+        "reputation",
+        "posts",
+        "warnings"
+      ],
+      "properties": {
+        "login": {
+          "type": "string"
+        },
+        "groupId": {
+          "type": "string"
+        },
+        "reputation": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "posts": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "warnings": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "PagedFilterResultOfApiUserDtoOut": {
+      "type": "object",
+      "required": [
+        "allCount",
+        "page",
+        "maxPages"
+      ],
+      "properties": {
+        "allCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "page": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "maxPages": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ApiUserDtoOut"
+          }
+        }
+      }
+    },
+    "ApiWarningDtoOut": {
+      "type": "object",
+      "required": [
+        "id",
+        "userId",
+        "adminId",
+        "dateTime",
+        "finishDateTime",
+        "action"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "userId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "adminId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "dateTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "finishDateTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "action": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "text": {
+          "type": "string"
+        }
+      }
+    },
+    "ApiWarningDtoIn": {
+      "type": "object",
+      "required": [
+        "userId",
+        "adminId",
+        "dateTime",
+        "finishDateTime",
+        "action"
+      ],
+      "properties": {
+        "userId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "adminId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "dateTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "finishDateTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "action": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "text": {
+          "type": "string"
+        }
+      }
+    },
+    "PagedFilterResultOfApiWarningDtoOut": {
+      "type": "object",
+      "required": [
+        "allCount",
+        "page",
+        "maxPages"
+      ],
+      "properties": {
+        "allCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "page": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "maxPages": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ApiWarningDtoOut"
+          }
+        }
+      }
+    }
+  }
+}
