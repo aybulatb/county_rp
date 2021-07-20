@@ -12,6 +12,7 @@ namespace CountyRP.Services.Game.Infrastructure.Converters
             return new VehicleDao(
                 id: source.Id,
                 model: source.Model,
+                position: source.Position,
                 rotation: source.Rotation,
                 dimension: source.Dimension,
                 color1: source.Color1,

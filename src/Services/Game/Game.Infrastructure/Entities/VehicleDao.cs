@@ -52,6 +52,7 @@ namespace CountyRP.Services.Game.Infrastructure.Entities
         public VehicleDao(
             int id,
             int model,
+            float[] position,
             float rotation,
             uint dimension,
             int color1,
@@ -65,6 +66,7 @@ namespace CountyRP.Services.Game.Infrastructure.Entities
         {
             Id = id;
             Model = model;
+            Position = position;
             Rotation = rotation;
             Dimension = dimension;
             Color1 = color1;

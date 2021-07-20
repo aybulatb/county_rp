@@ -33,5 +33,9 @@
         public static string PersonInvalidName = "Имя персонажа должно состоять из цифр, символов латинского алфавита и специальных символов";
 
         public static string PersonAlreadyExistedWithName = "Игрок с таким именем уже существует";
+
+        // Транспортные средства
+
+        public static string VehicleNotFoundById = "Транспортное средство с ID {0} не найден";
     }
 }

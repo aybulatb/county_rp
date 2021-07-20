@@ -1,20 +1,20 @@
-﻿using CountyRP.Services.Game.Infrastructure.Entities;
+﻿using CountyRP.Services.Game.API.Models.Api;
 using CountyRP.Services.Game.Infrastructure.Models;
 
-namespace CountyRP.Services.Game.Infrastructure.Converters
+namespace CountyRP.Services.Game.API.Converters
 {
     public static class GangDtoOutConverter
     {
-        public static GangDao ToDb(
+        public static ApiGangDtoOut ToApi(
             GangDtoOut source
         )
         {
-            return new GangDao(
+            return new ApiGangDtoOut(
                 id: source.Id,
                 name: source.Name,
                 color: source.Color,
                 ranks: source.Ranks,
-                type: GangTypeDtoConverter.ToDb(source.Type),
+                type: GangTypeDtoConverter.ToApi(source.Type),
                 createdDate: source.CreatedDate
             );
         }

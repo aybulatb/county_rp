@@ -94,7 +94,7 @@ namespace CountyRP.Services.Game.API.Controllers
         }
 
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(PlayerDtoOut), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiPlayerDtoOut), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById(int id)
         {
@@ -158,7 +158,7 @@ namespace CountyRP.Services.Game.API.Controllers
         }
 
         [HttpPut("{id}")]
-        [ProducesResponseType(typeof(PlayerDtoOut), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiPlayerDtoOut), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Edit(

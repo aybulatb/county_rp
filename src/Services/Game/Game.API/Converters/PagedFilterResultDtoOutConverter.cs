@@ -31,5 +31,18 @@ namespace CountyRP.Services.Game.API.Converters
                     .Select(PersonDtoOutConverter.ToApi)
                 );
         }
+
+        public static ApiPagedFilterResultDtoOut<ApiVehicleDtoOut> ToApi(
+            PagedFilterResultDtoOut<VehicleDtoOut> source
+        )
+        {
+            return new ApiPagedFilterResultDtoOut<ApiVehicleDtoOut>(
+                allCount: source.AllCount,
+                page: source.Page,
+                maxPages: source.MaxPages,
+                items: source.Items
+                    .Select(VehicleDtoOutConverter.ToApi)
+                );
+        }
     }
 }

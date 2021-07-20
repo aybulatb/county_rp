@@ -1,16 +1,16 @@
-﻿using CountyRP.Services.Game.Infrastructure.Entities;
+﻿using CountyRP.Services.Game.API.Models.Api;
 using CountyRP.Services.Game.Infrastructure.Models;
 
-namespace CountyRP.Services.Game.Infrastructure.Converters
+namespace CountyRP.Services.Game.API.Converters
 {
-    public static class VehicleDtoInConverter
+    public static class VehicleDtoOutConverter
     {
-        public static VehicleDao ToDb(
-            VehicleDtoIn source
+        public static ApiVehicleDtoOut ToApi(
+            VehicleDtoOut source
         )
         {
-            return new VehicleDao(
-                id: 0,
+            return new ApiVehicleDtoOut(
+                id: source.Id,
                 model: source.Model,
                 position: source.Position,
                 rotation: source.Rotation,

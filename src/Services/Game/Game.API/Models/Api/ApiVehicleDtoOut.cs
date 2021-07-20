@@ -1,7 +1,9 @@
-﻿namespace CountyRP.Services.Game.Infrastructure.Models
+﻿namespace CountyRP.Services.Game.API.Models.Api
 {
-    public class VehicleDtoIn
+    public class ApiVehicleDtoOut
     {
+        public int Id { get; }
+
         public int Model { get; }
 
         public float[] Position { get; }
@@ -24,7 +26,8 @@
 
         public string LicensePlate { get; }
 
-        public VehicleDtoIn(
+        public ApiVehicleDtoOut(
+            int id,
             int model,
             float[] position,
             float rotation,
@@ -38,6 +41,7 @@
             string licensePlate
         )
         {
+            Id = id;
             Model = model;
             Position = position;
             Rotation = rotation;

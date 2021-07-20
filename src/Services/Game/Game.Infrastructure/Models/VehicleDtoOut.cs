@@ -29,6 +29,7 @@
         public VehicleDtoOut(
             int id,
             int model,
+            float[] position,
             float rotation,
             uint dimension,
             int color1,
@@ -42,6 +43,7 @@
         {
             Id = id;
             Model = model;
+            Position = position;
             Rotation = rotation;
             Dimension = dimension;
             Color1 = color1;
