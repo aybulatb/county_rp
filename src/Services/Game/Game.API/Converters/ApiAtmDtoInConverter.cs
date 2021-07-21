@@ -15,5 +15,18 @@ namespace CountyRP.Services.Game.API.Converters
                 businessId: source.BusinessId
             );
         }
+
+        public static AtmDtoOut ToDtoOutRepository(
+            ApiAtmDtoIn source,
+            int id
+        )
+        {
+            return new AtmDtoOut(
+                id: id,
+                position: source.Position,
+                dimension: source.Dimension,
+                businessId: source.BusinessId
+            );
+        }
     }
 }

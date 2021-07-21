@@ -21,5 +21,24 @@ namespace CountyRP.Services.Game.API.Converters
                 price: source.Price
             );
         }
+
+        public static BusinessDtoOut ToDtoOutRepository(
+            ApiBusinessDtoIn source,
+            int id
+        )
+        {
+            return new BusinessDtoOut(
+                id: id,
+                name: source.Name,
+                entrancePosition: source.EntrancePosition,
+                entranceDimension: source.EntranceDimension,
+                exitPosition: source.ExitPosition,
+                exitDimension: source.ExitDimension,
+                ownerId: source.OwnerId,
+                lockDoors: source.LockDoors,
+                type: ApiBusinessTypeDtoConverter.ToRepository(source.Type),
+                price: source.Price
+            );
+        }
     }
 }

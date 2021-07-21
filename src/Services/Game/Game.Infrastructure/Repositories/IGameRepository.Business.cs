@@ -7,10 +7,10 @@ namespace CountyRP.Services.Game.Infrastructure.Repositories
     {
         public Task<BusinessDtoOut> AddBusinessAsync(BusinessDtoIn businessDtoIn);
 
-        public Task<PagedFilterResultDtoOut<BusinessDtoOut>> GetBusinesssByFilter(BusinessFilterDtoIn filter);
+        public Task<PagedFilterResultDtoOut<BusinessDtoOut>> GetBusinessesByFilter(BusinessFilterDtoIn filter);
 
         public Task<BusinessDtoOut> UpdateBusinessAsync(BusinessDtoOut businessDtoOut);
 
-        public Task DeleteBusinessByFilter(BusinessFilterDtoIn filter);
+        public Task DeleteBusinessesByFilter(BusinessFilterDtoIn filter);
     }
 }

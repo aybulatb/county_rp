@@ -101,10 +101,10 @@ namespace CountyRP.Services.Game.API.Controllers
 
             var filter = ApiVehicleFilterDtoInConverter.ToRepository(apiVehicleFilterDtoIn);
 
-            var players = await _gameRepository.GetVehiclesByFilter(filter);
+            var vehicles = await _gameRepository.GetVehiclesByFilter(filter);
 
             return Ok(
-                PagedFilterResultDtoOutConverter.ToApi(players)
+                PagedFilterResultDtoOutConverter.ToApi(vehicles)
             );
         }
 

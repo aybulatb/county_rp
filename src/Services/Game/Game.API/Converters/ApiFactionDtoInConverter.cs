@@ -17,5 +17,19 @@ namespace CountyRP.Services.Game.API.Converters
                 type: ApiFactionTypeDtoConverter.ToRepository(source.Type)
             );
         }
+
+        public static FactionDtoOut ToDtoOutRepository(
+            ApiFactionDtoIn source,
+            string id
+        )
+        {
+            return new FactionDtoOut(
+                id: id,
+                name: source.Name,
+                color: source.Color,
+                ranks: source.Ranks,
+                type: ApiFactionTypeDtoConverter.ToRepository(source.Type)
+            );
+        }
     }
 }

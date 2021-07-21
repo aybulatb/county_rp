@@ -22,9 +22,9 @@ namespace CountyRP.Services.Game.Infrastructure.Repositories
             return BusinessDaoConverter.ToRepository(businessDao);
         }
 
-        public async Task<PagedFilterResultDtoOut<BusinessDtoOut>> GetBusinesssByFilter(BusinessFilterDtoIn filter)
+        public async Task<PagedFilterResultDtoOut<BusinessDtoOut>> GetBusinessesByFilter(BusinessFilterDtoIn filter)
         {
-            var query = GetBusinesssQuery(filter)
+            var query = GetBusinessesQuery(filter)
                 .AsNoTracking();
 
             var allCount = await query.CountAsync();
@@ -35,7 +35,7 @@ namespace CountyRP.Services.Game.Infrastructure.Repositories
                         : allCount / filter.Count.Value + 1
                 : 1;
 
-            query = GetBusinesssQueryWithPaging(query, filter);
+            query = GetBusinessesQueryWithPaging(query, filter);
 
             var filteredBusinesss = await query
                 .AsNoTracking()
@@ -68,12 +68,12 @@ namespace CountyRP.Services.Game.Infrastructure.Repositories
             return BusinessDaoConverter.ToRepository(businessDao);
         }
 
-        public async Task DeleteBusinessByFilter(BusinessFilterDtoIn filter)
+        public async Task DeleteBusinessesByFilter(BusinessFilterDtoIn filter)
         {
-            var query = GetBusinesssQuery(filter)
+            var query = GetBusinessesQuery(filter)
                 .AsNoTracking();
 
-            query = GetBusinesssQueryWithPaging(query, filter);
+            query = GetBusinessesQueryWithPaging(query, filter);
 
             _gameDbContext
                 .Businesses
@@ -82,7 +82,7 @@ namespace CountyRP.Services.Game.Infrastructure.Repositories
             await _gameDbContext.SaveChangesAsync();
         }
 
-        private IQueryable<BusinessDao> GetBusinesssQuery(BusinessFilterDtoIn filter)
+        private IQueryable<BusinessDao> GetBusinessesQuery(BusinessFilterDtoIn filter)
         {
             IEnumerable<BusinessTypeDao> types = null;
             if (filter.Types != null)
@@ -104,7 +104,7 @@ namespace CountyRP.Services.Game.Infrastructure.Repositories
                .OrderBy(business => business.Id);
         }
 
-        private IQueryable<BusinessDao> GetBusinesssQueryWithPaging(IQueryable<BusinessDao> query, BusinessFilterDtoIn filter)
+        private IQueryable<BusinessDao> GetBusinessesQueryWithPaging(IQueryable<BusinessDao> query, BusinessFilterDtoIn filter)
         {
             if (filter.Page.HasValue && filter.Count.HasValue && filter.Count.Value > 0 && filter.Page.Value > 0)
             {

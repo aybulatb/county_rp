@@ -17,5 +17,20 @@ namespace CountyRP.Services.Game.API.Converters
                 factionId: source.FactionId
             );
         }
+
+        public static LockerRoomDtoOut ToDtoOutRepository(
+            ApiLockerRoomDtoIn source,
+            int id
+        )
+        {
+            return new LockerRoomDtoOut(
+                id: id,
+                position: source.Position,
+                dimension: source.Dimension,
+                typeMarker: source.TypeMarker,
+                colorMarker: source.ColorMarker,
+                factionId: source.FactionId
+            );
+        }
     }
 }

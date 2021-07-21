@@ -18,5 +18,21 @@ namespace CountyRP.Services.Game.API.Converters
                 lockDoors: source.LockDoors
             );
         }
+
+        public static GarageDtoOut ToDtoOutRepository(
+            ApiGarageDtoIn source,
+            int id
+        )
+        {
+            return new GarageDtoOut(
+                id: id,
+                type: source.Type,
+                entrancePosition: source.EntrancePosition,
+                entranceDimension: source.EntranceDimension,
+                entranceRotation: source.EntranceRotation,
+                exitDimension: source.ExitDimension,
+                lockDoors: source.LockDoors
+            );
+        }
     }
 }

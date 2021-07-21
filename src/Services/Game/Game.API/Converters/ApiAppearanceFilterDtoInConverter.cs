@@ -3,13 +3,13 @@ using CountyRP.Services.Game.Infrastructure.Models;
 
 namespace CountyRP.Services.Game.API.Converters
 {
-    public static class ApiGarageFilterDtoInConverter
+    public static class ApiAppearanceFilterDtoInConverter
     {
-        public static GarageFilterDtoIn ToRepository(
-            ApiGarageFilterDtoIn source
+        public static AppearanceFilterDtoIn ToRepository(
+            ApiAppearanceFilterDtoIn source
         )
         {
-            return new GarageFilterDtoIn(
+            return new AppearanceFilterDtoIn(
                 count: source.Count,
                 page: source.Page,
                 ids: source.Ids
