@@ -1,6 +1,6 @@
 ﻿namespace CountyRP.Services.Game.Infrastructure.Models
 {
-    public class ATMDtoOut
+    public class AtmDtoOut
     {
         public int Id { get; }
 
@@ -10,7 +10,7 @@
 
         public int BusinessId { get; }
 
-        public ATMDtoOut(
+        public AtmDtoOut(
             int id,
             float[] position,
             uint dimension,

@@ -2,13 +2,13 @@
 
 namespace CountyRP.Services.Game.Infrastructure.Models
 {
-    public class ATMFilterDtoIn : PagedFilterDtoIn
+    public class AtmFilterDtoIn : PagedFilterDtoIn
     {
         public IEnumerable<int> Ids { get; }
 
         public IEnumerable<int> BusinessIds { get; }
 
-        public ATMFilterDtoIn(
+        public AtmFilterDtoIn(
             int? count,
             int? page,
             IEnumerable<int> ids,

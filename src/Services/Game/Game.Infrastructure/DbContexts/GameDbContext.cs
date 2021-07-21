@@ -13,7 +13,7 @@ namespace CountyRP.Services.Game.Infrastructure.DbContexts
 
         public DbSet<AppearanceDao> Appearances { get; set; }
 
-        public DbSet<ATMDao> ATMs { get; set; }
+        public DbSet<AtmDao> Atms { get; set; }
 
         public DbSet<BusinessDao> Businesses { get; set; }
 

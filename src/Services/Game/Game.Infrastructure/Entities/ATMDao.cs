@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CountyRP.Services.Game.Infrastructure.Entities
 {
-    public class ATMDao
+    public class AtmDao
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -27,11 +27,11 @@ namespace CountyRP.Services.Game.Infrastructure.Entities
         /// <summary>
         /// Конструктор для EF.
         /// </summary>
-        public ATMDao()
+        public AtmDao()
         {
         }
 
-        public ATMDao(
+        public AtmDao(
             int id,
             float[] position,
             uint dimension,

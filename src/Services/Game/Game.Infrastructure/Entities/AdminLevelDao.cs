@@ -124,17 +124,17 @@ namespace CountyRP.Services.Game.Infrastructure.Entities
         /// <summary>
         /// Возможность создавать банкоматы.
         /// </summary>
-        public bool CreateATM { get; set; }
+        public bool CreateAtm { get; set; }
 
         /// <summary>
         /// Возможность редактировать банкоматы.
         /// </summary>
-        public bool EditATM { get; set; }
+        public bool EditAtm { get; set; }
 
         /// <summary>
         /// Возможность удалять банкоматы.
         /// </summary>
-        public bool DeleteATM { get; set; }
+        public bool DeleteAtm { get; set; }
 
         /// <summary>
         /// Возможность создавать помещения.
@@ -183,9 +183,9 @@ namespace CountyRP.Services.Game.Infrastructure.Entities
             bool createLockerRoom,
             bool editLockerRoom,
             bool deleteLockerRoom,
-            bool createATM,
-            bool editATM,
-            bool deleteATM,
+            bool createAtm,
+            bool editAtm,
+            bool deleteAtm,
             bool createRoom,
             bool editRoom,
             bool deleteRoom
@@ -215,9 +215,9 @@ namespace CountyRP.Services.Game.Infrastructure.Entities
             CreateLockerRoom = createLockerRoom;
             EditLockerRoom = editLockerRoom;
             DeleteLockerRoom = deleteLockerRoom;
-            CreateATM = createATM;
-            EditATM = editATM;
-            DeleteATM = deleteATM;
+            CreateAtm = createAtm;
+            EditAtm = editAtm;
+            DeleteAtm = deleteAtm;
             CreateRoom = createRoom;
             EditRoom = editRoom;
             DeleteRoom = deleteRoom;

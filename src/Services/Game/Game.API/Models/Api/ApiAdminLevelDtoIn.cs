@@ -119,17 +119,17 @@
         /// <summary>
         /// Возможность создавать банкоматы.
         /// </summary>
-        public bool CreateATM { get; set; }
+        public bool CreateAtm { get; set; }
 
         /// <summary>
         /// Возможность редактировать банкоматы.
         /// </summary>
-        public bool EditATM { get; set; }
+        public bool EditAtm { get; set; }
 
         /// <summary>
         /// Возможность удалять банкоматы.
         /// </summary>
-        public bool DeleteATM { get; set; }
+        public bool DeleteAtm { get; set; }
 
         /// <summary>
         /// Возможность создавать помещения.

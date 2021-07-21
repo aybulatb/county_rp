@@ -3,13 +3,13 @@ using CountyRP.Services.Game.Infrastructure.Models;
 
 namespace CountyRP.Services.Game.Infrastructure.Converters
 {
-    public static class ATMDtoOutConverter
+    public static class AtmDtoOutConverter
     {
-        public static ATMDao ToDb(
-            ATMDtoOut source
+        public static AtmDao ToDb(
+            AtmDtoOut source
         )
         {
-            return new ATMDao(
+            return new AtmDao(
                 id: source.Id,
                 position: source.Position,
                 dimension: source.Dimension,

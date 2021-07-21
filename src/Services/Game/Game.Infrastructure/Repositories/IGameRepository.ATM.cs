@@ -5,12 +5,12 @@ namespace CountyRP.Services.Game.Infrastructure.Repositories
 {
     public partial interface IGameRepository
     {
-        public Task<ATMDtoOut> AddATMAsync(ATMDtoIn atmDtoIn);
+        public Task<AtmDtoOut> AddAtmAsync(AtmDtoIn atmDtoIn);
 
-        public Task<PagedFilterResultDtoOut<ATMDtoOut>> GetATMsByFilter(ATMFilterDtoIn filter);
+        public Task<PagedFilterResultDtoOut<AtmDtoOut>> GetAtmsByFilter(AtmFilterDtoIn filter);
 
-        public Task<ATMDtoOut> UpdateATMAsync(ATMDtoOut atmDtoOut);
+        public Task<AtmDtoOut> UpdateAtmAsync(AtmDtoOut atmDtoOut);
 
-        public Task DeleteATMByFilter(ATMFilterDtoIn filter);
+        public Task DeleteAtmByFilter(AtmFilterDtoIn filter);
     }
 }

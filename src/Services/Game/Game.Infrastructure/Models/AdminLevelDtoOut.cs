@@ -119,17 +119,17 @@
         /// <summary>
         /// Возможность создавать банкоматы.
         /// </summary>
-        public bool CreateATM { get; }
+        public bool CreateAtm { get; }
 
         /// <summary>
         /// Возможность редактировать банкоматы.
         /// </summary>
-        public bool EditATM { get; }
+        public bool EditAtm { get; }
 
         /// <summary>
         /// Возможность удалять банкоматы.
         /// </summary>
-        public bool DeleteATM { get; }
+        public bool DeleteAtm { get; }
 
         /// <summary>
         /// Возможность создавать помещения.
@@ -171,9 +171,9 @@
             bool createLockerRoom,
             bool editLockerRoom,
             bool deleteLockerRoom,
-            bool createATM,
-            bool editATM,
-            bool deleteATM,
+            bool createAtm,
+            bool editAtm,
+            bool deleteAtm,
             bool createRoom,
             bool editRoom,
             bool deleteRoom
@@ -203,9 +203,9 @@
             CreateLockerRoom = createLockerRoom;
             EditLockerRoom = editLockerRoom;
             DeleteLockerRoom = deleteLockerRoom;
-            CreateATM = createATM;
-            EditATM = editATM;
-            DeleteATM = deleteATM;
+            CreateAtm = createAtm;
+            EditAtm = editAtm;
+            DeleteAtm = deleteAtm;
             CreateRoom = createRoom;
             EditRoom = editRoom;
             DeleteRoom = deleteRoom;

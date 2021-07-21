@@ -34,9 +34,9 @@ namespace CountyRP.Services.Game.API.Converters
                 createLockerRoom: source.CreateLockerRoom,
                 editLockerRoom: source.EditLockerRoom,
                 deleteLockerRoom: source.DeleteLockerRoom,
-                createATM: source.CreateATM,
-                editATM: source.EditATM,
-                deleteATM: source.DeleteATM,
+                createAtm: source.CreateAtm,
+                editAtm: source.EditAtm,
+                deleteAtm: source.DeleteAtm,
                 createRoom: source.CreateRoom,
                 editRoom: source.EditRoom,
                 deleteRoom: source.DeleteRoom

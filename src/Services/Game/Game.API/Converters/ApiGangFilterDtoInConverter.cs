@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CountyRP.Services.Game.API.Controllers
+namespace CountyRP.Services.Game.API.Converters
 {
-    public class AtmController
+    public class ApiGangFilterDtoInConverter
     {
     }
 }

@@ -35,9 +35,9 @@ namespace CountyRP.Services.Game.Infrastructure.Migrations
                     CreateLockerRoom = table.Column<bool>(type: "bit", nullable: false),
                     EditLockerRoom = table.Column<bool>(type: "bit", nullable: false),
                     DeleteLockerRoom = table.Column<bool>(type: "bit", nullable: false),
-                    CreateATM = table.Column<bool>(type: "bit", nullable: false),
-                    EditATM = table.Column<bool>(type: "bit", nullable: false),
-                    DeleteATM = table.Column<bool>(type: "bit", nullable: false),
+                    CreateAtm = table.Column<bool>(type: "bit", nullable: false),
+                    EditAtm = table.Column<bool>(type: "bit", nullable: false),
+                    DeleteAtm = table.Column<bool>(type: "bit", nullable: false),
                     CreateRoom = table.Column<bool>(type: "bit", nullable: false),
                     EditRoom = table.Column<bool>(type: "bit", nullable: false),
                     DeleteRoom = table.Column<bool>(type: "bit", nullable: false)
@@ -87,7 +87,7 @@ namespace CountyRP.Services.Game.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ATMs",
+                name: "Atms",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -98,7 +98,7 @@ namespace CountyRP.Services.Game.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ATMs", x => x.Id);
+                    table.PrimaryKey("PK_Atms", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -337,7 +337,7 @@ namespace CountyRP.Services.Game.Infrastructure.Migrations
                 name: "Appearances");
 
             migrationBuilder.DropTable(
-                name: "ATMs");
+                name: "Atms");
 
             migrationBuilder.DropTable(
                 name: "Businesses");

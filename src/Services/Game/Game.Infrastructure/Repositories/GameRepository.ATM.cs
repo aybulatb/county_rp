@@ -10,20 +10,20 @@ namespace CountyRP.Services.Game.Infrastructure.Repositories
 {
     public partial class GameRepository
     {
-        public async Task<ATMDtoOut> AddATMAsync(ATMDtoIn atmDtoIn)
+        public async Task<AtmDtoOut> AddAtmAsync(AtmDtoIn atmDtoIn)
         {
-            var atmDao = ATMDtoInConverter.ToDb(atmDtoIn);
+            var atmDao = AtmDtoInConverter.ToDb(atmDtoIn);
 
-            await _gameDbContext.ATMs.AddAsync(atmDao);
+            await _gameDbContext.Atms.AddAsync(atmDao);
 
             await _gameDbContext.SaveChangesAsync();
 
-            return ATMDaoConverter.ToRepository(atmDao);
+            return AtmDaoConverter.ToRepository(atmDao);
         }
 
-        public async Task<PagedFilterResultDtoOut<ATMDtoOut>> GetATMsByFilter(ATMFilterDtoIn filter)
+        public async Task<PagedFilterResultDtoOut<AtmDtoOut>> GetAtmsByFilter(AtmFilterDtoIn filter)
         {
-            var query = GetATMsQuery(filter)
+            var query = GetAtmsQuery(filter)
                 .AsNoTracking();
 
             var allCount = await query.CountAsync();
@@ -34,57 +34,57 @@ namespace CountyRP.Services.Game.Infrastructure.Repositories
                         : allCount / filter.Count.Value + 1
                 : 1;
 
-            query = GetATMsQueryWithPaging(query, filter);
+            query = GetAtmsQueryWithPaging(query, filter);
 
-            var filteredATMs = await query
+            var filteredAtms = await query
                 .AsNoTracking()
                 .ToListAsync();
 
-            return new PagedFilterResultDtoOut<ATMDtoOut>(
+            return new PagedFilterResultDtoOut<AtmDtoOut>(
                 allCount: allCount,
                 page: filter.Page ?? 1,
                 maxPages: maxPages,
-                items: filteredATMs
-                    .Select(ATMDaoConverter.ToRepository)
+                items: filteredAtms
+                    .Select(AtmDaoConverter.ToRepository)
                 );
         }
 
-        public async Task<ATMDtoOut> UpdateATMAsync(ATMDtoOut atmDtoOut)
+        public async Task<AtmDtoOut> UpdateAtmAsync(AtmDtoOut atmDtoOut)
         {
-            var existedATMDao = await _gameDbContext
-                .ATMs
+            var existedAtmDao = await _gameDbContext
+                .Atms
                 .AsNoTracking()
                 .FirstAsync(atm => atm.Id == atmDtoOut.Id);
 
-            var editedATMDao = ATMDtoOutConverter.ToDb(
+            var editedAtmDao = AtmDtoOutConverter.ToDb(
                 source: atmDtoOut
             );
 
-            var atmDao = _gameDbContext.ATMs.Update(editedATMDao)?.Entity;
+            var atmDao = _gameDbContext.Atms.Update(editedAtmDao)?.Entity;
 
             await _gameDbContext.SaveChangesAsync();
 
-            return ATMDaoConverter.ToRepository(atmDao);
+            return AtmDaoConverter.ToRepository(atmDao);
         }
 
-        public async Task DeleteATMByFilter(ATMFilterDtoIn filter)
+        public async Task DeleteAtmByFilter(AtmFilterDtoIn filter)
         {
-            var query = GetATMsQuery(filter)
+            var query = GetAtmsQuery(filter)
                 .AsNoTracking();
 
-            query = GetATMsQueryWithPaging(query, filter);
+            query = GetAtmsQueryWithPaging(query, filter);
 
             _gameDbContext
-                .ATMs
+                .Atms
                 .RemoveRange(query);
 
             await _gameDbContext.SaveChangesAsync();
         }
 
-        private IQueryable<ATMDao> GetATMsQuery(ATMFilterDtoIn filter)
+        private IQueryable<AtmDao> GetAtmsQuery(AtmFilterDtoIn filter)
         {
             return _gameDbContext
-               .ATMs
+               .Atms
                .Where(
                    atm =>
                        (filter.Ids == null || filter.Ids.Contains(atm.Id)) &&
@@ -93,7 +93,7 @@ namespace CountyRP.Services.Game.Infrastructure.Repositories
                .OrderBy(atm => atm.Id);
         }
 
-        private IQueryable<ATMDao> GetATMsQueryWithPaging(IQueryable<ATMDao> query, ATMFilterDtoIn filter)
+        private IQueryable<AtmDao> GetAtmsQueryWithPaging(IQueryable<AtmDao> query, AtmFilterDtoIn filter)
         {
             if (filter.Page.HasValue && filter.Count.HasValue && filter.Count.Value > 0 && filter.Page.Value > 0)
             {

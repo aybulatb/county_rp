@@ -1,6 +1,6 @@
 ﻿namespace CountyRP.Services.Game.API.Models.Api
 {
-    public class ApiATMDtoOut
+    public class ApiAtmDtoOut
     {
         public int Id { get; }
 
@@ -10,7 +10,7 @@
 
         public int BusinessId { get; }
 
-        public ApiATMDtoOut(
+        public ApiAtmDtoOut(
             int id,
             float[] position,
             uint dimension,

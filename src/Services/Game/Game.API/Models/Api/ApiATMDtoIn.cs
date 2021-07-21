@@ -1,6 +1,6 @@
 ﻿namespace CountyRP.Services.Game.API.Models.Api
 {
-    public class ApiATMDtoIn
+    public class ApiAtmDtoIn
     {
         public float[] Position { get; set; }
 

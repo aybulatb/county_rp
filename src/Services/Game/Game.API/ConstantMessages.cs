@@ -34,8 +34,52 @@
 
         public static string PersonAlreadyExistedWithName = "Игрок с таким именем уже существует";
 
+        // Админские уровни
+
+        public static string AdminLevelNotFoundById = "Админский уровень с ID {0} не найден";
+
+        // Внешности
+
+        public static string AppearanceNotFoundById = "Внешность с ID {0} не найдена";
+
+        // Банкоматы
+
+        public static string AtmNotFoundById = "Банкомат с ID {0} не найден";
+
+        // Бизнесы
+
+        public static string BusinessNotFoundById = "Бизнес с ID {0} не найден";
+
+        // Фракции
+
+        public static string FactionNotFoundById = "Фракция с ID {0} не найдена";
+
+        // Группировки
+
+        public static string GangNotFoundById = "Группировка с ID {0} не найдена";
+
+        // Гаражи
+
+        public static string GarageNotFoundById = "Гараж с ID {0} не найден";
+
+        // Дома
+
+        public static string HouseNotFoundById = "Дом с ID {0} не найден";
+
+        // Раздевалки
+
+        public static string LockerRoomNotFoundById = "Раздевалка с ID {0} не найдена";
+
+        // Помещения
+
+        public static string RoomNotFoundById = "Помещение с ID {0} не найдено";
+
+        // Телепорты
+
+        public static string TeleportNotFoundById = "Телепорт с ID {0} не найден";
+
         // Транспортные средства
 
-        public static string VehicleNotFoundById = "Транспортное средство с ID {0} не найден";
+        public static string VehicleNotFoundById = "Транспортное средство с ID {0} не найдено";
     }
 }

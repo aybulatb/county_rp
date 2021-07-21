@@ -19,7 +19,7 @@ namespace CountyRP.Services.Game.Infrastructure.Migrations
                 .HasAnnotation("ProductVersion", "5.0.7")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("CountyRP.Services.Game.Infrastructure.Entities.ATMDao", b =>
+            modelBuilder.Entity("CountyRP.Services.Game.Infrastructure.Entities.AtmDao", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -38,7 +38,7 @@ namespace CountyRP.Services.Game.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ATMs");
+                    b.ToTable("Atms");
                 });
 
             modelBuilder.Entity("CountyRP.Services.Game.Infrastructure.Entities.AdminLevelDao", b =>
@@ -50,7 +50,7 @@ namespace CountyRP.Services.Game.Infrastructure.Migrations
                     b.Property<bool>("Ban")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("CreateATM")
+                    b.Property<bool>("CreateAtm")
                         .HasColumnType("bit");
 
                     b.Property<bool>("CreateBusiness")
@@ -77,7 +77,7 @@ namespace CountyRP.Services.Game.Infrastructure.Migrations
                     b.Property<bool>("CreateVehicle")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("DeleteATM")
+                    b.Property<bool>("DeleteAtm")
                         .HasColumnType("bit");
 
                     b.Property<bool>("DeleteBusiness")
@@ -104,7 +104,7 @@ namespace CountyRP.Services.Game.Infrastructure.Migrations
                     b.Property<bool>("DeleteVehicle")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("EditATM")
+                    b.Property<bool>("EditAtm")
                         .HasColumnType("bit");
 
                     b.Property<bool>("EditBusiness")
