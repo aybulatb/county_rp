@@ -28,9 +28,9 @@ namespace CountyRP.Services.Game.Infrastructure.Entities
 
         public uint ExitDimension { get; set; }
 
-        public int OwnerId { get; set; }
+        public int? OwnerId { get; set; }
 
-        public int GarageId { get; set; }
+        public int? GarageId { get; set; }
 
         /// <summary>
         /// Состояние дверей.
@@ -78,8 +78,8 @@ namespace CountyRP.Services.Game.Infrastructure.Entities
             uint entranceDimension,
             float[] exitPosition,
             uint exitDimension,
-            int ownerId,
-            int garageId,
+            int? ownerId,
+            int? garageId,
             bool lockDoors,
             int price,
             float[] safePosition,

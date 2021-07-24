@@ -27,7 +27,7 @@ namespace CountyRP.Services.Game.API.Models.Api
 
         public byte ColorBlip { get; }
 
-        public int GangId { get; }
+        public int? GangId { get; }
 
         public bool LockDoors { get; }
 
@@ -50,7 +50,7 @@ namespace CountyRP.Services.Game.API.Models.Api
             int[] colorMarker,
             int typeBlip,
             byte colorBlip,
-            int gangId,
+            int? gangId,
             bool lockDoors,
             int price,
             DateTimeOffset lastPaymentDate,

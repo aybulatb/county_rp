@@ -88,7 +88,7 @@ namespace CountyRP.Services.Game.Infrastructure.Repositories
                .Where(
                    atm =>
                        (filter.Ids == null || filter.Ids.Contains(atm.Id)) &&
-                       (filter.BusinessIds == null || filter.BusinessIds.Contains(atm.BusinessId))
+                       (filter.BusinessIds == null || filter.BusinessIds.Contains(atm.BusinessId.Value))
                )
                .OrderBy(atm => atm.Id);
         }

@@ -88,8 +88,8 @@ namespace CountyRP.Services.Game.Infrastructure.Repositories
                .Where(
                    house =>
                        (filter.Ids == null || filter.Ids.Contains(house.Id)) &&
-                       (filter.OwnerIds == null || filter.OwnerIds.Contains(house.OwnerId)) &&
-                       (filter.GarageIds == null || filter.GarageIds.Contains(house.GarageId))
+                       (filter.OwnerIds == null || filter.OwnerIds.Contains(house.OwnerId.Value)) &&
+                       (filter.GarageIds == null || filter.GarageIds.Contains(house.GarageId.Value))
                )
                .OrderBy(house => house.Id);
         }

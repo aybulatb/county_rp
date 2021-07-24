@@ -29,7 +29,7 @@ namespace CountyRP.Services.Game.Infrastructure.Entities
 
         public double Fuel { get; set; }
 
-        public int OwnerId { get; set; }
+        public int? OwnerId { get; set; }
 
         [MaxLength(16)]
         public string FactionId { get; set; }
@@ -58,7 +58,7 @@ namespace CountyRP.Services.Game.Infrastructure.Entities
             int color1,
             int color2,
             double fuel,
-            int ownerId,
+            int? ownerId,
             string factionId,
             bool lockDoors,
             string licensePlate

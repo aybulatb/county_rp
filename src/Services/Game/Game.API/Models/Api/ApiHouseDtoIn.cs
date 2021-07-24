@@ -10,9 +10,9 @@
 
         public uint ExitDimension { get; set; }
 
-        public int OwnerId { get; set; }
+        public int? OwnerId { get; set; }
 
-        public int GarageId { get; set; }
+        public int? GarageId { get; set; }
 
         /// <summary>
         /// Состояние дверей.

@@ -90,7 +90,7 @@ namespace CountyRP.Services.Game.Infrastructure.Repositories
                        (filter.Ids == null || filter.Ids.Contains(room.Id)) &&
                        (filter.Name == null || filter.Name == room.Name) &&
                        (filter.NameLike == null || room.Name.Contains(filter.NameLike)) &&
-                       (filter.GangIds == null || filter.GangIds.Contains(room.GangId)) &&
+                       (filter.GangIds == null || filter.GangIds.Contains(room.GangId.Value)) &&
                        (filter.StartLastPaymentDate == null || room.LastPaymentDate >= filter.StartLastPaymentDate) &&
                        (filter.FinishLastPaymentDate == null || room.LastPaymentDate <= filter.FinishLastPaymentDate)
                )

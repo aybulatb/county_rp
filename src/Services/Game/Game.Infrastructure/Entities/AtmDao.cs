@@ -19,7 +19,7 @@ namespace CountyRP.Services.Game.Infrastructure.Entities
 
         public uint Dimension { get; set; }
 
-        public int BusinessId { get; set; }
+        public int? BusinessId { get; set; }
 
         [Column("Position")]
         public string _Position { get; set; }
@@ -35,7 +35,7 @@ namespace CountyRP.Services.Game.Infrastructure.Entities
             int id,
             float[] position,
             uint dimension,
-            int businessId
+            int? businessId
         )
         {
             Id = id;

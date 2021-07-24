@@ -6,6 +6,6 @@
 
         public uint Dimension { get; set; }
 
-        public int BusinessId { get; set; }
+        public int? BusinessId { get; set; }
     }
 }

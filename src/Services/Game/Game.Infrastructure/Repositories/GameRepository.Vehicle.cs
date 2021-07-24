@@ -89,7 +89,7 @@ namespace CountyRP.Services.Game.Infrastructure.Repositories
                    vehicle =>
                        (filter.Ids == null || filter.Ids.Contains(vehicle.Id)) &&
                        (filter.Models == null || filter.Models.Contains(vehicle.Model)) &&
-                       (filter.OwnerIds == null || filter.OwnerIds.Contains(vehicle.OwnerId)) &&
+                       (filter.OwnerIds == null || filter.OwnerIds.Contains(vehicle.OwnerId.Value)) &&
                        (filter.FactionIds == null || filter.FactionIds.Contains(vehicle.FactionId)) &&
                        (filter.LicensePlate == null || filter.LicensePlate == vehicle.LicensePlate) &&
                        (filter.LicensePlateLike == null || vehicle.LicensePlate.Contains(filter.LicensePlateLike))

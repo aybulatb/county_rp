@@ -25,11 +25,11 @@
 
         public string FactionId { get; set; }
 
-        public int GangId { get; set; }
+        public int? GangId { get; set; }
 
-        public int RoomId { get; set; }
+        public int? RoomId { get; set; }
 
-        public int BusinessId { get; set; }
+        public int? BusinessId { get; set; }
 
         public bool LockDoors { get; set; }
     }

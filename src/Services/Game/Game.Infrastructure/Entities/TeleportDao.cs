@@ -50,11 +50,11 @@ namespace CountyRP.Services.Game.Infrastructure.Entities
         [MaxLength(16)]
         public string FactionId { get; set; }
 
-        public int GangId { get; set; }
+        public int? GangId { get; set; }
 
-        public int RoomId { get; set; }
+        public int? RoomId { get; set; }
 
-        public int BusinessId { get; set; }
+        public int? BusinessId { get; set; }
 
         public bool LockDoors { get; set; }
 
@@ -86,9 +86,9 @@ namespace CountyRP.Services.Game.Infrastructure.Entities
             int typeBlip,
             byte colorBlip,
             string factionId,
-            int gangId,
-            int roomId,
-            int businessId,
+            int? gangId,
+            int? roomId,
+            int? businessId,
             bool lockDoors
         )
         {

@@ -25,11 +25,11 @@
 
         public string FactionId { get; }
 
-        public int GangId { get; }
+        public int? GangId { get; }
 
-        public int RoomId { get; }
+        public int? RoomId { get; }
 
-        public int BusinessId { get; }
+        public int? BusinessId { get; }
 
         public bool LockDoors { get; }
 
@@ -44,9 +44,9 @@
             int typeBlip,
             byte colorBlip,
             string factionId,
-            int gangId,
-            int roomId,
-            int businessId,
+            int? gangId,
+            int? roomId,
+            int? businessId,
             bool lockDoors
         )
         {

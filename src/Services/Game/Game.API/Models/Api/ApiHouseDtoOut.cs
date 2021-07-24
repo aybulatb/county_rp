@@ -12,9 +12,9 @@
 
         public uint ExitDimension { get; }
 
-        public int OwnerId { get; }
+        public int? OwnerId { get; }
 
-        public int GarageId { get; }
+        public int? GarageId { get; }
 
         /// <summary>
         /// Состояние дверей.
@@ -41,8 +41,8 @@
             uint entranceDimension,
             float[] exitPosition,
             uint exitDimension,
-            int ownerId,
-            int garageId,
+            int? ownerId,
+            int? garageId,
             bool lockDoors,
             int price,
             float[] safePosition,

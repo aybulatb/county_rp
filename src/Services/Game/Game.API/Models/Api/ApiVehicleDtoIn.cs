@@ -16,7 +16,7 @@
 
         public double Fuel { get; set; }
 
-        public int OwnerId { get; set; }
+        public int? OwnerId { get; set; }
 
         public string FactionId { get; set; }
 

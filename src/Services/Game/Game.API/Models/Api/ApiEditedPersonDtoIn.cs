@@ -16,7 +16,7 @@ namespace CountyRP.Services.Game.API.Models.Api
 
         public string FactionId { get; set; }
 
-        public int GangId { get; set; }
+        public int? GangId { get; set; }
 
         public bool Leader { get; set; }
 

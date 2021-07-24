@@ -48,7 +48,7 @@ namespace CountyRP.Services.Game.Infrastructure.Entities
 
         public byte ColorBlip { get; set; }
 
-        public int GangId { get; set; }
+        public int? GangId { get; set; }
 
         public bool LockDoors { get; set; }
 
@@ -95,7 +95,7 @@ namespace CountyRP.Services.Game.Infrastructure.Entities
             int[] colorMarker,
             int typeBlip,
             byte colorBlip,
-            int gangId,
+            int? gangId,
             bool lockDoors,
             int price,
             DateTimeOffset lastPaymentDate,

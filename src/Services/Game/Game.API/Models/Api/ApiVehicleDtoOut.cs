@@ -18,7 +18,7 @@
 
         public double Fuel { get; }
 
-        public int OwnerId { get; }
+        public int? OwnerId { get; }
 
         public string FactionId { get; }
 
@@ -35,7 +35,7 @@
             int color1,
             int color2,
             double fuel,
-            int ownerId,
+            int? ownerId,
             string factionId,
             bool lockDoors,
             string licensePlate

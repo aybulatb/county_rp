@@ -14,7 +14,7 @@
 
         public uint ExitDimension { get; }
 
-        public int OwnerId { get; }
+        public int? OwnerId { get; }
 
         public bool LockDoors { get; }
 
@@ -32,7 +32,7 @@
             uint entranceDimension,
             float[] exitPosition,
             uint exitDimension,
-            int ownerId,
+            int? ownerId,
             bool lockDoors,
             BusinessTypeDto type,
             int price

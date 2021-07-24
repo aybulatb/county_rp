@@ -16,7 +16,7 @@ namespace CountyRP.Services.Game.Infrastructure.Models
 
         public string FactionId { get; }
 
-        public int GangId { get; }
+        public int? GangId { get; }
 
         public bool Leader { get; }
 
@@ -35,7 +35,7 @@ namespace CountyRP.Services.Game.Infrastructure.Models
             DateTimeOffset lastVisitDate,
             string adminLevelId,
             string factionId,
-            int gangId,
+            int? gangId,
             bool leader,
             int rank,
             float[] position,

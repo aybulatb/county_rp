@@ -91,9 +91,9 @@ namespace CountyRP.Services.Game.Infrastructure.Repositories
                        (filter.Name == null || filter.Name == teleport.Name) &&
                        (filter.NameLike == null || teleport.Name.Contains(filter.NameLike)) &&
                        (filter.FactionIds == null || filter.FactionIds.Contains(teleport.FactionId)) &&
-                       (filter.GangIds == null || filter.GangIds.Contains(teleport.GangId)) &&
-                       (filter.RoomIds == null || filter.RoomIds.Contains(teleport.RoomId)) &&
-                       (filter.BusinessIds == null || filter.BusinessIds.Contains(teleport.BusinessId))
+                       (filter.GangIds == null || filter.GangIds.Contains(teleport.GangId.Value)) &&
+                       (filter.RoomIds == null || filter.RoomIds.Contains(teleport.RoomId.Value)) &&
+                       (filter.BusinessIds == null || filter.BusinessIds.Contains(teleport.BusinessId.Value))
                )
                .OrderBy(teleport => teleport.Id);
         }

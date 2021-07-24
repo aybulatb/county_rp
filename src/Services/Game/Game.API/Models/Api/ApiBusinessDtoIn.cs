@@ -12,7 +12,7 @@
 
         public uint ExitDimension { get; set; }
 
-        public int OwnerId { get; set; }
+        public int? OwnerId { get; set; }
 
         public bool LockDoors { get; set; }
 

@@ -96,7 +96,7 @@ namespace CountyRP.Services.Game.Infrastructure.Repositories
                        (filter.FinishLastVisitDate == null || person.LastVisitDate > filter.FinishLastVisitDate) &&
                        (filter.AdminLevelIds == null || filter.AdminLevelIds.Contains(person.AdminLevelId)) &&
                        (filter.FactionIds == null || filter.FactionIds.Contains(person.FactionId)) &&
-                       (filter.GangIds == null || filter.GangIds.Contains(person.GangId)) &&
+                       (filter.GangIds == null || filter.GangIds.Contains(person.GangId.Value)) &&
                        (filter.Leader == null || person.Leader == filter.Leader) &&
                        (filter.Rank == null || person.Rank == filter.Rank)
                )

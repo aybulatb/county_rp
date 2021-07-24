@@ -31,7 +31,7 @@ namespace CountyRP.Services.Game.Infrastructure.Entities
 
         public uint ExitDimension { get; set; }
 
-        public int OwnerId { get; set; }
+        public int? OwnerId { get; set; }
 
         public bool LockDoors { get; set; }
 
@@ -62,7 +62,7 @@ namespace CountyRP.Services.Game.Infrastructure.Entities
             uint entranceDimension,
             float[] exitPosition,
             uint exitDimension,
-            int ownerId,
+            int? ownerId,
             bool lockDoors,
             BusinessTypeDao type,
             int price

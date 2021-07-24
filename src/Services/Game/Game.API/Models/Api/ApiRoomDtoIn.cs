@@ -25,7 +25,7 @@ namespace CountyRP.Services.Game.API.Models.Api
 
         public byte ColorBlip { get; set; }
 
-        public int GangId { get; set; }
+        public int? GangId { get; set; }
 
         public bool LockDoors { get; set; }
 

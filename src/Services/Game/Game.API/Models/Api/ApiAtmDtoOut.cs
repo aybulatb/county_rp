@@ -8,13 +8,13 @@
 
         public uint Dimension { get; }
 
-        public int BusinessId { get; }
+        public int? BusinessId { get; }
 
         public ApiAtmDtoOut(
             int id,
             float[] position,
             uint dimension,
-            int businessId
+            int? businessId
         )
         {
             Id = id;

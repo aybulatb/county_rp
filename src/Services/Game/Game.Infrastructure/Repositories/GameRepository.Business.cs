@@ -98,7 +98,7 @@ namespace CountyRP.Services.Game.Infrastructure.Repositories
                        (filter.Ids == null || filter.Ids.Contains(business.Id)) &&
                        (filter.Name == null || filter.Name == business.Name) &&
                        (filter.NameLike == null || business.Name.Contains(filter.NameLike)) &&
-                       (filter.OwnerIds == null || filter.OwnerIds.Contains(business.OwnerId)) &&
+                       (filter.OwnerIds == null || filter.OwnerIds.Contains(business.OwnerId.Value)) &&
                        (types == null || types.Contains(business.Type))
                )
                .OrderBy(business => business.Id);
