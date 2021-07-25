@@ -10,6 +10,8 @@
 
         public static string InvalidPageNumber = "Номер страницы должен быть 1 и выше";
 
+        public static string InvalidPositionCoordinatesCount = "Количество координат позиции должно быть равно 3";
+
         // Игроки
 
         public static string PlayerNotFoundById = "Игрок с ID {0} не найден";
@@ -81,5 +83,11 @@
         // Транспортные средства
 
         public static string VehicleNotFoundById = "Транспортное средство с ID {0} не найдено";
+
+        public static string VehicleOwnerNotFoundById = "Для привязки транспортного средства не найден персонаж с ID {0}";
+
+        public static string VehicleFactionNotFoundById = "Для привязки транспортного средства не найдена фракция с ID {0}";
+
+        public static string VehicleInvalidLicensePlate = "Номер транспортного средства должен соответствовать формату 1AAA111";
     }
 }

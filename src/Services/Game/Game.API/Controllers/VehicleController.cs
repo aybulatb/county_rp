@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace CountyRP.Services.Game.API.Controllers
@@ -28,10 +29,17 @@ namespace CountyRP.Services.Game.API.Controllers
 
         [HttpPost]
         [ProducesResponseType(typeof(ApiVehicleDtoOut), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Create(
             [FromBody] ApiVehicleDtoIn apiVehicleDtoIn
         )
         {
+            var checkResult = await CheckInputCreatedOrEditedData(apiVehicleDtoIn);
+            if (checkResult != null)
+            {
+                return checkResult;
+            }
+
             var vehicleDtoIn = ApiVehicleDtoInConverter.ToRepository(apiVehicleDtoIn);
 
             var vehicleDtoOut = await _gameRepository.AddVehicleAsync(vehicleDtoIn);
@@ -44,30 +52,25 @@ namespace CountyRP.Services.Game.API.Controllers
 
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(VehicleDtoOut), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById(
             int id
         )
         {
             var filteredVehicles = await _gameRepository.GetVehiclesByFilter(
-                new VehicleFilterDtoIn(
-                    count: 1,
-                    page: 1,
-                    ids: new[] { id },
-                    models: null,
-                    ownerIds: null,
-                    factionIds: null,
-                    licensePlate: null,
-                    licensePlateLike: null
-                )
+                VehicleIdConverter.ToVehicleFilterDtoIn(id)
             );
 
             if (!filteredVehicles.Items.Any())
             {
                 return NotFound(
-                    string.Format(
-                        ConstantMessages.VehicleNotFoundById,
-                        id
+                    new ApiErrorResponseDtoOut(
+                        code: ApiErrorCodeDto.VehicleNotFoundById,
+                        message:
+                            string.Format(
+                                ConstantMessages.VehicleNotFoundById,
+                                id
+                            )
                     )
                 );
             }
@@ -81,7 +84,7 @@ namespace CountyRP.Services.Game.API.Controllers
 
         [HttpGet("FilterBy")]
         [ProducesResponseType(typeof(ApiPagedFilterResultDtoOut<ApiVehicleDtoOut>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> FilterBy(
             [FromQuery] ApiVehicleFilterDtoIn apiVehicleFilterDtoIn
         )
@@ -89,13 +92,19 @@ namespace CountyRP.Services.Game.API.Controllers
             if (apiVehicleFilterDtoIn.Count < 1)
             {
                 return BadRequest(
-                    ConstantMessages.InvalidCountItemPerPage
+                    new ApiErrorResponseDtoOut(
+                        code: ApiErrorCodeDto.InvalidCountItemPerPage,
+                        message: ConstantMessages.InvalidCountItemPerPage
+                    )
                 );
             }
             if (apiVehicleFilterDtoIn.Page < 1)
             {
                 return BadRequest(
-                    ConstantMessages.InvalidPageNumber
+                    new ApiErrorResponseDtoOut(
+                        code: ApiErrorCodeDto.InvalidPageNumber,
+                        message: ConstantMessages.InvalidPageNumber
+                    )
                 );
             }
 
@@ -110,34 +119,35 @@ namespace CountyRP.Services.Game.API.Controllers
 
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(ApiVehicleDtoOut), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Edit(
             int id,
             ApiVehicleDtoIn apiVehicleDtoIn
         )
         {
             var filteredVehicles = await _gameRepository.GetVehiclesByFilter(
-                new VehicleFilterDtoIn(
-                    count: 1,
-                    page: 1,
-                    ids: new[] { id },
-                    models: null,
-                    ownerIds: null,
-                    factionIds: null,
-                    licensePlate: null,
-                    licensePlateLike: null
-                )
+                VehicleIdConverter.ToVehicleFilterDtoIn(id)
             );
 
             if (filteredVehicles.AllCount == 0)
             {
                 return NotFound(
-                    string.Format(
-                        ConstantMessages.VehicleNotFoundById,
-                        id
+                    new ApiErrorResponseDtoOut(
+                        code: ApiErrorCodeDto.VehicleNotFoundById,
+                        message:
+                            string.Format(
+                                ConstantMessages.VehicleNotFoundById,
+                                id
+                            )
                     )
                 );
+            }
+
+            var checkResult = await CheckInputCreatedOrEditedData(apiVehicleDtoIn);
+            if (checkResult != null)
+            {
+                return checkResult;
             }
 
             var vehicleDtoOut = ApiVehicleDtoInConverter.ToDtoOut(
@@ -154,28 +164,23 @@ namespace CountyRP.Services.Game.API.Controllers
 
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
-            var filter = new VehicleFilterDtoIn(
-                count: 1,
-                page: 1,
-                ids: new[] { id },
-                models: null,
-                ownerIds: null,
-                factionIds: null,
-                licensePlate: null,
-                licensePlateLike: null
-            );
+            var filter = VehicleIdConverter.ToVehicleFilterDtoIn(id);
 
             var filteredVehicles = await _gameRepository.GetVehiclesByFilter(filter);
 
             if (!filteredVehicles.Items.Any())
             {
                 return NotFound(
-                    string.Format(
-                        ConstantMessages.VehicleNotFoundById,
-                        id
+                    new ApiErrorResponseDtoOut(
+                        code: ApiErrorCodeDto.VehicleNotFoundById,
+                        message:
+                            string.Format(
+                                ConstantMessages.VehicleNotFoundById,
+                                id
+                            )
                     )
                 );
             }
@@ -183,6 +188,75 @@ namespace CountyRP.Services.Game.API.Controllers
             await _gameRepository.DeleteVehicleByFilter(filter);
 
             return Ok();
+        }
+
+        private async Task<IActionResult> CheckInputCreatedOrEditedData(
+            ApiVehicleDtoIn apiVehicleDtoIn
+        )
+        {
+            if (apiVehicleDtoIn.Position?.Length != 3)
+            {
+                return BadRequest(
+                    new ApiErrorResponseDtoOut(
+                        code: ApiErrorCodeDto.InvalidPositionCoordinatesCount,
+                        message: ConstantMessages.InvalidPositionCoordinatesCount
+                    )
+                );
+            }
+
+            if (apiVehicleDtoIn.OwnerId.HasValue)
+            {
+                var existedOwners = await _gameRepository.GetPersonsByFilter(
+                    PersonIdConverter.ToPersonFilterDtoIn(apiVehicleDtoIn.OwnerId.Value)
+                );
+
+                if (existedOwners.AllCount == 0)
+                {
+                    return BadRequest(
+                        new ApiErrorResponseDtoOut(
+                            code: ApiErrorCodeDto.VehicleOwnerNotFoundById,
+                            message:
+                                string.Format(
+                                    ConstantMessages.VehicleOwnerNotFoundById,
+                                    apiVehicleDtoIn.OwnerId
+                                )
+                        )
+                    );
+                }
+            }
+
+            if (apiVehicleDtoIn.FactionId != null)
+            {
+                var existedFactions = await _gameRepository.GetFactionsByFilter(
+                    FactionIdConverter.ToFactionFilterDtoIn(apiVehicleDtoIn.FactionId)
+                );
+
+                if (existedFactions.AllCount == 0)
+                {
+                    return BadRequest(
+                        new ApiErrorResponseDtoOut(
+                            code: ApiErrorCodeDto.VehicleFactionNotFoundById,
+                            message:
+                                string.Format(
+                                    ConstantMessages.VehicleFactionNotFoundById,
+                                    apiVehicleDtoIn.FactionId
+                                )
+                        )
+                    );
+                }
+            }
+
+            if (!Regex.IsMatch(apiVehicleDtoIn.LicensePlate, @"^\d[A-Z]{3}\d{3}$"))
+            {
+                return BadRequest(
+                    new ApiErrorResponseDtoOut(
+                        code: ApiErrorCodeDto.VehicleInvalidLicensePlate,
+                        message: ConstantMessages.VehicleInvalidLicensePlate
+                    )
+                );
+            }
+
+            return null;
         }
     }
 }
