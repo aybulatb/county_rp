@@ -12,6 +12,8 @@
 
         public static string InvalidPositionCoordinatesCount = "Количество координат позиции должно быть равно 3";
 
+        public static string InvalidMarkerColorsCount = "Количество цветов маркера должно быть равно 3";
+
         // Игроки
 
         public static string PlayerNotFoundById = "Игрок с ID {0} не найден";
@@ -76,9 +78,19 @@
 
         public static string RoomNotFoundById = "Помещение с ID {0} не найдено";
 
+        public static string RoomGangNotFoundById = "Для привязки помещения не найдена группировка с ID {0}";
+
         // Телепорты
 
         public static string TeleportNotFoundById = "Телепорт с ID {0} не найден";
+
+        public static string TeleportFactionNotFoundById = "Для привязки телепорта не найдена фракция с ID {0}";
+
+        public static string TeleportGangNotFoundById = "Для привязки телепорта не найдена группировка с ID {0}";
+
+        public static string TeleportRoomNotFoundById = "Для привязки телепорта не найдено помещение с ID {0}";
+
+        public static string TeleportBusinessNotFoundById = "Для привязки телепорта не найден бизнес с ID {0}";
 
         // Транспортные средства
 

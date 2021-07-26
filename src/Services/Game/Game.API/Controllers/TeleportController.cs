@@ -32,6 +32,12 @@ namespace CountyRP.Services.Game.API.Controllers
             [FromBody] ApiTeleportDtoIn apiTeleportDtoIn
         )
         {
+            var checkedResult = await CheckInputCreatedOrEditedData(apiTeleportDtoIn);
+            if (checkedResult != null)
+            {
+                return checkedResult;
+            }
+
             var teleportDtoIn = ApiTeleportDtoInConverter.ToRepository(apiTeleportDtoIn);
 
             var teleportDtoOut = await _gameRepository.AddTeleportAsync(teleportDtoIn);
@@ -50,17 +56,7 @@ namespace CountyRP.Services.Game.API.Controllers
         )
         {
             var filteredTeleports = await _gameRepository.GetTeleportsByFilter(
-                new TeleportFilterDtoIn(
-                    count: 1,
-                    page: 1,
-                    ids: new[] { id },
-                    name: null,
-                    nameLike: null,
-                    factionIds: null,
-                    gangIds: null,
-                    roomIds: null,
-                    businessIds: null
-                )
+                TeleportIdConverter.ToTeleportFilterDtoIn(id)
             );
 
             if (!filteredTeleports.Items.Any())
@@ -119,17 +115,7 @@ namespace CountyRP.Services.Game.API.Controllers
         )
         {
             var filteredTeleports = await _gameRepository.GetTeleportsByFilter(
-                new TeleportFilterDtoIn(
-                    count: 1,
-                    page: 1,
-                    ids: new[] { id },
-                    name: null,
-                    nameLike: null,
-                    factionIds: null,
-                    gangIds: null,
-                    roomIds: null,
-                    businessIds: null
-                )
+                TeleportIdConverter.ToTeleportFilterDtoIn(id)
             );
 
             if (filteredTeleports.AllCount == 0)
@@ -140,6 +126,12 @@ namespace CountyRP.Services.Game.API.Controllers
                         id
                     )
                 );
+            }
+
+            var checkedResult = await CheckInputCreatedOrEditedData(apiTeleportDtoIn);
+            if (checkedResult != null)
+            {
+                return checkedResult;
             }
 
             var teleportDtoOut = ApiTeleportDtoInConverter.ToDtoOutRepository(
@@ -159,17 +151,7 @@ namespace CountyRP.Services.Game.API.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
-            var filter = new TeleportFilterDtoIn(
-                count: 1,
-                page: 1,
-                ids: new[] { id },
-                name: null,
-                nameLike: null,
-                factionIds: null,
-                gangIds: null,
-                roomIds: null,
-                businessIds: null
-            );
+            var filter = TeleportIdConverter.ToTeleportFilterDtoIn(id);
 
             var filteredTeleports = await _gameRepository.GetTeleportsByFilter(filter);
 
@@ -186,6 +168,125 @@ namespace CountyRP.Services.Game.API.Controllers
             await _gameRepository.DeleteTeleportByFilter(filter);
 
             return Ok();
+        }
+
+        private async Task<IActionResult> CheckInputCreatedOrEditedData(ApiTeleportDtoIn apiTeleportDtoIn)
+        {
+            if (apiTeleportDtoIn.EntrancePosition?.Length != 3)
+            {
+                return BadRequest(
+                    new ApiErrorResponseDtoOut(
+                        code: ApiErrorCodeDto.InvalidPositionCoordinatesCount,
+                        message: ConstantMessages.InvalidPositionCoordinatesCount
+                    )
+                );
+            }
+
+            if (apiTeleportDtoIn.ExitPosition?.Length != 3)
+            {
+                return BadRequest(
+                    new ApiErrorResponseDtoOut(
+                        code: ApiErrorCodeDto.InvalidPositionCoordinatesCount,
+                        message: ConstantMessages.InvalidPositionCoordinatesCount
+                    )
+                );
+            }
+
+            if (apiTeleportDtoIn.ColorMarker?.Length != 3)
+            {
+                return BadRequest(
+                    new ApiErrorResponseDtoOut(
+                        code: ApiErrorCodeDto.InvalidMarkerColorsCount,
+                        message: ConstantMessages.InvalidMarkerColorsCount
+                    )
+                );
+            }
+
+            if (apiTeleportDtoIn.FactionId != null)
+            {
+                var existedFactions = await _gameRepository.GetFactionsByFilter(
+                    FactionIdConverter.ToFactionFilterDtoIn(apiTeleportDtoIn.FactionId)
+                );
+
+                if (existedFactions.AllCount == 0)
+                {
+                    return BadRequest(
+                        new ApiErrorResponseDtoOut(
+                            code: ApiErrorCodeDto.TeleportFactionNotFoundById,
+                            message:
+                                string.Format(
+                                    ConstantMessages.TeleportFactionNotFoundById,
+                                    apiTeleportDtoIn.FactionId
+                                )
+                        )
+                    );
+                }
+            }
+
+            if (apiTeleportDtoIn.GangId.HasValue)
+            {
+                var existedGangs = await _gameRepository.GetGangsByFilter(
+                    GangIdConverter.ToGangFilterDtoIn(apiTeleportDtoIn.GangId.Value)
+                );
+
+                if (existedGangs.AllCount == 0)
+                {
+                    return BadRequest(
+                        new ApiErrorResponseDtoOut(
+                            code: ApiErrorCodeDto.TeleportGangNotFoundById,
+                            message:
+                                string.Format(
+                                    ConstantMessages.TeleportGangNotFoundById,
+                                    apiTeleportDtoIn.GangId
+                                )
+                        )
+                    );
+                }
+            }
+
+            if (apiTeleportDtoIn.RoomId.HasValue)
+            {
+                var existedRooms = await _gameRepository.GetRoomsByFilter(
+                    RoomIdConverter.ToRoomFilterDtoIn(apiTeleportDtoIn.RoomId.Value)
+                );
+
+                if (existedRooms.AllCount == 0)
+                {
+                    return BadRequest(
+                        new ApiErrorResponseDtoOut(
+                            code: ApiErrorCodeDto.TeleportRoomNotFoundById,
+                            message:
+                                string.Format(
+                                    ConstantMessages.TeleportRoomNotFoundById,
+                                    apiTeleportDtoIn.RoomId
+                                )
+                        )
+                    );
+                }
+            }
+
+            if (apiTeleportDtoIn.BusinessId.HasValue)
+            {
+                var existedBusinesses = await _gameRepository.GetBusinessesByFilter(
+                    BusinessIdConverter.ToBusinessFilterDtoIn(apiTeleportDtoIn.BusinessId.Value)
+                );
+
+                if (existedBusinesses.AllCount == 0)
+                {
+                    return BadRequest(
+                        new ApiErrorResponseDtoOut(
+                            code: ApiErrorCodeDto.TeleportBusinessNotFoundById,
+                            message:
+                                string.Format(
+                                    ConstantMessages.TeleportBusinessNotFoundById,
+                                    apiTeleportDtoIn.BusinessId
+                                )
+                        )
+                    );
+                }
+            }
+
+            return null;
         }
     }
 }

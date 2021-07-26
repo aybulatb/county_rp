@@ -29,6 +29,11 @@
         /// </summary>
         InvalidPositionCoordinatesCount = 1003,
 
+        /// <summary>
+        /// Количество цветов маркера должно быть равно 3.
+        /// </summary>
+        InvalidMarkerColorsCount = 1004,
+
         // Игроки
 
         /// <summary>
@@ -153,12 +158,37 @@
         /// </summary>
         RoomNotFoundById = 13000,
 
+        /// <summary>
+        /// Для привязки помещения не найдена группировка с ID {0}.
+        /// </summary>
+        RoomGangNotFoundById = 13001,
+
         // Телепорты
 
         /// <summary>
         /// Телепорт с ID {0} не найден.
         /// </summary>
         TeleportNotFoundById = 14000,
+
+        /// <summary>
+        /// Для привязки телепорта не найдена фракция с ID {0}.
+        /// </summary>
+        TeleportFactionNotFoundById = 14001,
+
+        /// <summary>
+        /// Для привязки телепорта не найдена группировка с ID {0}.
+        /// </summary>
+        TeleportGangNotFoundById = 14002,
+
+        /// <summary>
+        /// Для привязки телепорта не найдено помещение с ID {0}.
+        /// </summary>
+        TeleportRoomNotFoundById = 14003,
+
+        /// <summary>
+        /// Для привязки телепорта не найден бизнес с ID {0}.
+        /// </summary>
+        TeleportBusinessNotFoundById = 14004,
 
         // Транспортные средства
 

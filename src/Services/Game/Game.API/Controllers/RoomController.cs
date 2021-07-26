@@ -32,6 +32,12 @@ namespace CountyRP.Services.Game.API.Controllers
             [FromBody] ApiRoomDtoIn apiRoomDtoIn
         )
         {
+            var checkedResult = await CheckInputCreatedOrEditedData(apiRoomDtoIn);
+            if (checkedResult != null)
+            {
+                return checkedResult;
+            }
+
             var roomDtoIn = ApiRoomDtoInConverter.ToRepository(apiRoomDtoIn);
 
             var roomDtoOut = await _gameRepository.AddRoomAsync(roomDtoIn);
@@ -50,16 +56,7 @@ namespace CountyRP.Services.Game.API.Controllers
         )
         {
             var filteredRooms = await _gameRepository.GetRoomsByFilter(
-                new RoomFilterDtoIn(
-                    count: 1,
-                    page: 1,
-                    ids: new[] { id },
-                    name: null,
-                    nameLike: null,
-                    gangIds: null,
-                    startLastPaymentDate: null,
-                    finishLastPaymentDate: null
-                )
+                RoomIdConverter.ToRoomFilterDtoIn(id)
             );
 
             if (!filteredRooms.Items.Any())
@@ -118,16 +115,7 @@ namespace CountyRP.Services.Game.API.Controllers
         )
         {
             var filteredRooms = await _gameRepository.GetRoomsByFilter(
-                new RoomFilterDtoIn(
-                    count: 1,
-                    page: 1,
-                    ids: new[] { id },
-                    name: null,
-                    nameLike: null,
-                    gangIds: null,
-                    startLastPaymentDate: null,
-                    finishLastPaymentDate: null
-                )
+                RoomIdConverter.ToRoomFilterDtoIn(id)
             );
 
             if (filteredRooms.AllCount == 0)
@@ -138,6 +126,12 @@ namespace CountyRP.Services.Game.API.Controllers
                         id
                     )
                 );
+            }
+
+            var checkedResult = await CheckInputCreatedOrEditedData(apiRoomDtoIn);
+            if (checkedResult != null)
+            {
+                return checkedResult;
             }
 
             var roomDtoOut = ApiRoomDtoInConverter.ToDtoOutRepository(
@@ -157,16 +151,7 @@ namespace CountyRP.Services.Game.API.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
-            var filter = new RoomFilterDtoIn(
-                count: 1,
-                page: 1,
-                ids: new[] { id },
-                name: null,
-                nameLike: null,
-                gangIds: null,
-                startLastPaymentDate: null,
-                finishLastPaymentDate: null
-            );
+            var filter = RoomIdConverter.ToRoomFilterDtoIn(id);
 
             var filteredRooms = await _gameRepository.GetRoomsByFilter(filter);
 
@@ -183,6 +168,72 @@ namespace CountyRP.Services.Game.API.Controllers
             await _gameRepository.DeleteRoomByFilter(filter);
 
             return Ok();
+        }
+
+        private async Task<IActionResult> CheckInputCreatedOrEditedData(ApiRoomDtoIn apiRoomDtoIn)
+        {
+            if (apiRoomDtoIn.EntrancePosition?.Length != 3)
+            {
+                return BadRequest(
+                    new ApiErrorResponseDtoOut(
+                        code: ApiErrorCodeDto.InvalidPositionCoordinatesCount,
+                        message: ConstantMessages.InvalidPositionCoordinatesCount
+                    )
+                );
+            }
+
+            if (apiRoomDtoIn.ExitPosition?.Length != 3)
+            {
+                return BadRequest(
+                    new ApiErrorResponseDtoOut(
+                        code: ApiErrorCodeDto.InvalidPositionCoordinatesCount,
+                        message: ConstantMessages.InvalidPositionCoordinatesCount
+                    )
+                );
+            }
+
+            if (apiRoomDtoIn.ColorMarker?.Length != 3)
+            {
+                return BadRequest(
+                    new ApiErrorResponseDtoOut(
+                        code: ApiErrorCodeDto.InvalidMarkerColorsCount,
+                        message: ConstantMessages.InvalidMarkerColorsCount
+                    )
+                );
+            }
+
+            if (apiRoomDtoIn.GangId.HasValue)
+            {
+                var existedGangs = await _gameRepository.GetGangsByFilter(
+                    GangIdConverter.ToGangFilterDtoIn(apiRoomDtoIn.GangId.Value)
+                );
+
+                if (existedGangs.AllCount == 0)
+                {
+                    return BadRequest(
+                        new ApiErrorResponseDtoOut(
+                            code: ApiErrorCodeDto.RoomGangNotFoundById,
+                            message:
+                                string.Format(
+                                    ConstantMessages.RoomGangNotFoundById,
+                                    apiRoomDtoIn.GangId
+                                )
+                        )
+                    );
+                }
+            }
+
+            if (apiRoomDtoIn.SafePosition?.Length != 3)
+            {
+                return BadRequest(
+                    new ApiErrorResponseDtoOut(
+                        code: ApiErrorCodeDto.InvalidPositionCoordinatesCount,
+                        message: ConstantMessages.InvalidPositionCoordinatesCount
+                    )
+                );
+            }
+
+            return null;
         }
     }
 }

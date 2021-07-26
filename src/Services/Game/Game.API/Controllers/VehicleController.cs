@@ -34,10 +34,10 @@ namespace CountyRP.Services.Game.API.Controllers
             [FromBody] ApiVehicleDtoIn apiVehicleDtoIn
         )
         {
-            var checkResult = await CheckInputCreatedOrEditedData(apiVehicleDtoIn);
-            if (checkResult != null)
+            var checkedResult = await CheckInputCreatedOrEditedData(apiVehicleDtoIn);
+            if (checkedResult != null)
             {
-                return checkResult;
+                return checkedResult;
             }
 
             var vehicleDtoIn = ApiVehicleDtoInConverter.ToRepository(apiVehicleDtoIn);
@@ -144,10 +144,10 @@ namespace CountyRP.Services.Game.API.Controllers
                 );
             }
 
-            var checkResult = await CheckInputCreatedOrEditedData(apiVehicleDtoIn);
-            if (checkResult != null)
+            var checkedResult = await CheckInputCreatedOrEditedData(apiVehicleDtoIn);
+            if (checkedResult != null)
             {
-                return checkResult;
+                return checkedResult;
             }
 
             var vehicleDtoOut = ApiVehicleDtoInConverter.ToDtoOut(
