@@ -50,15 +50,7 @@ namespace CountyRP.Services.Game.API.Controllers
         )
         {
             var filteredBusinesss = await _gameRepository.GetBusinessesByFilter(
-                new BusinessFilterDtoIn(
-                    count: 1,
-                    page: 1,
-                    ids: new[] { id },
-                    name: null,
-                    nameLike: null,
-                    ownerIds: null,
-                    types: null
-                )
+                BusinessIdConverter.ToBusinessFilterDtoIn(id)
             );
 
             if (!filteredBusinesss.Items.Any())
@@ -117,15 +109,7 @@ namespace CountyRP.Services.Game.API.Controllers
         )
         {
             var filteredBusinesss = await _gameRepository.GetBusinessesByFilter(
-                new BusinessFilterDtoIn(
-                    count: 1,
-                    page: 1,
-                    ids: new[] { id },
-                    name: null,
-                    nameLike: null,
-                    ownerIds: null,
-                    types: null
-                )
+                BusinessIdConverter.ToBusinessFilterDtoIn(id)
             );
 
             if (filteredBusinesss.AllCount == 0)
@@ -155,15 +139,7 @@ namespace CountyRP.Services.Game.API.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
-            var filter = new BusinessFilterDtoIn(
-                count: 1,
-                page: 1,
-                ids: new[] { id },
-                name: null,
-                    nameLike: null,
-                    ownerIds: null,
-                    types: null
-            );
+            var filter = BusinessIdConverter.ToBusinessFilterDtoIn(id);
 
             var filteredBusinesss = await _gameRepository.GetBusinessesByFilter(filter);
 

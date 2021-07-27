@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace CountyRP.Services.Game.API.Controllers
@@ -32,6 +33,12 @@ namespace CountyRP.Services.Game.API.Controllers
             [FromBody] ApiAdminLevelDtoIn apiAdminLevelDtoIn
         )
         {
+            var checkedResult = await CheckInputCreatedData(apiAdminLevelDtoIn);
+            if (checkedResult != null)
+            {
+                return checkedResult;
+            }
+
             var adminLevelDtoIn = ApiAdminLevelDtoInConverter.ToRepository(apiAdminLevelDtoIn);
 
             var adminLevelDtoOut = await _gameRepository.AddAdminLevelAsync(adminLevelDtoIn);
@@ -50,13 +57,7 @@ namespace CountyRP.Services.Game.API.Controllers
         )
         {
             var filteredAdminLevels = await _gameRepository.GetAdminLevelsByFilter(
-                new AdminLevelFilterDtoIn(
-                    count: 1,
-                    page: 1,
-                    ids: new[] { id },
-                    names: null,
-                    nameLike: null
-                )
+                AdminLevelIdConverter.ToAdminLevelFilterDtoIn(id)
             );
 
             if (!filteredAdminLevels.Items.Any())
@@ -111,17 +112,17 @@ namespace CountyRP.Services.Game.API.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Edit(
             string id,
-            ApiAdminLevelDtoIn apiAdminLevelDtoIn
+            ApiEditedAdminLevelDtoIn apiEditedAdminLevelDtoIn
         )
         {
+            var checkedResult = await CheckInputEditedData(id, apiEditedAdminLevelDtoIn);
+            if (checkedResult != null)
+            {
+                return checkedResult;
+            }
+
             var filteredAdminLevels = await _gameRepository.GetAdminLevelsByFilter(
-                new AdminLevelFilterDtoIn(
-                    count: 1,
-                    page: 1,
-                    ids: new[] { id },
-                    names: null,
-                    nameLike: null
-                )
+                AdminLevelIdConverter.ToAdminLevelFilterDtoIn(id)
             );
 
             if (filteredAdminLevels.AllCount == 0)
@@ -134,8 +135,8 @@ namespace CountyRP.Services.Game.API.Controllers
                 );
             }
 
-            var adminLevelDtoOut = ApiAdminLevelDtoInConverter.ToDtoOutRepository(
-                source: apiAdminLevelDtoIn,
+            var adminLevelDtoOut = ApiEditedAdminLevelDtoInConverter.ToDtoOutRepository(
+                source: apiEditedAdminLevelDtoIn,
                 id: id
             );
 
@@ -151,13 +152,7 @@ namespace CountyRP.Services.Game.API.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(string id)
         {
-            var filter = new AdminLevelFilterDtoIn(
-                count: 1,
-                page: 1,
-                ids: new[] { id },
-                names: null,
-                nameLike: null
-            );
+            var filter = AdminLevelIdConverter.ToAdminLevelFilterDtoIn(id);
 
             var filteredAdminLevels = await _gameRepository.GetAdminLevelsByFilter(filter);
 
@@ -174,6 +169,111 @@ namespace CountyRP.Services.Game.API.Controllers
             await _gameRepository.DeleteAdminLevelByFilter(filter);
 
             return Ok();
+        }
+
+        private async Task<IActionResult> CheckInputCreatedData(ApiAdminLevelDtoIn apiAdminLevelDtoIn)
+        {
+            if (!Regex.IsMatch(apiAdminLevelDtoIn.Id ?? string.Empty, @"^[a-zA-Z0-9_]{3,16}$"))
+            {
+                return BadRequest(
+                    new ApiErrorResponseDtoOut(
+                        code: ApiErrorCodeDto.AdminLevelInvalidId,
+                        message: ConstantMessages.AdminLevelInvalidId
+                    )
+                );
+            }
+
+            if (apiAdminLevelDtoIn.Name == null || apiAdminLevelDtoIn.Name.Length > 64)
+            {
+                return BadRequest(
+                    new ApiErrorResponseDtoOut(
+                        code: ApiErrorCodeDto.AdminLevelInvalidNameLength,
+                        message: ConstantMessages.AdminLevelInvalidNameLength
+                    )
+                );
+            }
+
+            if (!Regex.IsMatch(apiAdminLevelDtoIn.Name, @"^\w+(([\w\s]*\w)|\w*)$"))
+            {
+                return BadRequest(
+                    new ApiErrorResponseDtoOut(
+                        code: ApiErrorCodeDto.AdminLevelInvalidName,
+                        message: ConstantMessages.AdminLevelInvalidName
+                    )
+                );
+            }
+
+            var existedAdminLevelsWithName = await _gameRepository.GetAdminLevelsByFilter(
+                new AdminLevelFilterDtoIn(
+                    count: 1,
+                    page: 1,
+                    ids: null,
+                    names: new[] { apiAdminLevelDtoIn.Name },
+                    nameLike: null
+                )
+            );
+
+            if (existedAdminLevelsWithName.AllCount != 0)
+            {
+                return BadRequest(
+                    new ApiErrorResponseDtoOut(
+                        code: ApiErrorCodeDto.AdminLevelAlreadyExistsWithName,
+                        message: ConstantMessages.AdminLevelAlreadyExistsWithName
+                    )
+                );
+            }
+
+            return null;
+        }
+
+        private async Task<IActionResult> CheckInputEditedData(string id, ApiEditedAdminLevelDtoIn apiEditedAdminLevelDtoIn)
+        {
+            if (apiEditedAdminLevelDtoIn.Name == null || apiEditedAdminLevelDtoIn.Name.Length > 64)
+            {
+                return BadRequest(
+                    new ApiErrorResponseDtoOut(
+                        code: ApiErrorCodeDto.AdminLevelInvalidNameLength,
+                        message: ConstantMessages.AdminLevelInvalidNameLength
+                    )
+                );
+            }
+
+            if (!Regex.IsMatch(apiEditedAdminLevelDtoIn.Name, @"^\w+(([\w\s]*\w)|\w*)$"))
+            {
+                return BadRequest(
+                    new ApiErrorResponseDtoOut(
+                        code: ApiErrorCodeDto.AdminLevelInvalidName,
+                        message: ConstantMessages.AdminLevelInvalidName
+                    )
+                );
+            }
+
+            var existedAdminLevelsWithName = await _gameRepository.GetAdminLevelsByFilter(
+                new AdminLevelFilterDtoIn(
+                    count: 1,
+                    page: 1,
+                    ids: null,
+                    names: new[] { apiEditedAdminLevelDtoIn.Name },
+                    nameLike: null
+                )
+            );
+
+            if (existedAdminLevelsWithName.AllCount != 0)
+            {
+                var existedAdminLevelWithName = existedAdminLevelsWithName.Items.First();
+
+                if (existedAdminLevelWithName.Id != id)
+                {
+                    return BadRequest(
+                        new ApiErrorResponseDtoOut(
+                            code: ApiErrorCodeDto.AdminLevelAlreadyExistsWithName,
+                            message: ConstantMessages.AdminLevelAlreadyExistsWithName
+                        )
+                    );
+                }
+            }
+
+            return null;
         }
     }
 }

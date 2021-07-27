@@ -42,6 +42,14 @@
 
         public static string AdminLevelNotFoundById = "Админский уровень с ID {0} не найден";
 
+        public static string AdminLevelInvalidId = "ID админского уровня должен соответствовать формату zZ_ и длина должна быть от 3 до 16 символов";
+
+        public static string AdminLevelInvalidNameLength = "Длина названия админского уровня должна быть от 1 до 16 символов";
+
+        public static string AdminLevelInvalidName = "Название админского уровня должно состоять из цифр, символов латинского и кириллического алфавита и пробелов";
+
+        public static string AdminLevelAlreadyExistsWithName = "Админский уровень с таким названием уже существует";
+
         // Внешности
 
         public static string AppearanceNotFoundById = "Внешность с ID {0} не найдена";

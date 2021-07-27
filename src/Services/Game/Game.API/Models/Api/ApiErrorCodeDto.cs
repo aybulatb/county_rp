@@ -95,6 +95,26 @@
         /// </summary>
         AdminLevelNotFoundById = 4000,
 
+        /// <summary>
+        /// ID админского уровня должен соответствовать формату zZ_ и длина должна быть от 3 до 16 символов.
+        /// </summary>
+        AdminLevelInvalidId = 4001,
+
+        /// <summary>
+        /// Длина названия админского уровня должна быть от 1 до 16 символов.
+        /// </summary>
+        AdminLevelInvalidNameLength = 4002,
+
+        /// <summary>
+        /// Название админского уровня должно состоять из цифр, символов латинского и кириллического алфавита и пробелов.
+        /// </summary>
+        AdminLevelInvalidName = 4003,
+
+        /// <summary>
+        /// Админский уровень с таким названием уже существует.
+        /// </summary>
+        AdminLevelAlreadyExistsWithName = 4004,
+
         // Внешности
 
         /// <summary>

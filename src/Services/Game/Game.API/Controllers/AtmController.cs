@@ -50,12 +50,7 @@ namespace CountyRP.Services.Game.API.Controllers
         )
         {
             var filteredAtms = await _gameRepository.GetAtmsByFilter(
-                new AtmFilterDtoIn(
-                    count: 1,
-                    page: 1,
-                    ids: new[] { id },
-                    businessIds: null
-                )
+                AtmIdConverter.ToAtmFilterDtoIn(id)
             );
 
             if (!filteredAtms.Items.Any())
@@ -114,12 +109,7 @@ namespace CountyRP.Services.Game.API.Controllers
         )
         {
             var filteredAtms = await _gameRepository.GetAtmsByFilter(
-                new AtmFilterDtoIn(
-                    count: 1,
-                    page: 1,
-                    ids: new[] { id },
-                    businessIds: null
-                )
+                AtmIdConverter.ToAtmFilterDtoIn(id)
             );
 
             if (filteredAtms.AllCount == 0)
@@ -149,12 +139,7 @@ namespace CountyRP.Services.Game.API.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
-            var filter = new AtmFilterDtoIn(
-                count: 1,
-                page: 1,
-                ids: new[] { id },
-                businessIds: null
-            );
+            var filter = AtmIdConverter.ToAtmFilterDtoIn(id);
 
             var filteredAtms = await _gameRepository.GetAtmsByFilter(filter);
 

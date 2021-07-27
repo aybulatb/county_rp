@@ -50,14 +50,7 @@ namespace CountyRP.Services.Game.API.Controllers
         public async Task<IActionResult> GetById(int id)
         {
             var filteredGangs = await _gameRepository.GetGangsByFilter(
-                new GangFilterDtoIn(
-                    count: 1,
-                    page: 1,
-                    ids: new[] { id },
-                    name: null,
-                    nameLike: null,
-                    types: null
-                )
+                GangIdConverter.ToGangFilterDtoIn(id)
             );
 
             if (!filteredGangs.Items.Any())
@@ -116,14 +109,7 @@ namespace CountyRP.Services.Game.API.Controllers
         )
         {
             var filteredGangs = await _gameRepository.GetGangsByFilter(
-                new GangFilterDtoIn(
-                    count: 1,
-                    page: 1,
-                    ids: new[] { id },
-                    name: null,
-                    nameLike: null,
-                    types: null
-                )
+                GangIdConverter.ToGangFilterDtoIn(id)
             );
 
             if (filteredGangs.AllCount == 0)
@@ -153,14 +139,7 @@ namespace CountyRP.Services.Game.API.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
-            var filter = new GangFilterDtoIn(
-                count: 1,
-                page: 1,
-                ids: new[] { id },
-                name: null,
-                nameLike: null,
-                types: null
-            );
+            var filter = GangIdConverter.ToGangFilterDtoIn(id);
 
             var filteredGangs = await _gameRepository.GetGangsByFilter(filter);
 

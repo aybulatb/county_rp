@@ -50,12 +50,7 @@ namespace CountyRP.Services.Game.API.Controllers
         )
         {
             var filteredLockerRooms = await _gameRepository.GetLockerRoomsByFilter(
-                new LockerRoomFilterDtoIn(
-                    count: 1,
-                    page: 1,
-                    ids: new[] { id },
-                    factionIds: null
-                )
+                LockerRoomIdConverter.ToLockerRoomFilterDtoIn(id)
             );
 
             if (!filteredLockerRooms.Items.Any())
@@ -114,12 +109,7 @@ namespace CountyRP.Services.Game.API.Controllers
         )
         {
             var filteredLockerRooms = await _gameRepository.GetLockerRoomsByFilter(
-                new LockerRoomFilterDtoIn(
-                    count: 1,
-                    page: 1,
-                    ids: new[] { id },
-                    factionIds: null
-                )
+                LockerRoomIdConverter.ToLockerRoomFilterDtoIn(id)
             );
 
             if (filteredLockerRooms.AllCount == 0)
@@ -149,12 +139,7 @@ namespace CountyRP.Services.Game.API.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
-            var filter = new LockerRoomFilterDtoIn(
-                count: 1,
-                page: 1,
-                ids: new[] { id },
-                factionIds: null
-            );
+            var filter = LockerRoomIdConverter.ToLockerRoomFilterDtoIn(id);
 
             var filteredLockerRooms = await _gameRepository.GetLockerRoomsByFilter(filter);
 

@@ -1,16 +1,21 @@
 ﻿using CountyRP.Services.Game.API.Models.Api;
 using CountyRP.Services.Game.Infrastructure.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace CountyRP.Services.Game.API.Converters
 {
-    public static class ApiAdminLevelDtoInConverter
+    public static class ApiEditedAdminLevelDtoInConverter
     {
-        public static AdminLevelDtoIn ToRepository(
-            ApiAdminLevelDtoIn source
+        public static AdminLevelDtoOut ToDtoOutRepository(
+            ApiEditedAdminLevelDtoIn source,
+            string id
         )
         {
-            return new AdminLevelDtoIn(
-                id: source.Id,
+            return new AdminLevelDtoOut(
+                id: id,
                 name: source.Name,
                 ban: source.Ban,
                 createVehicle: source.CreateVehicle,

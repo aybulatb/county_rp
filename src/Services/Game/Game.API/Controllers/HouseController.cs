@@ -50,13 +50,7 @@ namespace CountyRP.Services.Game.API.Controllers
         )
         {
             var filteredHouses = await _gameRepository.GetHousesByFilter(
-                new HouseFilterDtoIn(
-                    count: 1,
-                    page: 1,
-                    ids: new[] { id },
-                    ownerIds: null,
-                    garageIds: null
-                )
+                HouseIdConverter.ToHouseFilterDtoIn(id)
             );
 
             if (!filteredHouses.Items.Any())
@@ -115,13 +109,7 @@ namespace CountyRP.Services.Game.API.Controllers
         )
         {
             var filteredHouses = await _gameRepository.GetHousesByFilter(
-                new HouseFilterDtoIn(
-                    count: 1,
-                    page: 1,
-                    ids: new[] { id },
-                    ownerIds: null,
-                    garageIds: null
-                )
+                HouseIdConverter.ToHouseFilterDtoIn(id)
             );
 
             if (filteredHouses.AllCount == 0)
@@ -151,13 +139,7 @@ namespace CountyRP.Services.Game.API.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
-            var filter = new HouseFilterDtoIn(
-                count: 1,
-                page: 1,
-                ids: new[] { id },
-                ownerIds: null,
-                garageIds: null
-            );
+            var filter = HouseIdConverter.ToHouseFilterDtoIn(id);
 
             var filteredHouses = await _gameRepository.GetHousesByFilter(filter);
 

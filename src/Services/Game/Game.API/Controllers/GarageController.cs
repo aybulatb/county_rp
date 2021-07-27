@@ -50,11 +50,7 @@ namespace CountyRP.Services.Game.API.Controllers
         )
         {
             var filteredGarages = await _gameRepository.GetGaragesByFilter(
-                new GarageFilterDtoIn(
-                    count: 1,
-                    page: 1,
-                    ids: new[] { id }
-                )
+                GarageIdConverter.ToGarageFilterDtoIn(id)
             );
 
             if (!filteredGarages.Items.Any())
@@ -113,11 +109,7 @@ namespace CountyRP.Services.Game.API.Controllers
         )
         {
             var filteredGarages = await _gameRepository.GetGaragesByFilter(
-                new GarageFilterDtoIn(
-                    count: 1,
-                    page: 1,
-                    ids: new[] { id }
-                )
+                GarageIdConverter.ToGarageFilterDtoIn(id)
             );
 
             if (filteredGarages.AllCount == 0)
@@ -147,11 +139,7 @@ namespace CountyRP.Services.Game.API.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
-            var filter = new GarageFilterDtoIn(
-                count: 1,
-                page: 1,
-                ids: new[] { id }
-            );
+            var filter = GarageIdConverter.ToGarageFilterDtoIn(id);
 
             var filteredGarages = await _gameRepository.GetGaragesByFilter(filter);
 

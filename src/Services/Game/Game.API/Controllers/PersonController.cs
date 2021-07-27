@@ -1,6 +1,5 @@
 ﻿using CountyRP.Services.Game.API.Converters;
 using CountyRP.Services.Game.API.Models.Api;
-using CountyRP.Services.Game.Infrastructure.Models;
 using CountyRP.Services.Game.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -49,22 +48,7 @@ namespace CountyRP.Services.Game.API.Controllers
             }
 
             var existedPersons = await _gameRepository.GetPersonsByFilter(
-                new PersonFilterDtoIn(
-                    count: 1,
-                    page: 1,
-                    ids: null,
-                    names: new[] { apiPersonDtoIn.Name },
-                    playerIds: null,
-                    startRegistrationDate: null,
-                    finishRegistrationDate: null,
-                    startLastVisitDate: null,
-                    finishLastVisitDate: null,
-                    adminLevelIds: null,
-                    factionIds: null,
-                    gangIds: null,
-                    leader: null,
-                    rank: null
-                )
+                PersonNameConverter.ToPersonFilterDtoIn(apiPersonDtoIn.Name)
             );
 
             if (existedPersons.AllCount != 0)
@@ -93,22 +77,7 @@ namespace CountyRP.Services.Game.API.Controllers
         public async Task<IActionResult> GetById(int id)
         {
             var filteredPersons = await _gameRepository.GetPersonsByFilter(
-                new PersonFilterDtoIn(
-                    count: 1,
-                    page: 1,
-                    ids: new[] { id },
-                    names: null,
-                    playerIds: null,
-                    startRegistrationDate: null,
-                    finishRegistrationDate: null,
-                    startLastVisitDate: null,
-                    finishLastVisitDate: null,
-                    adminLevelIds: null,
-                    factionIds: null,
-                    gangIds: null,
-                    leader: null,
-                    rank: null
-                )
+                PersonIdConverter.ToPersonFilterDtoIn(id)
             );
 
             if (!filteredPersons.Items.Any())
@@ -167,22 +136,7 @@ namespace CountyRP.Services.Game.API.Controllers
         )
         {
             var filteredPersons = await _gameRepository.GetPersonsByFilter(
-                new PersonFilterDtoIn(
-                    count: 1,
-                    page: 1,
-                    ids: new[] { id },
-                    names: null,
-                    playerIds: null,
-                    startRegistrationDate: null,
-                    finishRegistrationDate: null,
-                    startLastVisitDate: null,
-                    finishLastVisitDate: null,
-                    adminLevelIds: null,
-                    factionIds: null,
-                    gangIds: null,
-                    leader: null,
-                    rank: null
-                )
+                PersonIdConverter.ToPersonFilterDtoIn(id)
             );
 
             if (filteredPersons.AllCount == 0)
@@ -213,22 +167,7 @@ namespace CountyRP.Services.Game.API.Controllers
                 }
 
                 var existedPersonsWithNewName = await _gameRepository.GetPersonsByFilter(
-                    new PersonFilterDtoIn(
-                        count: 1,
-                        page: 1,
-                        ids: null,
-                        names: new[] { apiEditedPersonDtoIn.Name },
-                        playerIds: null,
-                        startRegistrationDate: null,
-                        finishRegistrationDate: null,
-                        startLastVisitDate: null,
-                        finishLastVisitDate: null,
-                        adminLevelIds: null,
-                        factionIds: null,
-                        gangIds: null,
-                        leader: null,
-                        rank: null
-                    )
+                    PersonNameConverter.ToPersonFilterDtoIn(apiEditedPersonDtoIn.Name)
                 );
 
                 if (existedPersonsWithNewName.AllCount != 0)
@@ -259,22 +198,7 @@ namespace CountyRP.Services.Game.API.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
-            var filter = new PersonFilterDtoIn(
-                count: 1,
-                page: 1,
-                ids: new[] { id },
-                names: null,
-                playerIds: null,
-                startRegistrationDate: null,
-                finishRegistrationDate: null,
-                startLastVisitDate: null,
-                finishLastVisitDate: null,
-                adminLevelIds: null,
-                factionIds: null,
-                gangIds: null,
-                leader: null,
-                rank: null
-            );
+            var filter = PersonIdConverter.ToPersonFilterDtoIn(id);
 
             var filteredPersons = await _gameRepository.GetPersonsByFilter(filter);
 

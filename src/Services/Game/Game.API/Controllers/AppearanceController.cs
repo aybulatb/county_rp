@@ -50,11 +50,7 @@ namespace CountyRP.Services.Game.API.Controllers
         )
         {
             var filteredAppearances = await _gameRepository.GetAppearancesByFilter(
-                new AppearanceFilterDtoIn(
-                    count: 1,
-                    page: 1,
-                    ids: new[] { id }
-                )
+                AppearanceIdConverter.ToAppearanceFilterDtoIn(id)
             );
 
             if (!filteredAppearances.Items.Any())
@@ -113,11 +109,7 @@ namespace CountyRP.Services.Game.API.Controllers
         )
         {
             var filteredAppearances = await _gameRepository.GetAppearancesByFilter(
-                new AppearanceFilterDtoIn(
-                    count: 1,
-                    page: 1,
-                    ids: new[] { id }
-                )
+                AppearanceIdConverter.ToAppearanceFilterDtoIn(id)
             );
 
             if (filteredAppearances.AllCount == 0)
@@ -147,11 +139,7 @@ namespace CountyRP.Services.Game.API.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
-            var filter = new AppearanceFilterDtoIn(
-                count: 1,
-                page: 1,
-                ids: new[] { id }
-            );
+            var filter = AppearanceIdConverter.ToAppearanceFilterDtoIn(id);
 
             var filteredAppearances = await _gameRepository.GetAppearancesByFilter(filter);
 

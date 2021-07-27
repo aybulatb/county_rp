@@ -1,6 +1,5 @@
 ﻿using CountyRP.Services.Game.API.Converters;
 using CountyRP.Services.Game.API.Models.Api;
-using CountyRP.Services.Game.Infrastructure.Models;
 using CountyRP.Services.Game.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -61,16 +60,7 @@ namespace CountyRP.Services.Game.API.Controllers
             }
 
             var existedPlayers = await _gameRepository.GetPlayersByFilter(
-                new PlayerFilterDtoIn(
-                    count: 1,
-                    page: 1,
-                    ids: null,
-                    logins: new[] { apiPlayerDtoIn.Login },
-                    startRegistrationDate: null,
-                    finishRegistrationDate: null,
-                    startLastVisitDate: null,
-                    finishLastVisitDate: null
-                )
+                PlayerLoginConverter.ToPlayerFilterDtoIn(apiPlayerDtoIn.Login)
             );
 
             if (existedPlayers.AllCount != 0)
@@ -99,16 +89,7 @@ namespace CountyRP.Services.Game.API.Controllers
         public async Task<IActionResult> GetById(int id)
         {
             var filteredPlayers = await _gameRepository.GetPlayersByFilter(
-                new PlayerFilterDtoIn(
-                    count: 1,
-                    page: 1,
-                    ids: new[] { id },
-                    logins: null,
-                    startRegistrationDate: null,
-                    finishRegistrationDate: null,
-                    startLastVisitDate: null,
-                    finishLastVisitDate: null
-                )
+                PlayerIdConverter.ToPlayerFilterDtoIn(id)
             );
 
             if (!filteredPlayers.Items.Any())
@@ -167,16 +148,7 @@ namespace CountyRP.Services.Game.API.Controllers
         )
         {
             var filteredPlayers = await _gameRepository.GetPlayersByFilter(
-                new PlayerFilterDtoIn(
-                    count: 1,
-                    page: 1,
-                    ids: new[] { id },
-                    logins: null,
-                    startRegistrationDate: null,
-                    finishRegistrationDate: null,
-                    startLastVisitDate: null,
-                    finishLastVisitDate: null
-                )
+                PlayerIdConverter.ToPlayerFilterDtoIn(id)
             );
 
             if (filteredPlayers.AllCount == 0)
@@ -207,16 +179,7 @@ namespace CountyRP.Services.Game.API.Controllers
                 }
 
                 var existedPlayersWithNewLogin = await _gameRepository.GetPlayersByFilter(
-                    new PlayerFilterDtoIn(
-                        count: 1,
-                        page: 1,
-                        ids: null,
-                        logins: new[] { apiEditedPlayerDtoIn.Login },
-                        startRegistrationDate: null,
-                        finishRegistrationDate: null,
-                        startLastVisitDate: null,
-                        finishLastVisitDate: null
-                    )
+                    PlayerLoginConverter.ToPlayerFilterDtoIn(apiEditedPlayerDtoIn.Login)
                 );
 
                 if (existedPlayersWithNewLogin.AllCount != 0)
@@ -262,16 +225,7 @@ namespace CountyRP.Services.Game.API.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
-            var filter = new PlayerFilterDtoIn(
-                count: 1,
-                page: 1,
-                ids: new[] { id },
-                logins: null,
-                startRegistrationDate: null,
-                finishRegistrationDate: null,
-                startLastVisitDate: null,
-                finishLastVisitDate: null
-            );
+            var filter = PlayerIdConverter.ToPlayerFilterDtoIn(id);
 
             var filteredPlayers = await _gameRepository.GetPlayersByFilter(filter);
 

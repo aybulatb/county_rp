@@ -50,15 +50,7 @@ namespace CountyRP.Services.Game.API.Controllers
         )
         {
             var filteredFactions = await _gameRepository.GetFactionsByFilter(
-                new FactionFilterDtoIn(
-                    count: 1,
-                    page: 1,
-                    ids: new[] { id },
-                    idLike: null,
-                    names: null,
-                    nameLike: null,
-                    types: null
-                )
+                FactionIdConverter.ToFactionFilterDtoIn(id)
             );
 
             if (!filteredFactions.Items.Any())
@@ -117,15 +109,7 @@ namespace CountyRP.Services.Game.API.Controllers
         )
         {
             var filteredFactions = await _gameRepository.GetFactionsByFilter(
-                new FactionFilterDtoIn(
-                    count: 1,
-                    page: 1,
-                    ids: new[] { id },
-                    idLike: null,
-                    names: null,
-                    nameLike: null,
-                    types: null
-                )
+                FactionIdConverter.ToFactionFilterDtoIn(id)
             );
 
             if (filteredFactions.AllCount == 0)
@@ -155,15 +139,7 @@ namespace CountyRP.Services.Game.API.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(string id)
         {
-            var filter = new FactionFilterDtoIn(
-                count: 1,
-                page: 1,
-                ids: new[] { id },
-                idLike: null,
-                names: null,
-                nameLike: null,
-                types: null
-            );
+            var filter = FactionIdConverter.ToFactionFilterDtoIn(id);
 
             var filteredFactions = await _gameRepository.GetFactionsByFilter(filter);
 
