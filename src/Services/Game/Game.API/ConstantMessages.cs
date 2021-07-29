@@ -14,6 +14,10 @@
 
         public static string InvalidMarkerColorsCount = "Количество цветов маркера должно быть равно 3";
 
+        public static string InvalidId = "ID должен быть от 3 до 16 символов и содержать цифр, символы латинского алфавита и знак нижнего подчёркивания";
+
+        public static string InvalidColor = "Цвет должен соответствовать формату: FFFFFF";
+
         // Игроки
 
         public static string PlayerNotFoundById = "Игрок с ID {0} не найден";
@@ -58,6 +62,8 @@
 
         public static string AtmNotFoundById = "Банкомат с ID {0} не найден";
 
+        public static string AtmBusinessNotFoundById = "Для привязки банкомата бизнес с ID {0} не найден";
+
         // Бизнесы
 
         public static string BusinessNotFoundById = "Бизнес с ID {0} не найден";
@@ -65,6 +71,18 @@
         // Фракции
 
         public static string FactionNotFoundById = "Фракция с ID {0} не найдена";
+
+        public static string FactionInvalidNameLength = "Длина названия фракции должна быть от 1 до 64 символов";
+
+        public static string FactionInvalidName = "Название фракции должно состоять из цифр, символов латинского и кириллического алфавитов, специальных символов и пробелов";
+
+        public static string FactionAlreadyExistsWithId = "Фракция с ID {0} уже существует";
+
+        public static string FactionInvalidRanksCount = "Количество рангов фракции должно быть ровно 15";
+
+        public static string FactionInvalidRanksNameLength = "Названия рангов фракции должно быть от 1 до 32 символов";
+
+        public static string FactionInvalidRanksName = "Названия рангов фракции должны состоять из цифр, символов латинского и кириллического алфавитов, специальных символов и пробелов";
 
         // Группировки
 

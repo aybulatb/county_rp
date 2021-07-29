@@ -29,14 +29,15 @@ namespace CountyRP.Services.Game.API.Controllers
 
         [HttpPost]
         [ProducesResponseType(typeof(ApiAdminLevelDtoOut), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Create(
             [FromBody] ApiAdminLevelDtoIn apiAdminLevelDtoIn
         )
         {
-            var checkedResult = await CheckInputCreatedData(apiAdminLevelDtoIn);
-            if (checkedResult != null)
+            var validatedResult = await ValidateInputCreatedData(apiAdminLevelDtoIn);
+            if (validatedResult != null)
             {
-                return checkedResult;
+                return validatedResult;
             }
 
             var adminLevelDtoIn = ApiAdminLevelDtoInConverter.ToRepository(apiAdminLevelDtoIn);
@@ -51,7 +52,7 @@ namespace CountyRP.Services.Game.API.Controllers
 
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(AdminLevelDtoOut), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById(
             string id
         )
@@ -63,9 +64,12 @@ namespace CountyRP.Services.Game.API.Controllers
             if (!filteredAdminLevels.Items.Any())
             {
                 return NotFound(
-                    string.Format(
-                        ConstantMessages.AdminLevelNotFoundById,
-                        id
+                    new ApiErrorResponseDtoOut(
+                        code: ApiErrorCodeDto.AdminLevelNotFoundById,
+                        message: string.Format(
+                            ConstantMessages.AdminLevelNotFoundById,
+                            id
+                        )
                     )
                 );
             }
@@ -79,7 +83,7 @@ namespace CountyRP.Services.Game.API.Controllers
 
         [HttpGet("FilterBy")]
         [ProducesResponseType(typeof(ApiPagedFilterResultDtoOut<ApiAdminLevelDtoOut>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> FilterBy(
             [FromQuery] ApiAdminLevelFilterDtoIn apiAdminLevelFilterDtoIn
         )
@@ -87,13 +91,19 @@ namespace CountyRP.Services.Game.API.Controllers
             if (apiAdminLevelFilterDtoIn.Count < 1)
             {
                 return BadRequest(
-                    ConstantMessages.InvalidCountItemPerPage
+                    new ApiErrorResponseDtoOut(
+                        code: ApiErrorCodeDto.InvalidCountItemPerPage,
+                        message: ConstantMessages.InvalidCountItemPerPage
+                    )
                 );
             }
             if (apiAdminLevelFilterDtoIn.Page < 1)
             {
                 return BadRequest(
-                    ConstantMessages.InvalidPageNumber
+                    new ApiErrorResponseDtoOut(
+                        code: ApiErrorCodeDto.InvalidPageNumber,
+                        message: ConstantMessages.InvalidPageNumber
+                    )
                 );
             }
 
@@ -108,17 +118,17 @@ namespace CountyRP.Services.Game.API.Controllers
 
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(ApiAdminLevelDtoOut), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Edit(
             string id,
             ApiEditedAdminLevelDtoIn apiEditedAdminLevelDtoIn
         )
         {
-            var checkedResult = await CheckInputEditedData(id, apiEditedAdminLevelDtoIn);
-            if (checkedResult != null)
+            var validatedResult = await ValidateInputEditedData(id, apiEditedAdminLevelDtoIn);
+            if (validatedResult != null)
             {
-                return checkedResult;
+                return validatedResult;
             }
 
             var filteredAdminLevels = await _gameRepository.GetAdminLevelsByFilter(
@@ -128,9 +138,12 @@ namespace CountyRP.Services.Game.API.Controllers
             if (filteredAdminLevels.AllCount == 0)
             {
                 return NotFound(
-                    string.Format(
-                        ConstantMessages.AdminLevelNotFoundById,
-                        id
+                    new ApiErrorResponseDtoOut(
+                        code: ApiErrorCodeDto.AdminLevelNotFoundById,
+                        message: string.Format(
+                            ConstantMessages.AdminLevelNotFoundById,
+                            id
+                        )
                     )
                 );
             }
@@ -149,7 +162,7 @@ namespace CountyRP.Services.Game.API.Controllers
 
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(string id)
         {
             var filter = AdminLevelIdConverter.ToAdminLevelFilterDtoIn(id);
@@ -159,9 +172,12 @@ namespace CountyRP.Services.Game.API.Controllers
             if (!filteredAdminLevels.Items.Any())
             {
                 return NotFound(
-                    string.Format(
-                        ConstantMessages.AdminLevelNotFoundById,
-                        id
+                    new ApiErrorResponseDtoOut(
+                        code: ApiErrorCodeDto.AdminLevelNotFoundById,
+                        message: string.Format(
+                            ConstantMessages.AdminLevelNotFoundById,
+                            id
+                        )
                     )
                 );
             }
@@ -171,7 +187,7 @@ namespace CountyRP.Services.Game.API.Controllers
             return Ok();
         }
 
-        private async Task<IActionResult> CheckInputCreatedData(ApiAdminLevelDtoIn apiAdminLevelDtoIn)
+        private async Task<IActionResult> ValidateInputCreatedData(ApiAdminLevelDtoIn apiAdminLevelDtoIn)
         {
             if (!Regex.IsMatch(apiAdminLevelDtoIn.Id ?? string.Empty, @"^[a-zA-Z0-9_]{3,16}$"))
             {
@@ -226,7 +242,7 @@ namespace CountyRP.Services.Game.API.Controllers
             return null;
         }
 
-        private async Task<IActionResult> CheckInputEditedData(string id, ApiEditedAdminLevelDtoIn apiEditedAdminLevelDtoIn)
+        private async Task<IActionResult> ValidateInputEditedData(string id, ApiEditedAdminLevelDtoIn apiEditedAdminLevelDtoIn)
         {
             if (apiEditedAdminLevelDtoIn.Name == null || apiEditedAdminLevelDtoIn.Name.Length > 64)
             {

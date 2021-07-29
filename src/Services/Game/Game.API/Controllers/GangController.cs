@@ -29,11 +29,17 @@ namespace CountyRP.Services.Game.API.Controllers
 
         [HttpPost]
         [ProducesResponseType(typeof(ApiGangDtoOut), StatusCodes.Status201Created)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Create(
             [FromBody] ApiGangDtoIn apiGangDtoIn
         )
         {
+            //var validatedResult = await ValidateInputCreatedOrEditedData(apiAtmDtoIn);
+            //if (validatedResult != null)
+            //{
+            //    return validatedResult;
+            //}
+
             var gangDtoIn = ApiGangDtoInConverter.ToRepository(apiGangDtoIn);
 
             var gangDtoOut = await _gameRepository.AddGangAsync(gangDtoIn);
@@ -46,7 +52,7 @@ namespace CountyRP.Services.Game.API.Controllers
 
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(ApiGangDtoOut), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById(int id)
         {
             var filteredGangs = await _gameRepository.GetGangsByFilter(
@@ -72,7 +78,7 @@ namespace CountyRP.Services.Game.API.Controllers
 
         [HttpGet("FilterBy")]
         [ProducesResponseType(typeof(ApiPagedFilterResultDtoOut<ApiGangDtoOut>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> FilterBy(
             [FromQuery] ApiGangFilterDtoIn apiGangFilterDtoIn
         )
@@ -101,8 +107,8 @@ namespace CountyRP.Services.Game.API.Controllers
 
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(ApiGangDtoOut), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Edit(
             int id,
             ApiEditedGangDtoIn apiEditedGangDtoIn
@@ -122,6 +128,12 @@ namespace CountyRP.Services.Game.API.Controllers
                 );
             }
 
+            //var validatedResult = await ValidateInputCreatedOrEditedData(apiAtmDtoIn);
+            //if (validatedResult != null)
+            //{
+            //    return validatedResult;
+            //}
+
             var editedGangDtoIn = ApiEditedGangDtoInConverter.ToRepository(
                 source: apiEditedGangDtoIn,
                 id: id
@@ -136,7 +148,7 @@ namespace CountyRP.Services.Game.API.Controllers
 
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
             var filter = GangIdConverter.ToGangFilterDtoIn(id);

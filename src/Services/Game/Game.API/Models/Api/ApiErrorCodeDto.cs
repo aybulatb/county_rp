@@ -34,6 +34,16 @@
         /// </summary>
         InvalidMarkerColorsCount = 1004,
 
+        /// <summary>
+        /// ID должен быть от 3 до 16 символов и содержать цифр, символы латинского алфавита и знак нижнего подчёркивания.
+        /// </summary>
+        InvalidId = 1005,
+
+        /// <summary>
+        /// Цвет должен соответствовать формату: FFFFFF.
+        /// </summary>
+        InvalidColor = 1006,
+
         // Игроки
 
         /// <summary>
@@ -129,6 +139,11 @@
         /// </summary>
         AtmNotFoundById = 6000,
 
+        /// <summary>
+        /// Для привязки банкомата бизнес с ID {0} не найден.
+        /// </summary>
+        AtmBusinessNotFoundById = 6001,
+
         // Бизнесы
 
         /// <summary>
@@ -142,6 +157,36 @@
         /// Фракция с ID {0} не найдена.
         /// </summary>
         FactionNotFoundById = 8000,
+
+        /// <summary>
+        /// Длина названия фракции должна быть от 1 до 64 символов.
+        /// </summary>
+        FactionInvalidNameLength = 8001,
+
+        /// <summary>
+        /// Название фракции должно состоять из цифр, символов латинского и кириллического алфавитов, специальных символов и пробелов.
+        /// </summary>
+        FactionInvalidName = 8002,
+
+        /// <summary>
+        /// Фракция с ID {0} уже существует.
+        /// </summary>
+        FactionAlreadyExistsWithId = 8003,
+
+        /// <summary>
+        /// Количество рангов фракции должно быть ровно 15.
+        /// </summary>
+        FactionInvalidRanksCount = 8004,
+
+        /// <summary>
+        /// Названия рангов фракции должно быть от 1 до 32 символов.
+        /// </summary>
+        FactionInvalidRanksNameLength = 8005,
+
+        /// <summary>
+        /// Названия рангов фракции должны состоять из цифр, символов латинского и кириллического алфавитов, специальных символов и пробелов.
+        /// </summary>
+        FactionInvalidRanksName = 8006,
 
         // Группировки
 

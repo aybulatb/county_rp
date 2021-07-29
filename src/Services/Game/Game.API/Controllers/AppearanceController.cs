@@ -28,6 +28,7 @@ namespace CountyRP.Services.Game.API.Controllers
 
         [HttpPost]
         [ProducesResponseType(typeof(ApiAppearanceDtoOut), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Create(
             [FromBody] ApiAppearanceDtoIn apiAppearanceDtoIn
         )
@@ -44,7 +45,7 @@ namespace CountyRP.Services.Game.API.Controllers
 
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(AppearanceDtoOut), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById(
             int id
         )
@@ -72,7 +73,7 @@ namespace CountyRP.Services.Game.API.Controllers
 
         [HttpGet("FilterBy")]
         [ProducesResponseType(typeof(ApiPagedFilterResultDtoOut<ApiAppearanceDtoOut>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> FilterBy(
             [FromQuery] ApiAppearanceFilterDtoIn apiAppearanceFilterDtoIn
         )
@@ -101,8 +102,8 @@ namespace CountyRP.Services.Game.API.Controllers
 
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(ApiAppearanceDtoOut), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Edit(
             int id,
             ApiAppearanceDtoIn apiAppearanceDtoIn
@@ -136,7 +137,7 @@ namespace CountyRP.Services.Game.API.Controllers
 
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
             var filter = AppearanceIdConverter.ToAppearanceFilterDtoIn(id);

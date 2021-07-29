@@ -29,7 +29,7 @@ namespace CountyRP.Services.Game.API.Controllers
 
         [HttpPost]
         [ProducesResponseType(typeof(ApiPersonDtoOut), StatusCodes.Status201Created)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Create(
             [FromBody] ApiPersonDtoIn apiPersonDtoIn
         )
@@ -73,7 +73,7 @@ namespace CountyRP.Services.Game.API.Controllers
 
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(ApiPersonDtoOut), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById(int id)
         {
             var filteredPersons = await _gameRepository.GetPersonsByFilter(
@@ -99,7 +99,7 @@ namespace CountyRP.Services.Game.API.Controllers
 
         [HttpGet("FilterBy")]
         [ProducesResponseType(typeof(ApiPagedFilterResultDtoOut<ApiPersonDtoOut>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> FilterBy(
             [FromQuery] ApiPersonFilterDtoIn apiPersonFilterDtoIn
         )
@@ -128,8 +128,8 @@ namespace CountyRP.Services.Game.API.Controllers
 
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(ApiPersonDtoOut), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Edit(
             int id,
             ApiEditedPersonDtoIn apiEditedPersonDtoIn
@@ -195,7 +195,7 @@ namespace CountyRP.Services.Game.API.Controllers
 
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
             var filter = PersonIdConverter.ToPersonFilterDtoIn(id);

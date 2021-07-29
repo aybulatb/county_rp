@@ -34,10 +34,10 @@ namespace CountyRP.Services.Game.API.Controllers
             [FromBody] ApiVehicleDtoIn apiVehicleDtoIn
         )
         {
-            var checkedResult = await CheckInputCreatedOrEditedData(apiVehicleDtoIn);
-            if (checkedResult != null)
+            var validatedResult = await ValidateInputCreatedOrEditedData(apiVehicleDtoIn);
+            if (validatedResult != null)
             {
-                return checkedResult;
+                return validatedResult;
             }
 
             var vehicleDtoIn = ApiVehicleDtoInConverter.ToRepository(apiVehicleDtoIn);
@@ -66,11 +66,10 @@ namespace CountyRP.Services.Game.API.Controllers
                 return NotFound(
                     new ApiErrorResponseDtoOut(
                         code: ApiErrorCodeDto.VehicleNotFoundById,
-                        message:
-                            string.Format(
-                                ConstantMessages.VehicleNotFoundById,
-                                id
-                            )
+                        message: string.Format(
+                            ConstantMessages.VehicleNotFoundById,
+                            id
+                        )
                     )
                 );
             }
@@ -135,19 +134,18 @@ namespace CountyRP.Services.Game.API.Controllers
                 return NotFound(
                     new ApiErrorResponseDtoOut(
                         code: ApiErrorCodeDto.VehicleNotFoundById,
-                        message:
-                            string.Format(
-                                ConstantMessages.VehicleNotFoundById,
-                                id
-                            )
+                        message: string.Format(
+                            ConstantMessages.VehicleNotFoundById,
+                            id
+                        )
                     )
                 );
             }
 
-            var checkedResult = await CheckInputCreatedOrEditedData(apiVehicleDtoIn);
-            if (checkedResult != null)
+            var validatedResult = await ValidateInputCreatedOrEditedData(apiVehicleDtoIn);
+            if (validatedResult != null)
             {
-                return checkedResult;
+                return validatedResult;
             }
 
             var vehicleDtoOut = ApiVehicleDtoInConverter.ToDtoOut(
@@ -176,11 +174,10 @@ namespace CountyRP.Services.Game.API.Controllers
                 return NotFound(
                     new ApiErrorResponseDtoOut(
                         code: ApiErrorCodeDto.VehicleNotFoundById,
-                        message:
-                            string.Format(
-                                ConstantMessages.VehicleNotFoundById,
-                                id
-                            )
+                        message: string.Format(
+                            ConstantMessages.VehicleNotFoundById,
+                            id
+                        )
                     )
                 );
             }
@@ -190,7 +187,7 @@ namespace CountyRP.Services.Game.API.Controllers
             return Ok();
         }
 
-        private async Task<IActionResult> CheckInputCreatedOrEditedData(
+        private async Task<IActionResult> ValidateInputCreatedOrEditedData(
             ApiVehicleDtoIn apiVehicleDtoIn
         )
         {
@@ -215,11 +212,10 @@ namespace CountyRP.Services.Game.API.Controllers
                     return BadRequest(
                         new ApiErrorResponseDtoOut(
                             code: ApiErrorCodeDto.VehicleOwnerNotFoundById,
-                            message:
-                                string.Format(
-                                    ConstantMessages.VehicleOwnerNotFoundById,
-                                    apiVehicleDtoIn.OwnerId
-                                )
+                            message: string.Format(
+                                ConstantMessages.VehicleOwnerNotFoundById,
+                                apiVehicleDtoIn.OwnerId
+                            )
                         )
                     );
                 }
@@ -236,11 +232,10 @@ namespace CountyRP.Services.Game.API.Controllers
                     return BadRequest(
                         new ApiErrorResponseDtoOut(
                             code: ApiErrorCodeDto.VehicleFactionNotFoundById,
-                            message:
-                                string.Format(
-                                    ConstantMessages.VehicleFactionNotFoundById,
-                                    apiVehicleDtoIn.FactionId
-                                )
+                            message: string.Format(
+                                ConstantMessages.VehicleFactionNotFoundById,
+                                apiVehicleDtoIn.FactionId
+                            )
                         )
                     );
                 }

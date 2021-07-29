@@ -3,14 +3,15 @@ using CountyRP.Services.Game.Infrastructure.Models;
 
 namespace CountyRP.Services.Game.API.Converters
 {
-    public static class ApiFactionDtoInConverter
+    public static class ApiEditedFactionDtoInConverter
     {
-        public static FactionDtoIn ToRepository(
-            ApiFactionDtoIn source
+        public static FactionDtoOut ToDtoOutRepository(
+            ApiEditedFactionDtoIn source,
+            string id
         )
         {
-            return new FactionDtoIn(
-                id: source.Id,
+            return new FactionDtoOut(
+                id: id,
                 name: source.Name,
                 color: source.Color,
                 ranks: source.Ranks,

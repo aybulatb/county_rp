@@ -32,10 +32,10 @@ namespace CountyRP.Services.Game.API.Controllers
             [FromBody] ApiRoomDtoIn apiRoomDtoIn
         )
         {
-            var checkedResult = await CheckInputCreatedOrEditedData(apiRoomDtoIn);
-            if (checkedResult != null)
+            var validatedResult = await ValidateInputCreatedOrEditedData(apiRoomDtoIn);
+            if (validatedResult != null)
             {
-                return checkedResult;
+                return validatedResult;
             }
 
             var roomDtoIn = ApiRoomDtoInConverter.ToRepository(apiRoomDtoIn);
@@ -50,7 +50,7 @@ namespace CountyRP.Services.Game.API.Controllers
 
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(RoomDtoOut), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById(
             int id
         )
@@ -78,7 +78,7 @@ namespace CountyRP.Services.Game.API.Controllers
 
         [HttpGet("FilterBy")]
         [ProducesResponseType(typeof(ApiPagedFilterResultDtoOut<ApiRoomDtoOut>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> FilterBy(
             [FromQuery] ApiRoomFilterDtoIn apiRoomFilterDtoIn
         )
@@ -107,8 +107,8 @@ namespace CountyRP.Services.Game.API.Controllers
 
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(ApiRoomDtoOut), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Edit(
             int id,
             ApiRoomDtoIn apiRoomDtoIn
@@ -128,10 +128,10 @@ namespace CountyRP.Services.Game.API.Controllers
                 );
             }
 
-            var checkedResult = await CheckInputCreatedOrEditedData(apiRoomDtoIn);
-            if (checkedResult != null)
+            var validatedResult = await ValidateInputCreatedOrEditedData(apiRoomDtoIn);
+            if (validatedResult != null)
             {
-                return checkedResult;
+                return validatedResult;
             }
 
             var roomDtoOut = ApiRoomDtoInConverter.ToDtoOutRepository(
@@ -148,7 +148,7 @@ namespace CountyRP.Services.Game.API.Controllers
 
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
             var filter = RoomIdConverter.ToRoomFilterDtoIn(id);
@@ -170,7 +170,7 @@ namespace CountyRP.Services.Game.API.Controllers
             return Ok();
         }
 
-        private async Task<IActionResult> CheckInputCreatedOrEditedData(ApiRoomDtoIn apiRoomDtoIn)
+        private async Task<IActionResult> ValidateInputCreatedOrEditedData(ApiRoomDtoIn apiRoomDtoIn)
         {
             if (apiRoomDtoIn.EntrancePosition?.Length != 3)
             {
@@ -213,11 +213,10 @@ namespace CountyRP.Services.Game.API.Controllers
                     return BadRequest(
                         new ApiErrorResponseDtoOut(
                             code: ApiErrorCodeDto.RoomGangNotFoundById,
-                            message:
-                                string.Format(
-                                    ConstantMessages.RoomGangNotFoundById,
-                                    apiRoomDtoIn.GangId
-                                )
+                            message: string.Format(
+                                ConstantMessages.RoomGangNotFoundById,
+                                apiRoomDtoIn.GangId
+                            )
                         )
                     );
                 }

@@ -28,10 +28,17 @@ namespace CountyRP.Services.Game.API.Controllers
 
         [HttpPost]
         [ProducesResponseType(typeof(ApiAtmDtoOut), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Create(
             [FromBody] ApiAtmDtoIn apiAtmDtoIn
         )
         {
+            var validatedResult = await ValidateInputCreatedOrEditedData(apiAtmDtoIn);
+            if (validatedResult != null)
+            {
+                return validatedResult;
+            }
+
             var atmDtoIn = ApiAtmDtoInConverter.ToRepository(apiAtmDtoIn);
 
             var atmDtoOut = await _gameRepository.AddAtmAsync(atmDtoIn);
@@ -44,7 +51,7 @@ namespace CountyRP.Services.Game.API.Controllers
 
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(AtmDtoOut), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById(
             int id
         )
@@ -72,7 +79,7 @@ namespace CountyRP.Services.Game.API.Controllers
 
         [HttpGet("FilterBy")]
         [ProducesResponseType(typeof(ApiPagedFilterResultDtoOut<ApiAtmDtoOut>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> FilterBy(
             [FromQuery] ApiAtmFilterDtoIn apiAtmFilterDtoIn
         )
@@ -101,8 +108,8 @@ namespace CountyRP.Services.Game.API.Controllers
 
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(ApiAtmDtoOut), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Edit(
             int id,
             ApiAtmDtoIn apiAtmDtoIn
@@ -122,6 +129,12 @@ namespace CountyRP.Services.Game.API.Controllers
                 );
             }
 
+            var validatedResult = await ValidateInputCreatedOrEditedData(apiAtmDtoIn);
+            if (validatedResult != null)
+            {
+                return validatedResult;
+            }
+
             var atmDtoOut = ApiAtmDtoInConverter.ToDtoOutRepository(
                 source: apiAtmDtoIn,
                 id: id
@@ -136,7 +149,7 @@ namespace CountyRP.Services.Game.API.Controllers
 
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
             var filter = AtmIdConverter.ToAtmFilterDtoIn(id);
@@ -156,6 +169,42 @@ namespace CountyRP.Services.Game.API.Controllers
             await _gameRepository.DeleteAtmByFilter(filter);
 
             return Ok();
+        }
+
+        private async Task<IActionResult> ValidateInputCreatedOrEditedData(ApiAtmDtoIn apiAtmDtoIn)
+        {
+            if (apiAtmDtoIn.Position?.Length != 3)
+            {
+                return BadRequest(
+                    new ApiErrorResponseDtoOut(
+                        code: ApiErrorCodeDto.InvalidPositionCoordinatesCount,
+                        message: ConstantMessages.InvalidPositionCoordinatesCount
+                    )
+                );
+            }
+
+            if (apiAtmDtoIn.BusinessId.HasValue)
+            {
+                var existedBusinesses = await _gameRepository.GetBusinessesByFilter(
+                    BusinessIdConverter.ToBusinessFilterDtoIn(apiAtmDtoIn.BusinessId.Value)
+                );
+
+                if (existedBusinesses.AllCount == 0)
+                {
+                    return BadRequest(
+                        new ApiErrorResponseDtoOut(
+                            code: ApiErrorCodeDto.AtmBusinessNotFoundById,
+                            message:
+                                string.Format(
+                                    ConstantMessages.AtmBusinessNotFoundById,
+                                    apiAtmDtoIn.BusinessId
+                                )
+                        )
+                    );
+                }
+            }
+
+            return null;
         }
     }
 }

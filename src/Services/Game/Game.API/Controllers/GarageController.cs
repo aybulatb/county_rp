@@ -28,10 +28,17 @@ namespace CountyRP.Services.Game.API.Controllers
 
         [HttpPost]
         [ProducesResponseType(typeof(ApiGarageDtoOut), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Create(
             [FromBody] ApiGarageDtoIn apiGarageDtoIn
         )
         {
+            //var validatedResult = await ValidateInputCreatedOrEditedData(apiAtmDtoIn);
+            //if (validatedResult != null)
+            //{
+            //    return validatedResult;
+            //}
+
             var garageDtoIn = ApiGarageDtoInConverter.ToRepository(apiGarageDtoIn);
 
             var garageDtoOut = await _gameRepository.AddGarageAsync(garageDtoIn);
@@ -44,7 +51,7 @@ namespace CountyRP.Services.Game.API.Controllers
 
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(GarageDtoOut), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById(
             int id
         )
@@ -72,7 +79,7 @@ namespace CountyRP.Services.Game.API.Controllers
 
         [HttpGet("FilterBy")]
         [ProducesResponseType(typeof(ApiPagedFilterResultDtoOut<ApiGarageDtoOut>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> FilterBy(
             [FromQuery] ApiGarageFilterDtoIn apiGarageFilterDtoIn
         )
@@ -101,8 +108,8 @@ namespace CountyRP.Services.Game.API.Controllers
 
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(ApiGarageDtoOut), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Edit(
             int id,
             ApiGarageDtoIn apiGarageDtoIn
@@ -122,6 +129,12 @@ namespace CountyRP.Services.Game.API.Controllers
                 );
             }
 
+            //var validatedResult = await ValidateInputCreatedOrEditedData(apiAtmDtoIn);
+            //if (validatedResult != null)
+            //{
+            //    return validatedResult;
+            //}
+
             var garageDtoOut = ApiGarageDtoInConverter.ToDtoOutRepository(
                 source: apiGarageDtoIn,
                 id: id
@@ -136,7 +149,7 @@ namespace CountyRP.Services.Game.API.Controllers
 
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
             var filter = GarageIdConverter.ToGarageFilterDtoIn(id);

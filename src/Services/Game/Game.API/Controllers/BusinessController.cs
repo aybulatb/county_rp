@@ -28,10 +28,17 @@ namespace CountyRP.Services.Game.API.Controllers
 
         [HttpPost]
         [ProducesResponseType(typeof(ApiBusinessDtoOut), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Create(
             [FromBody] ApiBusinessDtoIn apiBusinessDtoIn
         )
         {
+            //var validatedResult = await ValidateInputCreatedOrEditedData(apiBusinessDtoIn);
+            //if (validatedResult != null)
+            //{
+            //    return validatedResult;
+            //}
+
             var businessDtoIn = ApiBusinessDtoInConverter.ToRepository(apiBusinessDtoIn);
 
             var businessDtoOut = await _gameRepository.AddBusinessAsync(businessDtoIn);
@@ -44,7 +51,7 @@ namespace CountyRP.Services.Game.API.Controllers
 
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(BusinessDtoOut), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById(
             int id
         )
@@ -72,7 +79,7 @@ namespace CountyRP.Services.Game.API.Controllers
 
         [HttpGet("FilterBy")]
         [ProducesResponseType(typeof(ApiPagedFilterResultDtoOut<ApiBusinessDtoOut>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> FilterBy(
             [FromQuery] ApiBusinessFilterDtoIn apiBusinessFilterDtoIn
         )
@@ -101,8 +108,8 @@ namespace CountyRP.Services.Game.API.Controllers
 
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(ApiBusinessDtoOut), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Edit(
             int id,
             ApiBusinessDtoIn apiBusinessDtoIn
@@ -122,6 +129,12 @@ namespace CountyRP.Services.Game.API.Controllers
                 );
             }
 
+            //var validatedResult = await ValidateInputCreatedOrEditedData(apiBusinessDtoIn);
+            //if (validatedResult != null)
+            //{
+            //    return validatedResult;
+            //}
+
             var businessDtoOut = ApiBusinessDtoInConverter.ToDtoOutRepository(
                 source: apiBusinessDtoIn,
                 id: id
@@ -136,7 +149,7 @@ namespace CountyRP.Services.Game.API.Controllers
 
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
             var filter = BusinessIdConverter.ToBusinessFilterDtoIn(id);

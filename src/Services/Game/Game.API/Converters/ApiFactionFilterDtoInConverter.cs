@@ -18,7 +18,7 @@ namespace CountyRP.Services.Game.API.Converters
                 names: source.Names,
                 nameLike: source.NameLike,
                 types: source.Types
-                    .Select(ApiFactionTypeDtoConverter.ToRepository)
+                    ?.Select(ApiFactionTypeDtoConverter.ToRepository)
             );
         }
     }

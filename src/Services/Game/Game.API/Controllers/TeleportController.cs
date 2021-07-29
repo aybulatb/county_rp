@@ -28,14 +28,15 @@ namespace CountyRP.Services.Game.API.Controllers
 
         [HttpPost]
         [ProducesResponseType(typeof(ApiTeleportDtoOut), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Create(
             [FromBody] ApiTeleportDtoIn apiTeleportDtoIn
         )
         {
-            var checkedResult = await CheckInputCreatedOrEditedData(apiTeleportDtoIn);
-            if (checkedResult != null)
+            var validatedResult = await ValidateInputCreatedOrEditedData(apiTeleportDtoIn);
+            if (validatedResult != null)
             {
-                return checkedResult;
+                return validatedResult;
             }
 
             var teleportDtoIn = ApiTeleportDtoInConverter.ToRepository(apiTeleportDtoIn);
@@ -50,7 +51,7 @@ namespace CountyRP.Services.Game.API.Controllers
 
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(TeleportDtoOut), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById(
             int id
         )
@@ -62,9 +63,12 @@ namespace CountyRP.Services.Game.API.Controllers
             if (!filteredTeleports.Items.Any())
             {
                 return NotFound(
-                    string.Format(
-                        ConstantMessages.TeleportNotFoundById,
-                        id
+                    new ApiErrorResponseDtoOut(
+                        code: ApiErrorCodeDto.TeleportNotFoundById,
+                        message: string.Format(
+                            ConstantMessages.TeleportNotFoundById,
+                            id
+                        )
                     )
                 );
             }
@@ -78,7 +82,7 @@ namespace CountyRP.Services.Game.API.Controllers
 
         [HttpGet("FilterBy")]
         [ProducesResponseType(typeof(ApiPagedFilterResultDtoOut<ApiTeleportDtoOut>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> FilterBy(
             [FromQuery] ApiTeleportFilterDtoIn apiTeleportFilterDtoIn
         )
@@ -107,8 +111,8 @@ namespace CountyRP.Services.Game.API.Controllers
 
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(ApiTeleportDtoOut), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Edit(
             int id,
             ApiTeleportDtoIn apiTeleportDtoIn
@@ -121,17 +125,20 @@ namespace CountyRP.Services.Game.API.Controllers
             if (filteredTeleports.AllCount == 0)
             {
                 return NotFound(
-                    string.Format(
-                        ConstantMessages.TeleportNotFoundById,
-                        id
+                    new ApiErrorResponseDtoOut(
+                        code: ApiErrorCodeDto.TeleportNotFoundById,
+                        message: string.Format(
+                            ConstantMessages.TeleportNotFoundById,
+                            id
+                        )
                     )
                 );
             }
 
-            var checkedResult = await CheckInputCreatedOrEditedData(apiTeleportDtoIn);
-            if (checkedResult != null)
+            var validatedResult = await ValidateInputCreatedOrEditedData(apiTeleportDtoIn);
+            if (validatedResult != null)
             {
-                return checkedResult;
+                return validatedResult;
             }
 
             var teleportDtoOut = ApiTeleportDtoInConverter.ToDtoOutRepository(
@@ -148,7 +155,7 @@ namespace CountyRP.Services.Game.API.Controllers
 
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
             var filter = TeleportIdConverter.ToTeleportFilterDtoIn(id);
@@ -158,9 +165,12 @@ namespace CountyRP.Services.Game.API.Controllers
             if (!filteredTeleports.Items.Any())
             {
                 return NotFound(
-                    string.Format(
-                        ConstantMessages.TeleportNotFoundById,
-                        id
+                    new ApiErrorResponseDtoOut(
+                        code: ApiErrorCodeDto.TeleportNotFoundById,
+                        message: string.Format(
+                            ConstantMessages.TeleportNotFoundById,
+                            id
+                        )
                     )
                 );
             }
@@ -170,7 +180,7 @@ namespace CountyRP.Services.Game.API.Controllers
             return Ok();
         }
 
-        private async Task<IActionResult> CheckInputCreatedOrEditedData(ApiTeleportDtoIn apiTeleportDtoIn)
+        private async Task<IActionResult> ValidateInputCreatedOrEditedData(ApiTeleportDtoIn apiTeleportDtoIn)
         {
             if (apiTeleportDtoIn.EntrancePosition?.Length != 3)
             {
@@ -213,11 +223,10 @@ namespace CountyRP.Services.Game.API.Controllers
                     return BadRequest(
                         new ApiErrorResponseDtoOut(
                             code: ApiErrorCodeDto.TeleportFactionNotFoundById,
-                            message:
-                                string.Format(
-                                    ConstantMessages.TeleportFactionNotFoundById,
-                                    apiTeleportDtoIn.FactionId
-                                )
+                            message: string.Format(
+                                ConstantMessages.TeleportFactionNotFoundById,
+                                apiTeleportDtoIn.FactionId
+                            )
                         )
                     );
                 }
@@ -234,11 +243,10 @@ namespace CountyRP.Services.Game.API.Controllers
                     return BadRequest(
                         new ApiErrorResponseDtoOut(
                             code: ApiErrorCodeDto.TeleportGangNotFoundById,
-                            message:
-                                string.Format(
-                                    ConstantMessages.TeleportGangNotFoundById,
-                                    apiTeleportDtoIn.GangId
-                                )
+                            message: string.Format(
+                                ConstantMessages.TeleportGangNotFoundById,
+                                apiTeleportDtoIn.GangId
+                            )
                         )
                     );
                 }
@@ -255,11 +263,10 @@ namespace CountyRP.Services.Game.API.Controllers
                     return BadRequest(
                         new ApiErrorResponseDtoOut(
                             code: ApiErrorCodeDto.TeleportRoomNotFoundById,
-                            message:
-                                string.Format(
-                                    ConstantMessages.TeleportRoomNotFoundById,
-                                    apiTeleportDtoIn.RoomId
-                                )
+                            message: string.Format(
+                                ConstantMessages.TeleportRoomNotFoundById,
+                                apiTeleportDtoIn.RoomId
+                            )
                         )
                     );
                 }
@@ -276,11 +283,10 @@ namespace CountyRP.Services.Game.API.Controllers
                     return BadRequest(
                         new ApiErrorResponseDtoOut(
                             code: ApiErrorCodeDto.TeleportBusinessNotFoundById,
-                            message:
-                                string.Format(
-                                    ConstantMessages.TeleportBusinessNotFoundById,
-                                    apiTeleportDtoIn.BusinessId
-                                )
+                            message: string.Format(
+                                ConstantMessages.TeleportBusinessNotFoundById,
+                                apiTeleportDtoIn.BusinessId
+                            )
                         )
                     );
                 }

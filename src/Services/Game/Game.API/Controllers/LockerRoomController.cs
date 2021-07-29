@@ -28,10 +28,17 @@ namespace CountyRP.Services.Game.API.Controllers
 
         [HttpPost]
         [ProducesResponseType(typeof(ApiLockerRoomDtoOut), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Create(
             [FromBody] ApiLockerRoomDtoIn apiLockerRoomDtoIn
         )
         {
+            //var validatedResult = await ValidateInputCreatedOrEditedData(apiAtmDtoIn);
+            //if (validatedResult != null)
+            //{
+            //    return validatedResult;
+            //}
+
             var lockerRoomDtoIn = ApiLockerRoomDtoInConverter.ToRepository(apiLockerRoomDtoIn);
 
             var lockerRoomDtoOut = await _gameRepository.AddLockerRoomAsync(lockerRoomDtoIn);
@@ -44,7 +51,7 @@ namespace CountyRP.Services.Game.API.Controllers
 
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(LockerRoomDtoOut), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById(
             int id
         )
@@ -72,7 +79,7 @@ namespace CountyRP.Services.Game.API.Controllers
 
         [HttpGet("FilterBy")]
         [ProducesResponseType(typeof(ApiPagedFilterResultDtoOut<ApiLockerRoomDtoOut>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> FilterBy(
             [FromQuery] ApiLockerRoomFilterDtoIn apiLockerRoomFilterDtoIn
         )
@@ -101,8 +108,8 @@ namespace CountyRP.Services.Game.API.Controllers
 
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(ApiLockerRoomDtoOut), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Edit(
             int id,
             ApiLockerRoomDtoIn apiLockerRoomDtoIn
@@ -122,6 +129,12 @@ namespace CountyRP.Services.Game.API.Controllers
                 );
             }
 
+            //var validatedResult = await ValidateInputCreatedOrEditedData(apiAtmDtoIn);
+            //if (validatedResult != null)
+            //{
+            //    return validatedResult;
+            //}
+
             var lockerRoomDtoOut = ApiLockerRoomDtoInConverter.ToDtoOutRepository(
                 source: apiLockerRoomDtoIn,
                 id: id
@@ -136,7 +149,7 @@ namespace CountyRP.Services.Game.API.Controllers
 
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
             var filter = LockerRoomIdConverter.ToLockerRoomFilterDtoIn(id);
