@@ -3,8 +3,8 @@
   "defaultVariables": null,
   "documentGenerator": {
     "fromDocument": {
-      "url": "D:\\Workspace\\County RP\\county-rp\\src\\ApiGateways\\AdminPanel\\AdminPanel.Infrastructure\\Specifications\\ServiceSiteSwagger.json",
-      "output": "ServiceSite.nswag.json",
+      "url": "D:\\Workspace\\County RP\\county-rp\\src\\ApiGateways\\AdminPanel\\AdminPanel.Infrastructure\\Specifications\\ServiceGameSwagger.json",
+      "output": "ServiceGame.nswag.json",
       "newLineBehavior": "Auto"
     }
   },
@@ -55,7 +55,7 @@
       "wrapResponseMethods": [],
       "generateResponseClasses": true,
       "responseClass": "SwaggerResponse",
-      "namespace": "CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClient.ServiceSite",
+      "namespace": "CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClient.ServiceGame",
       "requiredPropertiesMustBeDefined": true,
       "dateType": "System.DateTimeOffset",
       "jsonConverters": null,
@@ -93,7 +93,7 @@
       "checksumCacheEnabled": false,
       "serviceHost": null,
       "serviceSchemes": null,
-      "output": "ServiceSite.cs",
+      "output": "ServiceGame.cs",
       "newLineBehavior": "Auto"
     }
   }

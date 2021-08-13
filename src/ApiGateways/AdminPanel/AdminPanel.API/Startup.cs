@@ -1,3 +1,4 @@
+using CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClient.ServiceGame;
 using CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClient.ServiceSite;
 using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services;
 using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Interfaces;
@@ -29,12 +30,20 @@ namespace CountyRP.ApiGateways.AdminPanel.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            HttpClient httpClient = new HttpClient();
-            services.AddSingleton(new SupportRequestMessageClient(httpClient)
+            services.AddSingleton(new SupportRequestMessageClient(new HttpClient())
             {
                 BaseUrl = "https://localhost:10501"
             });
 
+            HttpClientHandler clientHandler = new HttpClientHandler();
+            clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
+
+            services.AddSingleton(new PlayerClient(new HttpClient(clientHandler))
+            {
+                BaseUrl = "http://192.168.1.67:49168"
+            });
+
+            services.AddTransient<IGameService, GameService>();
             services.AddTransient<ISupportRequestMessageSiteService, SupportRequestMessageSiteService>();
 
             services.AddControllers();

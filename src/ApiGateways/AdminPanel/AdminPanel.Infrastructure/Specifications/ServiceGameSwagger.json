@@ -1,0 +1,6568 @@
+{
+  "x-generator": "NSwag v13.11.3.0 (NJsonSchema v10.4.4.0 (Newtonsoft.Json v13.0.0.0))",
+  "swagger": "2.0",
+  "info": {
+    "title": "County RP Game Service API",
+    "description": "The County RP Game Service API documentation description.",
+    "version": "v1"
+  },
+  "host": "localhost:49155",
+  "schemes": [
+    "https"
+  ],
+  "produces": [
+    "text/plain",
+    "application/json",
+    "text/json"
+  ],
+  "paths": {
+    "/AdminLevel": {
+      "post": {
+        "tags": [
+          "AdminLevel"
+        ],
+        "operationId": "AdminLevel_Create",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "name": "apiAdminLevelDtoIn",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiAdminLevelDtoIn"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "201": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiAdminLevelDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      }
+    },
+    "/AdminLevel/{id}": {
+      "get": {
+        "tags": [
+          "AdminLevel"
+        ],
+        "operationId": "AdminLevel_GetById",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/AdminLevelDtoOut"
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "AdminLevel"
+        ],
+        "operationId": "AdminLevel_Edit",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "type": "string",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "x-nullable": true
+          },
+          {
+            "name": "apiEditedAdminLevelDtoIn",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiEditedAdminLevelDtoIn"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiAdminLevelDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "AdminLevel"
+        ],
+        "operationId": "AdminLevel_Delete",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      }
+    },
+    "/AdminLevel/FilterBy": {
+      "get": {
+        "tags": [
+          "AdminLevel"
+        ],
+        "operationId": "AdminLevel_FilterBy",
+        "parameters": [
+          {
+            "type": "array",
+            "name": "Ids",
+            "in": "query",
+            "collectionFormat": "multi",
+            "x-nullable": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "type": "array",
+            "name": "Names",
+            "in": "query",
+            "collectionFormat": "multi",
+            "x-nullable": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "type": "string",
+            "name": "NameLike",
+            "in": "query",
+            "x-nullable": true
+          },
+          {
+            "type": "integer",
+            "name": "Count",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "type": "integer",
+            "name": "Page",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiPagedFilterResultDtoOutOfApiAdminLevelDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      }
+    },
+    "/Appearance": {
+      "post": {
+        "tags": [
+          "Appearance"
+        ],
+        "operationId": "Appearance_Create",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "name": "apiAppearanceDtoIn",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiAppearanceDtoIn"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "201": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiAppearanceDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      }
+    },
+    "/Appearance/{id}": {
+      "get": {
+        "tags": [
+          "Appearance"
+        ],
+        "operationId": "Appearance_GetById",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/AppearanceDtoOut"
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Appearance"
+        ],
+        "operationId": "Appearance_Edit",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "name": "apiAppearanceDtoIn",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiAppearanceDtoIn"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiAppearanceDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Appearance"
+        ],
+        "operationId": "Appearance_Delete",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      }
+    },
+    "/Appearance/FilterBy": {
+      "get": {
+        "tags": [
+          "Appearance"
+        ],
+        "operationId": "Appearance_FilterBy",
+        "parameters": [
+          {
+            "type": "array",
+            "name": "Ids",
+            "in": "query",
+            "collectionFormat": "multi",
+            "x-nullable": true,
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "type": "integer",
+            "name": "Count",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "type": "integer",
+            "name": "Page",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiPagedFilterResultDtoOutOfApiAppearanceDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      }
+    },
+    "/Atm": {
+      "post": {
+        "tags": [
+          "Atm"
+        ],
+        "operationId": "Atm_Create",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "name": "apiAtmDtoIn",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiAtmDtoIn"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "201": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiAtmDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      }
+    },
+    "/Atm/{id}": {
+      "get": {
+        "tags": [
+          "Atm"
+        ],
+        "operationId": "Atm_GetById",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/AtmDtoOut"
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Atm"
+        ],
+        "operationId": "Atm_Edit",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "name": "apiAtmDtoIn",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiAtmDtoIn"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiAtmDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Atm"
+        ],
+        "operationId": "Atm_Delete",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      }
+    },
+    "/Atm/FilterBy": {
+      "get": {
+        "tags": [
+          "Atm"
+        ],
+        "operationId": "Atm_FilterBy",
+        "parameters": [
+          {
+            "type": "array",
+            "name": "Ids",
+            "in": "query",
+            "collectionFormat": "multi",
+            "x-nullable": true,
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "type": "array",
+            "name": "BusinessIds",
+            "in": "query",
+            "collectionFormat": "multi",
+            "x-nullable": true,
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "type": "integer",
+            "name": "Count",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "type": "integer",
+            "name": "Page",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiPagedFilterResultDtoOutOfApiAtmDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      }
+    },
+    "/Business": {
+      "post": {
+        "tags": [
+          "Business"
+        ],
+        "operationId": "Business_Create",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "name": "apiBusinessDtoIn",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiBusinessDtoIn"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "201": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiBusinessDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      }
+    },
+    "/Business/{id}": {
+      "get": {
+        "tags": [
+          "Business"
+        ],
+        "operationId": "Business_GetById",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/BusinessDtoOut"
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Business"
+        ],
+        "operationId": "Business_Edit",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "name": "apiBusinessDtoIn",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiBusinessDtoIn"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiBusinessDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Business"
+        ],
+        "operationId": "Business_Delete",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      }
+    },
+    "/Business/FilterBy": {
+      "get": {
+        "tags": [
+          "Business"
+        ],
+        "operationId": "Business_FilterBy",
+        "parameters": [
+          {
+            "type": "array",
+            "name": "Ids",
+            "in": "query",
+            "collectionFormat": "multi",
+            "x-nullable": true,
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "type": "string",
+            "name": "Name",
+            "in": "query",
+            "x-nullable": true
+          },
+          {
+            "type": "string",
+            "name": "NameLike",
+            "in": "query",
+            "x-nullable": true
+          },
+          {
+            "type": "array",
+            "name": "OwnerIds",
+            "in": "query",
+            "collectionFormat": "multi",
+            "x-nullable": true,
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "type": "array",
+            "name": "Types",
+            "in": "query",
+            "collectionFormat": "multi",
+            "x-nullable": true,
+            "items": {
+              "$ref": "#/definitions/ApiBusinessTypeDto"
+            }
+          },
+          {
+            "type": "integer",
+            "name": "Count",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "type": "integer",
+            "name": "Page",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiPagedFilterResultDtoOutOfApiBusinessDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      }
+    },
+    "/Faction": {
+      "post": {
+        "tags": [
+          "Faction"
+        ],
+        "operationId": "Faction_Create",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "name": "apiFactionDtoIn",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiFactionDtoIn"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "201": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiFactionDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      }
+    },
+    "/Faction/{id}": {
+      "get": {
+        "tags": [
+          "Faction"
+        ],
+        "operationId": "Faction_GetById",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/FactionDtoOut"
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Faction"
+        ],
+        "operationId": "Faction_Edit",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "type": "string",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "x-nullable": true
+          },
+          {
+            "name": "apiEditedFactionDtoIn",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiEditedFactionDtoIn"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiFactionDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Faction"
+        ],
+        "operationId": "Faction_Delete",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      }
+    },
+    "/Faction/FilterBy": {
+      "get": {
+        "tags": [
+          "Faction"
+        ],
+        "operationId": "Faction_FilterBy",
+        "parameters": [
+          {
+            "type": "array",
+            "name": "Ids",
+            "in": "query",
+            "collectionFormat": "multi",
+            "x-nullable": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "type": "string",
+            "name": "IdLike",
+            "in": "query",
+            "x-nullable": true
+          },
+          {
+            "type": "array",
+            "name": "Names",
+            "in": "query",
+            "collectionFormat": "multi",
+            "x-nullable": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "type": "string",
+            "name": "NameLike",
+            "in": "query",
+            "x-nullable": true
+          },
+          {
+            "type": "array",
+            "name": "Types",
+            "in": "query",
+            "collectionFormat": "multi",
+            "x-nullable": true,
+            "items": {
+              "$ref": "#/definitions/ApiFactionTypeDto"
+            }
+          },
+          {
+            "type": "integer",
+            "name": "Count",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "type": "integer",
+            "name": "Page",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiPagedFilterResultDtoOutOfApiFactionDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      }
+    },
+    "/Gang": {
+      "post": {
+        "tags": [
+          "Gang"
+        ],
+        "operationId": "Gang_Create",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "name": "apiGangDtoIn",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiGangDtoIn"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "201": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiGangDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      }
+    },
+    "/Gang/{id}": {
+      "get": {
+        "tags": [
+          "Gang"
+        ],
+        "operationId": "Gang_GetById",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiGangDtoOut"
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Gang"
+        ],
+        "operationId": "Gang_Edit",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "name": "apiEditedGangDtoIn",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiEditedGangDtoIn"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiGangDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Gang"
+        ],
+        "operationId": "Gang_Delete",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      }
+    },
+    "/Gang/FilterBy": {
+      "get": {
+        "tags": [
+          "Gang"
+        ],
+        "operationId": "Gang_FilterBy",
+        "parameters": [
+          {
+            "type": "array",
+            "name": "Ids",
+            "in": "query",
+            "collectionFormat": "multi",
+            "x-nullable": true,
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "type": "string",
+            "name": "Name",
+            "in": "query",
+            "x-nullable": true
+          },
+          {
+            "type": "string",
+            "name": "NameLike",
+            "in": "query",
+            "x-nullable": true
+          },
+          {
+            "type": "array",
+            "name": "Types",
+            "in": "query",
+            "collectionFormat": "multi",
+            "x-nullable": true,
+            "items": {
+              "$ref": "#/definitions/ApiGangTypeDto"
+            }
+          },
+          {
+            "type": "integer",
+            "name": "Count",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "type": "integer",
+            "name": "Page",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiPagedFilterResultDtoOutOfApiGangDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      }
+    },
+    "/Garage": {
+      "post": {
+        "tags": [
+          "Garage"
+        ],
+        "operationId": "Garage_Create",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "name": "apiGarageDtoIn",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiGarageDtoIn"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "201": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiGarageDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      }
+    },
+    "/Garage/{id}": {
+      "get": {
+        "tags": [
+          "Garage"
+        ],
+        "operationId": "Garage_GetById",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/GarageDtoOut"
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Garage"
+        ],
+        "operationId": "Garage_Edit",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "name": "apiGarageDtoIn",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiGarageDtoIn"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiGarageDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Garage"
+        ],
+        "operationId": "Garage_Delete",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      }
+    },
+    "/Garage/FilterBy": {
+      "get": {
+        "tags": [
+          "Garage"
+        ],
+        "operationId": "Garage_FilterBy",
+        "parameters": [
+          {
+            "type": "array",
+            "name": "Ids",
+            "in": "query",
+            "collectionFormat": "multi",
+            "x-nullable": true,
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "type": "integer",
+            "name": "Count",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "type": "integer",
+            "name": "Page",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiPagedFilterResultDtoOutOfApiGarageDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      }
+    },
+    "/House": {
+      "post": {
+        "tags": [
+          "House"
+        ],
+        "operationId": "House_Create",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "name": "apiHouseDtoIn",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiHouseDtoIn"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "201": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiHouseDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      }
+    },
+    "/House/{id}": {
+      "get": {
+        "tags": [
+          "House"
+        ],
+        "operationId": "House_GetById",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/HouseDtoOut"
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "House"
+        ],
+        "operationId": "House_Edit",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "name": "apiHouseDtoIn",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiHouseDtoIn"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiHouseDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "House"
+        ],
+        "operationId": "House_Delete",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      }
+    },
+    "/House/FilterBy": {
+      "get": {
+        "tags": [
+          "House"
+        ],
+        "operationId": "House_FilterBy",
+        "parameters": [
+          {
+            "type": "array",
+            "name": "Ids",
+            "in": "query",
+            "collectionFormat": "multi",
+            "x-nullable": true,
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "type": "array",
+            "name": "OwnerIds",
+            "in": "query",
+            "collectionFormat": "multi",
+            "x-nullable": true,
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "type": "array",
+            "name": "GarageIds",
+            "in": "query",
+            "collectionFormat": "multi",
+            "x-nullable": true,
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "type": "integer",
+            "name": "Count",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "type": "integer",
+            "name": "Page",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiPagedFilterResultDtoOutOfApiHouseDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      }
+    },
+    "/LockerRoom": {
+      "post": {
+        "tags": [
+          "LockerRoom"
+        ],
+        "operationId": "LockerRoom_Create",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "name": "apiLockerRoomDtoIn",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiLockerRoomDtoIn"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "201": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiLockerRoomDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      }
+    },
+    "/LockerRoom/{id}": {
+      "get": {
+        "tags": [
+          "LockerRoom"
+        ],
+        "operationId": "LockerRoom_GetById",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/LockerRoomDtoOut"
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "LockerRoom"
+        ],
+        "operationId": "LockerRoom_Edit",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "name": "apiLockerRoomDtoIn",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiLockerRoomDtoIn"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiLockerRoomDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "LockerRoom"
+        ],
+        "operationId": "LockerRoom_Delete",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      }
+    },
+    "/LockerRoom/FilterBy": {
+      "get": {
+        "tags": [
+          "LockerRoom"
+        ],
+        "operationId": "LockerRoom_FilterBy",
+        "parameters": [
+          {
+            "type": "array",
+            "name": "Ids",
+            "in": "query",
+            "collectionFormat": "multi",
+            "x-nullable": true,
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "type": "array",
+            "name": "FactionIds",
+            "in": "query",
+            "collectionFormat": "multi",
+            "x-nullable": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "type": "integer",
+            "name": "Count",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "type": "integer",
+            "name": "Page",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiPagedFilterResultDtoOutOfApiLockerRoomDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      }
+    },
+    "/Person": {
+      "post": {
+        "tags": [
+          "Person"
+        ],
+        "operationId": "Person_Create",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "name": "apiPersonDtoIn",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiPersonDtoIn"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "201": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiPersonDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      }
+    },
+    "/Person/{id}": {
+      "get": {
+        "tags": [
+          "Person"
+        ],
+        "operationId": "Person_GetById",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiPersonDtoOut"
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Person"
+        ],
+        "operationId": "Person_Edit",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "name": "apiEditedPersonDtoIn",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiEditedPersonDtoIn"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiPersonDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Person"
+        ],
+        "operationId": "Person_Delete",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      }
+    },
+    "/Person/FilterBy": {
+      "get": {
+        "tags": [
+          "Person"
+        ],
+        "operationId": "Person_FilterBy",
+        "parameters": [
+          {
+            "type": "array",
+            "name": "Ids",
+            "in": "query",
+            "collectionFormat": "multi",
+            "x-nullable": true,
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "type": "array",
+            "name": "Names",
+            "in": "query",
+            "collectionFormat": "multi",
+            "x-nullable": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "type": "array",
+            "name": "PlayerIds",
+            "in": "query",
+            "collectionFormat": "multi",
+            "x-nullable": true,
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "type": "string",
+            "name": "StartRegistrationDate",
+            "in": "query",
+            "format": "date-time",
+            "x-nullable": true
+          },
+          {
+            "type": "string",
+            "name": "FinishRegistrationDate",
+            "in": "query",
+            "format": "date-time",
+            "x-nullable": true
+          },
+          {
+            "type": "string",
+            "name": "StartLastVisitDate",
+            "in": "query",
+            "format": "date-time",
+            "x-nullable": true
+          },
+          {
+            "type": "string",
+            "name": "FinishLastVisitDate",
+            "in": "query",
+            "format": "date-time",
+            "x-nullable": true
+          },
+          {
+            "type": "array",
+            "name": "AdminLevelIds",
+            "in": "query",
+            "collectionFormat": "multi",
+            "x-nullable": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "type": "array",
+            "name": "FactionIds",
+            "in": "query",
+            "collectionFormat": "multi",
+            "x-nullable": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "type": "array",
+            "name": "GangIds",
+            "in": "query",
+            "collectionFormat": "multi",
+            "x-nullable": true,
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "type": "boolean",
+            "name": "Leader",
+            "in": "query",
+            "x-nullable": true
+          },
+          {
+            "type": "integer",
+            "name": "Rank",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": true
+          },
+          {
+            "type": "integer",
+            "name": "Count",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "type": "integer",
+            "name": "Page",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiPagedFilterResultDtoOutOfApiPersonDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      }
+    },
+    "/Player": {
+      "post": {
+        "tags": [
+          "Player"
+        ],
+        "operationId": "Player_Create",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "name": "apiPlayerDtoIn",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiPlayerDtoIn"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "201": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiPlayerDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      }
+    },
+    "/Player/{id}": {
+      "get": {
+        "tags": [
+          "Player"
+        ],
+        "operationId": "Player_GetById",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiPlayerDtoOut"
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Player"
+        ],
+        "operationId": "Player_Edit",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "name": "apiEditedPlayerDtoIn",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiEditedPlayerDtoIn"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiPlayerDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Player"
+        ],
+        "operationId": "Player_Delete",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      }
+    },
+    "/Player/FilterBy": {
+      "get": {
+        "tags": [
+          "Player"
+        ],
+        "operationId": "Player_FilterBy",
+        "parameters": [
+          {
+            "type": "array",
+            "name": "Ids",
+            "in": "query",
+            "collectionFormat": "multi",
+            "x-nullable": true,
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "type": "array",
+            "name": "Logins",
+            "in": "query",
+            "collectionFormat": "multi",
+            "x-nullable": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "type": "string",
+            "name": "StartRegistrationDate",
+            "in": "query",
+            "format": "date-time",
+            "x-nullable": true
+          },
+          {
+            "type": "string",
+            "name": "FinishRegistrationDate",
+            "in": "query",
+            "format": "date-time",
+            "x-nullable": true
+          },
+          {
+            "type": "string",
+            "name": "StartLastVisitDate",
+            "in": "query",
+            "format": "date-time",
+            "x-nullable": true
+          },
+          {
+            "type": "string",
+            "name": "FinishLastVisitDate",
+            "in": "query",
+            "format": "date-time",
+            "x-nullable": true
+          },
+          {
+            "type": "integer",
+            "name": "Count",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "type": "integer",
+            "name": "Page",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiPagedFilterResultDtoOutOfApiPlayerDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      }
+    },
+    "/Room": {
+      "post": {
+        "tags": [
+          "Room"
+        ],
+        "operationId": "Room_Create",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "name": "apiRoomDtoIn",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiRoomDtoIn"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "201": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiRoomDtoOut"
+            }
+          }
+        }
+      }
+    },
+    "/Room/{id}": {
+      "get": {
+        "tags": [
+          "Room"
+        ],
+        "operationId": "Room_GetById",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/RoomDtoOut"
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Room"
+        ],
+        "operationId": "Room_Edit",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "name": "apiRoomDtoIn",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiRoomDtoIn"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiRoomDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Room"
+        ],
+        "operationId": "Room_Delete",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      }
+    },
+    "/Room/FilterBy": {
+      "get": {
+        "tags": [
+          "Room"
+        ],
+        "operationId": "Room_FilterBy",
+        "parameters": [
+          {
+            "type": "array",
+            "name": "Ids",
+            "in": "query",
+            "collectionFormat": "multi",
+            "x-nullable": true,
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "type": "string",
+            "name": "Name",
+            "in": "query",
+            "x-nullable": true
+          },
+          {
+            "type": "string",
+            "name": "NameLike",
+            "in": "query",
+            "x-nullable": true
+          },
+          {
+            "type": "array",
+            "name": "GangIds",
+            "in": "query",
+            "collectionFormat": "multi",
+            "x-nullable": true,
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "type": "string",
+            "name": "StartLastPaymentDate",
+            "in": "query",
+            "format": "date-time",
+            "x-nullable": true
+          },
+          {
+            "type": "string",
+            "name": "FinishLastPaymentDate",
+            "in": "query",
+            "format": "date-time",
+            "x-nullable": true
+          },
+          {
+            "type": "integer",
+            "name": "Count",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "type": "integer",
+            "name": "Page",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiPagedFilterResultDtoOutOfApiRoomDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      }
+    },
+    "/Teleport": {
+      "post": {
+        "tags": [
+          "Teleport"
+        ],
+        "operationId": "Teleport_Create",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "name": "apiTeleportDtoIn",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiTeleportDtoIn"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "201": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiTeleportDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      }
+    },
+    "/Teleport/{id}": {
+      "get": {
+        "tags": [
+          "Teleport"
+        ],
+        "operationId": "Teleport_GetById",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/TeleportDtoOut"
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Teleport"
+        ],
+        "operationId": "Teleport_Edit",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "name": "apiTeleportDtoIn",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiTeleportDtoIn"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiTeleportDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Teleport"
+        ],
+        "operationId": "Teleport_Delete",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      }
+    },
+    "/Teleport/FilterBy": {
+      "get": {
+        "tags": [
+          "Teleport"
+        ],
+        "operationId": "Teleport_FilterBy",
+        "parameters": [
+          {
+            "type": "array",
+            "name": "Ids",
+            "in": "query",
+            "collectionFormat": "multi",
+            "x-nullable": true,
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "type": "string",
+            "name": "Name",
+            "in": "query",
+            "x-nullable": true
+          },
+          {
+            "type": "string",
+            "name": "NameLike",
+            "in": "query",
+            "x-nullable": true
+          },
+          {
+            "type": "array",
+            "name": "FactionIds",
+            "in": "query",
+            "collectionFormat": "multi",
+            "x-nullable": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "type": "array",
+            "name": "GangIds",
+            "in": "query",
+            "collectionFormat": "multi",
+            "x-nullable": true,
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "type": "array",
+            "name": "RoomIds",
+            "in": "query",
+            "collectionFormat": "multi",
+            "x-nullable": true,
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "type": "array",
+            "name": "BusinessIds",
+            "in": "query",
+            "collectionFormat": "multi",
+            "x-nullable": true,
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "type": "integer",
+            "name": "Count",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "type": "integer",
+            "name": "Page",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiPagedFilterResultDtoOutOfApiTeleportDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      }
+    },
+    "/Vehicle": {
+      "post": {
+        "tags": [
+          "Vehicle"
+        ],
+        "operationId": "Vehicle_Create",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "name": "apiVehicleDtoIn",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiVehicleDtoIn"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "201": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiVehicleDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      }
+    },
+    "/Vehicle/{id}": {
+      "get": {
+        "tags": [
+          "Vehicle"
+        ],
+        "operationId": "Vehicle_GetById",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/VehicleDtoOut"
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Vehicle"
+        ],
+        "operationId": "Vehicle_Edit",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "name": "apiVehicleDtoIn",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiVehicleDtoIn"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiVehicleDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Vehicle"
+        ],
+        "operationId": "Vehicle_Delete",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      }
+    },
+    "/Vehicle/FilterBy": {
+      "get": {
+        "tags": [
+          "Vehicle"
+        ],
+        "operationId": "Vehicle_FilterBy",
+        "parameters": [
+          {
+            "type": "array",
+            "name": "Ids",
+            "in": "query",
+            "collectionFormat": "multi",
+            "x-nullable": true,
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "type": "array",
+            "name": "Models",
+            "in": "query",
+            "collectionFormat": "multi",
+            "x-nullable": true,
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "type": "array",
+            "name": "OwnerIds",
+            "in": "query",
+            "collectionFormat": "multi",
+            "x-nullable": true,
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "type": "array",
+            "name": "FactionIds",
+            "in": "query",
+            "collectionFormat": "multi",
+            "x-nullable": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "type": "string",
+            "name": "LicensePlate",
+            "in": "query",
+            "x-nullable": true
+          },
+          {
+            "type": "string",
+            "name": "LicensePlateLike",
+            "in": "query",
+            "x-nullable": true
+          },
+          {
+            "type": "integer",
+            "name": "Count",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "type": "integer",
+            "name": "Page",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiPagedFilterResultDtoOutOfApiVehicleDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "ApiAdminLevelDtoOut": {
+      "type": "object",
+      "required": [
+        "ban",
+        "createVehicle",
+        "editVehicle",
+        "deleteVehicle",
+        "createFaction",
+        "editFaction",
+        "deleteFaction",
+        "createHouse",
+        "editHouse",
+        "deleteHouse",
+        "createBusiness",
+        "editBusiness",
+        "deleteBusiness",
+        "createTeleport",
+        "editTeleport",
+        "deleteTeleport",
+        "createGang",
+        "editGang",
+        "deleteGang",
+        "createLockerRoom",
+        "editLockerRoom",
+        "deleteLockerRoom",
+        "createAtm",
+        "editAtm",
+        "deleteAtm",
+        "createRoom",
+        "editRoom",
+        "deleteRoom"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "ban": {
+          "type": "boolean"
+        },
+        "createVehicle": {
+          "type": "boolean"
+        },
+        "editVehicle": {
+          "type": "boolean"
+        },
+        "deleteVehicle": {
+          "type": "boolean"
+        },
+        "createFaction": {
+          "type": "boolean"
+        },
+        "editFaction": {
+          "type": "boolean"
+        },
+        "deleteFaction": {
+          "type": "boolean"
+        },
+        "createHouse": {
+          "type": "boolean"
+        },
+        "editHouse": {
+          "type": "boolean"
+        },
+        "deleteHouse": {
+          "type": "boolean"
+        },
+        "createBusiness": {
+          "type": "boolean"
+        },
+        "editBusiness": {
+          "type": "boolean"
+        },
+        "deleteBusiness": {
+          "type": "boolean"
+        },
+        "createTeleport": {
+          "type": "boolean"
+        },
+        "editTeleport": {
+          "type": "boolean"
+        },
+        "deleteTeleport": {
+          "type": "boolean"
+        },
+        "createGang": {
+          "type": "boolean"
+        },
+        "editGang": {
+          "type": "boolean"
+        },
+        "deleteGang": {
+          "type": "boolean"
+        },
+        "createLockerRoom": {
+          "type": "boolean"
+        },
+        "editLockerRoom": {
+          "type": "boolean"
+        },
+        "deleteLockerRoom": {
+          "type": "boolean"
+        },
+        "createAtm": {
+          "type": "boolean"
+        },
+        "editAtm": {
+          "type": "boolean"
+        },
+        "deleteAtm": {
+          "type": "boolean"
+        },
+        "createRoom": {
+          "type": "boolean"
+        },
+        "editRoom": {
+          "type": "boolean"
+        },
+        "deleteRoom": {
+          "type": "boolean"
+        }
+      }
+    },
+    "ApiErrorResponseDtoOut": {
+      "type": "object",
+      "required": [
+        "code"
+      ],
+      "properties": {
+        "code": {
+          "$ref": "#/definitions/ApiErrorCodeDto"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "ApiErrorCodeDto": {
+      "type": "integer",
+      "description": "",
+      "x-enumNames": [
+        "Unknown",
+        "CountItemPerPageMoreThan100",
+        "InvalidCountItemPerPage",
+        "InvalidPageNumber",
+        "InvalidPositionCoordinatesCount",
+        "InvalidMarkerColorsCount",
+        "InvalidId",
+        "InvalidColor",
+        "PlayerNotFoundById",
+        "PlayerInvalidLoginLength",
+        "PlayerInvalidLogin",
+        "PlayerInvalidPasswordLength",
+        "PlayerInvalidPassword",
+        "PlayerAlreadyExistedWithLogin",
+        "PersonNotFoundById",
+        "PersonInvalidNameLength",
+        "PersonInvalidName",
+        "PersonAlreadyExistedWithName",
+        "AdminLevelNotFoundById",
+        "AdminLevelInvalidId",
+        "AdminLevelInvalidNameLength",
+        "AdminLevelInvalidName",
+        "AdminLevelAlreadyExistsWithName",
+        "AppearanceNotFoundById",
+        "AtmNotFoundById",
+        "AtmBusinessNotFoundById",
+        "BusinessNotFoundById",
+        "FactionNotFoundById",
+        "FactionInvalidNameLength",
+        "FactionInvalidName",
+        "FactionAlreadyExistsWithId",
+        "FactionInvalidRanksCount",
+        "FactionInvalidRanksNameLength",
+        "FactionInvalidRanksName",
+        "GangNotFoundById",
+        "GarageNotFoundById",
+        "HouseNotFoundById",
+        "LockerRoomNotFoundById",
+        "RoomNotFoundById",
+        "RoomGangNotFoundById",
+        "TeleportNotFoundById",
+        "TeleportFactionNotFoundById",
+        "TeleportGangNotFoundById",
+        "TeleportRoomNotFoundById",
+        "TeleportBusinessNotFoundById",
+        "VehicleNotFoundById",
+        "VehicleOwnerNotFoundById",
+        "VehicleFactionNotFoundById",
+        "VehicleInvalidLicensePlate"
+      ],
+      "enum": [
+        0,
+        1000,
+        1001,
+        1002,
+        1003,
+        1004,
+        1005,
+        1006,
+        2000,
+        2001,
+        2002,
+        2003,
+        2004,
+        2005,
+        3000,
+        3001,
+        3002,
+        3003,
+        4000,
+        4001,
+        4002,
+        4003,
+        4004,
+        5000,
+        6000,
+        6001,
+        7000,
+        8000,
+        8001,
+        8002,
+        8003,
+        8004,
+        8005,
+        8006,
+        9000,
+        10000,
+        11000,
+        12000,
+        13000,
+        13001,
+        14000,
+        14001,
+        14002,
+        14003,
+        14004,
+        15000,
+        15001,
+        15002,
+        15003
+      ]
+    },
+    "ApiAdminLevelDtoIn": {
+      "type": "object",
+      "required": [
+        "ban",
+        "createVehicle",
+        "editVehicle",
+        "deleteVehicle",
+        "createFaction",
+        "editFaction",
+        "deleteFaction",
+        "createHouse",
+        "editHouse",
+        "deleteHouse",
+        "createBusiness",
+        "editBusiness",
+        "deleteBusiness",
+        "createTeleport",
+        "editTeleport",
+        "deleteTeleport",
+        "createGang",
+        "editGang",
+        "deleteGang",
+        "createLockerRoom",
+        "editLockerRoom",
+        "deleteLockerRoom",
+        "createAtm",
+        "editAtm",
+        "deleteAtm",
+        "createRoom",
+        "editRoom",
+        "deleteRoom"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "ban": {
+          "type": "boolean"
+        },
+        "createVehicle": {
+          "type": "boolean"
+        },
+        "editVehicle": {
+          "type": "boolean"
+        },
+        "deleteVehicle": {
+          "type": "boolean"
+        },
+        "createFaction": {
+          "type": "boolean"
+        },
+        "editFaction": {
+          "type": "boolean"
+        },
+        "deleteFaction": {
+          "type": "boolean"
+        },
+        "createHouse": {
+          "type": "boolean"
+        },
+        "editHouse": {
+          "type": "boolean"
+        },
+        "deleteHouse": {
+          "type": "boolean"
+        },
+        "createBusiness": {
+          "type": "boolean"
+        },
+        "editBusiness": {
+          "type": "boolean"
+        },
+        "deleteBusiness": {
+          "type": "boolean"
+        },
+        "createTeleport": {
+          "type": "boolean"
+        },
+        "editTeleport": {
+          "type": "boolean"
+        },
+        "deleteTeleport": {
+          "type": "boolean"
+        },
+        "createGang": {
+          "type": "boolean"
+        },
+        "editGang": {
+          "type": "boolean"
+        },
+        "deleteGang": {
+          "type": "boolean"
+        },
+        "createLockerRoom": {
+          "type": "boolean"
+        },
+        "editLockerRoom": {
+          "type": "boolean"
+        },
+        "deleteLockerRoom": {
+          "type": "boolean"
+        },
+        "createAtm": {
+          "type": "boolean"
+        },
+        "editAtm": {
+          "type": "boolean"
+        },
+        "deleteAtm": {
+          "type": "boolean"
+        },
+        "createRoom": {
+          "type": "boolean"
+        },
+        "editRoom": {
+          "type": "boolean"
+        },
+        "deleteRoom": {
+          "type": "boolean"
+        }
+      }
+    },
+    "AdminLevelDtoOut": {
+      "type": "object",
+      "required": [
+        "ban",
+        "createVehicle",
+        "editVehicle",
+        "deleteVehicle",
+        "createFaction",
+        "editFaction",
+        "deleteFaction",
+        "createHouse",
+        "editHouse",
+        "deleteHouse",
+        "createBusiness",
+        "editBusiness",
+        "deleteBusiness",
+        "createTeleport",
+        "editTeleport",
+        "deleteTeleport",
+        "createGang",
+        "editGang",
+        "deleteGang",
+        "createLockerRoom",
+        "editLockerRoom",
+        "deleteLockerRoom",
+        "createAtm",
+        "editAtm",
+        "deleteAtm",
+        "createRoom",
+        "editRoom",
+        "deleteRoom"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "ban": {
+          "type": "boolean"
+        },
+        "createVehicle": {
+          "type": "boolean"
+        },
+        "editVehicle": {
+          "type": "boolean"
+        },
+        "deleteVehicle": {
+          "type": "boolean"
+        },
+        "createFaction": {
+          "type": "boolean"
+        },
+        "editFaction": {
+          "type": "boolean"
+        },
+        "deleteFaction": {
+          "type": "boolean"
+        },
+        "createHouse": {
+          "type": "boolean"
+        },
+        "editHouse": {
+          "type": "boolean"
+        },
+        "deleteHouse": {
+          "type": "boolean"
+        },
+        "createBusiness": {
+          "type": "boolean"
+        },
+        "editBusiness": {
+          "type": "boolean"
+        },
+        "deleteBusiness": {
+          "type": "boolean"
+        },
+        "createTeleport": {
+          "type": "boolean"
+        },
+        "editTeleport": {
+          "type": "boolean"
+        },
+        "deleteTeleport": {
+          "type": "boolean"
+        },
+        "createGang": {
+          "type": "boolean"
+        },
+        "editGang": {
+          "type": "boolean"
+        },
+        "deleteGang": {
+          "type": "boolean"
+        },
+        "createLockerRoom": {
+          "type": "boolean"
+        },
+        "editLockerRoom": {
+          "type": "boolean"
+        },
+        "deleteLockerRoom": {
+          "type": "boolean"
+        },
+        "createAtm": {
+          "type": "boolean"
+        },
+        "editAtm": {
+          "type": "boolean"
+        },
+        "deleteAtm": {
+          "type": "boolean"
+        },
+        "createRoom": {
+          "type": "boolean"
+        },
+        "editRoom": {
+          "type": "boolean"
+        },
+        "deleteRoom": {
+          "type": "boolean"
+        }
+      }
+    },
+    "ApiPagedFilterResultDtoOutOfApiAdminLevelDtoOut": {
+      "type": "object",
+      "required": [
+        "allCount",
+        "page",
+        "maxPages"
+      ],
+      "properties": {
+        "allCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "page": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "maxPages": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ApiAdminLevelDtoOut"
+          }
+        }
+      }
+    },
+    "ApiEditedAdminLevelDtoIn": {
+      "type": "object",
+      "required": [
+        "ban",
+        "createVehicle",
+        "editVehicle",
+        "deleteVehicle",
+        "createFaction",
+        "editFaction",
+        "deleteFaction",
+        "createHouse",
+        "editHouse",
+        "deleteHouse",
+        "createBusiness",
+        "editBusiness",
+        "deleteBusiness",
+        "createTeleport",
+        "editTeleport",
+        "deleteTeleport",
+        "createGang",
+        "editGang",
+        "deleteGang",
+        "createLockerRoom",
+        "editLockerRoom",
+        "deleteLockerRoom",
+        "createAtm",
+        "editAtm",
+        "deleteAtm",
+        "createRoom",
+        "editRoom",
+        "deleteRoom"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "ban": {
+          "type": "boolean"
+        },
+        "createVehicle": {
+          "type": "boolean"
+        },
+        "editVehicle": {
+          "type": "boolean"
+        },
+        "deleteVehicle": {
+          "type": "boolean"
+        },
+        "createFaction": {
+          "type": "boolean"
+        },
+        "editFaction": {
+          "type": "boolean"
+        },
+        "deleteFaction": {
+          "type": "boolean"
+        },
+        "createHouse": {
+          "type": "boolean"
+        },
+        "editHouse": {
+          "type": "boolean"
+        },
+        "deleteHouse": {
+          "type": "boolean"
+        },
+        "createBusiness": {
+          "type": "boolean"
+        },
+        "editBusiness": {
+          "type": "boolean"
+        },
+        "deleteBusiness": {
+          "type": "boolean"
+        },
+        "createTeleport": {
+          "type": "boolean"
+        },
+        "editTeleport": {
+          "type": "boolean"
+        },
+        "deleteTeleport": {
+          "type": "boolean"
+        },
+        "createGang": {
+          "type": "boolean"
+        },
+        "editGang": {
+          "type": "boolean"
+        },
+        "deleteGang": {
+          "type": "boolean"
+        },
+        "createLockerRoom": {
+          "type": "boolean"
+        },
+        "editLockerRoom": {
+          "type": "boolean"
+        },
+        "deleteLockerRoom": {
+          "type": "boolean"
+        },
+        "createAtm": {
+          "type": "boolean"
+        },
+        "editAtm": {
+          "type": "boolean"
+        },
+        "deleteAtm": {
+          "type": "boolean"
+        },
+        "createRoom": {
+          "type": "boolean"
+        },
+        "editRoom": {
+          "type": "boolean"
+        },
+        "deleteRoom": {
+          "type": "boolean"
+        }
+      }
+    },
+    "ApiAppearanceDtoOut": {
+      "type": "object",
+      "required": [
+        "id",
+        "gender",
+        "motherBlend",
+        "fatherBlend",
+        "blendShape",
+        "blendSkin",
+        "eyeColor",
+        "hairColor",
+        "hairHighlight",
+        "noseWidth",
+        "noseHeight",
+        "noseBridge",
+        "noseTip",
+        "noseBridgeShift",
+        "browHeight",
+        "browWidth",
+        "cBoneHeight",
+        "cBoneWidth",
+        "cheekWidth",
+        "eyes",
+        "lips",
+        "jawWidth",
+        "jawHeight",
+        "chinLength",
+        "chinPos",
+        "chinWidth",
+        "chinShape",
+        "neckWidth"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "gender": {
+          "type": "boolean"
+        },
+        "motherBlend": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "fatherBlend": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "blendShape": {
+          "type": "number",
+          "format": "float"
+        },
+        "blendSkin": {
+          "type": "number",
+          "format": "float"
+        },
+        "eyeColor": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "hairColor": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "hairHighlight": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "noseWidth": {
+          "type": "number",
+          "format": "float"
+        },
+        "noseHeight": {
+          "type": "number",
+          "format": "float"
+        },
+        "noseBridge": {
+          "type": "number",
+          "format": "float"
+        },
+        "noseTip": {
+          "type": "number",
+          "format": "float"
+        },
+        "noseBridgeShift": {
+          "type": "number",
+          "format": "float"
+        },
+        "browHeight": {
+          "type": "number",
+          "format": "float"
+        },
+        "browWidth": {
+          "type": "number",
+          "format": "float"
+        },
+        "cBoneHeight": {
+          "type": "number",
+          "format": "float"
+        },
+        "cBoneWidth": {
+          "type": "number",
+          "format": "float"
+        },
+        "cheekWidth": {
+          "type": "number",
+          "format": "float"
+        },
+        "eyes": {
+          "type": "number",
+          "format": "float"
+        },
+        "lips": {
+          "type": "number",
+          "format": "float"
+        },
+        "jawWidth": {
+          "type": "number",
+          "format": "float"
+        },
+        "jawHeight": {
+          "type": "number",
+          "format": "float"
+        },
+        "chinLength": {
+          "type": "number",
+          "format": "float"
+        },
+        "chinPos": {
+          "type": "number",
+          "format": "float"
+        },
+        "chinWidth": {
+          "type": "number",
+          "format": "float"
+        },
+        "chinShape": {
+          "type": "number",
+          "format": "float"
+        },
+        "neckWidth": {
+          "type": "number",
+          "format": "float"
+        }
+      }
+    },
+    "ApiAppearanceDtoIn": {
+      "type": "object",
+      "required": [
+        "gender",
+        "motherBlend",
+        "fatherBlend",
+        "blendShape",
+        "blendSkin",
+        "eyeColor",
+        "hairColor",
+        "hairHighlight",
+        "noseWidth",
+        "noseHeight",
+        "noseBridge",
+        "noseTip",
+        "noseBridgeShift",
+        "browHeight",
+        "browWidth",
+        "cBoneHeight",
+        "cBoneWidth",
+        "cheekWidth",
+        "eyes",
+        "lips",
+        "jawWidth",
+        "jawHeight",
+        "chinLength",
+        "chinPos",
+        "chinWidth",
+        "chinShape",
+        "neckWidth"
+      ],
+      "properties": {
+        "gender": {
+          "type": "boolean"
+        },
+        "motherBlend": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "fatherBlend": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "blendShape": {
+          "type": "number",
+          "format": "float"
+        },
+        "blendSkin": {
+          "type": "number",
+          "format": "float"
+        },
+        "eyeColor": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "hairColor": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "hairHighlight": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "noseWidth": {
+          "type": "number",
+          "format": "float"
+        },
+        "noseHeight": {
+          "type": "number",
+          "format": "float"
+        },
+        "noseBridge": {
+          "type": "number",
+          "format": "float"
+        },
+        "noseTip": {
+          "type": "number",
+          "format": "float"
+        },
+        "noseBridgeShift": {
+          "type": "number",
+          "format": "float"
+        },
+        "browHeight": {
+          "type": "number",
+          "format": "float"
+        },
+        "browWidth": {
+          "type": "number",
+          "format": "float"
+        },
+        "cBoneHeight": {
+          "type": "number",
+          "format": "float"
+        },
+        "cBoneWidth": {
+          "type": "number",
+          "format": "float"
+        },
+        "cheekWidth": {
+          "type": "number",
+          "format": "float"
+        },
+        "eyes": {
+          "type": "number",
+          "format": "float"
+        },
+        "lips": {
+          "type": "number",
+          "format": "float"
+        },
+        "jawWidth": {
+          "type": "number",
+          "format": "float"
+        },
+        "jawHeight": {
+          "type": "number",
+          "format": "float"
+        },
+        "chinLength": {
+          "type": "number",
+          "format": "float"
+        },
+        "chinPos": {
+          "type": "number",
+          "format": "float"
+        },
+        "chinWidth": {
+          "type": "number",
+          "format": "float"
+        },
+        "chinShape": {
+          "type": "number",
+          "format": "float"
+        },
+        "neckWidth": {
+          "type": "number",
+          "format": "float"
+        }
+      }
+    },
+    "AppearanceDtoOut": {
+      "type": "object",
+      "required": [
+        "id",
+        "gender",
+        "motherBlend",
+        "fatherBlend",
+        "blendShape",
+        "blendSkin",
+        "eyeColor",
+        "hairColor",
+        "hairHighlight",
+        "noseWidth",
+        "noseHeight",
+        "noseBridge",
+        "noseTip",
+        "noseBridgeShift",
+        "browHeight",
+        "browWidth",
+        "cBoneHeight",
+        "cBoneWidth",
+        "cheekWidth",
+        "eyes",
+        "lips",
+        "jawWidth",
+        "jawHeight",
+        "chinLength",
+        "chinPos",
+        "chinWidth",
+        "chinShape",
+        "neckWidth"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "gender": {
+          "type": "boolean"
+        },
+        "motherBlend": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "fatherBlend": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "blendShape": {
+          "type": "number",
+          "format": "float"
+        },
+        "blendSkin": {
+          "type": "number",
+          "format": "float"
+        },
+        "eyeColor": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "hairColor": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "hairHighlight": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "noseWidth": {
+          "type": "number",
+          "format": "float"
+        },
+        "noseHeight": {
+          "type": "number",
+          "format": "float"
+        },
+        "noseBridge": {
+          "type": "number",
+          "format": "float"
+        },
+        "noseTip": {
+          "type": "number",
+          "format": "float"
+        },
+        "noseBridgeShift": {
+          "type": "number",
+          "format": "float"
+        },
+        "browHeight": {
+          "type": "number",
+          "format": "float"
+        },
+        "browWidth": {
+          "type": "number",
+          "format": "float"
+        },
+        "cBoneHeight": {
+          "type": "number",
+          "format": "float"
+        },
+        "cBoneWidth": {
+          "type": "number",
+          "format": "float"
+        },
+        "cheekWidth": {
+          "type": "number",
+          "format": "float"
+        },
+        "eyes": {
+          "type": "number",
+          "format": "float"
+        },
+        "lips": {
+          "type": "number",
+          "format": "float"
+        },
+        "jawWidth": {
+          "type": "number",
+          "format": "float"
+        },
+        "jawHeight": {
+          "type": "number",
+          "format": "float"
+        },
+        "chinLength": {
+          "type": "number",
+          "format": "float"
+        },
+        "chinPos": {
+          "type": "number",
+          "format": "float"
+        },
+        "chinWidth": {
+          "type": "number",
+          "format": "float"
+        },
+        "chinShape": {
+          "type": "number",
+          "format": "float"
+        },
+        "neckWidth": {
+          "type": "number",
+          "format": "float"
+        }
+      }
+    },
+    "ApiPagedFilterResultDtoOutOfApiAppearanceDtoOut": {
+      "type": "object",
+      "required": [
+        "allCount",
+        "page",
+        "maxPages"
+      ],
+      "properties": {
+        "allCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "page": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "maxPages": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ApiAppearanceDtoOut"
+          }
+        }
+      }
+    },
+    "ApiAtmDtoOut": {
+      "type": "object",
+      "required": [
+        "id",
+        "dimension"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "position": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "dimension": {
+          "type": "integer"
+        },
+        "businessId": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "ApiAtmDtoIn": {
+      "type": "object",
+      "required": [
+        "dimension"
+      ],
+      "properties": {
+        "position": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "dimension": {
+          "type": "integer"
+        },
+        "businessId": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "AtmDtoOut": {
+      "type": "object",
+      "required": [
+        "id",
+        "dimension"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "position": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "dimension": {
+          "type": "integer"
+        },
+        "businessId": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "ApiPagedFilterResultDtoOutOfApiAtmDtoOut": {
+      "type": "object",
+      "required": [
+        "allCount",
+        "page",
+        "maxPages"
+      ],
+      "properties": {
+        "allCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "page": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "maxPages": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ApiAtmDtoOut"
+          }
+        }
+      }
+    },
+    "ApiBusinessDtoOut": {
+      "type": "object",
+      "required": [
+        "id",
+        "entranceDimension",
+        "exitDimension",
+        "lockDoors",
+        "type",
+        "price"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "entrancePosition": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "entranceDimension": {
+          "type": "integer"
+        },
+        "exitPosition": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "exitDimension": {
+          "type": "integer"
+        },
+        "ownerId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "lockDoors": {
+          "type": "boolean"
+        },
+        "type": {
+          "$ref": "#/definitions/ApiBusinessTypeDto"
+        },
+        "price": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "ApiBusinessTypeDto": {
+      "type": "integer",
+      "description": "",
+      "x-enumNames": [
+        "Unknown"
+      ],
+      "enum": [
+        0
+      ]
+    },
+    "ApiBusinessDtoIn": {
+      "type": "object",
+      "required": [
+        "entranceDimension",
+        "exitDimension",
+        "lockDoors",
+        "type",
+        "price"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "entrancePosition": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "entranceDimension": {
+          "type": "integer"
+        },
+        "exitPosition": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "exitDimension": {
+          "type": "integer"
+        },
+        "ownerId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "lockDoors": {
+          "type": "boolean"
+        },
+        "type": {
+          "$ref": "#/definitions/ApiBusinessTypeDto"
+        },
+        "price": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "BusinessDtoOut": {
+      "type": "object",
+      "required": [
+        "id",
+        "entranceDimension",
+        "exitDimension",
+        "lockDoors",
+        "type",
+        "price"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "entrancePosition": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "entranceDimension": {
+          "type": "integer"
+        },
+        "exitPosition": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "exitDimension": {
+          "type": "integer"
+        },
+        "ownerId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "lockDoors": {
+          "type": "boolean"
+        },
+        "type": {
+          "$ref": "#/definitions/BusinessTypeDto"
+        },
+        "price": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "BusinessTypeDto": {
+      "type": "integer",
+      "description": "",
+      "x-enumNames": [
+        "Unknown"
+      ],
+      "enum": [
+        0
+      ]
+    },
+    "ApiPagedFilterResultDtoOutOfApiBusinessDtoOut": {
+      "type": "object",
+      "required": [
+        "allCount",
+        "page",
+        "maxPages"
+      ],
+      "properties": {
+        "allCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "page": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "maxPages": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ApiBusinessDtoOut"
+          }
+        }
+      }
+    },
+    "ApiFactionDtoOut": {
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "color": {
+          "type": "string"
+        },
+        "ranks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "type": {
+          "$ref": "#/definitions/ApiFactionTypeDto"
+        }
+      }
+    },
+    "ApiFactionTypeDto": {
+      "type": "integer",
+      "description": "",
+      "x-enumNames": [
+        "Unknown"
+      ],
+      "enum": [
+        0
+      ]
+    },
+    "ApiFactionDtoIn": {
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "color": {
+          "type": "string"
+        },
+        "ranks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "type": {
+          "$ref": "#/definitions/ApiFactionTypeDto"
+        }
+      }
+    },
+    "FactionDtoOut": {
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "color": {
+          "type": "string"
+        },
+        "ranks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "type": {
+          "$ref": "#/definitions/FactionTypeDto"
+        }
+      }
+    },
+    "FactionTypeDto": {
+      "type": "integer",
+      "description": "",
+      "x-enumNames": [
+        "Unknown"
+      ],
+      "enum": [
+        0
+      ]
+    },
+    "ApiPagedFilterResultDtoOutOfApiFactionDtoOut": {
+      "type": "object",
+      "required": [
+        "allCount",
+        "page",
+        "maxPages"
+      ],
+      "properties": {
+        "allCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "page": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "maxPages": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ApiFactionDtoOut"
+          }
+        }
+      }
+    },
+    "ApiEditedFactionDtoIn": {
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "color": {
+          "type": "string"
+        },
+        "ranks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "type": {
+          "$ref": "#/definitions/ApiFactionTypeDto"
+        }
+      }
+    },
+    "ApiGangDtoOut": {
+      "type": "object",
+      "required": [
+        "id",
+        "type",
+        "createdDate"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "color": {
+          "type": "string"
+        },
+        "ranks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "type": {
+          "$ref": "#/definitions/ApiGangTypeDto"
+        },
+        "createdDate": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "ApiGangTypeDto": {
+      "type": "integer",
+      "description": "",
+      "x-enumNames": [
+        "Unknown"
+      ],
+      "enum": [
+        0
+      ]
+    },
+    "ApiGangDtoIn": {
+      "type": "object",
+      "required": [
+        "type",
+        "createdDate"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "color": {
+          "type": "string"
+        },
+        "ranks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "type": {
+          "$ref": "#/definitions/ApiGangTypeDto"
+        },
+        "createdDate": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "ApiPagedFilterResultDtoOutOfApiGangDtoOut": {
+      "type": "object",
+      "required": [
+        "allCount",
+        "page",
+        "maxPages"
+      ],
+      "properties": {
+        "allCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "page": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "maxPages": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ApiGangDtoOut"
+          }
+        }
+      }
+    },
+    "ApiEditedGangDtoIn": {
+      "type": "object",
+      "required": [
+        "id",
+        "type"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "color": {
+          "type": "string"
+        },
+        "ranks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "type": {
+          "$ref": "#/definitions/ApiGangTypeDto"
+        }
+      }
+    },
+    "ApiGarageDtoOut": {
+      "type": "object",
+      "required": [
+        "id",
+        "type",
+        "entranceDimension",
+        "entranceRotation",
+        "exitDimension",
+        "lockDoors"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "type": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "entrancePosition": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "entranceDimension": {
+          "type": "integer"
+        },
+        "entranceRotation": {
+          "type": "number",
+          "format": "float"
+        },
+        "exitDimension": {
+          "type": "integer"
+        },
+        "lockDoors": {
+          "type": "boolean"
+        }
+      }
+    },
+    "ApiGarageDtoIn": {
+      "type": "object",
+      "required": [
+        "type",
+        "entranceDimension",
+        "entranceRotation",
+        "exitDimension",
+        "lockDoors"
+      ],
+      "properties": {
+        "type": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "entrancePosition": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "entranceDimension": {
+          "type": "integer"
+        },
+        "entranceRotation": {
+          "type": "number",
+          "format": "float"
+        },
+        "exitDimension": {
+          "type": "integer"
+        },
+        "lockDoors": {
+          "type": "boolean"
+        }
+      }
+    },
+    "GarageDtoOut": {
+      "type": "object",
+      "required": [
+        "id",
+        "type",
+        "entranceDimension",
+        "entranceRotation",
+        "exitDimension",
+        "lockDoors"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "type": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "entrancePosition": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "entranceDimension": {
+          "type": "integer"
+        },
+        "entranceRotation": {
+          "type": "number",
+          "format": "float"
+        },
+        "exitDimension": {
+          "type": "integer"
+        },
+        "lockDoors": {
+          "type": "boolean"
+        }
+      }
+    },
+    "ApiPagedFilterResultDtoOutOfApiGarageDtoOut": {
+      "type": "object",
+      "required": [
+        "allCount",
+        "page",
+        "maxPages"
+      ],
+      "properties": {
+        "allCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "page": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "maxPages": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ApiGarageDtoOut"
+          }
+        }
+      }
+    },
+    "ApiHouseDtoOut": {
+      "type": "object",
+      "required": [
+        "id",
+        "entranceDimension",
+        "exitDimension",
+        "lockDoors",
+        "price",
+        "safeDimension",
+        "safeInventoryId"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "entrancePosition": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "entranceDimension": {
+          "type": "integer"
+        },
+        "exitPosition": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "exitDimension": {
+          "type": "integer"
+        },
+        "ownerId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "garageId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "lockDoors": {
+          "type": "boolean"
+        },
+        "price": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "safePosition": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "safeDimension": {
+          "type": "integer"
+        },
+        "safeInventoryId": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "ApiHouseDtoIn": {
+      "type": "object",
+      "required": [
+        "entranceDimension",
+        "exitDimension",
+        "lockDoors",
+        "price",
+        "safeDimension",
+        "safeInventoryId"
+      ],
+      "properties": {
+        "entrancePosition": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "entranceDimension": {
+          "type": "integer"
+        },
+        "exitPosition": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "exitDimension": {
+          "type": "integer"
+        },
+        "ownerId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "garageId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "lockDoors": {
+          "type": "boolean"
+        },
+        "price": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "safePosition": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "safeDimension": {
+          "type": "integer"
+        },
+        "safeInventoryId": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "HouseDtoOut": {
+      "type": "object",
+      "required": [
+        "id",
+        "entranceDimension",
+        "exitDimension",
+        "lockDoors",
+        "price",
+        "safeDimension",
+        "safeInventoryId"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "entrancePosition": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "entranceDimension": {
+          "type": "integer"
+        },
+        "exitPosition": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "exitDimension": {
+          "type": "integer"
+        },
+        "ownerId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "garageId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "lockDoors": {
+          "type": "boolean"
+        },
+        "price": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "safePosition": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "safeDimension": {
+          "type": "integer"
+        },
+        "safeInventoryId": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "ApiPagedFilterResultDtoOutOfApiHouseDtoOut": {
+      "type": "object",
+      "required": [
+        "allCount",
+        "page",
+        "maxPages"
+      ],
+      "properties": {
+        "allCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "page": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "maxPages": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ApiHouseDtoOut"
+          }
+        }
+      }
+    },
+    "ApiLockerRoomDtoOut": {
+      "type": "object",
+      "required": [
+        "id",
+        "dimension",
+        "typeMarker"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "position": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "dimension": {
+          "type": "integer"
+        },
+        "typeMarker": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "colorMarker": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "factionId": {
+          "type": "string"
+        }
+      }
+    },
+    "ApiLockerRoomDtoIn": {
+      "type": "object",
+      "required": [
+        "dimension",
+        "typeMarker"
+      ],
+      "properties": {
+        "position": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "dimension": {
+          "type": "integer"
+        },
+        "typeMarker": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "colorMarker": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "factionId": {
+          "type": "string"
+        }
+      }
+    },
+    "LockerRoomDtoOut": {
+      "type": "object",
+      "required": [
+        "id",
+        "dimension",
+        "typeMarker"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "position": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "dimension": {
+          "type": "integer"
+        },
+        "typeMarker": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "colorMarker": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "factionId": {
+          "type": "string"
+        }
+      }
+    },
+    "ApiPagedFilterResultDtoOutOfApiLockerRoomDtoOut": {
+      "type": "object",
+      "required": [
+        "allCount",
+        "page",
+        "maxPages"
+      ],
+      "properties": {
+        "allCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "page": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "maxPages": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ApiLockerRoomDtoOut"
+          }
+        }
+      }
+    },
+    "ApiPersonDtoOut": {
+      "type": "object",
+      "required": [
+        "id",
+        "playerId",
+        "registrationDate",
+        "lastVisitDate",
+        "leader",
+        "rank",
+        "commonInventoryId",
+        "pocketsInventoryId"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "playerId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "registrationDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "lastVisitDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "adminLevelId": {
+          "type": "string"
+        },
+        "factionId": {
+          "type": "string"
+        },
+        "gangId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "leader": {
+          "type": "boolean"
+        },
+        "rank": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "position": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "commonInventoryId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "pocketsInventoryId": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "ApiPersonDtoIn": {
+      "type": "object",
+      "required": [
+        "playerId",
+        "registrationDate",
+        "lastVisitDate",
+        "leader",
+        "rank",
+        "commonInventoryId",
+        "pocketsInventoryId"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "playerId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "registrationDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "lastVisitDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "adminLevelId": {
+          "type": "string"
+        },
+        "factionId": {
+          "type": "string"
+        },
+        "gangId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "leader": {
+          "type": "boolean"
+        },
+        "rank": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "position": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "commonInventoryId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "pocketsInventoryId": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "ApiPagedFilterResultDtoOutOfApiPersonDtoOut": {
+      "type": "object",
+      "required": [
+        "allCount",
+        "page",
+        "maxPages"
+      ],
+      "properties": {
+        "allCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "page": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "maxPages": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ApiPersonDtoOut"
+          }
+        }
+      }
+    },
+    "ApiEditedPersonDtoIn": {
+      "type": "object",
+      "required": [
+        "id",
+        "playerId",
+        "lastVisitDate",
+        "leader",
+        "rank",
+        "commonInventoryId",
+        "pocketsInventoryId"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "playerId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "lastVisitDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "adminLevelId": {
+          "type": "string"
+        },
+        "factionId": {
+          "type": "string"
+        },
+        "gangId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "leader": {
+          "type": "boolean"
+        },
+        "rank": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "position": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "commonInventoryId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "pocketsInventoryId": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "ApiPlayerDtoOut": {
+      "type": "object",
+      "required": [
+        "id",
+        "registrationDate",
+        "lastVisitDate"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "login": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "registrationDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "lastVisitDate": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "ApiPlayerDtoIn": {
+      "type": "object",
+      "required": [
+        "registrationDate",
+        "lastVisitDate"
+      ],
+      "properties": {
+        "login": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "registrationDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "lastVisitDate": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "ApiPagedFilterResultDtoOutOfApiPlayerDtoOut": {
+      "type": "object",
+      "required": [
+        "allCount",
+        "page",
+        "maxPages"
+      ],
+      "properties": {
+        "allCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "page": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "maxPages": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ApiPlayerDtoOut"
+          }
+        }
+      }
+    },
+    "ApiEditedPlayerDtoIn": {
+      "type": "object",
+      "required": [
+        "lastVisitDate"
+      ],
+      "properties": {
+        "login": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "lastVisitDate": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "ApiRoomDtoOut": {
+      "type": "object",
+      "required": [
+        "id",
+        "entranceDimension",
+        "exitDimension",
+        "typeMarker",
+        "typeBlip",
+        "colorBlip",
+        "lockDoors",
+        "price",
+        "lastPaymentDate",
+        "safeDimension"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "entrancePosition": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "entranceDimension": {
+          "type": "integer"
+        },
+        "exitPosition": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "exitDimension": {
+          "type": "integer"
+        },
+        "typeMarker": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "colorMarker": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "typeBlip": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "colorBlip": {
+          "type": "integer",
+          "format": "byte"
+        },
+        "gangId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "lockDoors": {
+          "type": "boolean"
+        },
+        "price": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "lastPaymentDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "safePosition": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "safeDimension": {
+          "type": "integer"
+        }
+      }
+    },
+    "ApiRoomDtoIn": {
+      "type": "object",
+      "required": [
+        "entranceDimension",
+        "exitDimension",
+        "typeMarker",
+        "typeBlip",
+        "colorBlip",
+        "lockDoors",
+        "price",
+        "lastPaymentDate",
+        "safeDimension"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "entrancePosition": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "entranceDimension": {
+          "type": "integer"
+        },
+        "exitPosition": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "exitDimension": {
+          "type": "integer"
+        },
+        "typeMarker": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "colorMarker": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "typeBlip": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "colorBlip": {
+          "type": "integer",
+          "format": "byte"
+        },
+        "gangId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "lockDoors": {
+          "type": "boolean"
+        },
+        "price": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "lastPaymentDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "safePosition": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "safeDimension": {
+          "type": "integer"
+        }
+      }
+    },
+    "RoomDtoOut": {
+      "type": "object",
+      "required": [
+        "id",
+        "entranceDimension",
+        "exitDimension",
+        "typeMarker",
+        "typeBlip",
+        "colorBlip",
+        "lockDoors",
+        "price",
+        "lastPaymentDate",
+        "safeDimension"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "entrancePosition": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "entranceDimension": {
+          "type": "integer"
+        },
+        "exitPosition": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "exitDimension": {
+          "type": "integer"
+        },
+        "typeMarker": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "colorMarker": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "typeBlip": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "colorBlip": {
+          "type": "integer",
+          "format": "byte"
+        },
+        "gangId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "lockDoors": {
+          "type": "boolean"
+        },
+        "price": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "lastPaymentDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "safePosition": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "safeDimension": {
+          "type": "integer"
+        }
+      }
+    },
+    "ApiPagedFilterResultDtoOutOfApiRoomDtoOut": {
+      "type": "object",
+      "required": [
+        "allCount",
+        "page",
+        "maxPages"
+      ],
+      "properties": {
+        "allCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "page": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "maxPages": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ApiRoomDtoOut"
+          }
+        }
+      }
+    },
+    "ApiTeleportDtoOut": {
+      "type": "object",
+      "required": [
+        "id",
+        "entranceDimension",
+        "exitDimension",
+        "typeMarker",
+        "typeBlip",
+        "colorBlip",
+        "lockDoors"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "entrancePosition": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "entranceDimension": {
+          "type": "integer"
+        },
+        "exitPosition": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "exitDimension": {
+          "type": "integer"
+        },
+        "typeMarker": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "colorMarker": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "typeBlip": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "colorBlip": {
+          "type": "integer",
+          "format": "byte"
+        },
+        "factionId": {
+          "type": "string"
+        },
+        "gangId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "roomId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "businessId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "lockDoors": {
+          "type": "boolean"
+        }
+      }
+    },
+    "ApiTeleportDtoIn": {
+      "type": "object",
+      "required": [
+        "entranceDimension",
+        "exitDimension",
+        "typeMarker",
+        "typeBlip",
+        "colorBlip",
+        "lockDoors"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "entrancePosition": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "entranceDimension": {
+          "type": "integer"
+        },
+        "exitPosition": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "exitDimension": {
+          "type": "integer"
+        },
+        "typeMarker": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "colorMarker": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "typeBlip": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "colorBlip": {
+          "type": "integer",
+          "format": "byte"
+        },
+        "factionId": {
+          "type": "string"
+        },
+        "gangId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "roomId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "businessId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "lockDoors": {
+          "type": "boolean"
+        }
+      }
+    },
+    "TeleportDtoOut": {
+      "type": "object",
+      "required": [
+        "id",
+        "entranceDimension",
+        "exitDimension",
+        "typeMarker",
+        "typeBlip",
+        "colorBlip",
+        "lockDoors"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "entrancePosition": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "entranceDimension": {
+          "type": "integer"
+        },
+        "exitPosition": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "exitDimension": {
+          "type": "integer"
+        },
+        "typeMarker": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "colorMarker": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "typeBlip": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "colorBlip": {
+          "type": "integer",
+          "format": "byte"
+        },
+        "factionId": {
+          "type": "string"
+        },
+        "gangId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "roomId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "businessId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "lockDoors": {
+          "type": "boolean"
+        }
+      }
+    },
+    "ApiPagedFilterResultDtoOutOfApiTeleportDtoOut": {
+      "type": "object",
+      "required": [
+        "allCount",
+        "page",
+        "maxPages"
+      ],
+      "properties": {
+        "allCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "page": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "maxPages": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ApiTeleportDtoOut"
+          }
+        }
+      }
+    },
+    "ApiVehicleDtoOut": {
+      "type": "object",
+      "required": [
+        "id",
+        "model",
+        "rotation",
+        "dimension",
+        "color1",
+        "color2",
+        "fuel",
+        "lockDoors"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "model": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "position": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "rotation": {
+          "type": "number",
+          "format": "float"
+        },
+        "dimension": {
+          "type": "integer"
+        },
+        "color1": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "color2": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "fuel": {
+          "type": "number",
+          "format": "double"
+        },
+        "ownerId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "factionId": {
+          "type": "string"
+        },
+        "lockDoors": {
+          "type": "boolean"
+        },
+        "licensePlate": {
+          "type": "string"
+        }
+      }
+    },
+    "ApiVehicleDtoIn": {
+      "type": "object",
+      "required": [
+        "model",
+        "rotation",
+        "dimension",
+        "color1",
+        "color2",
+        "fuel",
+        "lockDoors"
+      ],
+      "properties": {
+        "model": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "position": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "rotation": {
+          "type": "number",
+          "format": "float"
+        },
+        "dimension": {
+          "type": "integer"
+        },
+        "color1": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "color2": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "fuel": {
+          "type": "number",
+          "format": "double"
+        },
+        "ownerId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "factionId": {
+          "type": "string"
+        },
+        "lockDoors": {
+          "type": "boolean"
+        },
+        "licensePlate": {
+          "type": "string"
+        }
+      }
+    },
+    "VehicleDtoOut": {
+      "type": "object",
+      "required": [
+        "id",
+        "model",
+        "rotation",
+        "dimension",
+        "color1",
+        "color2",
+        "fuel",
+        "lockDoors"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "model": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "position": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "rotation": {
+          "type": "number",
+          "format": "float"
+        },
+        "dimension": {
+          "type": "integer"
+        },
+        "color1": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "color2": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "fuel": {
+          "type": "number",
+          "format": "double"
+        },
+        "ownerId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "factionId": {
+          "type": "string"
+        },
+        "lockDoors": {
+          "type": "boolean"
+        },
+        "licensePlate": {
+          "type": "string"
+        }
+      }
+    },
+    "ApiPagedFilterResultDtoOutOfApiVehicleDtoOut": {
+      "type": "object",
+      "required": [
+        "allCount",
+        "page",
+        "maxPages"
+      ],
+      "properties": {
+        "allCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "page": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "maxPages": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ApiVehicleDtoOut"
+          }
+        }
+      }
+    }
+  }
+}
