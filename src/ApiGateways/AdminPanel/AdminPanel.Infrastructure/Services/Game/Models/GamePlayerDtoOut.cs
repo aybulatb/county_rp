@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.Models
+namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Game.Models
 {
-    public class PlayerDtoOut
+    public class GamePlayerDtoOut
     {
         public int Id { get; }
 
@@ -14,7 +14,7 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.Models
 
         public DateTimeOffset LastVisitDate { get; }
 
-        public PlayerDtoOut(
+        public GamePlayerDtoOut(
             int id,
             string login,
             string password,

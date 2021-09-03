@@ -1,20 +1,15 @@
 using CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClient.ServiceGame;
 using CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClient.ServiceSite;
 using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services;
+using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Game;
+using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Game.Interfaces;
 using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Threading.Tasks;
 
 namespace CountyRP.ApiGateways.AdminPanel.API
 {
@@ -40,7 +35,12 @@ namespace CountyRP.ApiGateways.AdminPanel.API
 
             services.AddSingleton(new PlayerClient(new HttpClient(clientHandler))
             {
-                BaseUrl = "http://192.168.1.67:49168"
+                BaseUrl = "https://192.168.1.71:49171"
+            });
+
+            services.AddSingleton(new PersonClient(new HttpClient(clientHandler))
+            {
+                BaseUrl = "https://192.168.1.71:49171"
             });
 
             services.AddTransient<IGameService, GameService>();

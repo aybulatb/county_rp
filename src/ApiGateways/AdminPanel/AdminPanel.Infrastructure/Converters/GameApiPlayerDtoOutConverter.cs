@@ -1,15 +1,15 @@
-﻿using CountyRP.ApiGateways.AdminPanel.Infrastructure.Models;
-using CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClient.ServiceGame;
+﻿using CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClient.ServiceGame;
+using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Game.Models;
 
 namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.Converters
 {
-    public static class ApiPlayerDtoOutConverter
+    internal static class GameApiPlayerDtoOutConverter
     {
-        public static PlayerDtoOut ToService(
+        public static GamePlayerDtoOut ToService(
             ApiPlayerDtoOut source
         )
         {
-            return new PlayerDtoOut(
+            return new GamePlayerDtoOut(
                 id: source.Id,
                 login: source.Login,
                 password: source.Password,

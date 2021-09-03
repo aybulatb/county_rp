@@ -6,7 +6,7 @@
     "description": "The County RP Site Service API documentation description.",
     "version": "v1"
   },
-  "host": "localhost:5001",
+  "host": "localhost:49159",
   "schemes": [
     "https"
   ],

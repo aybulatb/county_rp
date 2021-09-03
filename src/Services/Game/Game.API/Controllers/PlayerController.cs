@@ -37,7 +37,10 @@ namespace CountyRP.Services.Game.API.Controllers
             if (apiPlayerDtoIn.Login == null || apiPlayerDtoIn.Login.Length < 3 || apiPlayerDtoIn.Login.Length > 32)
             {
                 return BadRequest(
-                    ConstantMessages.PlayerInvalidLoginLength
+                    new ApiErrorResponseDtoOut(
+                        code: ApiErrorCodeDto.PlayerInvalidLoginLength,
+                        message: ConstantMessages.PlayerInvalidLoginLength
+                    )
                 );
             }
             if (!Regex.IsMatch(apiPlayerDtoIn.Login, @"^([0-9a-zA-Z]{3,32}|[0-9a-zA-Z]{1,31} [0-9a-zA-Z]{1,31}|[0-9a-zA-Z]{1,31} [0-9a-zA-Z]{1,31} [0-9a-zA-Z]{1,31})$"))

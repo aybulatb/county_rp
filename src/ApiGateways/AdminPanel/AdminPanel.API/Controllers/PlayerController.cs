@@ -1,7 +1,10 @@
-﻿using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Interfaces;
+﻿using CountyRP.ApiGateways.AdminPanel.API.Converters;
+using CountyRP.ApiGateways.AdminPanel.API.Models.Api;
+using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Game.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CountyRP.ApiGateways.AdminPanel.API.Controllers
@@ -19,7 +22,7 @@ namespace CountyRP.ApiGateways.AdminPanel.API.Controllers
         )
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _gameService = gameService ?? throw new ArgumentNullException(nameof(_gameService));
+            _gameService = gameService ?? throw new ArgumentNullException(nameof(gameService));
         }
 
         [HttpGet("{id}")]
@@ -28,6 +31,27 @@ namespace CountyRP.ApiGateways.AdminPanel.API.Controllers
             var playerDtoOut = await _gameService.GetPlayerByIdAsync(id);
 
             return Ok(playerDtoOut);
+        }
+
+        [HttpGet("FilterBy")]
+        public async Task<IActionResult> FilterBy([FromQuery] ApiPlayerFilterDtoIn apiPlayerFilterDtoIn)
+        {
+            var gamePlayerFilterDtoIn = ApiPlayerFilterDtoInConverter.ToGamePlayerFilterDtoInService(apiPlayerFilterDtoIn);
+
+            var gamePagedPlayersDtoOut = await _gameService.GetPlayersByFilter(gamePlayerFilterDtoIn);
+
+            var gamePersonFilterDtoIn = ApiPlayerFilterDtoInConverter.ToGamePersonFilterDtoInService(apiPlayerFilterDtoIn);
+
+            var gamePagedPersonsDtoOut = await _gameService.GetPersonsByFilter(gamePersonFilterDtoIn);
+
+            var mergedPlayerIds = gamePagedPersonsDtoOut.Items
+                .Select(person => person.PlayerId);
+
+            var validatedPlayers = gamePagedPlayersDtoOut.Items.Where(
+                player => mergedPlayerIds.Contains(player.Id)
+            );
+
+            return Ok();
         }
     }
 }
