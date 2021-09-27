@@ -91,7 +91,8 @@ namespace CountyRP.Services.Forum.API.Controllers
         /// Получить отфильтрованный список форумов.
         /// </summary>
         [HttpGet("FilterBy")]
-        [ProducesResponseType(typeof(PagedFilterResult<ApiForumDtoOut>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiPagedFilterResult<ApiForumDtoOut>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> FilterBy([FromQuery] ApiForumFilterDtoIn filter)
         {
             if (filter.Count < 1 || filter.Count > 100)

@@ -51,9 +51,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Forum.Infrastructure", "Ser
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Forum", "Forum", "{FFDDEF68-4305-41D5-9352-626F6940FC0D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Forum.API", "ApiGateways\Forum\Forum.API\Forum.API.csproj", "{2961201D-7A3D-40CE-89D7-DFB8D171A8DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Forum.API", "ApiGateways\Forum\Forum.API\Forum.API.csproj", "{2961201D-7A3D-40CE-89D7-DFB8D171A8DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Forum.Infrastructure", "ApiGateways\Forum\Forum.Infrastructure\Forum.Infrastructure.csproj", "{E575483B-CDE3-4D1F-9177-1FD4918BAD43}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Forum.Infrastructure", "ApiGateways\Forum\Forum.Infrastructure\Forum.Infrastructure.csproj", "{E575483B-CDE3-4D1F-9177-1FD4918BAD43}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Forum.API.UnitTests", "Services\Forum\Forum.API.UnitTests\Forum.API.UnitTests.csproj", "{407E6084-67A6-4430-9B7B-3C277B8E18E5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -133,6 +135,10 @@ Global
 		{E575483B-CDE3-4D1F-9177-1FD4918BAD43}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E575483B-CDE3-4D1F-9177-1FD4918BAD43}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E575483B-CDE3-4D1F-9177-1FD4918BAD43}.Release|Any CPU.Build.0 = Release|Any CPU
+		{407E6084-67A6-4430-9B7B-3C277B8E18E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{407E6084-67A6-4430-9B7B-3C277B8E18E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{407E6084-67A6-4430-9B7B-3C277B8E18E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{407E6084-67A6-4430-9B7B-3C277B8E18E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -157,6 +163,7 @@ Global
 		{FFDDEF68-4305-41D5-9352-626F6940FC0D} = {5783210D-4054-466A-BF22-DAFED3807216}
 		{2961201D-7A3D-40CE-89D7-DFB8D171A8DA} = {FFDDEF68-4305-41D5-9352-626F6940FC0D}
 		{E575483B-CDE3-4D1F-9177-1FD4918BAD43} = {FFDDEF68-4305-41D5-9352-626F6940FC0D}
+		{407E6084-67A6-4430-9B7B-3C277B8E18E5} = {181211FF-8E9F-4B40-A906-1427C8646F98}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E26ED3B6-A3EB-4EFD-B598-98B535ACF636}
