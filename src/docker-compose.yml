@@ -4,20 +4,6 @@ services:
   mssql:
     image: mcr.microsoft.com/mssql/server:2019-latest
 
-  countyrp.webapi:
-    image: ${DOCKER_REGISTRY-}countyrpwebapi
-    build:
-      context: .
-      dockerfile: CountyRP.WebAPI/Dockerfile
-    depends_on:
-      - mssql
-
-  countyrp.website:
-    image: ${DOCKER_REGISTRY-}countyrpwebsite
-    build:
-      context: .
-      dockerfile: CountyRP.WebSite/Dockerfile
-
   countyrp.services.site:
     image: ${DOCKER_REGISTRY-}countyrpservicesite
     build:

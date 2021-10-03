@@ -3,14 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CountyRP.DAO", "CountyRP.Entities\CountyRP.DAO.csproj", "{FBB26CD6-6C1B-4869-8F0E-BC34F5A2EC17}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CountyRP.WebAPI", "CountyRP.WebAPI\CountyRP.WebAPI.csproj", "{875B62BA-7A40-42C6-8154-FA0063F72902}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CountyRP.WebSite", "CountyRP.WebSite\CountyRP.WebSite.csproj", "{EAF85419-7FBF-44B8-A5CF-5800D76DE1A3}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CountyRP.Models", "CountyRP.Models\CountyRP.Models.csproj", "{381C2764-4F4C-482F-95C1-7158BCAF0B5F}"
-EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{C73EE339-758F-4519-956C-217BCADA2B1F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{A4474237-784C-4130-8BE9-113764D4C8DF}"
@@ -59,9 +51,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Forum.API.UnitTests", "Serv
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GameMode", "GameMode", "{06D45A66-0FC7-4818-8DE4-FCEF635FDB05}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameMode.API", "ApiGateways\GameMode\GameMode.API\GameMode.API.csproj", "{B491C50A-47F3-4201-93B7-F15E1B095FED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameMode.API", "ApiGateways\GameMode\GameMode.API\GameMode.API.csproj", "{B491C50A-47F3-4201-93B7-F15E1B095FED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameMode.Infrastructure", "ApiGateways\GameMode\GameMode.Infrastructure\GameMode.Infrastructure.csproj", "{7F47F371-D62E-4F5E-98EB-005B1B2FD1EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameMode.Infrastructure", "ApiGateways\GameMode\GameMode.Infrastructure\GameMode.Infrastructure.csproj", "{7F47F371-D62E-4F5E-98EB-005B1B2FD1EF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,22 +61,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{FBB26CD6-6C1B-4869-8F0E-BC34F5A2EC17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FBB26CD6-6C1B-4869-8F0E-BC34F5A2EC17}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FBB26CD6-6C1B-4869-8F0E-BC34F5A2EC17}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FBB26CD6-6C1B-4869-8F0E-BC34F5A2EC17}.Release|Any CPU.Build.0 = Release|Any CPU
-		{875B62BA-7A40-42C6-8154-FA0063F72902}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{875B62BA-7A40-42C6-8154-FA0063F72902}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{875B62BA-7A40-42C6-8154-FA0063F72902}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{875B62BA-7A40-42C6-8154-FA0063F72902}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EAF85419-7FBF-44B8-A5CF-5800D76DE1A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EAF85419-7FBF-44B8-A5CF-5800D76DE1A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EAF85419-7FBF-44B8-A5CF-5800D76DE1A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EAF85419-7FBF-44B8-A5CF-5800D76DE1A3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{381C2764-4F4C-482F-95C1-7158BCAF0B5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{381C2764-4F4C-482F-95C1-7158BCAF0B5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{381C2764-4F4C-482F-95C1-7158BCAF0B5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{381C2764-4F4C-482F-95C1-7158BCAF0B5F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C73EE339-758F-4519-956C-217BCADA2B1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C73EE339-758F-4519-956C-217BCADA2B1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C73EE339-758F-4519-956C-217BCADA2B1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
