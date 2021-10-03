@@ -16,8 +16,6 @@ namespace Logs
 {
     public class Startup
     {
-        private IEnumerable<ApiKeySettings> _apiKeys;
-
         public IConfiguration Configuration { get; }
 
         public Startup(IConfiguration configuration)
@@ -33,9 +31,11 @@ namespace Logs
 
             services.AddTransient<ILogsRepository, LogsRepository>();
 
-            _apiKeys = Configuration
+            var apiKeys = Configuration
                 .GetSection("ApiKeys")
                 .Get<IEnumerable<ApiKeySettings>>();
+
+            services.AddSingleton(apiKeys);
 
             services.AddControllers();
             services.AddSwaggerDocument(settings =>
@@ -70,7 +70,7 @@ namespace Logs
             app.UseRouting();
 
             app.UseAuthorization();
-            app.UseApiKeyAuthentication(_apiKeys);
+            app.UseApiKeyAuthentication();
 
             app.UseEndpoints(endpoints =>
             {
