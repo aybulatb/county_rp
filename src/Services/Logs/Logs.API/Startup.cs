@@ -1,3 +1,5 @@
+using CountyRP.Services.Logs.API.Extensions;
+using CountyRP.Services.Logs.API.Settings;
 using CountyRP.Services.Logs.Infrastructure.DbContexts;
 using CountyRP.Services.Logs.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Builder;
@@ -6,18 +8,22 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
+using NSwag;
+using NSwag.Generation.Processors.Security;
+using System.Collections.Generic;
 
 namespace Logs
 {
     public class Startup
     {
+        private IEnumerable<ApiKeySettings> _apiKeys;
+
+        public IConfiguration Configuration { get; }
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
-
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -27,10 +33,24 @@ namespace Logs
 
             services.AddTransient<ILogsRepository, LogsRepository>();
 
+            _apiKeys = Configuration
+                .GetSection("ApiKeys")
+                .Get<IEnumerable<ApiKeySettings>>();
+
             services.AddControllers();
-            services.AddSwaggerGen(c =>
+            services.AddSwaggerDocument(settings =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Logs", Version = "v1" });
+                settings.Title = "County RP Logs Service API";
+                settings.Version = "v1";
+                settings.Description = "The County RP Logs Service API documentation description.";
+                settings.AddSecurity("apiKey", new OpenApiSecurityScheme
+                {
+                    Type = OpenApiSecuritySchemeType.ApiKey,
+                    Name = "Authorization",
+                    Description = "Copy 'Bearer ' + valid api key into field",
+                    In = OpenApiSecurityApiKeyLocation.Header
+                });
+                settings.OperationProcessors.Add(new OperationSecurityScopeProcessor("apiKey"));
             });
         }
 
@@ -40,15 +60,17 @@ namespace Logs
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Logs v1"));
             }
 
             app.UseHttpsRedirection();
 
+            app.UseOpenApi();
+            app.UseSwaggerUi3();
+
             app.UseRouting();
 
             app.UseAuthorization();
+            app.UseApiKeyAuthentication(_apiKeys);
 
             app.UseEndpoints(endpoints =>
             {

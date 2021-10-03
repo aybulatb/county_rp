@@ -33,7 +33,7 @@ namespace CountyRP.Services.Logs.API.Controllers
         /// </summary>
         [HttpPost]
         [ProducesResponseType(typeof(ApiLogUnitDtoOut), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Create(ApiLogUnitDtoIn apiLogUnitDtoIn)
         {
             apiLogUnitDtoIn.Login = apiLogUnitDtoIn.Login?.Trim();
@@ -42,15 +42,29 @@ namespace CountyRP.Services.Logs.API.Controllers
 
             if (apiLogUnitDtoIn.Login?.Length > 32)
             {
-                return BadRequest(ConstantMessages.LogUnitInvalidLoginLength);
+                return BadRequest(
+                    new ApiErrorResponseDtoOut(
+                        code: ApiErrorCodeDto.LogUnitInvalidLoginLength,
+                        message: ConstantMessages.LogUnitInvalidLoginLength
+                    )
+                );
             }
             if (!string.IsNullOrEmpty(apiLogUnitDtoIn.IP) && !Regex.IsMatch(apiLogUnitDtoIn.IP, @"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$"))
             {
-                return BadRequest(ConstantMessages.InvalidIP);
+                return BadRequest(
+                    new ApiErrorResponseDtoOut(
+                        code: ApiErrorCodeDto.InvalidIP,
+                        message: ConstantMessages.InvalidIP
+                    )
+                );
             }
             if (apiLogUnitDtoIn.Text == null || apiLogUnitDtoIn.Text.Length < 1 || apiLogUnitDtoIn.Text.Length > 128)
             {
-                return BadRequest(ConstantMessages.LogUnitInvalidTextLength);
+                return BadRequest(
+                    new ApiErrorResponseDtoOut(
+                        code: ApiErrorCodeDto.LogUnitInvalidTextLength,
+                        message: ConstantMessages.LogUnitInvalidTextLength)
+                );
             }
 
             var logUnitDtoIn = ApiLogUnitDtoInConverter.ToRepository(apiLogUnitDtoIn);
@@ -67,17 +81,25 @@ namespace CountyRP.Services.Logs.API.Controllers
         /// </summary>
         [HttpGet("FilterBy")]
         [ProducesResponseType(typeof(ApiPagedFilterResultDtoOut<ApiLogUnitDtoOut>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> FilterBy([FromQuery] ApiLogUnitFilterDtoIn filter)
         {
             if (filter.Count < 1 || filter.Count > 100)
             {
-                return BadRequest(ConstantMessages.CountItemPerPageMoreThan100);
+                return BadRequest(
+                    new ApiErrorResponseDtoOut(
+                        code: ApiErrorCodeDto.CountItemPerPageMoreThan100,
+                        message: ConstantMessages.CountItemPerPageMoreThan100)
+                );
             }
 
             if (filter.Page < 1)
             {
-                return BadRequest(ConstantMessages.InvalidPageNumber);
+                return BadRequest(
+                    new ApiErrorResponseDtoOut(
+                        code: ApiErrorCodeDto.InvalidPageNumber,
+                        message: ConstantMessages.InvalidPageNumber)
+                );
             }
 
             var filterDtoIn = ApiLogUnitFilterDtoInConverter.ToRepository(filter);
@@ -94,7 +116,7 @@ namespace CountyRP.Services.Logs.API.Controllers
         /// </summary>
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(ApiLogUnitDtoOut), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteById(int id)
         {
             var filter = new LogUnitFilterDtoIn(
@@ -114,7 +136,10 @@ namespace CountyRP.Services.Logs.API.Controllers
             if (!existedLogUnit.Items.Any())
             {
                 return NotFound(
-                    string.Format(ConstantMessages.LogUnitNotFoundById, id)
+                    new ApiErrorResponseDtoOut(
+                        code: ApiErrorCodeDto.InvalidPageNumber,
+                        message: string.Format(ConstantMessages.LogUnitNotFoundById, id)
+                    )
                 );
             }
 
