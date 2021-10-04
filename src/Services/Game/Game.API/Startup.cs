@@ -7,18 +7,20 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using NSwag;
+using NSwag.Generation.Processors.Security;
 using System.Collections.Generic;
 
 namespace CountyRP.Services.Game.API
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
-
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -36,11 +38,19 @@ namespace CountyRP.Services.Game.API
 
             services.AddControllers();
 
-            services.AddSwaggerDocument(document =>
+            services.AddSwaggerDocument(settings =>
             {
-                document.Title = "County RP Game Service API";
-                document.Version = "v1";
-                document.Description = "The County RP Game Service API documentation description.";
+                settings.Title = "County RP Game Service API";
+                settings.Version = "v1";
+                settings.Description = "The County RP Game Service API documentation description.";
+                settings.AddSecurity("apiKey", new OpenApiSecurityScheme
+                {
+                    Type = OpenApiSecuritySchemeType.ApiKey,
+                    Name = "Authorization",
+                    Description = "Copy 'Bearer ' + valid api key into field",
+                    In = OpenApiSecurityApiKeyLocation.Header
+                });
+                settings.OperationProcessors.Add(new OperationSecurityScopeProcessor("apiKey"));
             });
         }
 

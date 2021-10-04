@@ -7,18 +7,20 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using NSwag;
+using NSwag.Generation.Processors.Security;
 using System.Collections.Generic;
 
 namespace CountyRP.Services.Forum.API
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
-
-        public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -34,11 +36,19 @@ namespace CountyRP.Services.Forum.API
             services.AddSingleton(apiKeys);
 
             services.AddControllers();
-            services.AddSwaggerDocument(document =>
+            services.AddSwaggerDocument(settings =>
             {
-                document.Title = "County RP Forum Service API";
-                document.Version = "v1";
-                document.Description = "The County RP Forum Service API documentation description.";
+                settings.Title = "County RP Forum Service API";
+                settings.Version = "v1";
+                settings.Description = "The County RP Forum Service API documentation description.";
+                settings.AddSecurity("apiKey", new OpenApiSecurityScheme
+                {
+                    Type = OpenApiSecuritySchemeType.ApiKey,
+                    Name = "Authorization",
+                    Description = "Copy 'Bearer ' + valid api key into field",
+                    In = OpenApiSecurityApiKeyLocation.Header
+                });
+                settings.OperationProcessors.Add(new OperationSecurityScopeProcessor("apiKey"));
             });
         }
 
