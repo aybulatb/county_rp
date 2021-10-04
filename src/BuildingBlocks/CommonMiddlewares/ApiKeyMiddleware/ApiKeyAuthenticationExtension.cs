@@ -1,7 +1,6 @@
-﻿using CountyRP.Services.Logs.API.Middlewares;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 
-namespace CountyRP.Services.Logs.API.Extensions
+namespace CountyRP.BuildingBlocks.ApiKeyAuthenticationMiddleware
 {
     public static class ApiKeyAuthenticationExtension
     {

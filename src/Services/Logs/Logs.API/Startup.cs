@@ -1,5 +1,4 @@
-using CountyRP.Services.Logs.API.Extensions;
-using CountyRP.Services.Logs.API.Settings;
+using CountyRP.BuildingBlocks.ApiKeyAuthenticationMiddleware;
 using CountyRP.Services.Logs.Infrastructure.DbContexts;
 using CountyRP.Services.Logs.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Builder;

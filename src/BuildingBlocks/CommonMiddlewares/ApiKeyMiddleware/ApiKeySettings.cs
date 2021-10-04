@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace CountyRP.Services.Logs.API.Settings
+﻿namespace CountyRP.BuildingBlocks.ApiKeyAuthenticationMiddleware
 {
     public class ApiKeySettings
     {

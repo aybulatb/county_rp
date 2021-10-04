@@ -1,18 +1,13 @@
+using CountyRP.BuildingBlocks.ApiKeyAuthenticationMiddleware;
 using CountyRP.Services.Game.Infrastructure.DbContexts;
 using CountyRP.Services.Game.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CountyRP.Services.Game.API
 {
@@ -32,6 +27,12 @@ namespace CountyRP.Services.Game.API
             services.AddDbContext<GameDbContext>(options => options.UseSqlServer(connectionString));
 
             services.AddTransient<IGameRepository, GameRepository>();
+
+            var apiKeys = Configuration
+                .GetSection("ApiKeys")
+                .Get<IEnumerable<ApiKeySettings>>();
+
+            services.AddSingleton(apiKeys);
 
             services.AddControllers();
 
@@ -59,6 +60,7 @@ namespace CountyRP.Services.Game.API
             app.UseSwaggerUi3();
 
             app.UseAuthorization();
+            app.UseApiKeyAuthentication();
 
             app.UseEndpoints(endpoints =>
             {

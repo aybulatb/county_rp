@@ -1,3 +1,4 @@
+using CountyRP.BuildingBlocks.ApiKeyAuthenticationMiddleware;
 using CountyRP.Services.Forum.Infrastructure.DbContexts;
 using CountyRP.Services.Forum.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Builder;
@@ -6,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Collections.Generic;
 
 namespace CountyRP.Services.Forum.API
 {
@@ -24,6 +26,13 @@ namespace CountyRP.Services.Forum.API
             services.AddDbContext<ForumDbContext>(options => options.UseSqlServer(connectionString));
 
             services.AddTransient<IForumRepository, ForumRepository>();
+
+            var apiKeys = Configuration
+                .GetSection("ApiKeys")
+                .Get<IEnumerable<ApiKeySettings>>();
+
+            services.AddSingleton(apiKeys);
+
             services.AddControllers();
             services.AddSwaggerDocument(document =>
             {
@@ -48,6 +57,7 @@ namespace CountyRP.Services.Forum.API
             app.UseSwaggerUi3();
 
             app.UseAuthorization();
+            app.UseApiKeyAuthentication();
 
             app.UseEndpoints(endpoints =>
             {

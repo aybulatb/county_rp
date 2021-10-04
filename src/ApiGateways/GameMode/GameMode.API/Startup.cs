@@ -1,3 +1,4 @@
+using CountyRP.BuildingBlocks.ApiKeyAuthenticationMiddleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -26,6 +27,11 @@ namespace GameMode.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var apiKeys = Configuration
+                .GetSection("ApiKeys")
+                .Get<IEnumerable<ApiKeySettings>>();
+
+            services.AddSingleton(apiKeys);
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -49,6 +55,7 @@ namespace GameMode.API
             app.UseRouting();
 
             app.UseAuthorization();
+            app.UseApiKeyAuthentication();
 
             app.UseEndpoints(endpoints =>
             {

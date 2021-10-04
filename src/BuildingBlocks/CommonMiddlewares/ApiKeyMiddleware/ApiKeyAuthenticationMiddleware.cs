@@ -1,11 +1,10 @@
-﻿using CountyRP.Services.Logs.API.Settings;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace CountyRP.Services.Logs.API.Middlewares
+namespace CountyRP.BuildingBlocks.ApiKeyAuthenticationMiddleware
 {
     public class ApiKeyAuthenticationMiddleware
     {

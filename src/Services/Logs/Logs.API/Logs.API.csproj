@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\BuildingBlocks\CommonMiddlewares\ApiKeyMiddleware\ApiKeyAuthenticationMiddleware.csproj" />
     <ProjectReference Include="..\Logs.Infrastructure\Logs.Infrastructure.csproj" />
   </ItemGroup>
 

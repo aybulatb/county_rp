@@ -1,3 +1,4 @@
+using CountyRP.BuildingBlocks.ApiKeyAuthenticationMiddleware;
 using CountyRP.Services.Site.Infrastructure.DbContexts;
 using CountyRP.Services.Site.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Builder;
@@ -6,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Collections.Generic;
 
 namespace CountyRP.Services.Site.API
 {
@@ -25,6 +27,12 @@ namespace CountyRP.Services.Site.API
             services.AddDbContext<SiteDbContext>(options => options.UseSqlServer(connectionString));
 
             services.AddTransient<ISiteRepository, SiteRepository>();
+
+            var apiKeys = Configuration
+                .GetSection("ApiKeys")
+                .Get<IEnumerable<ApiKeySettings>>();
+
+            services.AddSingleton(apiKeys);
 
             services.AddControllers();
 
@@ -52,6 +60,7 @@ namespace CountyRP.Services.Site.API
             app.UseSwaggerUi3();
 
             app.UseAuthorization();
+            app.UseApiKeyAuthentication();
 
             app.UseEndpoints(endpoints =>
             {
