@@ -10,16 +10,16 @@ namespace CountyRP.Services.Site.API.Converters
         )
         {
             return new SupportRequestTopicFilterDtoIn(
-                count: source.Count,
-                page: source.Page,
-                type: source.Type != null
+                Count: source.Count,
+                Page: source.Page,
+                Type: source.Type != null
                     ? ApiSupportRequestTopicTypeDtoConverter.ToRepository(source.Type.Value)
                     : null,
-                status: source.Status != null
+                Status: source.Status != null
                     ? ApiSupportRequestTopicStatusDtoConverter.ToRepository(source.Status.Value)
                     : null,
-                creatorUserId: source.CreatorUserId,
-                refUserId: source.RefUserId
+                CreatorUserId: source.CreatorUserId,
+                RefUserId: source.RefUserId
             );
         }
     }

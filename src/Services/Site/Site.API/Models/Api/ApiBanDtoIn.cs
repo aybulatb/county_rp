@@ -2,19 +2,19 @@
 
 namespace CountyRP.Services.Site.API.Models.Api
 {
-    public class ApiBanDtoIn
+    public record ApiBanDtoIn
     {
-        public int UserId { get; set; }
+        public int UserId { get; init; }
 
-        public int AdminId { get; set; }
+        public int AdminId { get; init; }
 
-        public DateTimeOffset StartDateTime { get; set; }
+        public DateTimeOffset StartDateTime { get; init; }
 
-        public DateTimeOffset FinishDateTime { get; set; }
+        public DateTimeOffset FinishDateTime { get; init; }
 
-        public string IP { get; set; }
+        public string IP { get; init; }
 
-        public string Reason { get; set; }
+        public string Reason { get; init; }
 
         public ApiBanDtoIn(
             int userId,

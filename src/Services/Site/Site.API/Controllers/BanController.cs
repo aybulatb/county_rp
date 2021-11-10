@@ -34,7 +34,7 @@ namespace CountyRP.Services.Site.API.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Create(ApiBanDtoIn apiBanDtoIn)
         {
-            apiBanDtoIn.Reason = apiBanDtoIn.Reason?.Trim();
+            apiBanDtoIn = apiBanDtoIn with { Reason = apiBanDtoIn.Reason?.Trim() };
 
             if (!Regex.IsMatch(apiBanDtoIn.IP, @"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$"))
             {

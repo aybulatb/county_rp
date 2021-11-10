@@ -10,9 +10,9 @@ namespace CountyRP.Services.Site.API.Converters
         )
         {
             return new GroupFilterDtoIn(
-                count: source.Count,
-                page: source.Page,
-                name: source.Name
+                Count: source.Count,
+                Page: source.Page,
+                Name: source.Name
             );
         }
     }

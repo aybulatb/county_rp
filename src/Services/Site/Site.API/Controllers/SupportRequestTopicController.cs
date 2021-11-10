@@ -141,11 +141,11 @@ namespace CountyRP.Services.Site.API.Controllers
 
             await _siteRepository.DeleteSupportRequestMessagesAsync(
                 filter: new SupportRequestMessageFilterDtoIn(
-                    count: null,
-                    page: null,
-                    ids: null,
-                    topicId: id,
-                    userId: null
+                    Count: null,
+                    Page: null,
+                    Ids: null,
+                    TopicId: id,
+                    UserId: null
                 )
             );
 

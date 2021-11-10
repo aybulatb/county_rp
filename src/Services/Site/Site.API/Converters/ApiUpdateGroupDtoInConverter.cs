@@ -11,19 +11,19 @@ namespace CountyRP.Services.Site.API.Converters
         )
         {
             return new GroupDtoOut(
-                id: id,
-                name: source.Name,
-                color: source.Color,
-                admin: source.Admin,
-                adminPanel: source.AdminPanel,
-                createUsers: source.CreateUsers,
-                deleteUsers: source.DeleteUsers,
-                changeLogin: source.ChangeLogin,
-                changeGroup: source.ChangeGroup,
-                editGroups: source.EditGroups,
-                maxBan: source.MaxBan,
-                banGroupIds: source.BanGroupIds,
-                seeLogs: source.SeeLogs
+                Id: id,
+                Name: source.Name,
+                Color: source.Color,
+                Admin: source.Admin,
+                AdminPanel: source.AdminPanel,
+                CreateUsers: source.CreateUsers,
+                DeleteUsers: source.DeleteUsers,
+                ChangeLogin: source.ChangeLogin,
+                ChangeGroup: source.ChangeGroup,
+                EditGroups: source.EditGroups,
+                MaxBan: source.MaxBan,
+                BanGroupIds: source.BanGroupIds,
+                SeeLogs: source.SeeLogs
             );
         }
     }

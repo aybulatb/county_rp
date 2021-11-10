@@ -1,12 +1,12 @@
 ﻿namespace CountyRP.Services.Site.API.Models.Api
 {
-    public class ApiSupportRequestTopicWithFirstAndLastMessagesDtoOut
+    public record ApiSupportRequestTopicWithFirstAndLastMessagesDtoOut
     {
-        public ApiSupportRequestTopicDtoOut Topic { get; }
+        public ApiSupportRequestTopicDtoOut Topic { get; init; }
 
-        public ApiSupportRequestMessageDtoOut FirstMessage { get; }
+        public ApiSupportRequestMessageDtoOut FirstMessage { get; init; }
 
-        public ApiSupportRequestMessageDtoOut LastMessage { get; }
+        public ApiSupportRequestMessageDtoOut LastMessage { get; init; }
 
         public ApiSupportRequestTopicWithFirstAndLastMessagesDtoOut(
             ApiSupportRequestTopicDtoOut topic,

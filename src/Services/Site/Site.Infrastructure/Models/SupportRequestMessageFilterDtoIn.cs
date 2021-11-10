@@ -2,26 +2,11 @@
 
 namespace CountyRP.Services.Site.Infrastructure.Models
 {
-    public class SupportRequestMessageFilterDtoIn : PagedFilter
-    {
-        public IList<int> Ids { get; }
-
-        public int? TopicId { get; }
-
-        public int? UserId { get; }
-
-        public SupportRequestMessageFilterDtoIn(
-            int? count,
-            int? page,
-            IList<int> ids,
-            int? topicId,
-            int? userId
-        )
-            : base(count, page)
-        {
-            Ids = ids;
-            TopicId = topicId;
-            UserId = userId;
-        }
-    }
+    public record SupportRequestMessageFilterDtoIn(
+        int? Count,
+        int? Page,
+        IList<int> Ids,
+        int? TopicId,
+        int? UserId
+    ) : PagedFilter(Count, Page);
 }

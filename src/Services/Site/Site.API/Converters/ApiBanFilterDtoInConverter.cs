@@ -10,10 +10,10 @@ namespace CountyRP.Services.Site.API.Converters
         )
         {
             return new BanFilterDtoIn(
-                count: source.Count,
-                page: source.Page,
-                startDateTime: source.StartDateTime,
-                finishDateTime: source.FinishDateTime
+                Count: source.Count,
+                Page: source.Page,
+                StartDateTime: source.StartDateTime,
+                FinishDateTime: source.FinishDateTime
             );
         }
     }

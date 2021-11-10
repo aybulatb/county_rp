@@ -10,14 +10,14 @@ namespace CountyRP.Services.Site.Infrastructure.Converters
         )
         {
             return new SupportRequestTopicDtoOut(
-                id: source.Id,
-                type: SupportRequestTopicTypeDaoConverter.ToRepository(source.Type),
-                caption: source.Caption,
-                status: SupportRequestTopicStatusDaoConverter.ToRepository(source.Status),
-                creatorUserId: source.CreatorUserId,
-                creationDate: source.CreationDate,
-                refUserId: source.RefUserId,
-                showRefUser: source.ShowRefUser
+                Id: source.Id,
+                Type: SupportRequestTopicTypeDaoConverter.ToRepository(source.Type),
+                Caption: source.Caption,
+                Status: SupportRequestTopicStatusDaoConverter.ToRepository(source.Status),
+                CreatorUserId: source.CreatorUserId,
+                CreationDate: source.CreationDate,
+                RefUserId: source.RefUserId,
+                ShowRefUser: source.ShowRefUser
             );
         }
     }

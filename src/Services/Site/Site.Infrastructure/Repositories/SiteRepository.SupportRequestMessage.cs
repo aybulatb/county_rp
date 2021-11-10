@@ -47,12 +47,12 @@ namespace CountyRP.Services.Site.Infrastructure.Repositories
                 .ToListAsync();
 
             return new PagedFilterResult<SupportRequestMessageDtoOut>(
-                allCount: allCount,
-                page: filter.Page.HasValue
+                AllCount: allCount,
+                Page: filter.Page.HasValue
                     ? filter.Page.Value
                     : 1,
-                maxPages: maxPages,
-                items: filteredSupportRequestMessages
+                MaxPages: maxPages,
+                Items: filteredSupportRequestMessages
                     .Select(SupportRequestMessageDaoConverter.ToRepository)
                 );
         }

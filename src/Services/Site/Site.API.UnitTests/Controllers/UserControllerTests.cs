@@ -6,6 +6,7 @@ using CountyRP.Services.Site.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
+using System;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -204,6 +205,8 @@ namespace Site.UnitTests.Controllers
                 id: 1,
                 login: "123",
                 password: "123123123",
+                registrationDate: DateTimeOffset.Now,
+                lastVisitDate: DateTimeOffset.Now,
                 playerId: 1,
                 forumUserId: 2,
                 groupId: "group"
@@ -693,6 +696,8 @@ namespace Site.UnitTests.Controllers
                 id: id,
                 login: login,
                 password: "123123123",
+                registrationDate: DateTimeOffset.Now,
+                lastVisitDate: DateTimeOffset.Now,
                 playerId: 1,
                 forumUserId: 2,
                 groupId: "group"
@@ -701,6 +706,8 @@ namespace Site.UnitTests.Controllers
                 id: existedUserId,
                 login: login,
                 password: "123123123",
+                registrationDate: DateTimeOffset.Now,
+                lastVisitDate: DateTimeOffset.Now,
                 playerId: 1,
                 forumUserId: 2,
                 groupId: "group"
@@ -750,6 +757,8 @@ namespace Site.UnitTests.Controllers
                 id: id,
                 login: login,
                 password: "123123123",
+                registrationDate: DateTimeOffset.Now,
+                lastVisitDate: DateTimeOffset.Now,
                 playerId: 1,
                 forumUserId: 2,
                 groupId: "group"
@@ -758,6 +767,8 @@ namespace Site.UnitTests.Controllers
                 id: existedUserId,
                 login: login,
                 password: "123123123",
+                registrationDate: DateTimeOffset.Now,
+                lastVisitDate: DateTimeOffset.Now,
                 playerId: 1,
                 forumUserId: 2,
                 groupId: "group"
@@ -766,6 +777,8 @@ namespace Site.UnitTests.Controllers
                 id: id,
                 login: login,
                 password: "123123123",
+                registrationDate: DateTimeOffset.Now,
+                lastVisitDate: DateTimeOffset.Now,
                 playerId: 1,
                 forumUserId: 2,
                 groupId: "group"

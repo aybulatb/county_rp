@@ -83,11 +83,11 @@ namespace CountyRP.Services.Site.API.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var filter = new SupportRequestMessageFilterDtoIn(
-                    count: 1,
-                    page: 1,
-                    ids: new[] { id },
-                    topicId: null,
-                    userId: null
+                    Count: 1,
+                    Page: 1,
+                    Ids: new[] { id },
+                    TopicId: null,
+                    UserId: null
                 );
 
             var supportRequestMessagesByFilter = await _siteRepository.GetSupportRequestMessagesByFilterAsync(filter);

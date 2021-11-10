@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CountyRP.Services.Site.Infrastructure.Entities
@@ -15,6 +16,10 @@ namespace CountyRP.Services.Site.Infrastructure.Entities
         [MaxLength(64)]
         public string Password { get; set; }
 
+        public DateTimeOffset RegistrationDate { get; set; }
+
+        public DateTimeOffset LastVisitDate { get; set; }
+
         public int PlayerId { get; set; }
 
         public int ForumUserId { get; set; }
@@ -26,6 +31,8 @@ namespace CountyRP.Services.Site.Infrastructure.Entities
             int id,
             string login,
             string password,
+            DateTimeOffset registrationDate,
+            DateTimeOffset lastVisitDate,
             int playerId,
             int forumUserId,
             string groupId
@@ -33,6 +40,8 @@ namespace CountyRP.Services.Site.Infrastructure.Entities
         {
             Id = id;
             Login = login;
+            RegistrationDate = registrationDate;
+            LastVisitDate = lastVisitDate;
             Password = password;
             PlayerId = playerId;
             ForumUserId = forumUserId;

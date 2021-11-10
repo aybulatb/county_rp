@@ -2,46 +2,46 @@
 
 namespace CountyRP.Services.Site.API.Models.Api
 {
-    public class ApiSupportRequestTopicWithMessageDtoIn
+    public record ApiSupportRequestTopicWithMessageDtoIn
     {
         /// <summary>
         /// Тип.
         /// </summary>
-        public ApiSupportRequestTopicTypeDto Type { get; set; }
+        public ApiSupportRequestTopicTypeDto Type { get; init; }
 
         /// <summary>
         /// Заголовок.
         /// </summary>
-        public string Caption { get; set; }
+        public string Caption { get; init; }
 
         /// <summary>
         /// Статус.
         /// </summary>
-        public ApiSupportRequestTopicStatusDto Status { get; set; }
+        public ApiSupportRequestTopicStatusDto Status { get; init; }
 
         /// <summary>
         /// Идентификатор пользователя-создателя.
         /// </summary>
-        public int CreatorUserId { get; set; }
+        public int CreatorUserId { get; init; }
 
         /// <summary>
         /// Дата создания.
         /// </summary>
-        public DateTimeOffset CreationDate { get; set; }
+        public DateTimeOffset CreationDate { get; init; }
 
         /// <summary>
         /// Идентификатор ссылочного пользователя.
         /// </summary>
-        public int? RefUserId { get; set; }
+        public int? RefUserId { get; init; }
 
         /// <summary>
         /// Видимость обращения для ссылочного пользователя.
         /// </summary>
-        public bool ShowRefUser { get; set; }
+        public bool ShowRefUser { get; init; }
 
         /// <summary>
         /// Текст сообщения.
         /// </summary>
-        public string Text { get; set; }
+        public string Text { get; init; }
     }
 }

@@ -10,12 +10,12 @@ namespace CountyRP.Services.Site.API.Converters
         )
         {
             return new BanDtoIn(
-                userId: source.UserId,
-                adminId: source.AdminId,
-                startDateTime: source.StartDateTime,
-                finishDateTime: source.FinishDateTime,
-                ip: source.IP,
-                reason: source.Reason
+                UserId: source.UserId,
+                AdminId: source.AdminId,
+                StartDateTime: source.StartDateTime,
+                FinishDateTime: source.FinishDateTime,
+                IP: source.IP,
+                Reason: source.Reason
             );
         }
 
@@ -25,13 +25,13 @@ namespace CountyRP.Services.Site.API.Converters
         )
         {
             return new BanDtoOut(
-                id: id,
-                userId: source.UserId,
-                adminId: source.AdminId,
-                startDateTime: source.StartDateTime,
-                finishDateTime: source.FinishDateTime,
-                ip: source.IP,
-                reason: source.Reason
+                Id: id,
+                UserId: source.UserId,
+                AdminId: source.AdminId,
+                StartDateTime: source.StartDateTime,
+                FinishDateTime: source.FinishDateTime,
+                IP: source.IP,
+                Reason: source.Reason
             );
         }
     }

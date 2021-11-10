@@ -1,32 +1,32 @@
 ﻿namespace CountyRP.Services.Site.API.Models.Api
 {
-    public class ApiGroupDtoOut
+    public record ApiGroupDtoOut
     {
-        public string Id { get; set; }
+        public string Id { get; init; }
 
-        public string Name { get; set; }
+        public string Name { get; init; }
 
-        public string Color { get; set; }
+        public string Color { get; init; }
 
-        public bool Admin { get; set; }
+        public bool Admin { get; init; }
 
-        public bool AdminPanel { get; set; }
+        public bool AdminPanel { get; init; }
 
-        public bool CreateUsers { get; set; }
+        public bool CreateUsers { get; init; }
 
-        public bool DeleteUsers { get; set; }
+        public bool DeleteUsers { get; init; }
 
-        public bool ChangeLogin { get; set; }
+        public bool ChangeLogin { get; init; }
 
-        public bool ChangeGroup { get; set; }
+        public bool ChangeGroup { get; init; }
 
-        public bool EditGroups { get; set; }
+        public bool EditGroups { get; init; }
 
-        public int MaxBan { get; set; }
+        public int MaxBan { get; init; }
 
-        public string[] BanGroupIds { get; set; }
+        public string[] BanGroupIds { get; init; }
 
-        public bool SeeLogs { get; set; }
+        public bool SeeLogs { get; init; }
 
         public ApiGroupDtoOut(
             string id,

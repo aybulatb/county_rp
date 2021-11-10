@@ -62,12 +62,12 @@ namespace CountyRP.Services.Site.Infrastructure.Repositories
                 .ToListAsync();
 
             return new PagedFilterResult<GroupDtoOut>(
-                allCount: allCount,
-                page: filter.Page.HasValue
+                AllCount: allCount,
+                Page: filter.Page.HasValue
                     ? filter.Page.Value
                     : 1,
-                maxPages: maxPages,
-                items: filteredGroupsDao
+                MaxPages: maxPages,
+                Items: filteredGroupsDao
                     .Select(GroupDaoConverter.ToRepository)
             );
         }

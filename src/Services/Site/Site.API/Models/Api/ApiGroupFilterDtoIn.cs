@@ -1,7 +1,7 @@
 ﻿namespace CountyRP.Services.Site.API.Models.Api
 {
-    public class ApiGroupFilterDtoIn : ApiPagedFilter
+    public record ApiGroupFilterDtoIn : ApiPagedFilter
     {
-        public string Name { get; set; }
+        public string Name { get; init; }
     }
 }

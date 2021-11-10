@@ -41,7 +41,7 @@ namespace CountyRP.Services.Site.API.Controllers
                 return BadRequest(ConstantMessages.GroupAlreadyExistedWithId);
             }
 
-            apiGroupDtoIn.Name = apiGroupDtoIn.Name?.Trim();
+            apiGroupDtoIn = apiGroupDtoIn with { Name = apiGroupDtoIn.Name?.Trim() };
 
             if (apiGroupDtoIn.Id == null || apiGroupDtoIn.Id.Length < 3 || apiGroupDtoIn.Id.Length > 16)
             {
@@ -75,7 +75,7 @@ namespace CountyRP.Services.Site.API.Controllers
             }
             if (apiGroupDtoIn.BanGroupIds == null)
             {
-                apiGroupDtoIn.BanGroupIds = new string[0];
+                apiGroupDtoIn = apiGroupDtoIn with { BanGroupIds = new string[0] };
             }
             foreach (var banGroupId in apiGroupDtoIn.BanGroupIds)
             {
@@ -171,7 +171,7 @@ namespace CountyRP.Services.Site.API.Controllers
                 );
             }
 
-            apiUpdateGroupDtoIn.Name = apiUpdateGroupDtoIn.Name?.Trim();
+            apiUpdateGroupDtoIn = apiUpdateGroupDtoIn with { Name = apiUpdateGroupDtoIn.Name?.Trim() };
 
             if (apiUpdateGroupDtoIn.Name == null || apiUpdateGroupDtoIn.Name.Length < 3 || apiUpdateGroupDtoIn.Name.Length > 32)
             {
@@ -197,7 +197,7 @@ namespace CountyRP.Services.Site.API.Controllers
             }
             if (apiUpdateGroupDtoIn.BanGroupIds == null)
             {
-                apiUpdateGroupDtoIn.BanGroupIds = new string[0];
+                apiUpdateGroupDtoIn = apiUpdateGroupDtoIn with { BanGroupIds = new string[0] };
             }
             foreach (var banGroupId in apiUpdateGroupDtoIn.BanGroupIds)
             {

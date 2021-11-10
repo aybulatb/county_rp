@@ -10,9 +10,9 @@ namespace CountyRP.Services.Site.Infrastructure.Converters
         )
         {
             return new SupportRequestTopicWithFirstAndLastMessagesDtoOut(
-                topic: SupportRequestTopicDaoConverter.ToRepository(source.Topic),
-                firstMessage: SupportRequestMessageDaoConverter.ToRepository(source.FirstMessage),
-                lastMessage: SupportRequestMessageDaoConverter.ToRepository(source.LastMessage)
+                Topic: SupportRequestTopicDaoConverter.ToRepository(source.Topic),
+                FirstMessage: SupportRequestMessageDaoConverter.ToRepository(source.FirstMessage),
+                LastMessage: SupportRequestMessageDaoConverter.ToRepository(source.LastMessage)
             );
         }
     }

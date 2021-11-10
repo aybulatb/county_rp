@@ -13,6 +13,8 @@ namespace CountyRP.Services.Site.Infrastructure.Converters
                 id: 0,
                 login: source.Login,
                 password: source.Password,
+                registrationDate: source.RegistrationDate,
+                lastVisitDate: source.LastVisitDate,
                 playerId: source.PlayerId,
                 forumUserId: source.ForumUserId,
                 groupId: source.GroupId

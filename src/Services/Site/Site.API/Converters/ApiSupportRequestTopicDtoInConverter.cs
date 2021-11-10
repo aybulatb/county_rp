@@ -10,13 +10,13 @@ namespace CountyRP.Services.Site.API.Converters
         )
         {
             return new SupportRequestTopicDtoIn(
-                type: ApiSupportRequestTopicTypeDtoConverter.ToRepository(source.Type),
-                caption: source.Caption,
-                status: ApiSupportRequestTopicStatusDtoConverter.ToRepository(source.Status),
-                creatorUserId: source.CreatorUserId,
-                creationDate: source.CreationDate,
-                refUserId: source.RefUserId,
-                showRefUser: source.ShowRefUser
+                Type: ApiSupportRequestTopicTypeDtoConverter.ToRepository(source.Type),
+                Caption: source.Caption,
+                Status: ApiSupportRequestTopicStatusDtoConverter.ToRepository(source.Status),
+                CreatorUserId: source.CreatorUserId,
+                CreationDate: source.CreationDate,
+                RefUserId: source.RefUserId,
+                ShowRefUser: source.ShowRefUser
             );
         }
     }

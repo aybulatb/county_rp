@@ -1,9 +1,9 @@
 ﻿namespace CountyRP.Services.Site.API.Models.Api
 {
-    public class ApiPagedFilter
+    public record ApiPagedFilter
     {
-        public int Count { get; set; }
+        public int Count { get; init; }
 
-        public int Page { get; set; }
+        public int Page { get; init; }
     }
 }

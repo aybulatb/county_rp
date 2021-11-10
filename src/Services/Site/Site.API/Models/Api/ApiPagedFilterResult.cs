@@ -2,15 +2,15 @@
 
 namespace CountyRP.Services.Site.API.Models.Api
 {
-    public class ApiPagedFilterResult<T>
+    public record ApiPagedFilterResult<T>
     {
-        public int AllCount { get; }
+        public int AllCount { get; init; }
 
-        public int Page { get; }
+        public int Page { get; init; }
 
-        public int MaxPages { get; }
+        public int MaxPages { get; init; }
 
-        public IEnumerable<T> Items { get; }
+        public IEnumerable<T> Items { get; init; }
 
         public ApiPagedFilterResult(
             int allCount,

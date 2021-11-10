@@ -82,12 +82,12 @@ namespace CountyRP.Services.Site.Infrastructure.Repositories
                 .ToListAsync();
 
             return new PagedFilterResult<SupportRequestTopicDtoOut>(
-                allCount: allCount,
-                page: filter.Page.HasValue
+                AllCount: allCount,
+                Page: filter.Page.HasValue
                     ? filter.Page.Value
                     : 1,
-                maxPages: maxPages,
-                items: filteredSupportRequestTopicsDao
+                MaxPages: maxPages,
+                Items: filteredSupportRequestTopicsDao
                     .Select(SupportRequestTopicDaoConverter.ToRepository)
             );
         }
@@ -161,12 +161,12 @@ namespace CountyRP.Services.Site.Infrastructure.Repositories
                 .ToListAsync();
 
             return new PagedFilterResult<SupportRequestTopicWithFirstAndLastMessagesDtoOut>(
-                allCount: allCount,
-                page: filter.Page.HasValue
+                AllCount: allCount,
+                Page: filter.Page.HasValue
                     ? filter.Page.Value
                     : 1,
-                maxPages: maxPages,
-                items: filteredSupportRequestTopicsWithMessageDao
+                MaxPages: maxPages,
+                Items: filteredSupportRequestTopicsWithMessageDao
                     .Select(SupportRequestTopicWithMessageDaoConverter.ToRepository)
             );
         }

@@ -1,5 +1,6 @@
 ﻿using CountyRP.Services.Site.API.Models.Api;
 using CountyRP.Services.Site.Infrastructure.Models;
+using System;
 
 namespace CountyRP.Services.Site.API.Converters
 {
@@ -10,26 +11,30 @@ namespace CountyRP.Services.Site.API.Converters
         )
         {
             return new UserDtoIn(
-                login: source.Login,
-                password: source.Password,
-                playerId: source.PlayerId,
-                forumUserId: source.ForumUserId,
-                groupId: source.GroupId
+                Login: source.Login,
+                Password: source.Password,
+                RegistrationDate: DateTimeOffset.Now,
+                LastVisitDate: DateTimeOffset.Now,
+                PlayerId: source.PlayerId,
+                ForumUserId: source.ForumUserId,
+                GroupId: source.GroupId
             );
         }
 
         public static UserDtoOut ToDtoOut(
            ApiUserDtoIn source,
-           int id
+           UserDtoOut existedUser
         )
         {
             return new UserDtoOut(
-                id: id,
-                login: source.Login,
-                password: source.Password,
-                playerId: source.PlayerId,
-                forumUserId: source.ForumUserId,
-                groupId: source.GroupId
+                Id: existedUser.Id,
+                Login: source.Login,
+                Password: source.Password,
+                RegistrationDate: existedUser.RegistrationDate,
+                LastVisitDate: existedUser.LastVisitDate,
+                PlayerId: source.PlayerId,
+                ForumUserId: source.ForumUserId,
+                GroupId: source.GroupId
             );
         }
     }

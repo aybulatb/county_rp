@@ -10,13 +10,13 @@ namespace CountyRP.Services.Site.Infrastructure.Converters
         )
         {
             return new BanDtoOut(
-                id: source.Id,
-                userId: source.UserId,
-                adminId: source.AdminId,
-                startDateTime: source.StartDateTime,
-                finishDateTime: source.FinishDateTime,
-                ip: source.IP,
-                reason: source.Reason
+                Id: source.Id,
+                UserId: source.UserId,
+                AdminId: source.AdminId,
+                StartDateTime: source.StartDateTime,
+                FinishDateTime: source.FinishDateTime,
+                IP: source.IP,
+                Reason: source.Reason
             );
         }
     }

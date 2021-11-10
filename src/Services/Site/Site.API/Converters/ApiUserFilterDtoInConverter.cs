@@ -10,10 +10,16 @@ namespace CountyRP.Services.Site.API.Converters
         )
         {
             return new UserFilterDtoIn(
-                count: source.Count,
-                page: source.Page,
-                login: source.Login,
-                groupIds: source.GroupIds
+                Count: source.Count,
+                Page: source.Page,
+                Login: source.Login,
+                LoginLike: source.LoginLike,
+                GroupIds: source.GroupIds,
+                PlayerIds: source.PlayerIds,
+                StartRegistrationDate: source.StartRegistrationDate,
+                FinishRegistrationDate: source.FinishRegistrationDate,
+                StartLastVisitDate: source.StartLastVisitDate,
+                FinishLastVisitDate: source.FinishLastVisitDate
             );
         }
     }

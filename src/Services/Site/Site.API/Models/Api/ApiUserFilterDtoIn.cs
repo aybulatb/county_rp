@@ -1,11 +1,24 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace CountyRP.Services.Site.API.Models.Api
 {
-    public class ApiUserFilterDtoIn : ApiPagedFilter
+    public record ApiUserFilterDtoIn : ApiPagedFilter
     {
-        public string Login { get; set; }
+        public string Login { get; init; }
 
-        public IEnumerable<string> GroupIds { get; set; }
+        public string LoginLike { get; init; }
+
+        public IEnumerable<string> GroupIds { get; init; }
+
+        public IEnumerable<int> PlayerIds { get; init; }
+
+        public DateTimeOffset? StartRegistrationDate { get; init; }
+
+        public DateTimeOffset? FinishRegistrationDate { get; init; }
+
+        public DateTimeOffset? StartLastVisitDate { get; init; }
+
+        public DateTimeOffset? FinishLastVisitDate { get; init; }
     }
 }

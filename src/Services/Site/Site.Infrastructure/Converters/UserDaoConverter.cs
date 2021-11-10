@@ -10,12 +10,14 @@ namespace CountyRP.Services.Site.Infrastructure.Converters
         )
         {
             return new UserDtoOut(
-                id: source.Id,
-                login: source.Login,
-                password: source.Password,
-                playerId: source.PlayerId,
-                forumUserId: source.ForumUserId,
-                groupId: source.GroupId
+                Id: source.Id,
+                Login: source.Login,
+                Password: source.Password,
+                RegistrationDate: source.RegistrationDate,
+                LastVisitDate: source.LastVisitDate,
+                PlayerId: source.PlayerId,
+                ForumUserId: source.ForumUserId,
+                GroupId: source.GroupId
             );
         }
     }

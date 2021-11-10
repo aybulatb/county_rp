@@ -1,18 +1,18 @@
 ﻿namespace CountyRP.Services.Site.API.Models.Api
 {
-    public class ApiUserDtoOut
+    public record ApiUserDtoOut
     {
-        public int Id { get; }
+        public int Id { get; init; }
 
-        public string Login { get; }
+        public string Login { get; init; }
 
-        public string Password { get; }
+        public string Password { get; init; }
 
-        public int PlayerId { get; }
+        public int PlayerId { get; init; }
 
-        public int ForumUserId { get; }
+        public int ForumUserId { get; init; }
 
-        public string GroupId { get; }
+        public string GroupId { get; init; }
 
         public ApiUserDtoOut(
             int id,

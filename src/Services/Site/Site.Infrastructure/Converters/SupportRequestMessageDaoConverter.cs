@@ -10,12 +10,12 @@ namespace CountyRP.Services.Site.Infrastructure.Converters
         )
         {
             return new SupportRequestMessageDtoOut(
-                id: source.Id,
-                topicId: source.TopicId,
-                text: source.Text,
-                userId: source.UserId,
-                creationDate: source.CreationDate,
-                editionDate: source.EditionDate
+                Id: source.Id,
+                TopicId: source.TopicId,
+                Text: source.Text,
+                UserId: source.UserId,
+                CreationDate: source.CreationDate,
+                EditionDate: source.EditionDate
             );
         }
     }

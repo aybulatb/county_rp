@@ -10,11 +10,11 @@ namespace CountyRP.Services.Site.API.Converters
         )
         {
             return new SupportRequestMessageDtoIn(
-                topicId: source.TopicId,
-                text: source.Text,
-                userId: source.UserId,
-                creationDate: source.CreationDate,
-                editionDate: source.EditionDate
+                TopicId: source.TopicId,
+                Text: source.Text,
+                UserId: source.UserId,
+                CreationDate: source.CreationDate,
+                EditionDate: source.EditionDate
             );
         }
     }

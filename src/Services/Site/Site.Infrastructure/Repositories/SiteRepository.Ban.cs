@@ -88,12 +88,12 @@ namespace CountyRP.Services.Site.Infrastructure.Repositories
                 .ToListAsync();
 
             return new PagedFilterResult<BanDtoOut>(
-                allCount: allCount,
-                page: filter.Page.HasValue
+                AllCount: allCount,
+                Page: filter.Page.HasValue
                     ? filter.Page.Value
                     : 1,
-                maxPages: maxPages,
-                items: filteredBansDao
+                MaxPages: maxPages,
+                Items: filteredBansDao
                     .Select(BanDaoConverter.ToRepository)
             );
         }

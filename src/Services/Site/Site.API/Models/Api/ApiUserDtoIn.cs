@@ -1,15 +1,15 @@
 ﻿namespace CountyRP.Services.Site.API.Models.Api
 {
-    public class ApiUserDtoIn
+    public record ApiUserDtoIn
     {
-        public string Login { get; set; }
+        public string Login { get; init; }
 
-        public string Password { get; set; }
+        public string Password { get; init; }
 
-        public int PlayerId { get; set; }
+        public int PlayerId { get; init; }
 
-        public int ForumUserId { get; set; }
+        public int ForumUserId { get; init; }
 
-        public string GroupId { get; set; }
+        public string GroupId { get; init; }
     }
 }

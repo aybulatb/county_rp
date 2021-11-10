@@ -2,21 +2,21 @@
 
 namespace CountyRP.Services.Site.API.Models.Api
 {
-    public class ApiBanDtoOut
+    public record ApiBanDtoOut
     {
-        public int Id { get; }
+        public int Id { get; init; }
 
-        public int UserId { get; }
+        public int UserId { get; init; }
 
-        public int AdminId { get; }
+        public int AdminId { get; init; }
 
-        public DateTimeOffset StartDateTime { get; }
+        public DateTimeOffset StartDateTime { get; init; }
 
-        public DateTimeOffset FinishDateTime { get; }
+        public DateTimeOffset FinishDateTime { get; init; }
 
-        public string IP { get; }
+        public string IP { get; init; }
 
-        public string Reason { get; }
+        public string Reason { get; init; }
 
         public ApiBanDtoOut(
             int id,

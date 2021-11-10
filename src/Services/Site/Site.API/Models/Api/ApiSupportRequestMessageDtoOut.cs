@@ -2,37 +2,37 @@
 
 namespace CountyRP.Services.Site.API.Models.Api
 {
-    public class ApiSupportRequestMessageDtoOut
+    public record ApiSupportRequestMessageDtoOut
     {
         /// <summary>
         /// Идентификатор.
         /// </summary>
-        public int Id { get; set; }
+        public int Id { get; init; }
 
         /// <summary>
         /// Идентификатор темы.
         /// </summary>
-        public int TopicId { get; set; }
+        public int TopicId { get; init; }
 
         /// <summary>
         /// Текст сообщения.
         /// </summary>
-        public string Text { get; set; }
+        public string Text { get; init; }
 
         /// <summary>
         /// Идентификатор автора.
         /// </summary>
-        public int UserId { get; set; }
+        public int UserId { get; init; }
 
         /// <summary>
         /// Дата создания.
         /// </summary>
-        public DateTimeOffset CreationDate { get; set; }
+        public DateTimeOffset CreationDate { get; init; }
 
         /// <summary>
         /// Дата последнего изменения.
         /// </summary>
-        public DateTimeOffset? EditionDate { get; set; }
+        public DateTimeOffset? EditionDate { get; init; }
 
         public ApiSupportRequestMessageDtoOut(
             int id,

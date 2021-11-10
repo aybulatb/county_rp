@@ -2,12 +2,12 @@
 
 namespace CountyRP.Services.Site.API.Models.Api
 {
-    public class ApiSupportRequestMessageFilterDtoIn : ApiPagedFilter
+    public record ApiSupportRequestMessageFilterDtoIn : ApiPagedFilter
     {
-        public IList<int> Ids { get; set; }
+        public IList<int> Ids { get; init; }
 
-        public int? TopicId { get; set; }
+        public int? TopicId { get; init; }
 
-        public int? UserId { get; set; }
+        public int? UserId { get; init; }
     }
 }

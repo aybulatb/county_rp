@@ -205,7 +205,7 @@ namespace CountyRP.Services.Site.API.Controllers
 
             var userDtoOut = ApiUserDtoInConverter.ToDtoOut(
                 source: apiUserDtoIn,
-                id: id
+                existedUser: existedUser
             );
 
             var updatedUserDtoOut = await _siteRepository.UpdateUserAsync(userDtoOut);

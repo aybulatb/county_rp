@@ -61,8 +61,13 @@ namespace CountyRP.Services.Site.Infrastructure.Repositories
                 .AsNoTracking()
                 .Where(
                     user =>
-                        (filter.Login == null || user.Login.Contains(filter.Login)) &&
-                        (filter.GroupIds == null || filter.GroupIds.Contains(user.GroupId))
+                        (filter.Login == null || user.Login == filter.Login) &&
+                        (filter.LoginLike == null || user.Login.Contains(filter.LoginLike)) &&
+                        (filter.GroupIds == null || filter.GroupIds.Contains(user.GroupId)) &&
+                        (filter.StartRegistrationDate == null || user.RegistrationDate > filter.StartRegistrationDate) &&
+                        (filter.FinishRegistrationDate == null || user.RegistrationDate < filter.FinishRegistrationDate) &&
+                        (filter.StartLastVisitDate == null || user.LastVisitDate > filter.StartLastVisitDate) &&
+                        (filter.FinishLastVisitDate == null || user.LastVisitDate < filter.FinishLastVisitDate)
                 )
                 .AsQueryable();
 
@@ -88,12 +93,12 @@ namespace CountyRP.Services.Site.Infrastructure.Repositories
                 .ToListAsync();
 
             return new PagedFilterResult<UserDtoOut>(
-                allCount: allCount,
-                page: filter.Page.HasValue
+                AllCount: allCount,
+                Page: filter.Page.HasValue
                     ? filter.Page.Value
                     : 1,
-                maxPages: maxPages,
-                items: filteredUsersDao
+                MaxPages: maxPages,
+                Items: filteredUsersDao
                     .Select(UserDaoConverter.ToRepository)
             );
         }
