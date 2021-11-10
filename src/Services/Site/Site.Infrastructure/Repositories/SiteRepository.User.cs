@@ -64,6 +64,7 @@ namespace CountyRP.Services.Site.Infrastructure.Repositories
                         (filter.Login == null || user.Login == filter.Login) &&
                         (filter.LoginLike == null || user.Login.Contains(filter.LoginLike)) &&
                         (filter.GroupIds == null || filter.GroupIds.Contains(user.GroupId)) &&
+                        (filter.PlayerIds == null || filter.PlayerIds.Contains(user.PlayerId)) &&
                         (filter.StartRegistrationDate == null || user.RegistrationDate > filter.StartRegistrationDate) &&
                         (filter.FinishRegistrationDate == null || user.RegistrationDate < filter.FinishRegistrationDate) &&
                         (filter.StartLastVisitDate == null || user.LastVisitDate > filter.StartLastVisitDate) &&
