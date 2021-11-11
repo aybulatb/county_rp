@@ -1,11 +1,11 @@
 ﻿namespace CountyRP.Services.Game.API.Models.Api
 {
-    public class ApiAtmDtoIn
+    public record ApiAtmDtoIn
     {
-        public float[] Position { get; set; }
+        public float[] Position { get; init; }
 
-        public uint Dimension { get; set; }
+        public uint Dimension { get; init; }
 
-        public int? BusinessId { get; set; }
+        public int? BusinessId { get; init; }
     }
 }

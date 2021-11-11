@@ -2,16 +2,16 @@
 
 namespace CountyRP.Services.Game.API.Models.Api
 {
-    public class ApiFactionFilterDtoIn : ApiPagedFilterDtoIn
+    public record ApiFactionFilterDtoIn : ApiPagedFilterDtoIn
     {
-        public IEnumerable<string> Ids { get; set; }
+        public IEnumerable<string> Ids { get; init; }
 
-        public string IdLike { get; set; }
+        public string IdLike { get; init; }
 
-        public IEnumerable<string> Names { get; set; }
+        public IEnumerable<string> Names { get; init; }
 
-        public string NameLike { get; set; }
+        public string NameLike { get; init; }
 
-        public IEnumerable<ApiFactionTypeDto> Types { get; set; }
+        public IEnumerable<ApiFactionTypeDto> Types { get; init; }
     }
 }

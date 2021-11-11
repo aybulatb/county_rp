@@ -2,7 +2,7 @@
 
 namespace CountyRP.Services.Game.API.Converters
 {
-    public static class PlayerIdConverter
+    internal static class PlayerIdConverter
     {
         public static PlayerFilterDtoIn ToPlayerFilterDtoIn(
             int source
@@ -17,6 +17,29 @@ namespace CountyRP.Services.Game.API.Converters
                 finishRegistrationDate: null,
                 startLastVisitDate: null,
                 finishLastVisitDate: null
+            );
+        }
+
+        public static PersonFilterDtoIn ToPersonFilterDtoIn(
+            int source
+        )
+        {
+            return new PersonFilterDtoIn(
+                count: null,
+                page: null,
+                ids: null,
+                names: null,
+                nameLike: null,
+                playerIds: new[] { source },
+                startRegistrationDate: null,
+                finishRegistrationDate: null,
+                startLastVisitDate: null,
+                finishLastVisitDate: null,
+                adminLevelIds: null,
+                factionIds: null,
+                gangIds: null,
+                leader: null,
+                rank: null
             );
         }
     }

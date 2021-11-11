@@ -1,18 +1,18 @@
 ﻿namespace CountyRP.Services.Game.API.Models.Api
 {
-    public class ApiLockerRoomDtoOut
+    public record ApiLockerRoomDtoOut
     {
-        public int Id { get; }
+        public int Id { get; init; }
 
-        public float[] Position { get; }
+        public float[] Position { get; init; }
 
-        public uint Dimension { get; }
+        public uint Dimension { get; init; }
 
-        public int TypeMarker { get; }
+        public int TypeMarker { get; init; }
 
-        public int[] ColorMarker { get; }
+        public int[] ColorMarker { get; init; }
 
-        public string FactionId { get; }
+        public string FactionId { get; init; }
 
         public ApiLockerRoomDtoOut(
             int id,

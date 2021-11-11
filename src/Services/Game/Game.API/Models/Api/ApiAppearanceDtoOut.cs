@@ -1,62 +1,62 @@
 ﻿namespace CountyRP.Services.Game.API.Models.Api
 {
-    public class ApiAppearanceDtoOut
+    public record ApiAppearanceDtoOut
     {
-        public int Id { get; }
+        public int Id { get; init; }
 
-        public bool Gender { get; }
+        public bool Gender { get; init; }
 
-        public int MotherBlend { get; }
+        public int MotherBlend { get; init; }
 
-        public int FatherBlend { get; }
+        public int FatherBlend { get; init; }
 
-        public float BlendShape { get; }
+        public float BlendShape { get; init; }
 
-        public float BlendSkin { get; }
+        public float BlendSkin { get; init; }
 
-        public int EyeColor { get; }
+        public int EyeColor { get; init; }
 
-        public int HairColor { get; }
+        public int HairColor { get; init; }
 
-        public int HairHighlight { get; }
+        public int HairHighlight { get; init; }
 
-        public float NoseWidth { get; }
+        public float NoseWidth { get; init; }
 
-        public float NoseHeight { get; }
+        public float NoseHeight { get; init; }
 
-        public float NoseBridge { get; }
+        public float NoseBridge { get; init; }
 
-        public float NoseTip { get; }
+        public float NoseTip { get; init; }
 
-        public float NoseBridgeShift { get; }
+        public float NoseBridgeShift { get; init; }
 
-        public float BrowHeight { get; }
+        public float BrowHeight { get; init; }
 
-        public float BrowWidth { get; }
+        public float BrowWidth { get; init; }
 
-        public float CBoneHeight { get; }
+        public float CBoneHeight { get; init; }
 
-        public float CBoneWidth { get; }
+        public float CBoneWidth { get; init; }
 
-        public float CheekWidth { get; }
+        public float CheekWidth { get; init; }
 
-        public float Eyes { get; }
+        public float Eyes { get; init; }
 
-        public float Lips { get; }
+        public float Lips { get; init; }
 
-        public float JawWidth { get; }
+        public float JawWidth { get; init; }
 
-        public float JawHeight { get; }
+        public float JawHeight { get; init; }
 
-        public float ChinLength { get; }
+        public float ChinLength { get; init; }
 
-        public float ChinPos { get; }
+        public float ChinPos { get; init; }
 
-        public float ChinWidth { get; }
+        public float ChinWidth { get; init; }
 
-        public float ChinShape { get; }
+        public float ChinShape { get; init; }
 
-        public float NeckWidth { get; }
+        public float NeckWidth { get; init; }
 
         public ApiAppearanceDtoOut(
             int id,

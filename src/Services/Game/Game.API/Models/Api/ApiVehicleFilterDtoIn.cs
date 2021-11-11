@@ -2,18 +2,18 @@
 
 namespace CountyRP.Services.Game.API.Models.Api
 {
-    public class ApiVehicleFilterDtoIn : ApiPagedFilterDtoIn
+    public record ApiVehicleFilterDtoIn : ApiPagedFilterDtoIn
     {
-        public IEnumerable<int> Ids { get; set; }
+        public IEnumerable<int> Ids { get; init; }
 
-        public IEnumerable<int> Models { get; set; }
+        public IEnumerable<int> Models { get; init; }
 
-        public IEnumerable<int> OwnerIds { get; set; }
+        public IEnumerable<int> OwnerIds { get; init; }
 
-        public IEnumerable<string> FactionIds { get; set; }
+        public IEnumerable<string> FactionIds { get; init; }
 
-        public string LicensePlate { get; set; }
+        public string LicensePlate { get; init; }
 
-        public string LicensePlateLike { get; set; }
+        public string LicensePlateLike { get; init; }
     }
 }

@@ -2,42 +2,42 @@
 
 namespace CountyRP.Services.Game.API.Models.Api
 {
-    public class ApiRoomDtoOut
+    public record ApiRoomDtoOut
     {
-        public int Id { get; }
+        public int Id { get; init; }
 
-        public string Name { get; }
+        public string Name { get; init; }
 
-        public float[] EntrancePosition { get; }
+        public float[] EntrancePosition { get; init; }
 
-        public uint EntranceDimension { get; }
+        public uint EntranceDimension { get; init; }
 
-        public float[] ExitPosition { get; }
+        public float[] ExitPosition { get; init; }
 
-        public uint ExitDimension { get; }
+        public uint ExitDimension { get; init; }
 
-        public int TypeMarker { get; }
+        public int TypeMarker { get; init; }
 
         /// <summary>
         /// RGB-цвета маркера на карте.
         /// </summary>
-        public int[] ColorMarker { get; }
+        public int[] ColorMarker { get; init; }
 
-        public int TypeBlip { get; }
+        public int TypeBlip { get; init; }
 
-        public byte ColorBlip { get; }
+        public byte ColorBlip { get; init; }
 
-        public int? GangId { get; }
+        public int? GangId { get; init; }
 
-        public bool LockDoors { get; }
+        public bool LockDoors { get; init; }
 
-        public int Price { get; }
+        public int Price { get; init; }
 
-        public DateTimeOffset LastPaymentDate { get; }
+        public DateTimeOffset LastPaymentDate { get; init; }
 
-        public float[] SafePosition { get; }
+        public float[] SafePosition { get; init; }
 
-        public uint SafeDimension { get; }
+        public uint SafeDimension { get; init; }
 
         public ApiRoomDtoOut(
             int id,

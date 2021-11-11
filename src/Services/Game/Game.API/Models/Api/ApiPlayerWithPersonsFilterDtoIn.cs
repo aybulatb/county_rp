@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CountyRP.Services.Game.API.Models.Api
 {
-    public record ApiPlayerFilterDtoIn : ApiPagedFilterDtoIn
+    public record ApiPlayerWithPersonsFilterDtoIn : ApiPagedFilterDtoIn
     {
         public IEnumerable<int> Ids { get; init; }
 
@@ -16,5 +16,15 @@ namespace CountyRP.Services.Game.API.Models.Api
         public DateTimeOffset? StartLastVisitDate { get; init; }
 
         public DateTimeOffset? FinishLastVisitDate { get; init; }
+
+        public IEnumerable<int> PersonsIds { get; init; }
+
+        public IEnumerable<string> PersonsNames { get; init; }
+
+        public string PersonNameLike { get; init; }
+
+        public IEnumerable<string> AdminLevelIds { get; set; }
+
+        public IEnumerable<string> FactionIds { get; set; }
     }
 }

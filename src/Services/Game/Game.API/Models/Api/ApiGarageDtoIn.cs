@@ -1,23 +1,23 @@
 ﻿namespace CountyRP.Services.Game.API.Models.Api
 {
-    public class ApiGarageDtoIn
+    public record ApiGarageDtoIn
     {
-        public int Type { get; set; }
+        public int Type { get; init; }
 
-        public float[] EntrancePosition { get; set; }
+        public float[] EntrancePosition { get; init; }
 
-        public uint EntranceDimension { get; set; }
+        public uint EntranceDimension { get; init; }
 
         /// <summary>
         /// Угол поворота при телепортации на вход.
         /// </summary>
-        public float EntranceRotation { get; set; }
+        public float EntranceRotation { get; init; }
 
-        public uint ExitDimension { get; set; }
+        public uint ExitDimension { get; init; }
 
         /// <summary>
         /// Состояние дверей.
         /// </summary>
-        public bool LockDoors { get; set; }
+        public bool LockDoors { get; init; }
     }
 }

@@ -1,29 +1,29 @@
 ﻿namespace CountyRP.Services.Game.API.Models.Api
 {
-    public class ApiBusinessDtoOut
+    public record ApiBusinessDtoOut
     {
-        public int Id { get; }
+        public int Id { get; init; }
 
-        public string Name { get; }
+        public string Name { get; init; }
 
-        public float[] EntrancePosition { get; }
+        public float[] EntrancePosition { get; init; }
 
-        public uint EntranceDimension { get; }
+        public uint EntranceDimension { get; init; }
 
-        public float[] ExitPosition { get; }
+        public float[] ExitPosition { get; init; }
 
-        public uint ExitDimension { get; }
+        public uint ExitDimension { get; init; }
 
-        public int? OwnerId { get; }
+        public int? OwnerId { get; init; }
 
-        public bool LockDoors { get; }
+        public bool LockDoors { get; init; }
 
-        public ApiBusinessTypeDto Type { get; }
+        public ApiBusinessTypeDto Type { get; init; }
 
         /// <summary>
         /// Государственная стоимость.
         /// </summary>
-        public int Price { get; }
+        public int Price { get; init; }
 
         public ApiBusinessDtoOut(
             int id,

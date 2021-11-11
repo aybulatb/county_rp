@@ -1,20 +1,21 @@
 ﻿using CountyRP.Services.Game.Infrastructure.Models;
+using System.Collections.Generic;
 
 namespace CountyRP.Services.Game.API.Converters
 {
-    public static class PersonNameConverter
+    internal static class PlayerIdsConverter
     {
-        public static PersonFilterDtoIn ToPersonFilterDtoIn(
-            string source
+        public static PersonFilterDtoIn ToPersonFilterWithPlayerIdsRepository(
+            IEnumerable<int> source
         )
         {
             return new PersonFilterDtoIn(
-                count: 1,
-                page: 1,
+                count: null,
+                page: null,
                 ids: null,
-                names: new[] { source },
+                names: null,
                 nameLike: null,
-                playerIds: null,
+                playerIds: source,
                 startRegistrationDate: null,
                 finishRegistrationDate: null,
                 startLastVisitDate: null,

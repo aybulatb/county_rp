@@ -2,20 +2,20 @@
 
 namespace CountyRP.Services.Game.API.Models.Api
 {
-    public class ApiTeleportFilterDtoIn : ApiPagedFilterDtoIn
+    public record ApiTeleportFilterDtoIn : ApiPagedFilterDtoIn
     {
-        public IEnumerable<int> Ids { get; set; }
+        public IEnumerable<int> Ids { get; init; }
 
-        public string Name { get; set; }
+        public string Name { get; init; }
 
-        public string NameLike { get; set; }
+        public string NameLike { get; init; }
 
-        public IEnumerable<string> FactionIds { get; set; }
+        public IEnumerable<string> FactionIds { get; init; }
 
-        public IEnumerable<int> GangIds { get; set; }
+        public IEnumerable<int> GangIds { get; init; }
 
-        public IEnumerable<int> RoomIds { get; set; }
+        public IEnumerable<int> RoomIds { get; init; }
 
-        public IEnumerable<int> BusinessIds { get; set; }
+        public IEnumerable<int> BusinessIds { get; init; }
     }
 }

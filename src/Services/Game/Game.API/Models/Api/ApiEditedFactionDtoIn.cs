@@ -1,16 +1,16 @@
 ﻿namespace CountyRP.Services.Game.API.Models.Api
 {
-    public class ApiEditedFactionDtoIn
+    public record ApiEditedFactionDtoIn
     {
-        public string Name { get; set; }
+        public string Name { get; init; }
 
         /// <summary>
         /// Цвет формата RRGGBB.
         /// </summary>
-        public string Color { get; set; }
+        public string Color { get; init; }
 
-        public string[] Ranks { get; set; }
+        public string[] Ranks { get; init; }
 
-        public ApiFactionTypeDto Type { get; set; }
+        public ApiFactionTypeDto Type { get; init; }
     }
 }

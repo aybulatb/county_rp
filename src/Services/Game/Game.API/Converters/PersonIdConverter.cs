@@ -13,6 +13,7 @@ namespace CountyRP.Services.Game.API.Converters
                 page: 1,
                 ids: new[] { source },
                 names: null,
+                nameLike: null,
                 playerIds: null,
                 startRegistrationDate: null,
                 finishRegistrationDate: null,

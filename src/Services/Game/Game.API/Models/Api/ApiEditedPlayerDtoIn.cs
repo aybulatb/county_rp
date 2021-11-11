@@ -2,12 +2,12 @@
 
 namespace CountyRP.Services.Game.API.Models.Api
 {
-    public class ApiEditedPlayerDtoIn
+    public record ApiEditedPlayerDtoIn
     {
-        public string Login { get; set; }
+        public string Login { get; init; }
 
-        public string Password { get; set; }
+        public string Password { get; init; }
 
-        public DateTimeOffset LastVisitDate { get; set; }
+        public DateTimeOffset LastVisitDate { get; init; }
     }
 }

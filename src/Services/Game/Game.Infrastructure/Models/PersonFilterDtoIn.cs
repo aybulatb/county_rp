@@ -9,6 +9,8 @@ namespace CountyRP.Services.Game.Infrastructure.Models
 
         public IEnumerable<string> Names { get; }
 
+        public string NameLike { get; }
+
         public IEnumerable<int> PlayerIds { get; }
 
         public DateTimeOffset? StartRegistrationDate { get; }
@@ -34,6 +36,7 @@ namespace CountyRP.Services.Game.Infrastructure.Models
             int? page,
             IEnumerable<int> ids,
             IEnumerable<string> names,
+            string nameLike,
             IEnumerable<int> playerIds,
             DateTimeOffset? startRegistrationDate,
             DateTimeOffset? finishRegistrationDate,
@@ -49,6 +52,7 @@ namespace CountyRP.Services.Game.Infrastructure.Models
         {
             Ids = ids;
             Names = names;
+            NameLike = nameLike;
             PlayerIds = playerIds;
             StartRegistrationDate = startRegistrationDate;
             FinishRegistrationDate = finishRegistrationDate;

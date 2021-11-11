@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace CountyRP.Services.Game.API.Models.Api
 {
-    public record ApiPlayerDtoOut
+    public record ApiPlayerWithPersonsDtoOut
     {
         public int Id { get; init; }
 
@@ -14,12 +15,15 @@ namespace CountyRP.Services.Game.API.Models.Api
 
         public DateTimeOffset LastVisitDate { get; init; }
 
-        public ApiPlayerDtoOut(
+        public IEnumerable<ApiPersonDtoOut> Persons { get; init; }
+
+        public ApiPlayerWithPersonsDtoOut(
             int id,
             string login,
             string password,
             DateTimeOffset registrationDate,
-            DateTimeOffset lastVisitDate
+            DateTimeOffset lastVisitDate,
+            IEnumerable<ApiPersonDtoOut> persons
         )
         {
             Id = id;
@@ -27,6 +31,7 @@ namespace CountyRP.Services.Game.API.Models.Api
             Password = password;
             RegistrationDate = registrationDate;
             LastVisitDate = lastVisitDate;
+            Persons = persons;
         }
     }
 }

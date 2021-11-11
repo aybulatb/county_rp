@@ -89,11 +89,12 @@ namespace CountyRP.Services.Game.Infrastructure.Repositories
                    person =>
                        (filter.Ids == null || filter.Ids.Contains(person.Id)) &&
                        (filter.Names == null || filter.Names.Contains(person.Name)) &&
+                       (filter.NameLike == null || person.Name.Contains(filter.NameLike)) &&
                        (filter.PlayerIds == null || filter.PlayerIds.Contains(person.PlayerId)) &&
                        (filter.StartRegistrationDate == null || person.RegistrationDate > filter.StartRegistrationDate) &&
-                       (filter.FinishRegistrationDate == null || person.RegistrationDate > filter.FinishRegistrationDate) &&
+                       (filter.FinishRegistrationDate == null || person.RegistrationDate < filter.FinishRegistrationDate) &&
                        (filter.StartLastVisitDate == null || person.LastVisitDate > filter.StartLastVisitDate) &&
-                       (filter.FinishLastVisitDate == null || person.LastVisitDate > filter.FinishLastVisitDate) &&
+                       (filter.FinishLastVisitDate == null || person.LastVisitDate < filter.FinishLastVisitDate) &&
                        (filter.AdminLevelIds == null || filter.AdminLevelIds.Contains(person.AdminLevelId)) &&
                        (filter.FactionIds == null || filter.FactionIds.Contains(person.FactionId)) &&
                        (filter.GangIds == null || filter.GangIds.Contains(person.GangId.Value)) &&

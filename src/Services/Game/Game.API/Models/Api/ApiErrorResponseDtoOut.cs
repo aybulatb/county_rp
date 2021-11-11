@@ -1,10 +1,10 @@
 ﻿namespace CountyRP.Services.Game.API.Models.Api
 {
-    public class ApiErrorResponseDtoOut
+    public record ApiErrorResponseDtoOut
     {
-        public ApiErrorCodeDto Code { get; }
+        public ApiErrorCodeDto Code { get; init; }
 
-        public string Message { get; }
+        public string Message { get; init; }
 
         public ApiErrorResponseDtoOut(
             ApiErrorCodeDto code,

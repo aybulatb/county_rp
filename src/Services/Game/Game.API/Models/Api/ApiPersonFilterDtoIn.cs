@@ -3,30 +3,32 @@ using System.Collections.Generic;
 
 namespace CountyRP.Services.Game.API.Models.Api
 {
-    public class ApiPersonFilterDtoIn : ApiPagedFilterDtoIn
+    public record ApiPersonFilterDtoIn : ApiPagedFilterDtoIn
     {
-        public IEnumerable<int> Ids { get; set; }
+        public IEnumerable<int> Ids { get; init; }
 
-        public IEnumerable<string> Names { get; set; }
+        public IEnumerable<string> Names { get; init; }
 
-        public IEnumerable<int> PlayerIds { get; set; }
+        public string NameLike { get; init; }
 
-        public DateTimeOffset? StartRegistrationDate { get; set; }
+        public IEnumerable<int> PlayerIds { get; init; }
 
-        public DateTimeOffset? FinishRegistrationDate { get; set; }
+        public DateTimeOffset? StartRegistrationDate { get; init; }
 
-        public DateTimeOffset? StartLastVisitDate { get; set; }
+        public DateTimeOffset? FinishRegistrationDate { get; init; }
 
-        public DateTimeOffset? FinishLastVisitDate { get; set; }
+        public DateTimeOffset? StartLastVisitDate { get; init; }
 
-        public IEnumerable<string> AdminLevelIds { get; set; }
+        public DateTimeOffset? FinishLastVisitDate { get; init; }
 
-        public IEnumerable<string> FactionIds { get; set; }
+        public IEnumerable<string> AdminLevelIds { get; init; }
 
-        public IEnumerable<int> GangIds { get; set; }
+        public IEnumerable<string> FactionIds { get; init; }
 
-        public bool? Leader { get; set; }
+        public IEnumerable<int> GangIds { get; init; }
 
-        public int? Rank { get; set; }
+        public bool? Leader { get; init; }
+
+        public int? Rank { get; init; }
     }
 }

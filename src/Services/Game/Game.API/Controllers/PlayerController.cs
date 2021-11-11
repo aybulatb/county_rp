@@ -98,9 +98,12 @@ namespace CountyRP.Services.Game.API.Controllers
             if (!filteredPlayers.Items.Any())
             {
                 return NotFound(
-                    string.Format(
-                        ConstantMessages.PlayerNotFoundById,
-                        id
+                    new ApiErrorResponseDtoOut(
+                        code: ApiErrorCodeDto.PlayerNotFoundById,
+                        message: string.Format(
+                            ConstantMessages.PlayerNotFoundById,
+                            id
+                        )
                     )
                 );
             }
@@ -119,16 +122,22 @@ namespace CountyRP.Services.Game.API.Controllers
             [FromQuery] ApiPlayerFilterDtoIn apiPlayerFilterDtoIn
         )
         {
-            if (apiPlayerFilterDtoIn.Count < 1)
+            if (apiPlayerFilterDtoIn.Count.HasValue && apiPlayerFilterDtoIn.Count < 1)
             {
                 return BadRequest(
-                    ConstantMessages.InvalidCountItemPerPage
+                    new ApiErrorResponseDtoOut(
+                        code: ApiErrorCodeDto.InvalidCountItemPerPage,
+                        message: ConstantMessages.InvalidCountItemPerPage
+                    )
                 );
             }
-            if (apiPlayerFilterDtoIn.Page < 1)
+            if (apiPlayerFilterDtoIn.Page.HasValue && apiPlayerFilterDtoIn.Page < 1)
             {
                 return BadRequest(
-                    ConstantMessages.InvalidPageNumber
+                    new ApiErrorResponseDtoOut(
+                        code: ApiErrorCodeDto.InvalidPageNumber,
+                        message: ConstantMessages.InvalidPageNumber
+                    )
                 );
             }
 

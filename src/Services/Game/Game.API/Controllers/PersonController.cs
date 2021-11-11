@@ -104,16 +104,22 @@ namespace CountyRP.Services.Game.API.Controllers
             [FromQuery] ApiPersonFilterDtoIn apiPersonFilterDtoIn
         )
         {
-            if (apiPersonFilterDtoIn.Count < 1)
+            if (apiPersonFilterDtoIn.Count.HasValue && apiPersonFilterDtoIn.Count < 1)
             {
                 return BadRequest(
-                    ConstantMessages.InvalidCountItemPerPage
+                    new ApiErrorResponseDtoOut(
+                        code: ApiErrorCodeDto.InvalidCountItemPerPage,
+                        message: ConstantMessages.InvalidCountItemPerPage
+                    )
                 );
             }
-            if (apiPersonFilterDtoIn.Page < 1)
+            if (apiPersonFilterDtoIn.Page.HasValue && apiPersonFilterDtoIn.Page < 1)
             {
                 return BadRequest(
-                    ConstantMessages.InvalidPageNumber
+                    new ApiErrorResponseDtoOut(
+                        code: ApiErrorCodeDto.InvalidPageNumber,
+                        message: ConstantMessages.InvalidPageNumber
+                    )
                 );
             }
 

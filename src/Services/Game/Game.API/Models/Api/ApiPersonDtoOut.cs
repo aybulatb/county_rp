@@ -2,33 +2,33 @@
 
 namespace CountyRP.Services.Game.API.Models.Api
 {
-    public class ApiPersonDtoOut
+    public record ApiPersonDtoOut
     {
-        public int Id { get; }
+        public int Id { get; init; }
 
-        public string Name { get; }
+        public string Name { get; init; }
 
-        public int PlayerId { get; }
+        public int PlayerId { get; init; }
 
-        public DateTimeOffset RegistrationDate { get; }
+        public DateTimeOffset RegistrationDate { get; init; }
 
-        public DateTimeOffset LastVisitDate { get; }
+        public DateTimeOffset LastVisitDate { get; init; }
 
-        public string AdminLevelId { get; }
+        public string AdminLevelId { get; init; }
 
-        public string FactionId { get; }
+        public string FactionId { get; init; }
 
-        public int? GangId { get; }
+        public int? GangId { get; init; }
 
-        public bool Leader { get; }
+        public bool Leader { get; init; }
 
-        public int Rank { get; }
+        public int Rank { get; init; }
 
-        public float[] Position { get; }
+        public float[] Position { get; init; }
 
-        public int CommonInventoryId { get; }
+        public int CommonInventoryId { get; init; }
 
-        public int PocketsInventoryId { get; }
+        public int PocketsInventoryId { get; init; }
 
         public ApiPersonDtoOut(
             int id,

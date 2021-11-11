@@ -1,39 +1,39 @@
 ﻿namespace CountyRP.Services.Game.API.Models.Api
 {
-    public class ApiHouseDtoOut
+    public record ApiHouseDtoOut
     {
-        public int Id { get; }
+        public int Id { get; init; }
 
-        public float[] EntrancePosition { get; }
+        public float[] EntrancePosition { get; init; }
 
-        public uint EntranceDimension { get; }
+        public uint EntranceDimension { get; init; }
 
-        public float[] ExitPosition { get; }
+        public float[] ExitPosition { get; init; }
 
-        public uint ExitDimension { get; }
+        public uint ExitDimension { get; init; }
 
-        public int? OwnerId { get; }
+        public int? OwnerId { get; init; }
 
-        public int? GarageId { get; }
+        public int? GarageId { get; init; }
 
         /// <summary>
         /// Состояние дверей.
         /// </summary>
-        public bool LockDoors { get; }
+        public bool LockDoors { get; init; }
 
         /// <summary>
         /// Государственная стоимость.
         /// </summary>
-        public int Price { get; }
+        public int Price { get; init; }
 
-        public float[] SafePosition { get; }
+        public float[] SafePosition { get; init; }
 
-        public uint SafeDimension { get; }
+        public uint SafeDimension { get; init; }
 
         /// <summary>
         /// Идентификатор инвентаря, представляемого сейфом.
         /// </summary>
-        public int SafeInventoryId { get; }
+        public int SafeInventoryId { get; init; }
 
         public ApiHouseDtoOut(
             int id,

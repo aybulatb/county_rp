@@ -191,10 +191,13 @@ namespace CountyRP.Services.Game.API.Controllers
             ApiFactionDtoIn apiFactionDtoIn
         )
         {
-            apiFactionDtoIn.Name = apiFactionDtoIn.Name?.Trim();
-            apiFactionDtoIn.Ranks = apiFactionDtoIn.Ranks
-                ?.Select(rank => rank.Trim())
-                ?.ToArray();
+            apiFactionDtoIn = apiFactionDtoIn with { Name = apiFactionDtoIn.Name?.Trim() };
+            apiFactionDtoIn = apiFactionDtoIn with
+            {
+                Ranks = apiFactionDtoIn.Ranks
+                    ?.Select(rank => rank.Trim())
+                    ?.ToArray()
+            };
 
             if (!Regex.IsMatch(apiFactionDtoIn.Id ?? string.Empty, @"^[0-9a-zA-F_]{3,16}$"))
             {
@@ -293,10 +296,13 @@ namespace CountyRP.Services.Game.API.Controllers
             ApiEditedFactionDtoIn apiEditedFactionDtoIn
         )
         {
-            apiEditedFactionDtoIn.Name = apiEditedFactionDtoIn.Name?.Trim();
-            apiEditedFactionDtoIn.Ranks = apiEditedFactionDtoIn.Ranks
-                ?.Select(rank => rank.Trim())
-                ?.ToArray();
+            apiEditedFactionDtoIn = apiEditedFactionDtoIn with { Name = apiEditedFactionDtoIn.Name?.Trim() };
+            apiEditedFactionDtoIn = apiEditedFactionDtoIn with
+            {
+                Ranks = apiEditedFactionDtoIn.Ranks
+                    ?.Select(rank => rank.Trim())
+                    ?.ToArray()
+            };
 
             if (apiEditedFactionDtoIn.Name == null || apiEditedFactionDtoIn.Name.Length > 64)
             {

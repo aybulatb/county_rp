@@ -1,39 +1,39 @@
 ﻿namespace CountyRP.Services.Game.API.Models.Api
 {
-    public class ApiTeleportDtoOut
+    public record ApiTeleportDtoOut
     {
-        public int Id { get; }
+        public int Id { get; init; }
 
-        public string Name { get; }
+        public string Name { get; init; }
 
-        public float[] EntrancePosition { get; }
+        public float[] EntrancePosition { get; init; }
 
-        public uint EntranceDimension { get; }
+        public uint EntranceDimension { get; init; }
 
-        public float[] ExitPosition { get; }
+        public float[] ExitPosition { get; init; }
 
-        public uint ExitDimension { get; }
+        public uint ExitDimension { get; init; }
 
-        public int TypeMarker { get; }
+        public int TypeMarker { get; init; }
 
         /// <summary>
         /// RGB-цвета маркера на карте.
         /// </summary>
-        public int[] ColorMarker { get; }
+        public int[] ColorMarker { get; init; }
 
-        public int TypeBlip { get; }
+        public int TypeBlip { get; init; }
 
-        public byte ColorBlip { get; }
+        public byte ColorBlip { get; init; }
 
-        public string FactionId { get; }
+        public string FactionId { get; init; }
 
-        public int? GangId { get; }
+        public int? GangId { get; init; }
 
-        public int? RoomId { get; }
+        public int? RoomId { get; init; }
 
-        public int? BusinessId { get; }
+        public int? BusinessId { get; init; }
 
-        public bool LockDoors { get; }
+        public bool LockDoors { get; init; }
 
         public ApiTeleportDtoOut(
             int id,

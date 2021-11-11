@@ -2,10 +2,10 @@
 
 namespace CountyRP.Services.Game.API.Models.Api
 {
-    public class ApiLockerRoomFilterDtoIn : ApiPagedFilterDtoIn
+    public record ApiLockerRoomFilterDtoIn : ApiPagedFilterDtoIn
     {
-        public IEnumerable<int> Ids { get; set; }
+        public IEnumerable<int> Ids { get; init; }
 
-        public IEnumerable<string> FactionIds { get; set; }
+        public IEnumerable<string> FactionIds { get; init; }
     }
 }

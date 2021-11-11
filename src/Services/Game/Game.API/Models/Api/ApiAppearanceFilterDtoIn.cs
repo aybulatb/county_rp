@@ -2,8 +2,8 @@
 
 namespace CountyRP.Services.Game.API.Models.Api
 {
-    public class ApiAppearanceFilterDtoIn : ApiPagedFilterDtoIn
+    public record ApiAppearanceFilterDtoIn : ApiPagedFilterDtoIn
     {
-        public IEnumerable<int> Ids { get; set; }
+        public IEnumerable<int> Ids { get; init; }
     }
 }
