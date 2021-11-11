@@ -2,8 +2,8 @@
 {
     public record ApiPagedFilter
     {
-        public int Count { get; init; }
+        public int? Count { get; init; }
 
-        public int Page { get; init; }
+        public int? Page { get; init; }
     }
 }

@@ -202,14 +202,14 @@ namespace Site.UnitTests.Controllers
                 ForumUserId = 2
             };
             var userDtoOut = new UserDtoOut(
-                id: 1,
-                login: "123",
-                password: "123123123",
-                registrationDate: DateTimeOffset.Now,
-                lastVisitDate: DateTimeOffset.Now,
-                playerId: 1,
-                forumUserId: 2,
-                groupId: "group"
+                Id: 1,
+                Login: "123",
+                Password: "123123123",
+                RegistrationDate: DateTimeOffset.Now,
+                LastVisitDate: DateTimeOffset.Now,
+                PlayerId: 1,
+                ForumUserId: 2,
+                GroupId: "group"
             );
 
             var logger = new Mock<ILogger<UserController>>();
@@ -693,24 +693,24 @@ namespace Site.UnitTests.Controllers
                 ForumUserId = 2
             };
             var existedUser = new UserDtoOut(
-                id: id,
-                login: login,
-                password: "123123123",
-                registrationDate: DateTimeOffset.Now,
-                lastVisitDate: DateTimeOffset.Now,
-                playerId: 1,
-                forumUserId: 2,
-                groupId: "group"
+                Id: id,
+                Login: login,
+                Password: "123123123",
+                RegistrationDate: DateTimeOffset.Now,
+                LastVisitDate: DateTimeOffset.Now,
+                PlayerId: 1,
+                ForumUserId: 2,
+                GroupId: "group"
             );
             var existedUserWithId = new UserDtoOut(
-                id: existedUserId,
-                login: login,
-                password: "123123123",
-                registrationDate: DateTimeOffset.Now,
-                lastVisitDate: DateTimeOffset.Now,
-                playerId: 1,
-                forumUserId: 2,
-                groupId: "group"
+                Id: existedUserId,
+                Login: login,
+                Password: "123123123",
+                RegistrationDate: DateTimeOffset.Now,
+                LastVisitDate: DateTimeOffset.Now,
+                PlayerId: 1,
+                ForumUserId: 2,
+                GroupId: "group"
             );
 
             var logger = new Mock<ILogger<UserController>>();
@@ -754,34 +754,34 @@ namespace Site.UnitTests.Controllers
                 ForumUserId = 2
             };
             var existedUser = new UserDtoOut(
-                id: id,
-                login: login,
-                password: "123123123",
-                registrationDate: DateTimeOffset.Now,
-                lastVisitDate: DateTimeOffset.Now,
-                playerId: 1,
-                forumUserId: 2,
-                groupId: "group"
+                Id: id,
+                Login: login,
+                Password: "123123123",
+                RegistrationDate: DateTimeOffset.Now,
+                LastVisitDate: DateTimeOffset.Now,
+                PlayerId: 1,
+                ForumUserId: 2,
+                GroupId: "group"
             );
             var existedUserWithId = new UserDtoOut(
-                id: existedUserId,
-                login: login,
-                password: "123123123",
-                registrationDate: DateTimeOffset.Now,
-                lastVisitDate: DateTimeOffset.Now,
-                playerId: 1,
-                forumUserId: 2,
-                groupId: "group"
+                Id: existedUserId,
+                Login: login,
+                Password: "123123123",
+                RegistrationDate: DateTimeOffset.Now,
+                LastVisitDate: DateTimeOffset.Now,
+                PlayerId: 1,
+                ForumUserId: 2,
+                GroupId: "group"
             );
             var userDtoOut = new UserDtoOut(
-                id: id,
-                login: login,
-                password: "123123123",
-                registrationDate: DateTimeOffset.Now,
-                lastVisitDate: DateTimeOffset.Now,
-                playerId: 1,
-                forumUserId: 2,
-                groupId: "group"
+                Id: id,
+                Login: login,
+                Password: "123123123",
+                RegistrationDate: DateTimeOffset.Now,
+                LastVisitDate: DateTimeOffset.Now,
+                PlayerId: 1,
+                ForumUserId: 2,
+                GroupId: "group"
             );
 
             var logger = new Mock<ILogger<UserController>>();

@@ -142,12 +142,12 @@ namespace CountyRP.Services.Site.API.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> FilterBy([FromQuery] ApiUserFilterDtoIn filter)
         {
-            if (filter.Count < 1 || filter.Count > 100)
+            if (filter.Count.HasValue && (filter.Count < 1 || filter.Count > 100))
             {
                 return BadRequest(ConstantMessages.CountItemPerPageMoreThan100);
             }
 
-            if (filter.Page < 1)
+            if (filter.Page.HasValue && filter.Page < 1)
             {
                 return BadRequest(ConstantMessages.InvalidPageNumber);
             }
