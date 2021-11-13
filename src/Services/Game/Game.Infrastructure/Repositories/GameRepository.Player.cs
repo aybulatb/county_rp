@@ -90,6 +90,7 @@ namespace CountyRP.Services.Game.Infrastructure.Repositories
                    player =>
                        (filter.Ids == null || filter.Ids.Contains(player.Id)) &&
                        (filter.Logins == null || filter.Logins.Contains(player.Login)) &&
+                       (filter.PartOfLogin == null || player.Login.Contains(filter.PartOfLogin)) &&
                        (filter.StartRegistrationDate == null || player.RegistrationDate > filter.StartRegistrationDate) &&
                        (filter.FinishRegistrationDate == null || player.RegistrationDate > filter.FinishRegistrationDate) &&
                        (filter.StartLastVisitDate == null || player.LastVisitDate > filter.StartLastVisitDate) &&

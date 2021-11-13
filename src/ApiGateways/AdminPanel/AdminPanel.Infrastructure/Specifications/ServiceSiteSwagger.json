@@ -6,7 +6,7 @@
     "description": "The County RP Site Service API documentation description.",
     "version": "v1"
   },
-  "host": "localhost:49159",
+  "host": "localhost:10501",
   "schemes": [
     "https"
   ],
@@ -53,7 +53,12 @@
               "type": "string"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     },
     "/Ban/{id}": {
@@ -87,7 +92,12 @@
               "type": "string"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       },
       "put": {
         "tags": [
@@ -140,7 +150,12 @@
               "type": "string"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       },
       "delete": {
         "tags": [
@@ -172,7 +187,12 @@
               "type": "string"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     },
     "/Ban/ByUserId/{userId}": {
@@ -206,7 +226,12 @@
               "type": "string"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     },
     "/Ban/FilterBy": {
@@ -260,7 +285,12 @@
               "type": "string"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     },
     "/Group": {
@@ -300,7 +330,12 @@
               "type": "string"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     },
     "/Group/{id}": {
@@ -333,7 +368,12 @@
               "type": "string"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       },
       "put": {
         "tags": [
@@ -385,7 +425,12 @@
               "type": "string"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       },
       "delete": {
         "tags": [
@@ -416,7 +461,12 @@
               "type": "string"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     },
     "/Group/FilterBy": {
@@ -462,7 +512,12 @@
               "type": "string"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     },
     "/SupportRequestMessage": {
@@ -495,7 +550,12 @@
               "$ref": "#/definitions/ApiSupportRequestMessageDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       },
       "delete": {
         "tags": [
@@ -522,7 +582,12 @@
               "type": "string"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     },
     "/SupportRequestMessage/ByFilter": {
@@ -587,7 +652,12 @@
               "type": "string"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     },
     "/SupportRequestTopic": {
@@ -634,7 +704,12 @@
               "type": "string"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     },
     "/SupportRequestTopic/ByFilterByLastMessages": {
@@ -711,7 +786,12 @@
               "$ref": "#/definitions/ApiPagedFilterResultOfApiSupportRequestTopicWithFirstAndLastMessagesDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     },
     "/SupportRequestTopic/{id}": {
@@ -741,7 +821,12 @@
               "type": "string"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     },
     "/User": {
@@ -781,7 +866,12 @@
               "type": "string"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     },
     "/User/{id}": {
@@ -815,7 +905,12 @@
               "type": "string"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       },
       "put": {
         "tags": [
@@ -868,7 +963,12 @@
               "type": "string"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       },
       "delete": {
         "tags": [
@@ -900,7 +1000,12 @@
               "type": "string"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     },
     "/User/ByLogin/{login}": {
@@ -933,7 +1038,12 @@
               "type": "string"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     },
     "/User/Authenticate": {
@@ -971,7 +1081,12 @@
               "type": "string"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     },
     "/User/FilterBy": {
@@ -988,6 +1103,12 @@
             "x-nullable": true
           },
           {
+            "type": "string",
+            "name": "LoginLike",
+            "in": "query",
+            "x-nullable": true
+          },
+          {
             "type": "array",
             "name": "GroupIds",
             "in": "query",
@@ -996,6 +1117,45 @@
             "items": {
               "type": "string"
             }
+          },
+          {
+            "type": "array",
+            "name": "PlayerIds",
+            "in": "query",
+            "collectionFormat": "multi",
+            "x-nullable": true,
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "type": "string",
+            "name": "StartRegistrationDate",
+            "in": "query",
+            "format": "date-time",
+            "x-nullable": true
+          },
+          {
+            "type": "string",
+            "name": "FinishRegistrationDate",
+            "in": "query",
+            "format": "date-time",
+            "x-nullable": true
+          },
+          {
+            "type": "string",
+            "name": "StartLastVisitDate",
+            "in": "query",
+            "format": "date-time",
+            "x-nullable": true
+          },
+          {
+            "type": "string",
+            "name": "FinishLastVisitDate",
+            "in": "query",
+            "format": "date-time",
+            "x-nullable": true
           },
           {
             "type": "integer",
@@ -1027,7 +1187,12 @@
               "type": "string"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     }
   },
@@ -1663,6 +1828,14 @@
           }
         }
       }
+    }
+  },
+  "securityDefinitions": {
+    "apiKey": {
+      "type": "apiKey",
+      "description": "Copy 'Bearer ' + valid api key into field",
+      "name": "Authorization",
+      "in": "header"
     }
   }
 }

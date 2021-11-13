@@ -1,9 +1,12 @@
+using CountyRP.ApiGateways.AdminPanel.API.Filters;
 using CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClient.ServiceGame;
 using CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClient.ServiceSite;
 using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services;
-using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Game;
+using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Game.Implementations;
 using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Game.Interfaces;
 using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Interfaces;
+using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Site;
+using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Site.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -25,7 +28,15 @@ namespace CountyRP.ApiGateways.AdminPanel.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton(new SupportRequestMessageClient(new HttpClient())
+            var httpClient2 = new HttpClient();
+            httpClient2.DefaultRequestHeaders.Add("Authorization", "Bearer YW365he43w@t3");
+
+            services.AddSingleton(new UserClient(httpClient2)
+            {
+                BaseUrl = "https://localhost:10501"
+            });
+
+            services.AddSingleton(new SupportRequestMessageClient(httpClient2)
             {
                 BaseUrl = "https://localhost:10501"
             });
@@ -33,20 +44,32 @@ namespace CountyRP.ApiGateways.AdminPanel.API
             HttpClientHandler clientHandler = new HttpClientHandler();
             clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
 
-            services.AddSingleton(new PlayerClient(new HttpClient(clientHandler))
+            var httpClient = new HttpClient(clientHandler);
+            httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer strj654wtq12");
+
+            services.AddSingleton(new PlayerClient(httpClient)
             {
-                BaseUrl = "https://192.168.1.71:49171"
+                BaseUrl = "https://localhost:10531"
             });
 
-            services.AddSingleton(new PersonClient(new HttpClient(clientHandler))
+            services.AddSingleton(new PersonClient(httpClient)
             {
-                BaseUrl = "https://192.168.1.71:49171"
+                BaseUrl = "https://localhost:10531"
             });
 
+            services.AddSingleton(new PlayerWithPersonsClient(httpClient)
+            {
+                BaseUrl = "https://localhost:10531"
+            });
+
+            services.AddTransient<ISiteService, SiteService>();
             services.AddTransient<IGameService, GameService>();
             services.AddTransient<ISupportRequestMessageSiteService, SupportRequestMessageSiteService>();
 
-            services.AddControllers();
+            services.AddControllers(options =>
+            {
+                options.Filters.Add(typeof(CustomExceptionFilter));
+            });
 
             services.AddSwaggerDocument(document =>
             {

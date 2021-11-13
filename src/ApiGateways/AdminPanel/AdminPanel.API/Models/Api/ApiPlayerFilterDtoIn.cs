@@ -2,30 +2,30 @@
 
 namespace CountyRP.ApiGateways.AdminPanel.API.Models.Api
 {
-    public class ApiPlayerFilterDtoIn : ApiPagedFilterDtoIn
+    public record ApiPlayerFilterDtoIn : ApiPagedFilterDtoIn
     {
-        public string LoginLike { get; set; }
+        public string LoginLike { get; init; }
 
-        public string NameLike { get; set; }
+        public string NameLike { get; init; }
 
-        public string GroupId { get; set; }
+        public string GroupId { get; init; }
 
-        public bool? IsBanned { get; set; }
+        public bool? IsBanned { get; init; }
 
-        public bool? IsAdmin { get; set; }
+        public bool? IsAdmin { get; init; }
 
-        public string FactionId { get; set; }
+        public string FactionId { get; init; }
 
-        public DateTimeOffset? StartRegistrationDate { get; set; }
+        public DateTimeOffset? StartRegistrationDate { get; init; }
 
-        public DateTimeOffset? FinishRegistrationDate { get; set; }
+        public DateTimeOffset? FinishRegistrationDate { get; init; }
 
-        public DateTimeOffset? StartLastVisitSiteDate { get; set; }
+        public DateTimeOffset? StartLastVisitSiteDate { get; init; }
 
-        public DateTimeOffset? FinishLastVisitSiteDate { get; set; }
+        public DateTimeOffset? FinishLastVisitSiteDate { get; init; }
 
-        public DateTimeOffset? StartLastVisitGameDate { get; set; }
+        public DateTimeOffset? StartLastVisitGameDate { get; init; }
 
-        public DateTimeOffset? FinishLastVisitGameDate { get; set; }
+        public DateTimeOffset? FinishLastVisitGameDate { get; init; }
     }
 }

@@ -2,20 +2,24 @@
 using CountyRP.ApiGateways.AdminPanel.Infrastructure.Exceptions;
 using CountyRP.ApiGateways.AdminPanel.Infrastructure.Models;
 using CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClient.ServiceGame;
+using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Game.Converters;
 using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Game.Models;
 using System.Threading.Tasks;
 
-namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Game
+namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Game.Implementations
 {
     public partial class GameService
     {
-        public async Task<GamePagedFilterResultDtoOut<GamePersonDtoOut>> GetPersonsByFilter(GamePersonFilterDtoIn gamePersonFilterDtoIn)
+        public async Task<GamePagedFilterResultDtoOut<GamePersonDtoOut>> GetPersonsByFilterAsync(
+            GamePersonFilterDtoIn gamePersonFilterDtoIn
+        )
         {
             try
             {
                 var gameApiPagedPersonsDtoOut = await _personClient.FilterByAsync(
                     ids: gamePersonFilterDtoIn.Ids,
                     names: gamePersonFilterDtoIn.Names,
+                    nameLike: gamePersonFilterDtoIn.NameLike,
                     playerIds: gamePersonFilterDtoIn.PlayerIds,
                     startRegistrationDate: gamePersonFilterDtoIn.StartRegistrationDate,
                     finishRegistrationDate: gamePersonFilterDtoIn.FinishRegistrationDate,

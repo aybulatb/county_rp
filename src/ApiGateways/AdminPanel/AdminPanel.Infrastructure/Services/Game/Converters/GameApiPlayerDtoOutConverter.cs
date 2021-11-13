@@ -1,7 +1,7 @@
 ﻿using CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClient.ServiceGame;
 using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Game.Models;
 
-namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.Converters
+namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Game.Converters
 {
     internal static class GameApiPlayerDtoOutConverter
     {
@@ -10,11 +10,11 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.Converters
         )
         {
             return new GamePlayerDtoOut(
-                id: source.Id,
-                login: source.Login,
-                password: source.Password,
-                registrationDate: source.RegistrationDate,
-                lastVisitDate: source.LastVisitDate
+                Id: source.Id,
+                Login: source.Login,
+                Password: source.Password,
+                RegistrationDate: source.RegistrationDate,
+                LastVisitDate: source.LastVisitDate
             );
         }
     }

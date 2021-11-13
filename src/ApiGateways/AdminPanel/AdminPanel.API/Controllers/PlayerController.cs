@@ -38,11 +38,11 @@ namespace CountyRP.ApiGateways.AdminPanel.API.Controllers
         {
             var gamePlayerFilterDtoIn = ApiPlayerFilterDtoInConverter.ToGamePlayerFilterDtoInService(apiPlayerFilterDtoIn);
 
-            var gamePagedPlayersDtoOut = await _gameService.GetPlayersByFilter(gamePlayerFilterDtoIn);
+            var gamePagedPlayersDtoOut = await _gameService.GetPlayersByFilterAsync(gamePlayerFilterDtoIn);
 
             var gamePersonFilterDtoIn = ApiPlayerFilterDtoInConverter.ToGamePersonFilterDtoInService(apiPlayerFilterDtoIn);
 
-            var gamePagedPersonsDtoOut = await _gameService.GetPersonsByFilter(gamePersonFilterDtoIn);
+            var gamePagedPersonsDtoOut = await _gameService.GetPersonsByFilterAsync(gamePersonFilterDtoIn);
 
             var mergedPlayerIds = gamePagedPersonsDtoOut.Items
                 .Select(person => person.PlayerId);

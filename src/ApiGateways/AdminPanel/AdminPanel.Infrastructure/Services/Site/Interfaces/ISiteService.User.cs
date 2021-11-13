@@ -5,6 +5,12 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Site.Interface
 {
     public partial interface ISiteService
     {
-        Task<SitePagedFilterResultDtoOut<SiteUserDtoOut>> GetUsersByFilter(SiteUserFilterDtoIn siteUserFilterDtoIn);
+        Task<SiteUserDtoOut> AddUserAsync(SiteUserDtoIn siteUserDtoIn);
+
+        Task<SitePagedFilterResultDtoOut<SiteUserDtoOut>> GetUsersByFilterAsync(SiteUserFilterDtoIn siteUserFilterDtoIn);
+
+        Task<SiteUserDtoOut> UpdateUserAsync(SiteUserDtoOut siteUserDtoOut);
+
+        Task DeleteUserAsync(int id);
     }
 }

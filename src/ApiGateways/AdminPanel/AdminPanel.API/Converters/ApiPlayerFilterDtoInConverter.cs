@@ -10,14 +10,14 @@ namespace CountyRP.ApiGateways.AdminPanel.API.Converters
         )
         {
             return new GamePlayerFilterDtoIn(
-                count: source.Count,
-                page: source.Page,
-                ids: null,
-                logins: (source.LoginLike == null) ? null : new[] { source.LoginLike },
-                startRegistrationDate: source.StartRegistrationDate,
-                finishRegistrationDate: source.FinishRegistrationDate,
-                startLastVisitDate: source.StartLastVisitGameDate,
-                finishLastVisitDate: source.FinishLastVisitGameDate
+                Count: source.Count,
+                Page: source.Page,
+                Ids: null,
+                Logins: (source.LoginLike == null) ? null : new[] { source.LoginLike },
+                StartRegistrationDate: source.StartRegistrationDate,
+                FinishRegistrationDate: source.FinishRegistrationDate,
+                StartLastVisitDate: source.StartLastVisitGameDate,
+                FinishLastVisitDate: source.FinishLastVisitGameDate
             );
         }
 
@@ -26,20 +26,21 @@ namespace CountyRP.ApiGateways.AdminPanel.API.Converters
         )
         {
             return new GamePersonFilterDtoIn(
-                count: 3,
-                page: 1,
-                ids: null,
-                names: (source.NameLike == null) ? null : new[] { source.NameLike },
-                playerIds: null,
-                startRegistrationDate: null,
-                finishRegistrationDate: null,
-                startLastVisitDate: null,
-                finishLastVisitDate: null,
-                adminLevelIds: null,
-                factionIds: (source.FactionId == null) ? null : new[] { source.FactionId },
-                gangIds: null,
-                leader: null,
-                rank: null
+                Count: 3,
+                Page: 1,
+                Ids: null,
+                Names: (source.NameLike == null) ? null : new[] { source.NameLike },
+                NameLike: source.NameLike,
+                PlayerIds: null,
+                StartRegistrationDate: null,
+                FinishRegistrationDate: null,
+                StartLastVisitDate: null,
+                FinishLastVisitDate: null,
+                AdminLevelIds: null,
+                FactionIds: (source.FactionId == null) ? null : new[] { source.FactionId },
+                GangIds: null,
+                Leader: null,
+                Rank: null
             );
         }
     }

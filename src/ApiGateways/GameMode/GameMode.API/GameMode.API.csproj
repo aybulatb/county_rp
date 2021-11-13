@@ -11,11 +11,12 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.11.1" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
+    <PackageReference Include="NSwag.AspNetCore" Version="13.13.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\BuildingBlocks\CommonMiddlewares\ApiKeyMiddleware\ApiKeyAuthenticationMiddleware.csproj" />
+    <ProjectReference Include="..\GameMode.Infrastructure\GameMode.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

@@ -9,6 +9,8 @@ namespace CountyRP.Services.Game.API.Models.Api
 
         public IEnumerable<string> Logins { get; init; }
 
+        public string PartOfLogin { get; init; }
+
         public DateTimeOffset? StartRegistrationDate { get; init; }
 
         public DateTimeOffset? FinishRegistrationDate { get; init; }

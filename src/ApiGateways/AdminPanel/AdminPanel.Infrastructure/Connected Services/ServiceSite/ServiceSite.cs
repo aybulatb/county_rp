@@ -19,7 +19,7 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClient.ServiceSite
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.13.2.0 (NJsonSchema v10.5.2.0 (Newtonsoft.Json v12.0.0.2))")]
     public partial class BanClient 
     {
-        private string _baseUrl = "https://localhost:49159";
+        private string _baseUrl = "https://localhost:10501";
         private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
@@ -703,7 +703,7 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClient.ServiceSite
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.13.2.0 (NJsonSchema v10.5.2.0 (Newtonsoft.Json v12.0.0.2))")]
     public partial class GroupClient 
     {
-        private string _baseUrl = "https://localhost:49159";
+        private string _baseUrl = "https://localhost:10501";
         private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
@@ -1288,7 +1288,7 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClient.ServiceSite
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.13.2.0 (NJsonSchema v10.5.2.0 (Newtonsoft.Json v12.0.0.2))")]
     public partial class SupportRequestMessageClient 
     {
-        private string _baseUrl = "https://localhost:49159";
+        private string _baseUrl = "https://localhost:10501";
         private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
@@ -1687,7 +1687,7 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClient.ServiceSite
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.13.2.0 (NJsonSchema v10.5.2.0 (Newtonsoft.Json v12.0.0.2))")]
     public partial class SupportRequestTopicClient 
     {
-        private string _baseUrl = "https://localhost:49159";
+        private string _baseUrl = "https://localhost:10501";
         private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
@@ -2099,7 +2099,7 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClient.ServiceSite
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.13.2.0 (NJsonSchema v10.5.2.0 (Newtonsoft.Json v12.0.0.2))")]
     public partial class UserClient 
     {
-        private string _baseUrl = "https://localhost:49159";
+        private string _baseUrl = "https://localhost:10501";
         private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
@@ -2668,14 +2668,14 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClient.ServiceSite
         }
     
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<ApiPagedFilterResultOfApiUserDtoOut> FilterByAsync(string login, System.Collections.Generic.IEnumerable<string> groupIds, int? count, int? page)
+        public System.Threading.Tasks.Task<ApiPagedFilterResultOfApiUserDtoOut> FilterByAsync(string login, string loginLike, System.Collections.Generic.IEnumerable<string> groupIds, System.Collections.Generic.IEnumerable<int> playerIds, System.DateTimeOffset? startRegistrationDate, System.DateTimeOffset? finishRegistrationDate, System.DateTimeOffset? startLastVisitDate, System.DateTimeOffset? finishLastVisitDate, int? count, int? page)
         {
-            return FilterByAsync(login, groupIds, count, page, System.Threading.CancellationToken.None);
+            return FilterByAsync(login, loginLike, groupIds, playerIds, startRegistrationDate, finishRegistrationDate, startLastVisitDate, finishLastVisitDate, count, page, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<ApiPagedFilterResultOfApiUserDtoOut> FilterByAsync(string login, System.Collections.Generic.IEnumerable<string> groupIds, int? count, int? page, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<ApiPagedFilterResultOfApiUserDtoOut> FilterByAsync(string login, string loginLike, System.Collections.Generic.IEnumerable<string> groupIds, System.Collections.Generic.IEnumerable<int> playerIds, System.DateTimeOffset? startRegistrationDate, System.DateTimeOffset? finishRegistrationDate, System.DateTimeOffset? startLastVisitDate, System.DateTimeOffset? finishLastVisitDate, int? count, int? page, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/User/FilterBy?");
@@ -2683,9 +2683,33 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClient.ServiceSite
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("Login") + "=").Append(System.Uri.EscapeDataString(ConvertToString(login, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
+            if (loginLike != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("LoginLike") + "=").Append(System.Uri.EscapeDataString(ConvertToString(loginLike, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
             if (groupIds != null)
             {
                 foreach (var item_ in groupIds) { urlBuilder_.Append(System.Uri.EscapeDataString("GroupIds") + "=").Append(System.Uri.EscapeDataString(ConvertToString(item_, System.Globalization.CultureInfo.InvariantCulture))).Append("&"); }
+            }
+            if (playerIds != null)
+            {
+                foreach (var item_ in playerIds) { urlBuilder_.Append(System.Uri.EscapeDataString("PlayerIds") + "=").Append(System.Uri.EscapeDataString(ConvertToString(item_, System.Globalization.CultureInfo.InvariantCulture))).Append("&"); }
+            }
+            if (startRegistrationDate != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("StartRegistrationDate") + "=").Append(System.Uri.EscapeDataString(startRegistrationDate.Value.ToString("s", System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (finishRegistrationDate != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("FinishRegistrationDate") + "=").Append(System.Uri.EscapeDataString(finishRegistrationDate.Value.ToString("s", System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (startLastVisitDate != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("StartLastVisitDate") + "=").Append(System.Uri.EscapeDataString(startLastVisitDate.Value.ToString("s", System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (finishLastVisitDate != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("FinishLastVisitDate") + "=").Append(System.Uri.EscapeDataString(finishLastVisitDate.Value.ToString("s", System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (count != null)
             {

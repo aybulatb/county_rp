@@ -1,17 +1,12 @@
 using CountyRP.BuildingBlocks.ApiKeyAuthenticationMiddleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
-using System;
+using NSwag;
+using NSwag.Generation.Processors.Security;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace GameMode.API
 {
@@ -34,9 +29,20 @@ namespace GameMode.API
             services.AddSingleton(apiKeys);
 
             services.AddControllers();
-            services.AddSwaggerGen(c =>
+
+            services.AddSwaggerDocument(settings =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "GameMode.API", Version = "v1" });
+                settings.Title = "County RP GameMode ApiGateway API";
+                settings.Version = "v1";
+                settings.Description = "The County RP GameMode ApiGateway API documentation description.";
+                settings.AddSecurity("apiKey", new OpenApiSecurityScheme
+                {
+                    Type = OpenApiSecuritySchemeType.ApiKey,
+                    Name = "Authorization",
+                    Description = "Copy 'Bearer ' + valid api key into field",
+                    In = OpenApiSecurityApiKeyLocation.Header
+                });
+                settings.OperationProcessors.Add(new OperationSecurityScopeProcessor("apiKey"));
             });
         }
 
@@ -46,13 +52,14 @@ namespace GameMode.API
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "GameMode.API v1"));
             }
 
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseOpenApi();
+            app.UseSwaggerUi3();
 
             app.UseAuthorization();
             app.UseApiKeyAuthentication();

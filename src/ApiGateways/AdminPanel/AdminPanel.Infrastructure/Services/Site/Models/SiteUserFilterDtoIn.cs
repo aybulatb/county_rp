@@ -1,24 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Site.Models
 {
-    public class SiteUserFilterDtoIn
-    {
-        public int? Count { get; }
-
-        public int? Page { get; }
-
-        public string Login { get; }
-
-        public IEnumerable<string> GroupIds { get; }
-
-        public SiteUserFilterDtoIn(
-            string login,
-            IEnumerable<string> groupIds
-        )
-        {
-            Login = login;
-            GroupIds = groupIds;
-        }
-    }
+    public record SiteUserFilterDtoIn(
+        int? Count,
+        int? Page,
+        string Login,
+        string LoginLike,
+        IEnumerable<string> GroupIds,
+        IEnumerable<int> PlayerIds,
+        DateTimeOffset? StartRegistrationDate,
+        DateTimeOffset? FinishRegistrationDate,
+        DateTimeOffset? StartLastVisitDate,
+        DateTimeOffset? FinishLastVisitDate
+    );
 }

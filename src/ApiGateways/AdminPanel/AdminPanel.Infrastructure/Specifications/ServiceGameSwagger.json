@@ -6,7 +6,7 @@
     "description": "The County RP Game Service API documentation description.",
     "version": "v1"
   },
-  "host": "localhost:49155",
+  "host": "localhost:10531",
   "schemes": [
     "https"
   ],
@@ -53,7 +53,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     },
     "/AdminLevel/{id}": {
@@ -86,7 +91,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       },
       "put": {
         "tags": [
@@ -138,7 +148,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       },
       "delete": {
         "tags": [
@@ -165,7 +180,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     },
     "/AdminLevel/FilterBy": {
@@ -206,14 +226,14 @@
             "name": "Count",
             "in": "query",
             "format": "int32",
-            "x-nullable": false
+            "x-nullable": true
           },
           {
             "type": "integer",
             "name": "Page",
             "in": "query",
             "format": "int32",
-            "x-nullable": false
+            "x-nullable": true
           }
         ],
         "responses": {
@@ -231,7 +251,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     },
     "/Appearance": {
@@ -271,7 +296,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     },
     "/Appearance/{id}": {
@@ -305,7 +335,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       },
       "put": {
         "tags": [
@@ -358,7 +393,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       },
       "delete": {
         "tags": [
@@ -386,7 +426,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     },
     "/Appearance/FilterBy": {
@@ -412,14 +457,14 @@
             "name": "Count",
             "in": "query",
             "format": "int32",
-            "x-nullable": false
+            "x-nullable": true
           },
           {
             "type": "integer",
             "name": "Page",
             "in": "query",
             "format": "int32",
-            "x-nullable": false
+            "x-nullable": true
           }
         ],
         "responses": {
@@ -437,7 +482,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     },
     "/Atm": {
@@ -477,7 +527,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     },
     "/Atm/{id}": {
@@ -511,7 +566,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       },
       "put": {
         "tags": [
@@ -564,7 +624,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       },
       "delete": {
         "tags": [
@@ -592,7 +657,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     },
     "/Atm/FilterBy": {
@@ -629,14 +699,14 @@
             "name": "Count",
             "in": "query",
             "format": "int32",
-            "x-nullable": false
+            "x-nullable": true
           },
           {
             "type": "integer",
             "name": "Page",
             "in": "query",
             "format": "int32",
-            "x-nullable": false
+            "x-nullable": true
           }
         ],
         "responses": {
@@ -654,7 +724,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     },
     "/Business": {
@@ -694,7 +769,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     },
     "/Business/{id}": {
@@ -728,7 +808,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       },
       "put": {
         "tags": [
@@ -781,7 +866,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       },
       "delete": {
         "tags": [
@@ -809,7 +899,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     },
     "/Business/FilterBy": {
@@ -868,14 +963,14 @@
             "name": "Count",
             "in": "query",
             "format": "int32",
-            "x-nullable": false
+            "x-nullable": true
           },
           {
             "type": "integer",
             "name": "Page",
             "in": "query",
             "format": "int32",
-            "x-nullable": false
+            "x-nullable": true
           }
         ],
         "responses": {
@@ -893,7 +988,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     },
     "/Faction": {
@@ -933,7 +1033,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     },
     "/Faction/{id}": {
@@ -966,7 +1071,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       },
       "put": {
         "tags": [
@@ -1018,7 +1128,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       },
       "delete": {
         "tags": [
@@ -1045,7 +1160,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     },
     "/Faction/FilterBy": {
@@ -1102,14 +1222,14 @@
             "name": "Count",
             "in": "query",
             "format": "int32",
-            "x-nullable": false
+            "x-nullable": true
           },
           {
             "type": "integer",
             "name": "Page",
             "in": "query",
             "format": "int32",
-            "x-nullable": false
+            "x-nullable": true
           }
         ],
         "responses": {
@@ -1127,7 +1247,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     },
     "/Gang": {
@@ -1167,7 +1292,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     },
     "/Gang/{id}": {
@@ -1201,7 +1331,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       },
       "put": {
         "tags": [
@@ -1254,7 +1389,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       },
       "delete": {
         "tags": [
@@ -1282,7 +1422,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     },
     "/Gang/FilterBy": {
@@ -1330,14 +1475,14 @@
             "name": "Count",
             "in": "query",
             "format": "int32",
-            "x-nullable": false
+            "x-nullable": true
           },
           {
             "type": "integer",
             "name": "Page",
             "in": "query",
             "format": "int32",
-            "x-nullable": false
+            "x-nullable": true
           }
         ],
         "responses": {
@@ -1355,7 +1500,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     },
     "/Garage": {
@@ -1395,7 +1545,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     },
     "/Garage/{id}": {
@@ -1429,7 +1584,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       },
       "put": {
         "tags": [
@@ -1482,7 +1642,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       },
       "delete": {
         "tags": [
@@ -1510,7 +1675,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     },
     "/Garage/FilterBy": {
@@ -1536,14 +1706,14 @@
             "name": "Count",
             "in": "query",
             "format": "int32",
-            "x-nullable": false
+            "x-nullable": true
           },
           {
             "type": "integer",
             "name": "Page",
             "in": "query",
             "format": "int32",
-            "x-nullable": false
+            "x-nullable": true
           }
         ],
         "responses": {
@@ -1561,7 +1731,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     },
     "/House": {
@@ -1601,7 +1776,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     },
     "/House/{id}": {
@@ -1635,7 +1815,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       },
       "put": {
         "tags": [
@@ -1688,7 +1873,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       },
       "delete": {
         "tags": [
@@ -1716,7 +1906,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     },
     "/House/FilterBy": {
@@ -1764,14 +1959,14 @@
             "name": "Count",
             "in": "query",
             "format": "int32",
-            "x-nullable": false
+            "x-nullable": true
           },
           {
             "type": "integer",
             "name": "Page",
             "in": "query",
             "format": "int32",
-            "x-nullable": false
+            "x-nullable": true
           }
         ],
         "responses": {
@@ -1789,7 +1984,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     },
     "/LockerRoom": {
@@ -1829,7 +2029,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     },
     "/LockerRoom/{id}": {
@@ -1863,7 +2068,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       },
       "put": {
         "tags": [
@@ -1916,7 +2126,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       },
       "delete": {
         "tags": [
@@ -1944,7 +2159,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     },
     "/LockerRoom/FilterBy": {
@@ -1980,14 +2200,14 @@
             "name": "Count",
             "in": "query",
             "format": "int32",
-            "x-nullable": false
+            "x-nullable": true
           },
           {
             "type": "integer",
             "name": "Page",
             "in": "query",
             "format": "int32",
-            "x-nullable": false
+            "x-nullable": true
           }
         ],
         "responses": {
@@ -2005,7 +2225,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     },
     "/Person": {
@@ -2045,7 +2270,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     },
     "/Person/{id}": {
@@ -2079,7 +2309,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       },
       "put": {
         "tags": [
@@ -2132,7 +2367,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       },
       "delete": {
         "tags": [
@@ -2160,7 +2400,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     },
     "/Person/FilterBy": {
@@ -2190,6 +2435,12 @@
             "items": {
               "type": "string"
             }
+          },
+          {
+            "type": "string",
+            "name": "NameLike",
+            "in": "query",
+            "x-nullable": true
           },
           {
             "type": "array",
@@ -2279,14 +2530,14 @@
             "name": "Count",
             "in": "query",
             "format": "int32",
-            "x-nullable": false
+            "x-nullable": true
           },
           {
             "type": "integer",
             "name": "Page",
             "in": "query",
             "format": "int32",
-            "x-nullable": false
+            "x-nullable": true
           }
         ],
         "responses": {
@@ -2304,7 +2555,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     },
     "/Player": {
@@ -2344,7 +2600,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     },
     "/Player/{id}": {
@@ -2378,7 +2639,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       },
       "put": {
         "tags": [
@@ -2431,7 +2697,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       },
       "delete": {
         "tags": [
@@ -2459,7 +2730,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     },
     "/Player/FilterBy": {
@@ -2489,6 +2765,12 @@
             "items": {
               "type": "string"
             }
+          },
+          {
+            "type": "string",
+            "name": "PartOfLogin",
+            "in": "query",
+            "x-nullable": true
           },
           {
             "type": "string",
@@ -2523,14 +2805,14 @@
             "name": "Count",
             "in": "query",
             "format": "int32",
-            "x-nullable": false
+            "x-nullable": true
           },
           {
             "type": "integer",
             "name": "Page",
             "in": "query",
             "format": "int32",
-            "x-nullable": false
+            "x-nullable": true
           }
         ],
         "responses": {
@@ -2548,7 +2830,198 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/PlayerWithPersons/{playerId}": {
+      "get": {
+        "tags": [
+          "PlayerWithPersons"
+        ],
+        "operationId": "PlayerWithPersons_GetById",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "playerId",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiPlayerWithPersonsDtoOut"
+            }
+          },
+          "404": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/PlayerWithPersons/FilterBy": {
+      "get": {
+        "tags": [
+          "PlayerWithPersons"
+        ],
+        "operationId": "PlayerWithPersons_FilterBy",
+        "parameters": [
+          {
+            "type": "array",
+            "name": "Ids",
+            "in": "query",
+            "collectionFormat": "multi",
+            "x-nullable": true,
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "type": "array",
+            "name": "Logins",
+            "in": "query",
+            "collectionFormat": "multi",
+            "x-nullable": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "type": "string",
+            "name": "PartOfLogin",
+            "in": "query",
+            "x-nullable": true
+          },
+          {
+            "type": "string",
+            "name": "StartRegistrationDate",
+            "in": "query",
+            "format": "date-time",
+            "x-nullable": true
+          },
+          {
+            "type": "string",
+            "name": "FinishRegistrationDate",
+            "in": "query",
+            "format": "date-time",
+            "x-nullable": true
+          },
+          {
+            "type": "string",
+            "name": "StartLastVisitDate",
+            "in": "query",
+            "format": "date-time",
+            "x-nullable": true
+          },
+          {
+            "type": "string",
+            "name": "FinishLastVisitDate",
+            "in": "query",
+            "format": "date-time",
+            "x-nullable": true
+          },
+          {
+            "type": "array",
+            "name": "PersonsIds",
+            "in": "query",
+            "collectionFormat": "multi",
+            "x-nullable": true,
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "type": "array",
+            "name": "PersonsNames",
+            "in": "query",
+            "collectionFormat": "multi",
+            "x-nullable": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "type": "string",
+            "name": "PersonNameLike",
+            "in": "query",
+            "x-nullable": true
+          },
+          {
+            "type": "array",
+            "name": "AdminLevelIds",
+            "in": "query",
+            "collectionFormat": "multi",
+            "x-nullable": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "type": "array",
+            "name": "FactionIds",
+            "in": "query",
+            "collectionFormat": "multi",
+            "x-nullable": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "type": "integer",
+            "name": "Count",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": true
+          },
+          {
+            "type": "integer",
+            "name": "Page",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiPagedFilterResultDtoOutOfApiPlayerWithPersonsDtoOut"
+            }
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponseDtoOut"
+            }
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     },
     "/Room": {
@@ -2581,7 +3054,12 @@
               "$ref": "#/definitions/ApiRoomDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     },
     "/Room/{id}": {
@@ -2615,7 +3093,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       },
       "put": {
         "tags": [
@@ -2668,7 +3151,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       },
       "delete": {
         "tags": [
@@ -2696,7 +3184,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     },
     "/Room/FilterBy": {
@@ -2759,14 +3252,14 @@
             "name": "Count",
             "in": "query",
             "format": "int32",
-            "x-nullable": false
+            "x-nullable": true
           },
           {
             "type": "integer",
             "name": "Page",
             "in": "query",
             "format": "int32",
-            "x-nullable": false
+            "x-nullable": true
           }
         ],
         "responses": {
@@ -2784,7 +3277,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     },
     "/Teleport": {
@@ -2824,7 +3322,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     },
     "/Teleport/{id}": {
@@ -2858,7 +3361,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       },
       "put": {
         "tags": [
@@ -2911,7 +3419,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       },
       "delete": {
         "tags": [
@@ -2939,7 +3452,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     },
     "/Teleport/FilterBy": {
@@ -3020,14 +3538,14 @@
             "name": "Count",
             "in": "query",
             "format": "int32",
-            "x-nullable": false
+            "x-nullable": true
           },
           {
             "type": "integer",
             "name": "Page",
             "in": "query",
             "format": "int32",
-            "x-nullable": false
+            "x-nullable": true
           }
         ],
         "responses": {
@@ -3045,7 +3563,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     },
     "/Vehicle": {
@@ -3085,7 +3608,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     },
     "/Vehicle/{id}": {
@@ -3119,7 +3647,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       },
       "put": {
         "tags": [
@@ -3172,7 +3705,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       },
       "delete": {
         "tags": [
@@ -3200,7 +3738,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     },
     "/Vehicle/FilterBy": {
@@ -3270,14 +3813,14 @@
             "name": "Count",
             "in": "query",
             "format": "int32",
-            "x-nullable": false
+            "x-nullable": true
           },
           {
             "type": "integer",
             "name": "Page",
             "in": "query",
             "format": "int32",
-            "x-nullable": false
+            "x-nullable": true
           }
         ],
         "responses": {
@@ -3295,7 +3838,12 @@
               "$ref": "#/definitions/ApiErrorResponseDtoOut"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
       }
     }
   },
@@ -5811,6 +6359,68 @@
         }
       }
     },
+    "ApiPlayerWithPersonsDtoOut": {
+      "type": "object",
+      "required": [
+        "id",
+        "registrationDate",
+        "lastVisitDate"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "login": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "registrationDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "lastVisitDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "persons": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ApiPersonDtoOut"
+          }
+        }
+      }
+    },
+    "ApiPagedFilterResultDtoOutOfApiPlayerWithPersonsDtoOut": {
+      "type": "object",
+      "required": [
+        "allCount",
+        "page",
+        "maxPages"
+      ],
+      "properties": {
+        "allCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "page": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "maxPages": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ApiPlayerWithPersonsDtoOut"
+          }
+        }
+      }
+    },
     "ApiRoomDtoOut": {
       "type": "object",
       "required": [
@@ -6563,6 +7173,14 @@
           }
         }
       }
+    }
+  },
+  "securityDefinitions": {
+    "apiKey": {
+      "type": "apiKey",
+      "description": "Copy 'Bearer ' + valid api key into field",
+      "name": "Authorization",
+      "in": "header"
     }
   }
 }

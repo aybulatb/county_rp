@@ -9,6 +9,8 @@ namespace CountyRP.Services.Game.Infrastructure.Models
 
         public IEnumerable<string> Logins { get; }
 
+        public string PartOfLogin { get; }
+
         public DateTimeOffset? StartRegistrationDate { get; }
 
         public DateTimeOffset? FinishRegistrationDate { get; }
@@ -22,6 +24,7 @@ namespace CountyRP.Services.Game.Infrastructure.Models
             int? page,
             IEnumerable<int> ids,
             IEnumerable<string> logins,
+            string partOfLogin,
             DateTimeOffset? startRegistrationDate,
             DateTimeOffset? finishRegistrationDate,
             DateTimeOffset? startLastVisitDate,
@@ -31,6 +34,7 @@ namespace CountyRP.Services.Game.Infrastructure.Models
         {
             Ids = ids;
             Logins = logins;
+            PartOfLogin = partOfLogin;
             StartRegistrationDate = startRegistrationDate;
             FinishRegistrationDate = finishRegistrationDate;
             StartLastVisitDate = startLastVisitDate;

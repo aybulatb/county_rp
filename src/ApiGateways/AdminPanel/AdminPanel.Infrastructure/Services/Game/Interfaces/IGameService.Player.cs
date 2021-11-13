@@ -7,6 +7,6 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Game.Interface
     {
         Task<GamePlayerDtoOut> GetPlayerByIdAsync(int id);
 
-        Task<GamePagedFilterResultDtoOut<GamePlayerDtoOut>> GetPlayersByFilter(GamePlayerFilterDtoIn gameFilterPlayerDtoIn);
+        Task<GamePagedFilterResultDtoOut<GamePlayerDtoOut>> GetPlayersByFilterAsync(GamePlayerFilterDtoIn gameFilterPlayerDtoIn);
     }
 }

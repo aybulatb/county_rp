@@ -14,6 +14,7 @@ namespace CountyRP.Services.Game.API.Converters
                 page: source.Page,
                 ids: source.Ids,
                 logins: source.Logins,
+                partOfLogin: source.PartOfLogin,
                 startRegistrationDate: source.StartRegistrationDate,
                 finishRegistrationDate: source.FinishRegistrationDate,
                 startLastVisitDate: source.StartLastVisitDate,

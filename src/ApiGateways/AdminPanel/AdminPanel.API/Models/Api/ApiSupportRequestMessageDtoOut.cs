@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace CountyRP.ApiGateways.AdminPanel.API.Models.Api
 {
-    public class ApiSupportRequestMessageDtoOut
+    public record ApiSupportRequestMessageDtoOut
     {
     }
 }
