@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace CountyRP.Services.Game.API.Controllers
@@ -28,7 +27,7 @@ namespace CountyRP.Services.Game.API.Controllers
         }
 
         [HttpGet("{playerId}")]
-        [ProducesResponseType(typeof(ApiPlayerDtoOut), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiPlayerWithPersonsDtoOut), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById(int playerId)
         {
@@ -66,7 +65,7 @@ namespace CountyRP.Services.Game.API.Controllers
         }
 
         [HttpGet("FilterBy")]
-        [ProducesResponseType(typeof(ApiPagedFilterResultDtoOut<ApiPlayerDtoOut>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiPagedFilterResultDtoOut<ApiPlayerWithPersonsDtoOut>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> FilterBy(
             [FromQuery] ApiPlayerWithPersonsFilterDtoIn apiPlayerWithPersonsFilterDtoIn
