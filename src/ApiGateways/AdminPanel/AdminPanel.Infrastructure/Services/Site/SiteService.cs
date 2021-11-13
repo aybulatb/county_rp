@@ -6,7 +6,7 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Site
 {
     public partial class SiteService : ISiteService
     {
-        private UserClient _userClient;
+        private readonly UserClient _userClient;
 
         public SiteService(
             UserClient userClient

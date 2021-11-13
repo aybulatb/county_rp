@@ -13,8 +13,8 @@ namespace CountyRP.ApiGateways.AdminPanel.API.Controllers
     [Route("[controller]")]
     public class PlayerController : ControllerBase
     {
-        private ILogger<PlayerController> _logger;
-        private IGameService _gameService;
+        private readonly ILogger<PlayerController> _logger;
+        private readonly IGameService _gameService;
 
         public PlayerController(
             ILogger<PlayerController> logger,

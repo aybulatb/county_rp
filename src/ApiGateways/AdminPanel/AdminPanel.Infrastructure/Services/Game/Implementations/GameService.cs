@@ -6,9 +6,9 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Game.Implement
 {
     public partial class GameService : IGameService
     {
-        private PlayerClient _playerClient;
-        private PersonClient _personClient;
-        private PlayerWithPersonsClient _playerWithPersonsClient;
+        private readonly PlayerClient _playerClient;
+        private readonly PersonClient _personClient;
+        private readonly PlayerWithPersonsClient _playerWithPersonsClient;
 
         public GameService(
             PlayerClient playerClient,

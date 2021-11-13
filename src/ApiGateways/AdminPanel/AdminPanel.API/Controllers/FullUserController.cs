@@ -1,9 +1,7 @@
 ﻿using CountyRP.ApiGateways.AdminPanel.API.Converters;
 using CountyRP.ApiGateways.AdminPanel.API.Models.Api;
 using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Game.Interfaces;
-using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Game.Models;
 using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Site.Interfaces;
-using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Site.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
