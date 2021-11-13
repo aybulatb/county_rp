@@ -6,7 +6,7 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Game.Implement
 {
     public partial class GameService
     {
-        public async Task<GamePlayerWithPersonsDtoOut> GetPlayerWithPersonsAsync(int playerId)
+        public async Task<GamePlayerWithPersonsDtoOut> GetPlayerWithPersonsByPlayerIdAsync(int playerId)
         {
             var playerWithPersons = await _playerWithPersonsClient.GetByIdAsync(playerId);
 

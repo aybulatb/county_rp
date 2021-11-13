@@ -12,6 +12,7 @@ namespace CountyRP.Services.Site.API.Converters
             return new UserFilterDtoIn(
                 Count: source.Count,
                 Page: source.Page,
+                Ids: source.Ids,
                 Login: source.Login,
                 LoginLike: source.LoginLike,
                 GroupIds: source.GroupIds,

@@ -7,6 +7,8 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Site.Interface
     {
         Task<SiteUserDtoOut> AddUserAsync(SiteUserDtoIn siteUserDtoIn);
 
+        Task<SiteUserDtoOut> GetUserByIdAsync(int id);
+
         Task<SitePagedFilterResultDtoOut<SiteUserDtoOut>> GetUsersByFilterAsync(SiteUserFilterDtoIn siteUserFilterDtoIn);
 
         Task<SiteUserDtoOut> UpdateUserAsync(SiteUserDtoOut siteUserDtoOut);

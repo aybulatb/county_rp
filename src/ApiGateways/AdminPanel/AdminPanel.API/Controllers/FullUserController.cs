@@ -30,9 +30,18 @@ namespace CountyRP.ApiGateways.AdminPanel.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            return null;
+            var user = await _siteService.GetUserByIdAsync(id);
+
+            var playerWithPersons = await _gameService.GetPlayerWithPersonsByPlayerIdAsync(user.PlayerId);
+
+            return Ok(
+                GamePlayerWithPersonsDtoOutConverter.ToApiFullUserDtoOutApi(
+                    source: playerWithPersons,
+                    user: user
+                )
+            );
         }
 
         [HttpGet("ShortFilterBy")]

@@ -15,6 +15,15 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Site
             return ApiUserDtoOutConverter.ToService(apiUserDtoOut);
         }
 
+        public async Task<SiteUserDtoOut> GetUserByIdAsync(
+            int id
+        )
+        {
+            var user = await _userClient.GetByIdAsync(id);
+
+            return ApiUserDtoOutConverter.ToService(user);
+        }
+
         public async Task<SitePagedFilterResultDtoOut<SiteUserDtoOut>> GetUsersByFilterAsync(
             SiteUserFilterDtoIn siteUserFilterDtoIn
         )

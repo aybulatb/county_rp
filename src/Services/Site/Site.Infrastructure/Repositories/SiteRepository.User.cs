@@ -61,6 +61,7 @@ namespace CountyRP.Services.Site.Infrastructure.Repositories
                 .AsNoTracking()
                 .Where(
                     user =>
+                        (filter.Ids == null || filter.Ids.Contains(user.Id)) &&
                         (filter.Login == null || user.Login == filter.Login) &&
                         (filter.LoginLike == null || user.Login.Contains(filter.LoginLike)) &&
                         (filter.GroupIds == null || filter.GroupIds.Contains(user.GroupId)) &&

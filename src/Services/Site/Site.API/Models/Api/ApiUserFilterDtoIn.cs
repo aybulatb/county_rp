@@ -5,6 +5,8 @@ namespace CountyRP.Services.Site.API.Models.Api
 {
     public record ApiUserFilterDtoIn : ApiPagedFilter
     {
+        public IEnumerable<int> Ids { get; init; }
+
         public string Login { get; init; }
 
         public string LoginLike { get; init; }

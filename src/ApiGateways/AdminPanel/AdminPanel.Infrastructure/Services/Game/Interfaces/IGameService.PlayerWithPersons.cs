@@ -5,7 +5,7 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Game.Interface
 {
     public partial interface IGameService
     {
-        Task<GamePlayerWithPersonsDtoOut> GetPlayerWithPersonsAsync(int playerId);
+        Task<GamePlayerWithPersonsDtoOut> GetPlayerWithPersonsByPlayerIdAsync(int playerId);
 
         Task<GamePagedFilterResultDtoOut<GamePlayerWithPersonsDtoOut>> GetPlayersWithPersonsByFilterAsync(
             GamePlayerWithPersonsFilterDtoIn filter

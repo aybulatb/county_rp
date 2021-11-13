@@ -6,6 +6,7 @@ namespace CountyRP.Services.Site.Infrastructure.Models
     public record UserFilterDtoIn(
         int? Count,
         int? Page,
+        IEnumerable<int> Ids,
         string Login,
         string LoginLike,
         IEnumerable<string> GroupIds,
