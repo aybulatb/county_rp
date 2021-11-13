@@ -2,7 +2,7 @@
 using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Site.Models;
 using System.Threading.Tasks;
 
-namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Site
+namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Site.Implementations
 {
     public partial class SiteService
     {

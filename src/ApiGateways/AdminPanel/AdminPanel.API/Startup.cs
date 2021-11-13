@@ -5,7 +5,7 @@ using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services;
 using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Game.Implementations;
 using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Game.Interfaces;
 using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Interfaces;
-using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Site;
+using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Site.Implementations;
 using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Site.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -37,6 +37,11 @@ namespace CountyRP.ApiGateways.AdminPanel.API
             });
 
             services.AddSingleton(new SupportRequestMessageClient(httpClient2)
+            {
+                BaseUrl = "https://localhost:10501"
+            });
+
+            services.AddSingleton(new GroupClient(httpClient2)
             {
                 BaseUrl = "https://localhost:10501"
             });
