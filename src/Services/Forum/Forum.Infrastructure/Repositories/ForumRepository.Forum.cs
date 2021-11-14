@@ -44,6 +44,7 @@ namespace CountyRP.Services.Forum.Infrastructure.Repositories
                         ChildForums = new List<HierarchicalForumDtoOut>()
                     }
                 )
+                .OrderBy(forum => forum.Order)
                 .ToListAsync();
 
             foreach (var forum in forums)
