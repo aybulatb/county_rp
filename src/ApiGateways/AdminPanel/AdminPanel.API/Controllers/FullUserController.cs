@@ -59,11 +59,15 @@ namespace CountyRP.ApiGateways.AdminPanel.API.Controllers
 
             var fullUsers = playerWithPersons
                 .Items
-                .Select(playerWithPersons =>
-                    GamePlayerWithPersonsDtoOutConverter.ToApiFullUserDtoOutApi(
-                        source: playerWithPersons,
-                        user: users.Items.First(user => user.PlayerId == playerWithPersons.Id)
-                    )
+                .Join(
+                    users.Items,
+                    p => p.Id,
+                    u => u.PlayerId,
+                    (p, u) =>
+                        GamePlayerWithPersonsDtoOutConverter.ToApiFullUserDtoOutApi(
+                            source: p,
+                            user: u
+                        )
                 );
 
             return Ok(
