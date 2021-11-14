@@ -4,15 +4,14 @@ using System.Collections.Generic;
 
 namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Site.Converters
 {
-    internal static class SiteGroupDtoInConverter
+    internal static class SiteUpdatedGroupDtoInConverter
     {
-        public static ApiGroupDtoIn ToExternalApi(
-            SiteGroupDtoIn source
+        public static ApiUpdateGroupDtoIn ToExternalApi(
+            SiteUpdatedGroupDtoIn source
         )
         {
-            return new ApiGroupDtoIn
+            return new ApiUpdateGroupDtoIn
             {
-                Id = source.Id,
                 Name = source.Name,
                 Color = source.Color,
                 Admin = source.Admin,

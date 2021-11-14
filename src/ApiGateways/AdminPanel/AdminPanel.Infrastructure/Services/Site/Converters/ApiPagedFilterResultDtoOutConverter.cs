@@ -18,5 +18,18 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Site.Converter
                     .Select(ApiUserDtoOutConverter.ToService)
                 );
         }
+
+        public static SitePagedFilterResultDtoOut<SiteGroupDtoOut> ToService(
+            ApiPagedFilterResultOfApiGroupDtoOut source
+        )
+        {
+            return new SitePagedFilterResultDtoOut<SiteGroupDtoOut>(
+                AllCount: source.AllCount,
+                Page: source.Page,
+                MaxPages: source.MaxPages,
+                Items: source.Items
+                    .Select(ApiGroupDtoOutConverter.ToService)
+            );
+        }
     }
 }

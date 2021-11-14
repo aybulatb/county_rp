@@ -30,12 +30,16 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Site.Implement
                 page: filter.Page
             );
 
-            return null;
+            return ApiPagedFilterResultDtoOutConverter.ToService(apiGroupsDtoOut);
         }
 
         public async Task<SiteGroupDtoOut> EditGroupAsync(string id, SiteUpdatedGroupDtoIn updatedGroupDtoIn)
         {
-            return null;
+            var apiUpdatedGroupDtoIn = SiteUpdatedGroupDtoInConverter.ToExternalApi(updatedGroupDtoIn);
+
+            var apiGroupDtoOut = await _groupClient.EditAsync(id, apiUpdatedGroupDtoIn);
+
+            return ApiGroupDtoOutConverter.ToService(apiGroupDtoOut);
         }
 
         public async Task DeleteGroupAsync(string id)

@@ -1,4 +1,6 @@
-﻿namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Site.Models
+﻿using System.Collections.Generic;
+
+namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Site.Models
 {
     public record SiteGroupDtoIn(
         string Id,
@@ -12,7 +14,7 @@
         bool ChangeGroup,
         bool EditGroups,
         int MaxBan,
-        string[] BanGroupIds,
+        IEnumerable<string> BanGroupIds,
         bool SeeLogs
     );
 }

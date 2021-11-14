@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 
 namespace CountyRP.ApiGateways.AdminPanel.API.Controllers
 {
+    [ApiController]
+    [Route("[controller]")]
     public class FullUserController : ControllerBase
     {
         private readonly ILogger<FullUserController> _logger;
