@@ -2,12 +2,15 @@ using CountyRP.ApiGateways.AdminPanel.API.Filters;
 using CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClient.ServiceGame;
 using CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClient.ServiceSite;
 using CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClients.ServiceForum;
+using CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClients.ServiceLogs;
 using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services;
 using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Forum.Implementations;
 using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Forum.Interfaces;
 using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Game.Implementations;
 using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Game.Interfaces;
 using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Interfaces;
+using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Logs.Implementations;
+using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Logs.Interfaces;
 using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Site.Implementations;
 using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Site.Interfaces;
 using Microsoft.AspNetCore.Builder;
@@ -86,9 +89,21 @@ namespace CountyRP.ApiGateways.AdminPanel.API
                 BaseUrl = "https://localhost:10511"
             });
 
+            HttpClientHandler clientHandler4 = new HttpClientHandler();
+            clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
+
+            var httpClient4 = new HttpClient(clientHandler4);
+            httpClient4.DefaultRequestHeaders.Add("Authorization", "Bearer esg443ytGSR3!t3");
+
+            services.AddSingleton<ILogUnitClient>(new LogUnitClient(httpClient4)
+            {
+                BaseUrl = "https://localhost:10521"
+            });
+
             services.AddTransient<ISiteService, SiteService>();
             services.AddTransient<IGameService, GameService>();
             services.AddTransient<IForumService, ForumService>();
+            services.AddTransient<ILogsService, LogsService>();
             services.AddTransient<ISupportRequestMessageSiteService, SupportRequestMessageSiteService>();
 
             services.AddControllers(options =>

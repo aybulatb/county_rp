@@ -70,14 +70,14 @@ namespace CountyRP.Services.Forum.API.Controllers
         /// Получить все форумы.
         /// </summary>
         [HttpGet("Hierarchical")]
-        [ProducesResponseType(typeof(IEnumerable<ApiForumDtoOut>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(IEnumerable<ApiHierarchicalForumDtoOut>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetHierarchical()
         {
             var forumsDtoOut = await _forumRepository.GetHierarchicalForumsAsync();
 
             return Ok(
                 forumsDtoOut
+                    .Select(HierarchicalForumDtoOutConverter.ToApi)
             );
         }
 
