@@ -29,6 +29,40 @@ namespace CountyRP.Services.Forum.Infrastructure.Repositories
             return forumsDao.Select(ForumDaoConverter.ToRepository);
         }
 
+        public async Task<IEnumerable<HierarchicalForumDtoOut>> GetHierarchicalForumsAsync()
+        {
+            var forums = await _forumDbContext
+                .Forums
+                .AsNoTracking()
+                .Select(forum =>
+                    new HierarchicalForumDtoOut
+                    {
+                        Id = forum.Id,
+                        Name = forum.Name,
+                        ParentId = forum.ParentId,
+                        Order =  forum.Order,
+                        ChildForums = new List<HierarchicalForumDtoOut>()
+                    }
+                )
+                .ToListAsync();
+
+            foreach (var forum in forums)
+            {
+                foreach (var childForum in forums)
+                {
+                    if (childForum.ParentId == forum.Id)
+                    {
+                        forum.ChildForums.Add(childForum);
+                    }
+                }
+            }
+
+            var parentForums = forums
+                .Where(forum => forum.ParentId == 0);
+
+            return parentForums;
+        }
+
         public async Task<ForumDtoOut> GetForumByIdAsync(int id)
         {
             var forumDao = await _forumDbContext

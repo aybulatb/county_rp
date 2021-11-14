@@ -17,6 +17,11 @@ namespace CountyRP.Services.Forum.Infrastructure.Repositories
         Task<IEnumerable<ForumDtoOut>> GetForumsAsync();
 
         /// <summary>
+        /// Получить все форумы в иерархическом виде
+        /// </summary>
+        Task<IEnumerable<HierarchicalForumDtoOut>> GetHierarchicalForumsAsync();
+
+        /// <summary>
         /// Получить данные форума по ID
         /// </summary>
         Task<ForumDtoOut> GetForumByIdAsync(int id);

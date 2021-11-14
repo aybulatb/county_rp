@@ -74,14 +74,14 @@ namespace CountyRP.ApiGateways.AdminPanel.API
             clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
 
             var httpClient3 = new HttpClient(clientHandler3);
-            httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer J%hw4y246tTWG");
+            httpClient3.DefaultRequestHeaders.Add("Authorization", "Bearer J%hw4y246tTWG");
 
-            services.AddSingleton<IForumClient>(new ForumClient(httpClient)
+            services.AddSingleton<IForumClient>(new ForumClient(httpClient3)
             {
                 BaseUrl = "https://localhost:10511"
             });
 
-            services.AddSingleton<IModeratorClient>(new ModeratorClient(httpClient)
+            services.AddSingleton<IModeratorClient>(new ModeratorClient(httpClient3)
             {
                 BaseUrl = "https://localhost:10511"
             });

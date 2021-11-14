@@ -5,6 +5,7 @@ using CountyRP.Services.Forum.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -23,8 +24,8 @@ namespace CountyRP.Services.Forum.API.Controllers
             IForumRepository forumRepository
         )
         {
-            _logger = logger;
-            _forumRepository = forumRepository;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _forumRepository = forumRepository ?? throw new ArgumentNullException(nameof(forumRepository));
         }
 
         /// <summary>
@@ -62,6 +63,21 @@ namespace CountyRP.Services.Forum.API.Controllers
 
             return Ok(
                 forumsDtoOut.Select(ForumDtoOutConverter.ToApi)
+            );
+        }
+
+        /// <summary>
+        /// Получить все форумы.
+        /// </summary>
+        [HttpGet("Hierarchical")]
+        [ProducesResponseType(typeof(IEnumerable<ApiForumDtoOut>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetHierarchical()
+        {
+            var forumsDtoOut = await _forumRepository.GetHierarchicalForumsAsync();
+
+            return Ok(
+                forumsDtoOut
             );
         }
 
@@ -115,7 +131,7 @@ namespace CountyRP.Services.Forum.API.Controllers
         }
 
         /// <summary>
-        /// Изменить данные форума по ID
+        /// Изменить данные форума по ID.
         /// </summary>
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(ApiForumDtoOut), StatusCodes.Status200OK)]
