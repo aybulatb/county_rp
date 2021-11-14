@@ -24,18 +24,6 @@ namespace CountyRP.ApiGateways.AdminPanel.API.Controllers
             _logsService = logsService ?? throw new ArgumentNullException(nameof(logsService));
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody] ApiLogUnitDtoIn apiLogUnitDtoIn)
-        {
-            var logsLogUnitDtoIn = ApiLogUnitDtoInConverter.ToService(apiLogUnitDtoIn);
-
-            var logsLogUnitDtoOut = await _logsService.CreateLogUnitAsync(logsLogUnitDtoIn);
-
-            return Ok(
-                LogsLogUnitDtoOutConverter.ToApi(logsLogUnitDtoOut)
-            );
-        }
-
         [HttpGet("FilterBy")]
         public async Task<IActionResult> GetByFilter([FromQuery] ApiLogUnitFilterDtoIn filter)
         {
