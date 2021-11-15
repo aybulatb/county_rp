@@ -1,12 +1,12 @@
 # Архитектура приложения
 
-Проект включает в себя несколько микросервисы, API-шлюзы и клиентские приложения.
-Микросервисы:
+Проект включает в себя несколько микросервисы, API-шлюзы и клиентские приложения.  
+#### Микросервисы:
 - [Site](https://github.com/istretyakov/county-rp/tree/dev/src/Services/Site)
 - [Game](https://github.com/istretyakov/county-rp/tree/dev/src/Services/Game)
 - [Forum](https://github.com/istretyakov/county-rp/tree/dev/src/Services/Forum)
-- [Logs](https://github.com/istretyakov/county-rp/tree/dev/src/Services/Logs)  
-API-шлюзы:
+- [Logs](https://github.com/istretyakov/county-rp/tree/dev/src/Services/Logs)
+#### API-шлюзы:
 - [AdminPanel](https://github.com/istretyakov/county-rp/tree/dev/src/ApiGateways/AdminPanel)
 - [GameMode](https://github.com/istretyakov/county-rp/tree/dev/src/ApiGateways/GameMode)
 - [Forum](https://github.com/istretyakov/county-rp/tree/dev/src/ApiGateways/Forum)
