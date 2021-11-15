@@ -18,7 +18,6 @@
 
   <ItemGroup>
     <Folder Include="Services\Forum\Converters\" />
-    <Folder Include="Services\Forum\Models\" />
   </ItemGroup>
 
 </Project>
