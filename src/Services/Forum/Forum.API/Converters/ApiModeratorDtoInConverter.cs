@@ -11,7 +11,7 @@ namespace CountyRP.Services.Forum.API.Converters
         {
             return new ModeratorDtoIn(
                 entityId: source.EntityId,
-                entityType: source.EntityType,
+                entityType: ApiModeratorEntityTypeDtoConverter.ToRepository(source.EntityType),
                 forumId: source.ForumId,
                 createTopics: source.CreateTopics,
                 createPosts: source.CreatePosts,
@@ -30,7 +30,7 @@ namespace CountyRP.Services.Forum.API.Converters
             return new ModeratorDtoOut(
                 id: id,
                 entityId: source.EntityId,
-                entityType: source.EntityType,
+                entityType: ApiModeratorEntityTypeDtoConverter.ToRepository(source.EntityType),
                 forumId: source.ForumId,
                 createTopics: source.CreateTopics,
                 createPosts: source.CreatePosts,

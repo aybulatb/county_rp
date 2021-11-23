@@ -6,7 +6,7 @@
 
         public int EntityId { get; }
 
-        public int EntityType { get; }
+        public ModeratorEntityTypeDto EntityType { get; }
 
         public int ForumId { get; }
 
@@ -26,7 +26,7 @@
         public ModeratorDtoOut(
             int id,
             int entityId,
-            int entityType,
+            ModeratorEntityTypeDto entityType,
             int forumId,
             bool createTopics,
             bool createPosts,

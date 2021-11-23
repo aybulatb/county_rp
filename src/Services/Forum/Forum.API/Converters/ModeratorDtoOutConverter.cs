@@ -13,7 +13,7 @@ namespace CountyRP.Services.Forum.API.Converters
             {
                 Id = source.Id,
                 EntityId = source.EntityId,
-                EntityType = source.EntityType,
+                EntityType = ModeratorEntityTypeDtoConverter.ToApi(source.EntityType),
                 ForumId = source.ForumId,
                 CreateTopics = source.CreateTopics,
                 CreatePosts = source.CreatePosts,

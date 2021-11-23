@@ -12,7 +12,7 @@ namespace CountyRP.Services.Forum.Infrastructure.Converters
             return new ModeratorDtoOut(
                 id: source.Id,
                 entityId: source.EntityId,
-                entityType: source.EntityType,
+                entityType: ModeratorEntityTypeDaoConverter.ToRepository(source.EntityType),
                 forumId: source.ForumId,
                 createTopics: source.CreateTopics,
                 createPosts: source.CreatePosts,

@@ -11,7 +11,7 @@ namespace CountyRP.Services.Forum.Infrastructure.Entities
 
         public int EntityId { get; set; }
 
-        public int EntityType { get; set; }
+        public ModeratorEntityTypeDao EntityType { get; set; }
 
         public int ForumId { get; set; }
 
@@ -37,7 +37,7 @@ namespace CountyRP.Services.Forum.Infrastructure.Entities
         public ModeratorDao(
             int id,
             int entityId,
-            int entityType,
+            ModeratorEntityTypeDao entityType,
             int forumId,
             bool createTopics,
             bool createPosts,
