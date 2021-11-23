@@ -64,16 +64,12 @@ namespace CountyRP.Services.Forum.Infrastructure.Repositories
             );
         }
 
-        public async Task<PostDtoOut> UpdatePostAsync(PostDtoOut postDtoOut)
+        public async Task UpdatePostAsync(PostDtoOut postDtoOut)
         {
             var postDao = PostDtoOutConverter.ToDb(postDtoOut);
 
-            var updatedPostDao = _forumDbContext.Posts.Update(postDao)?.Entity;
+            _forumDbContext.Posts.Update(postDao);
             await _forumDbContext.SaveChangesAsync();
-
-            return (updatedPostDao != null)
-                ? PostDaoConverter.ToRepository(updatedPostDao)
-                : null;
         }
 
         public async Task DeletePostByIdAsync(int id)

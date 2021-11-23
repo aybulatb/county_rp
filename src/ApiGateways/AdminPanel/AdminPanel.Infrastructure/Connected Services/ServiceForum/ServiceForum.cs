@@ -48,11 +48,11 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClients.ServiceForu
         System.Threading.Tasks.Task<ApiForumDtoOut> GetByIdAsync(int id, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ApiForumDtoOut> EditAsync(int id, ApiForumDtoIn apiForumDtoIn);
+        System.Threading.Tasks.Task EditAsync(int id, ApiForumDtoIn apiForumDtoIn);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ApiForumDtoOut> EditAsync(int id, ApiForumDtoIn apiForumDtoIn, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task EditAsync(int id, ApiForumDtoIn apiForumDtoIn, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="ApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task DeleteAsync(int id);
@@ -433,14 +433,14 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClients.ServiceForu
         }
     
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<ApiForumDtoOut> EditAsync(int id, ApiForumDtoIn apiForumDtoIn)
+        public System.Threading.Tasks.Task EditAsync(int id, ApiForumDtoIn apiForumDtoIn)
         {
             return EditAsync(id, apiForumDtoIn, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<ApiForumDtoOut> EditAsync(int id, ApiForumDtoIn apiForumDtoIn, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task EditAsync(int id, ApiForumDtoIn apiForumDtoIn, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
@@ -462,7 +462,6 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClients.ServiceForu
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
-                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
     
                     PrepareRequest(client_, request_, urlBuilder_);
     
@@ -485,14 +484,9 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClients.ServiceForu
                         ProcessResponse(client_, response_);
     
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 204)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ApiForumDtoOut>(response_, headers_, cancellationToken).ConfigureAwait(false);
-                            if (objectResponse_.Object == null)
-                            {
-                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
-                            }
-                            return objectResponse_.Object;
+                            return;
                         }
                         else
                         if (status_ == 400)
@@ -823,6 +817,20 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClients.ServiceForu
         System.Threading.Tasks.Task<ApiModeratorDtoOut> CreateAsync(ApiModeratorDtoIn apiModeratorDtoIn, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task MassivelyEditAsync(System.Collections.Generic.IEnumerable<ApiModeratorDtoOut> apiModeratorDtoOut);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task MassivelyEditAsync(System.Collections.Generic.IEnumerable<ApiModeratorDtoOut> apiModeratorDtoOut, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task MassivelyCreateAsync(System.Collections.Generic.IEnumerable<ApiModeratorDtoIn> apiModeratorsDtoIn);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task MassivelyCreateAsync(System.Collections.Generic.IEnumerable<ApiModeratorDtoIn> apiModeratorsDtoIn, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="ApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ApiModeratorDtoOut> GetByIdAsync(int id);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -830,11 +838,11 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClients.ServiceForu
         System.Threading.Tasks.Task<ApiModeratorDtoOut> GetByIdAsync(int id, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ApiModeratorDtoOut> EditAsync(int id, ApiModeratorDtoIn apiModeratorDtoIn);
+        System.Threading.Tasks.Task EditAsync(int id, ApiModeratorDtoIn apiModeratorDtoIn);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ApiModeratorDtoOut> EditAsync(int id, ApiModeratorDtoIn apiModeratorDtoIn, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task EditAsync(int id, ApiModeratorDtoIn apiModeratorDtoIn, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="ApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task DeleteAsync(int id);
@@ -975,6 +983,160 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClients.ServiceForu
         }
     
         /// <exception cref="ApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task MassivelyEditAsync(System.Collections.Generic.IEnumerable<ApiModeratorDtoOut> apiModeratorDtoOut)
+        {
+            return MassivelyEditAsync(apiModeratorDtoOut, System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task MassivelyEditAsync(System.Collections.Generic.IEnumerable<ApiModeratorDtoOut> apiModeratorDtoOut, System.Threading.CancellationToken cancellationToken)
+        {
+            if (apiModeratorDtoOut == null)
+                throw new System.ArgumentNullException("apiModeratorDtoOut");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/Moderator");
+    
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(apiModeratorDtoOut, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("PUT");
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+    
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+    
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 204)
+                        {
+                            return;
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+    
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task MassivelyCreateAsync(System.Collections.Generic.IEnumerable<ApiModeratorDtoIn> apiModeratorsDtoIn)
+        {
+            return MassivelyCreateAsync(apiModeratorsDtoIn, System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task MassivelyCreateAsync(System.Collections.Generic.IEnumerable<ApiModeratorDtoIn> apiModeratorsDtoIn, System.Threading.CancellationToken cancellationToken)
+        {
+            if (apiModeratorsDtoIn == null)
+                throw new System.ArgumentNullException("apiModeratorsDtoIn");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/Moderator/Massively");
+    
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(apiModeratorsDtoIn, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+    
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+    
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 201)
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<string>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<string>("A server side error occurred.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+    
+        /// <exception cref="ApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<ApiModeratorDtoOut> GetByIdAsync(int id)
         {
             return GetByIdAsync(id, System.Threading.CancellationToken.None);
@@ -1061,14 +1223,14 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClients.ServiceForu
         }
     
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<ApiModeratorDtoOut> EditAsync(int id, ApiModeratorDtoIn apiModeratorDtoIn)
+        public System.Threading.Tasks.Task EditAsync(int id, ApiModeratorDtoIn apiModeratorDtoIn)
         {
             return EditAsync(id, apiModeratorDtoIn, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<ApiModeratorDtoOut> EditAsync(int id, ApiModeratorDtoIn apiModeratorDtoIn, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task EditAsync(int id, ApiModeratorDtoIn apiModeratorDtoIn, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
@@ -1090,7 +1252,6 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClients.ServiceForu
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
-                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
     
                     PrepareRequest(client_, request_, urlBuilder_);
     
@@ -1113,24 +1274,9 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClients.ServiceForu
                         ProcessResponse(client_, response_);
     
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 204)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ApiModeratorDtoOut>(response_, headers_, cancellationToken).ConfigureAwait(false);
-                            if (objectResponse_.Object == null)
-                            {
-                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
-                            }
-                            return objectResponse_.Object;
-                        }
-                        else
-                        if (status_ == 400)
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<string>(response_, headers_, cancellationToken).ConfigureAwait(false);
-                            if (objectResponse_.Object == null)
-                            {
-                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
-                            }
-                            throw new ApiException<string>("A server side error occurred.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            return;
                         }
                         else
                         if (status_ == 404)
@@ -1456,11 +1602,11 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClients.ServiceForu
         System.Threading.Tasks.Task<ApiPostDtoOut> GetByIdAsync(int id, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ApiPostDtoOut> EditAsync(int id, ApiPostDtoIn apiPostDtoIn);
+        System.Threading.Tasks.Task EditAsync(int id, ApiPostDtoIn apiPostDtoIn);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ApiPostDtoOut> EditAsync(int id, ApiPostDtoIn apiPostDtoIn, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task EditAsync(int id, ApiPostDtoIn apiPostDtoIn, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="ApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task DeleteAsync(int id);
@@ -1694,14 +1840,14 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClients.ServiceForu
         }
     
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<ApiPostDtoOut> EditAsync(int id, ApiPostDtoIn apiPostDtoIn)
+        public System.Threading.Tasks.Task EditAsync(int id, ApiPostDtoIn apiPostDtoIn)
         {
             return EditAsync(id, apiPostDtoIn, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<ApiPostDtoOut> EditAsync(int id, ApiPostDtoIn apiPostDtoIn, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task EditAsync(int id, ApiPostDtoIn apiPostDtoIn, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
@@ -1723,7 +1869,6 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClients.ServiceForu
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
-                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
     
                     PrepareRequest(client_, request_, urlBuilder_);
     
@@ -1746,14 +1891,9 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClients.ServiceForu
                         ProcessResponse(client_, response_);
     
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 204)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ApiPostDtoOut>(response_, headers_, cancellationToken).ConfigureAwait(false);
-                            if (objectResponse_.Object == null)
-                            {
-                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
-                            }
-                            return objectResponse_.Object;
+                            return;
                         }
                         else
                         if (status_ == 400)
@@ -2676,11 +2816,11 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClients.ServiceForu
         System.Threading.Tasks.Task<ApiTopicDtoOut> GetByIdAsync(int id, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ApiTopicDtoOut> EditAsync(int id, ApiTopicDtoIn apiTopicDtoIn);
+        System.Threading.Tasks.Task EditAsync(int id, ApiTopicDtoIn apiTopicDtoIn);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ApiTopicDtoOut> EditAsync(int id, ApiTopicDtoIn apiTopicDtoIn, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task EditAsync(int id, ApiTopicDtoIn apiTopicDtoIn, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="ApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task DeleteAsync(int id);
@@ -2914,14 +3054,14 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClients.ServiceForu
         }
     
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<ApiTopicDtoOut> EditAsync(int id, ApiTopicDtoIn apiTopicDtoIn)
+        public System.Threading.Tasks.Task EditAsync(int id, ApiTopicDtoIn apiTopicDtoIn)
         {
             return EditAsync(id, apiTopicDtoIn, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<ApiTopicDtoOut> EditAsync(int id, ApiTopicDtoIn apiTopicDtoIn, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task EditAsync(int id, ApiTopicDtoIn apiTopicDtoIn, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
@@ -2943,7 +3083,6 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClients.ServiceForu
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
-                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
     
                     PrepareRequest(client_, request_, urlBuilder_);
     
@@ -2966,14 +3105,9 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClients.ServiceForu
                         ProcessResponse(client_, response_);
     
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 204)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ApiTopicDtoOut>(response_, headers_, cancellationToken).ConfigureAwait(false);
-                            if (objectResponse_.Object == null)
-                            {
-                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
-                            }
-                            return objectResponse_.Object;
+                            return;
                         }
                         else
                         if (status_ == 400)
@@ -3381,11 +3515,11 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClients.ServiceForu
         System.Threading.Tasks.Task<ApiUserDtoOut> GetByIdAsync(int id, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ApiUserDtoOut> EditAsync(int id, ApiUserDtoIn apiUserDtoIn);
+        System.Threading.Tasks.Task EditAsync(int id, ApiUserDtoIn apiUserDtoIn);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ApiUserDtoOut> EditAsync(int id, ApiUserDtoIn apiUserDtoIn, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task EditAsync(int id, ApiUserDtoIn apiUserDtoIn, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="ApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task DeleteAsync(int id);
@@ -3619,14 +3753,14 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClients.ServiceForu
         }
     
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<ApiUserDtoOut> EditAsync(int id, ApiUserDtoIn apiUserDtoIn)
+        public System.Threading.Tasks.Task EditAsync(int id, ApiUserDtoIn apiUserDtoIn)
         {
             return EditAsync(id, apiUserDtoIn, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<ApiUserDtoOut> EditAsync(int id, ApiUserDtoIn apiUserDtoIn, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task EditAsync(int id, ApiUserDtoIn apiUserDtoIn, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
@@ -3648,7 +3782,6 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClients.ServiceForu
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
-                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
     
                     PrepareRequest(client_, request_, urlBuilder_);
     
@@ -3671,14 +3804,9 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClients.ServiceForu
                         ProcessResponse(client_, response_);
     
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 204)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ApiUserDtoOut>(response_, headers_, cancellationToken).ConfigureAwait(false);
-                            if (objectResponse_.Object == null)
-                            {
-                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
-                            }
-                            return objectResponse_.Object;
+                            return;
                         }
                         else
                         if (status_ == 400)

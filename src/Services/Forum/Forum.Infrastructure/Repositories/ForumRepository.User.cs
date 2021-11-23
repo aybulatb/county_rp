@@ -44,16 +44,12 @@ namespace CountyRP.Services.Forum.Infrastructure.Repositories
                 : null;
         }
 
-        public async Task<UserDtoOut> UpdateUserAsync(int id, UserDtoOut userDtoOut)
+        public async Task UpdateUserAsync(int id, UserDtoOut userDtoOut)
         {
             var userDao = UserDtoOutConverter.ToDb(userDtoOut);
 
-            var updatedUserDao = _forumDbContext.Users.Update(userDao)?.Entity;
+            _forumDbContext.Users.Update(userDao);
             await _forumDbContext.SaveChangesAsync();
-
-            return (updatedUserDao != null)
-                ? UserDaoConverter.ToRepository(updatedUserDao)
-                : null;
         }
 
         public async Task<PagedFilterResult<UserDtoOut>> GetUsersByFilterAsync(UserFilterDtoIn filterDtoIn)

@@ -138,7 +138,7 @@ namespace CountyRP.Services.Forum.API.Controllers
         /// Изменить данные пользователя по ID.
         /// </summary>
         [HttpPut("{id}")]
-        [ProducesResponseType(typeof(ApiUserDtoOut), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Edit(int id, [FromBody] ApiUserDtoIn apiUserDtoIn)
@@ -177,11 +177,9 @@ namespace CountyRP.Services.Forum.API.Controllers
                 id: id
             );
 
-            var updatedUserDtoOut = await _forumRepository.UpdateUserAsync(id, userDtoOut);
+            await _forumRepository.UpdateUserAsync(id, userDtoOut);
 
-            return Ok(
-                UserDtoOutConverter.ToApi(updatedUserDtoOut)
-            );
+            return NoContent();
         }
 
         /// <summary>

@@ -34,7 +34,7 @@ namespace CountyRP.Services.Forum.Infrastructure.Repositories
         /// <summary>
         /// Изменить данные форума
         /// </summary>
-        Task<ForumDtoOut> UpdateForumAsync(ForumDtoOut forumDtoOut);
+        Task UpdateForumAsync(ForumDtoOut forumDtoOut);
 
         /// <summary>
         /// Удалить форум по ID

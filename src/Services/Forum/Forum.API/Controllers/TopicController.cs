@@ -100,7 +100,7 @@ namespace CountyRP.Services.Forum.API.Controllers
         /// Изменить данные темы по ID
         /// </summary>
         [HttpPut("{id}")]
-        [ProducesResponseType(typeof(ApiTopicDtoOut), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Edit(int id, [FromBody] ApiTopicDtoIn apiTopicDtoIn)
@@ -124,11 +124,9 @@ namespace CountyRP.Services.Forum.API.Controllers
                 id: id
             );
 
-            var updatedTopicDtoOut = await _forumRepository.UpdateTopicAsync(topicDtoOut);
+            await _forumRepository.UpdateTopicAsync(topicDtoOut);
 
-            return Ok(
-                TopicDtoOutConverter.ToApi(updatedTopicDtoOut)
-            );
+            return NoContent();
         }
 
         /// <summary>

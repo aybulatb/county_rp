@@ -1,6 +1,7 @@
 ﻿using CountyRP.Services.Forum.Infrastructure.Converters;
 using CountyRP.Services.Forum.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,6 +17,15 @@ namespace CountyRP.Services.Forum.Infrastructure.Repositories
             await _forumDbContext.SaveChangesAsync();
 
             return ModeratorDaoConverter.ToRepository(moderatorDao);
+        }
+
+        public async Task AddModeratorsAsync(IEnumerable<ModeratorDtoIn> moderatorsDtoIn)
+        {
+            var moderatorsDao = moderatorsDtoIn
+                .Select(ModeratorDtoInConverter.ToDb);
+
+            _forumDbContext.Moderators.AddRange(moderatorsDao);
+            await _forumDbContext.SaveChangesAsync();
         }
 
         public async Task<ModeratorDtoOut> GetModeratorByIdAsync(int id)
@@ -37,9 +47,9 @@ namespace CountyRP.Services.Forum.Infrastructure.Repositories
                 .AsNoTracking()
                 .Where(
                     moderator =>
-                        moderatorFilterDtoIn.EntityId.Equals(moderator.EntityId) &&
-                        moderatorFilterDtoIn.EntityType.Equals(moderator.EntityType) &&
-                        moderatorFilterDtoIn.ForumId.Equals(moderator.ForumId)
+                        (moderatorFilterDtoIn.EntityId == null || moderatorFilterDtoIn.EntityId.Equals(moderator.EntityId)) &&
+                        (moderatorFilterDtoIn.EntityType == null || moderatorFilterDtoIn.EntityType.Equals(moderator.EntityType)) &&
+                        (moderatorFilterDtoIn.ForumId == null || moderatorFilterDtoIn.ForumId.Equals(moderator.ForumId))
                 )
                 .AsQueryable();
 
@@ -63,16 +73,21 @@ namespace CountyRP.Services.Forum.Infrastructure.Repositories
             );
         }
 
-        public async Task<ModeratorDtoOut> UpdateModeratorAsync(ModeratorDtoOut moderatorDtoOut)
+        public async Task UpdateModeratorAsync(ModeratorDtoOut moderatorDtoOut)
         {
             var moderatorDao = ModeratorDtoOutConverter.ToDb(moderatorDtoOut);
 
-            var updatedModeratorDao = _forumDbContext.Moderators.Update(moderatorDao)?.Entity;
+            _forumDbContext.Moderators.Update(moderatorDao);
             await _forumDbContext.SaveChangesAsync();
+        }
 
-            return (updatedModeratorDao != null)
-                ? ModeratorDaoConverter.ToRepository(updatedModeratorDao)
-                : null;
+        public async Task UpdateModeratorsAsync(IEnumerable<ModeratorDtoOut> moderatorsDtoOut)
+        {
+            var moderatorsDao = moderatorsDtoOut
+                .Select(ModeratorDtoOutConverter.ToDb);
+
+            _forumDbContext.Moderators.UpdateRange(moderatorsDao);
+            await _forumDbContext.SaveChangesAsync();
         }
 
         public async Task DeleteModeratorByIdAsync(int id)

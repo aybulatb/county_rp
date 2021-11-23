@@ -5,6 +5,8 @@ using CountyRP.Services.Forum.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CountyRP.Services.Forum.API.Controllers
@@ -40,6 +42,25 @@ namespace CountyRP.Services.Forum.API.Controllers
             return Created(
                 string.Empty,
                 ModeratorDtoOutConverter.ToApi(moderatorDtoOut)
+            );
+        }
+
+        /// <summary>
+        /// Массово создать модераторов.
+        /// </summary>
+        [HttpPost("Massively")]
+        [ProducesResponseType(typeof(void), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> MassivelyCreate([FromBody] IEnumerable<ApiModeratorDtoIn> apiModeratorsDtoIn)
+        {
+            var moderatorsDtoIn = apiModeratorsDtoIn
+                .Select(ApiModeratorDtoInConverter.ToRepository);
+
+            await _forumRepository.AddModeratorsAsync(moderatorsDtoIn);
+
+            return Created(
+                string.Empty,
+                null
             );
         }
 
@@ -92,11 +113,10 @@ namespace CountyRP.Services.Forum.API.Controllers
         }
 
         /// <summary>
-        /// Изменить данные модератора по ID
+        /// Изменить данные модератора по ID.
         /// </summary>
         [HttpPut("{id}")]
-        [ProducesResponseType(typeof(ApiModeratorDtoOut), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Edit(int id, [FromBody] ApiModeratorDtoIn apiModeratorDtoIn)
         {
@@ -114,11 +134,24 @@ namespace CountyRP.Services.Forum.API.Controllers
                 id: id
             );
 
-            var updatedModeratorDtoOut = await _forumRepository.UpdateModeratorAsync(moderatorDtoOut);
+            await _forumRepository.UpdateModeratorAsync(moderatorDtoOut);
 
-            return Ok(
-                ModeratorDtoOutConverter.ToApi(updatedModeratorDtoOut)
-            );
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Изменить данные модератора по ID.
+        /// </summary>
+        [HttpPut]
+        [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> MassivelyEdit([FromBody] IEnumerable<ApiModeratorDtoOut> apiModeratorDtoOut)
+        {
+            var moderatorsDtoOut = apiModeratorDtoOut
+                .Select(ApiModeratorDtoOutConverter.ToRepository);
+
+            await _forumRepository.UpdateModeratorsAsync(moderatorsDtoOut);
+
+            return NoContent();
         }
 
         /// <summary>

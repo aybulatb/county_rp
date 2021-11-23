@@ -106,16 +106,12 @@ namespace CountyRP.Services.Forum.Infrastructure.Repositories
             );
         }
 
-        public async Task<ForumDtoOut> UpdateForumAsync(ForumDtoOut forumDtoOut)
+        public async Task UpdateForumAsync(ForumDtoOut forumDtoOut)
         {
             var forumDao = ForumDtoOutConverter.ToDb(forumDtoOut);
 
-            var updatedForumDao = _forumDbContext.Forums.Update(forumDao)?.Entity;
+            _forumDbContext.Forums.Update(forumDao);
             await _forumDbContext.SaveChangesAsync();
-
-            return (updatedForumDao != null)
-                ? ForumDaoConverter.ToRepository(updatedForumDao)
-                : null;
         }
 
         public async Task DeleteForumAsync(int id)

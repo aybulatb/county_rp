@@ -2,18 +2,18 @@
 {
     public class ModeratorFilterDtoIn : PagedFilter
     {
-        public int EntityId { get; }
+        public int? EntityId { get; }
 
-        public int EntityType { get; }
+        public int? EntityType { get; }
 
-        public int ForumId { get; }
+        public int? ForumId { get; }
 
         public ModeratorFilterDtoIn(
             int count,
             int page,
-            int entityId,
-            int entityType,
-            int forumId
+            int? entityId,
+            int? entityType,
+            int? forumId
         )
             : base(count, page)
         {

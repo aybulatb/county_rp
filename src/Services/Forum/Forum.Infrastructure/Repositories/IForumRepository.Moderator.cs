@@ -1,4 +1,5 @@
 ﻿using CountyRP.Services.Forum.Infrastructure.Models;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace CountyRP.Services.Forum.Infrastructure.Repositories
@@ -6,38 +7,38 @@ namespace CountyRP.Services.Forum.Infrastructure.Repositories
     public partial interface IForumRepository
     {
         /// <summary>
-        /// Создать модератора
+        /// Создать модератора.
         /// </summary>
-        /// <param name="moderatorDtoIn"></param>
-        /// <returns></returns>
         Task<ModeratorDtoOut> AddModeratorAsync(ModeratorDtoIn moderatorDtoIn);
+
+        /// <summary>
+        /// Создать модераторов.
+        /// </summary>
+        Task AddModeratorsAsync(IEnumerable<ModeratorDtoIn> moderatorsDtoIn);
 
         /// <summary>
         /// Получить данные модератора по ID
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
         Task<ModeratorDtoOut> GetModeratorByIdAsync(int id);
 
         /// <summary>
         /// Получить отфильтрованный список модераторов
         /// </summary>
-        /// <param name="moderatorFilterDtoIn"></param>
-        /// <returns></returns>
         Task<PagedFilterResult<ModeratorDtoOut>> GetModeratorByFilterAsync(ModeratorFilterDtoIn moderatorFilterDtoIn);
 
         /// <summary>
         /// Изменить данные модератора по ID
         /// </summary>
-        /// <param name="moderatorDtoOut"></param>
-        /// <returns></returns>
-        Task<ModeratorDtoOut> UpdateModeratorAsync(ModeratorDtoOut moderatorDtoOut);
+        Task UpdateModeratorAsync(ModeratorDtoOut moderatorDtoOut);
+
+        /// <summary>
+        /// Изменить данные модераторов.
+        /// </summary>
+        Task UpdateModeratorsAsync(IEnumerable<ModeratorDtoOut> moderatorsDtoOut);
 
         /// <summary>
         /// Удалить модератора по ID
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
         Task DeleteModeratorByIdAsync(int id);
     }
 }

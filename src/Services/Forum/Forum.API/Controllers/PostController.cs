@@ -95,7 +95,7 @@ namespace CountyRP.Services.Forum.API.Controllers
         /// Изменить данные сообщения по ID
         /// </summary>
         [HttpPut("{id}")]
-        [ProducesResponseType(typeof(ApiPostDtoOut), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Edit(int id, [FromBody] ApiPostDtoIn apiPostDtoIn)
@@ -114,11 +114,9 @@ namespace CountyRP.Services.Forum.API.Controllers
                 id: id
             );
 
-            var updatedPostDtoOut = await _forumRepository.UpdatePostAsync(PostDtoOut);
+            await _forumRepository.UpdatePostAsync(PostDtoOut);
 
-            return Ok(
-                PostDtoOutConverter.ToApi(updatedPostDtoOut)
-            );
+            return NoContent();
         }
 
         /// <summary>

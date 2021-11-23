@@ -28,7 +28,7 @@ namespace CountyRP.Services.Forum.Infrastructure.Repositories
         /// <summary>
         /// Изменить данные пользователя по ID.
         /// </summary>
-        Task<UserDtoOut> UpdateUserAsync(int id, UserDtoOut userDtoOut);
+        Task UpdateUserAsync(int id, UserDtoOut userDtoOut);
 
         /// <summary>
         /// Удалить пользователя по ID.
