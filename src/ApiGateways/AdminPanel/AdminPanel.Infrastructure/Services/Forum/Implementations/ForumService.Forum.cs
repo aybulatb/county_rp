@@ -1,5 +1,7 @@
-﻿using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Forum.Models;
+﻿using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Forum.Converters;
+using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Forum.Models;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Forum.Implementations
@@ -18,7 +20,10 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Forum.Implemen
 
         public async Task<IEnumerable<ForumHierarchicalForumDtoOut>> GetHierarchicalForumsAsync()
         {
-            return null;
+            var apiHierarchicalForums = await _forumClient.GetHierarchicalAsync();
+
+            return apiHierarchicalForums
+                .Select(ApiHierarchicalForumDtoOutConverter.ToService);
         }
 
         public async Task<ForumForumWithModeratorsDtoOut> UpdateForumWithModeratorsAsync(ForumUpdatedForumWithModeratorsDtoIn updatedForumWithModeratorsDtoIn)
