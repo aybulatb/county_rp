@@ -122,6 +122,15 @@ namespace CountyRP.Services.Forum.Infrastructure.Repositories
             await _forumDbContext.SaveChangesAsync();
         }
 
+        public async Task UpdateForumsAsync(IEnumerable<ForumDtoOut> forumsDtoOut)
+        {
+            var forumsDao = forumsDtoOut
+                .Select(ForumDtoOutConverter.ToDb);
+
+            _forumDbContext.Forums.UpdateRange(forumsDao);
+            await _forumDbContext.SaveChangesAsync();
+        }
+
         public async Task DeleteForumAsync(int id)
         {
             var forum = await _forumDbContext

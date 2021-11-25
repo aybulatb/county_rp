@@ -164,20 +164,17 @@ namespace CountyRP.Services.Forum.API.Controllers
         }
 
         [HttpPut("Ordered")]
+        [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> EditOrdered([FromBody] IEnumerable<ApiUpdatedOrderedForumDtoIn> apiUpdatedOrderedForumsDtoIn)
         {
-            var parentIds = apiUpdatedOrderedForumsDtoIn
-                .Select(forum => forum.ParentId)
-                .Distinct();
-            var forumIds = apiUpdatedOrderedForumsDtoIn
-                .Select(forum => forum.Id)
-                .Union(parentIds);
-
-            var currentForums = await _forumRepository.GetForumsByFilterAsync(new ForumFilterDtoIn(
-                count: null,
-                page: null,
-                ids: forumIds,
-                parentIds: null)
+            var currentForums = await _forumRepository.GetForumsByFilterAsync(
+                new ForumFilterDtoIn(
+                    count: null,
+                    page: null,
+                    ids: null,
+                    parentIds: null
+                )
             );
 
             var updatedForums = apiUpdatedOrderedForumsDtoIn
@@ -203,6 +200,15 @@ namespace CountyRP.Services.Forum.API.Controllers
                 .All(result => result == true);
             var doNotHavePasses = updatedForumGroupsByParentIdAndOrder
                 .All(forumGroup => forumGroup.Count() == forumGroup.Max(forum => forum.Key) + 1);
+
+            if (allAreMoreOrEqualThanZero && doNotHaveDuplicates && doNotHavePasses)
+            {
+                await _forumRepository.UpdateForumsAsync(updatedForums);
+            }
+            else
+            {
+                return BadRequest();
+            }
 
             return NoContent();
         }
