@@ -76,30 +76,38 @@ namespace CountyRP.Services.Forum.Infrastructure.Repositories
                 : null;
         }
 
-        public async Task<PagedFilterResult<ForumDtoOut>> GetForumsByFilterAsync(ForumFilterDtoIn filterDtoIn)
+        public async Task<PagedFilterResult<ForumDtoOut>> GetForumsByFilterAsync(ForumFilterDtoIn filter)
         {
-            var forumsQuery = _forumDbContext
+            var query = _forumDbContext
                 .Forums
                 .AsNoTracking()
-                .Where(
-                    forum => forum.ParentId.Equals(filterDtoIn.ParentId)
+                .Where(forum =>
+                    (filter.Ids == null || filter.Ids.Contains(forum.Id)) &&
+                    (filter.ParentIds == null || filter.ParentIds.Contains(forum.ParentId))
                 )
                 .AsQueryable();
 
-            var allCount = await forumsQuery.CountAsync();
-            var maxPages = (allCount % filterDtoIn.Count == 0)
-                ? allCount / filterDtoIn.Count
-                : allCount / filterDtoIn.Count + 1;
+            var allCount = await query.CountAsync();
+            var maxPages = filter.Count.HasValue && filter.Count.Value != 0
+                ?
+                    (allCount % filter.Count.Value == 0)
+                        ? allCount / filter.Count.Value
+                        : allCount / filter.Count.Value + 1
+                : 1;
 
-            var filteredForumsDao = await forumsQuery
-                .OrderBy(forum => forum.Id)
-                .Skip(filterDtoIn.Count * (filterDtoIn.Page - 1))
-                .Take(filterDtoIn.Count)
+            if (filter.Page.HasValue && filter.Count.HasValue && filter.Count.Value > 0 && filter.Page.Value > 0)
+            {
+                query = query
+                   .Skip((filter.Page.Value - 1) * filter.Count.Value)
+                   .Take(filter.Count.Value);
+            }
+
+            var filteredForumsDao = await query
                 .ToListAsync();
 
             return new PagedFilterResult<ForumDtoOut>(
                 allCount: allCount,
-                page: filterDtoIn.Page,
+                page: filter.Page ?? 1,
                 maxPages: maxPages,
                 items: filteredForumsDao
                     .Select(ForumDaoConverter.ToRepository)

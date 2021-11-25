@@ -12,7 +12,8 @@ namespace CountyRP.Services.Forum.API.Converters
             return new ForumFilterDtoIn(
                 count: source.Count,
                 page: source.Page,
-                parentId: source.ParentId
+                ids: null,
+                parentIds: source.ParentIds
             );
         }
     }

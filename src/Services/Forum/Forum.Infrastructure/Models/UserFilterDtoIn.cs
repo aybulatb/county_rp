@@ -11,8 +11,8 @@ namespace CountyRP.Services.Forum.Infrastructure.Models
         public IEnumerable<string> GroupIds { get; }
 
         public UserFilterDtoIn(
-            int count,
-            int page,
+            int? count,
+            int? page,
             string login,
             string sortingFlag,
             IEnumerable<string> groupIds

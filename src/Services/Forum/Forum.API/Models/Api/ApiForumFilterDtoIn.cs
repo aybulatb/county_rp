@@ -1,7 +1,9 @@
-﻿namespace CountyRP.Services.Forum.API.Models.Api
+﻿using System.Collections.Generic;
+
+namespace CountyRP.Services.Forum.API.Models.Api
 {
     public class ApiForumFilterDtoIn : ApiPagedFilter
     {
-        public int ParentId { get; set; }
+        public IEnumerable<int> ParentIds { get; init; }
     }
 }

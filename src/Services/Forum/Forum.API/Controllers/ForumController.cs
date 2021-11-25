@@ -155,10 +155,54 @@ namespace CountyRP.Services.Forum.API.Controllers
 
             var forumDtoOut = ApiForumDtoInConverter.ToDtoOut(
                 source: apiForumDtoIn,
-                id: id
+                id: id 
             );
 
             await _forumRepository.UpdateForumAsync(forumDtoOut);
+
+            return NoContent();
+        }
+
+        [HttpPut("Ordered")]
+        public async Task<IActionResult> EditOrdered([FromBody] IEnumerable<ApiUpdatedOrderedForumDtoIn> apiUpdatedOrderedForumsDtoIn)
+        {
+            var parentIds = apiUpdatedOrderedForumsDtoIn
+                .Select(forum => forum.ParentId)
+                .Distinct();
+            var forumIds = apiUpdatedOrderedForumsDtoIn
+                .Select(forum => forum.Id)
+                .Union(parentIds);
+
+            var currentForums = await _forumRepository.GetForumsByFilterAsync(new ForumFilterDtoIn(
+                count: null,
+                page: null,
+                ids: forumIds,
+                parentIds: null)
+            );
+
+            var updatedForums = apiUpdatedOrderedForumsDtoIn
+                .Join(
+                    currentForums.Items,
+                    updatedForum => updatedForum.Id,
+                    currentForum => currentForum.Id,
+                    (updatedForum, currentForum) => new ForumDtoOut(
+                        id: currentForum.Id,
+                        name: currentForum.Name,
+                        parentId: updatedForum.ParentId,
+                        order: updatedForum.Order
+                    )
+                );
+
+            var updatedForumGroupsByParentIdAndOrder = updatedForums
+                .GroupBy(forum => forum.ParentId)
+                .Select(forumGroup => forumGroup.GroupBy(forum => forum.Order));
+
+            var allAreMoreOrEqualThanZero = updatedForums.All(forum => forum.Order >= 0);
+            var doNotHaveDuplicates = updatedForumGroupsByParentIdAndOrder
+                .Select(forumGroup => forumGroup.All(forum => forum.Count() == 1))
+                .All(result => result == true);
+            var doNotHavePasses = updatedForumGroupsByParentIdAndOrder
+                .All(forumGroup => forumGroup.Count() == forumGroup.Max(forum => forum.Key) + 1);
 
             return NoContent();
         }

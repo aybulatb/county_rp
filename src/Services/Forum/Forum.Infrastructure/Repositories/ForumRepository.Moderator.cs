@@ -60,14 +60,14 @@ namespace CountyRP.Services.Forum.Infrastructure.Repositories
 
             var filteredModeratorsDao = await moderatorsQuery
                 .OrderBy(moderator => moderator.Id)
-                .Skip(moderatorFilterDtoIn.Count * (moderatorFilterDtoIn.Page - 1))
-                .Take(moderatorFilterDtoIn.Count)
+                .Skip(moderatorFilterDtoIn.Count.Value * (moderatorFilterDtoIn.Page.Value - 1))
+                .Take(moderatorFilterDtoIn.Count.Value)
                 .ToListAsync();
 
             return new PagedFilterResult<ModeratorDtoOut>(
                 allCount: allCount,
-                page: moderatorFilterDtoIn.Page,
-                maxPages: maxPages,
+                page: moderatorFilterDtoIn.Page ?? 1,
+                maxPages: maxPages ?? 1,
                 items: filteredModeratorsDao
                     .Select(ModeratorDaoConverter.ToRepository)
             );

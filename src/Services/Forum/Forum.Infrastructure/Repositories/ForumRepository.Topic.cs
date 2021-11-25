@@ -47,14 +47,14 @@ namespace CountyRP.Services.Forum.Infrastructure.Repositories
 
             var filteredTopicsDao = await topicsQuery
                 .OrderBy(topic => topic.Id)
-                .Skip(topicFilterDtoIn.Count * (topicFilterDtoIn.Page - 1))
-                .Take(topicFilterDtoIn.Count)
+                .Skip(topicFilterDtoIn.Count.Value * (topicFilterDtoIn.Page.Value - 1))
+                .Take(topicFilterDtoIn.Count.Value)
                 .ToListAsync();
 
             return new PagedFilterResult<TopicDtoOut>(
                 allCount: allCount,
-                page: topicFilterDtoIn.Page,
-                maxPages: maxPages,
+                page: topicFilterDtoIn.Page ?? 1,
+                maxPages: maxPages.Value,
                 items: filteredTopicsDao
                     .Select(TopicDaoConverter.ToRepository)
             );

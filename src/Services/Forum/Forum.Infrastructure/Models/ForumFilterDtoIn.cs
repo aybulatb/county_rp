@@ -1,17 +1,23 @@
-﻿namespace CountyRP.Services.Forum.Infrastructure.Models
+﻿using System.Collections.Generic;
+
+namespace CountyRP.Services.Forum.Infrastructure.Models
 {
     public class ForumFilterDtoIn : PagedFilter
     {
-        public int ParentId { get; }
+        public IEnumerable<int> Ids { get; }
+
+        public IEnumerable<int> ParentIds { get; }
 
         public ForumFilterDtoIn(
-            int count,
-            int page,
-            int parentId
+            int? count,
+            int? page,
+            IEnumerable<int> ids,
+            IEnumerable<int> parentIds
         )
             : base(count, page)
         {
-            ParentId = parentId;
+            Ids = ids;
+            ParentIds = parentIds;
         }
     }
 }

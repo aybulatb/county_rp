@@ -9,8 +9,8 @@
         public int? ForumId { get; }
 
         public ModeratorFilterDtoIn(
-            int count,
-            int page,
+            int? count,
+            int? page,
             int? entityId,
             int? entityType,
             int? forumId

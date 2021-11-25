@@ -51,14 +51,14 @@ namespace CountyRP.Services.Forum.Infrastructure.Repositories
 
             var filteredPostsDao = await postsQuery
                 .OrderBy(post => post.CreationDateTime)
-                .Skip(postFilterDtoIn.Count * (postFilterDtoIn.Page - 1))
-                .Take(postFilterDtoIn.Count)
+                .Skip(postFilterDtoIn.Count.Value * (postFilterDtoIn.Page.Value - 1))
+                .Take(postFilterDtoIn.Count.Value)
                 .ToListAsync();
 
             return new PagedFilterResult<PostDtoOut>(
                 allCount: allCount,
-                page: postFilterDtoIn.Page,
-                maxPages: maxPages,
+                page: postFilterDtoIn.Page ?? 1,
+                maxPages: maxPages ?? 1,
                 items: filteredPostsDao
                     .Select(PostDaoConverter.ToRepository)
             );

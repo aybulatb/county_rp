@@ -35,14 +35,14 @@ namespace CountyRP.Services.Forum.Infrastructure.Repositories
 
             var filteredReputationsDao = await reputationsQuery
                 .OrderByDescending(reputation => reputation.DateTime)
-                .Skip(reputationFilterDtoIn.Count * (reputationFilterDtoIn.Page - 1))
-                .Take(reputationFilterDtoIn.Count)
+                .Skip(reputationFilterDtoIn.Count.Value * (reputationFilterDtoIn.Page.Value - 1))
+                .Take(reputationFilterDtoIn.Count.Value)
                 .ToListAsync();
 
             return new PagedFilterResult<ReputationDtoOut>(
                 allCount: allCount,
-                page: reputationFilterDtoIn.Page,
-                maxPages: maxPages,
+                page: reputationFilterDtoIn.Page ?? 1,
+                maxPages: maxPages.Value,
                 items: filteredReputationsDao
                     .Select(ReputationDaoConverter.ToRepository)
             );

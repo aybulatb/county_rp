@@ -36,6 +36,7 @@ namespace CountyRP.Services.Forum.API
             services.AddSingleton(apiKeys);
 
             services.AddControllers();
+
             services.AddSwaggerDocument(settings =>
             {
                 settings.Title = "County RP Forum Service API";

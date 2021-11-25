@@ -71,14 +71,14 @@ namespace CountyRP.Services.Forum.Infrastructure.Repositories
 
             var filteredUsersDao = await usersQuery
                 .OrderBy(user => user.Id)
-                .Skip(filterDtoIn.Count * (filterDtoIn.Page - 1))
-                .Take(filterDtoIn.Count)
+                .Skip(filterDtoIn.Count.Value * (filterDtoIn.Page.Value - 1))
+                .Take(filterDtoIn.Count.Value)
                 .ToListAsync();
 
             return new PagedFilterResult<UserDtoOut>(
                 allCount: allCount,
-                page: filterDtoIn.Page,
-                maxPages: maxPages,
+                page: filterDtoIn.Page ?? 1,
+                maxPages: maxPages.Value,
                 items: filteredUsersDao
                     .Select(UserDaoConverter.ToRepository)
             );

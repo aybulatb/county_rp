@@ -5,8 +5,8 @@
         public int UserId { get; }
 
         public ReputationFilterDtoIn(
-            int count,
-            int page,
+            int? count,
+            int? page,
             int userId
         )
             : base(count, page)

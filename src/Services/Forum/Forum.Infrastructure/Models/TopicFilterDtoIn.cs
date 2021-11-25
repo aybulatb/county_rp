@@ -5,8 +5,8 @@
         public int ForumId { get; }
 
         public TopicFilterDtoIn(
-            int count,
-            int page,
+            int? count,
+            int? page,
             int forumId
         )
             : base(count, page)

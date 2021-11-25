@@ -13,8 +13,8 @@ namespace CountyRP.Services.Forum.Infrastructure.Models
         public DateTimeOffset EditionDateTime { get; }
 
         public PostFilterDtoIn(
-            int count,
-            int page,
+            int? count,
+            int? page,
             string text,
             DateTimeOffset creationDateTime,
             DateTimeOffset editionDateTime

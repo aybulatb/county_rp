@@ -35,14 +35,14 @@ namespace CountyRP.Services.Forum.Infrastructure.Repositories
 
             var filteredWarningsDao = await warningsQuery
                 .OrderByDescending(warning => warning.DateTime)
-                .Skip(warningFilterDtoIn.Count * (warningFilterDtoIn.Page - 1))
-                .Take(warningFilterDtoIn.Count)
+                .Skip(warningFilterDtoIn.Count.Value * (warningFilterDtoIn.Page.Value - 1))
+                .Take(warningFilterDtoIn.Count.Value)
                 .ToListAsync();
 
             return new PagedFilterResult<WarningDtoOut>(
                 allCount: allCount,
-                page: warningFilterDtoIn.Page,
-                maxPages: maxPages,
+                page: warningFilterDtoIn.Page ?? 1,
+                maxPages: maxPages.Value,
                 items: filteredWarningsDao
                     .Select(WarningDaoConverter.ToRepository)
             );
