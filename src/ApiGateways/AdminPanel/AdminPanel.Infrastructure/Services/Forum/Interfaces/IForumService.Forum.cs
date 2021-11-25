@@ -12,7 +12,9 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Forum.Interfac
 
         Task<IEnumerable<ForumHierarchicalForumDtoOut>> GetHierarchicalForumsAsync();
 
-        Task<ForumForumWithModeratorsDtoOut> UpdateForumWithModeratorsAsync(ForumUpdatedForumWithModeratorsDtoIn updatedForumWithModeratorsDtoIn);
+        Task UpdateForumWithModeratorsAsync(ForumUpdatedForumWithModeratorsDtoIn updatedForumWithModeratorsDtoIn);
+
+        Task UpdateOrderedForumsAsync(IEnumerable<ForumUpdatedOrderedForumDtoIn> updatedOrderedForumsDtoIn);
 
         Task DeleteForumAsync(int id);
     }

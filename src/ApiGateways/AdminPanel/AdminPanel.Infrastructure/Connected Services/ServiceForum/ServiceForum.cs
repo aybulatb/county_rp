@@ -62,11 +62,18 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClients.ServiceForu
         System.Threading.Tasks.Task DeleteAsync(int id, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ApiPagedFilterResultOfApiForumDtoOut> FilterByAsync(int? parentId, int? count, int? page);
+        System.Threading.Tasks.Task<ApiPagedFilterResultOfApiForumDtoOut> FilterByAsync(System.Collections.Generic.IEnumerable<int> parentIds, int? count, int? page);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ApiPagedFilterResultOfApiForumDtoOut> FilterByAsync(int? parentId, int? count, int? page, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<ApiPagedFilterResultOfApiForumDtoOut> FilterByAsync(System.Collections.Generic.IEnumerable<int> parentIds, int? count, int? page, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task EditOrderedAsync(System.Collections.Generic.IEnumerable<ApiUpdatedOrderedForumDtoIn> apiUpdatedOrderedForumsDtoIn);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task EditOrderedAsync(System.Collections.Generic.IEnumerable<ApiUpdatedOrderedForumDtoIn> apiUpdatedOrderedForumsDtoIn, System.Threading.CancellationToken cancellationToken);
     
     }
     
@@ -609,20 +616,20 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClients.ServiceForu
         }
     
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<ApiPagedFilterResultOfApiForumDtoOut> FilterByAsync(int? parentId, int? count, int? page)
+        public System.Threading.Tasks.Task<ApiPagedFilterResultOfApiForumDtoOut> FilterByAsync(System.Collections.Generic.IEnumerable<int> parentIds, int? count, int? page)
         {
-            return FilterByAsync(parentId, count, page, System.Threading.CancellationToken.None);
+            return FilterByAsync(parentIds, count, page, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<ApiPagedFilterResultOfApiForumDtoOut> FilterByAsync(int? parentId, int? count, int? page, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<ApiPagedFilterResultOfApiForumDtoOut> FilterByAsync(System.Collections.Generic.IEnumerable<int> parentIds, int? count, int? page, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/Forum/FilterBy?");
-            if (parentId != null)
+            if (parentIds != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("ParentId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(parentId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                foreach (var item_ in parentIds) { urlBuilder_.Append(System.Uri.EscapeDataString("ParentIds") + "=").Append(System.Uri.EscapeDataString(ConvertToString(item_, System.Globalization.CultureInfo.InvariantCulture))).Append("&"); }
             }
             if (count != null)
             {
@@ -672,6 +679,88 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClients.ServiceForu
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<string>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<string>("A server side error occurred.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+    
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task EditOrderedAsync(System.Collections.Generic.IEnumerable<ApiUpdatedOrderedForumDtoIn> apiUpdatedOrderedForumsDtoIn)
+        {
+            return EditOrderedAsync(apiUpdatedOrderedForumsDtoIn, System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task EditOrderedAsync(System.Collections.Generic.IEnumerable<ApiUpdatedOrderedForumDtoIn> apiUpdatedOrderedForumsDtoIn, System.Threading.CancellationToken cancellationToken)
+        {
+            if (apiUpdatedOrderedForumsDtoIn == null)
+                throw new System.ArgumentNullException("apiUpdatedOrderedForumsDtoIn");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/Forum/Ordered");
+    
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(apiUpdatedOrderedForumsDtoIn, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("PUT");
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+    
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+    
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 204)
+                        {
+                            return;
                         }
                         else
                         if (status_ == 400)
@@ -4783,6 +4872,21 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClients.ServiceForu
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.5.2.0 (Newtonsoft.Json v12.0.0.2)")]
+    public partial class ApiUpdatedOrderedForumDtoIn 
+    {
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Always)]
+        public int Id { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("parentId", Required = Newtonsoft.Json.Required.Always)]
+        public int ParentId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("order", Required = Newtonsoft.Json.Required.Always)]
+        public int Order { get; set; }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.5.2.0 (Newtonsoft.Json v12.0.0.2)")]
     public partial class ApiModeratorDtoOut 
     {
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Always)]
@@ -4792,7 +4896,7 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClients.ServiceForu
         public int EntityId { get; set; }
     
         [Newtonsoft.Json.JsonProperty("entityType", Required = Newtonsoft.Json.Required.Always)]
-        public int EntityType { get; set; }
+        public ApiModeratorEntityTypeDto EntityType { get; set; }
     
         [Newtonsoft.Json.JsonProperty("forumId", Required = Newtonsoft.Json.Required.Always)]
         public int ForumId { get; set; }
@@ -4819,13 +4923,24 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClients.ServiceForu
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.5.2.0 (Newtonsoft.Json v12.0.0.2)")]
+    public enum ApiModeratorEntityTypeDto
+    {
+        Unknown = 0,
+    
+        Group = 1,
+    
+        User = 2,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.5.2.0 (Newtonsoft.Json v12.0.0.2)")]
     public partial class ApiModeratorDtoIn 
     {
         [Newtonsoft.Json.JsonProperty("entityId", Required = Newtonsoft.Json.Required.Always)]
         public int EntityId { get; set; }
     
         [Newtonsoft.Json.JsonProperty("entityType", Required = Newtonsoft.Json.Required.Always)]
-        public int EntityType { get; set; }
+        public ApiModeratorEntityTypeDto EntityType { get; set; }
     
         [Newtonsoft.Json.JsonProperty("forumId", Required = Newtonsoft.Json.Required.Always)]
         public int ForumId { get; set; }

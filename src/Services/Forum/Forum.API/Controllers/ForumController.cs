@@ -177,16 +177,25 @@ namespace CountyRP.Services.Forum.API.Controllers
                 )
             );
 
-            var updatedForums = apiUpdatedOrderedForumsDtoIn
-                .Join(
-                    currentForums.Items,
-                    updatedForum => updatedForum.Id,
+            var updatedForums = currentForums
+                .Items
+                .GroupJoin(
+                    apiUpdatedOrderedForumsDtoIn.DefaultIfEmpty(),
                     currentForum => currentForum.Id,
-                    (updatedForum, currentForum) => new ForumDtoOut(
-                        id: currentForum.Id,
-                        name: currentForum.Name,
-                        parentId: updatedForum.ParentId,
-                        order: updatedForum.Order
+                    updatedForum => updatedForum.Id,
+                    (currentForum, updatedForum) => new
+                    {
+                        CurrentForum = currentForum,
+                        UpdatedForum = updatedForum
+                    }
+                )
+                .SelectMany(
+                    x => x.UpdatedForum.DefaultIfEmpty(),
+                    (currentForum, updatedForum) => new ForumDtoOut(
+                        id: currentForum.CurrentForum.Id,
+                        name: currentForum.CurrentForum.Name,
+                        parentId: updatedForum == null ? currentForum.CurrentForum.ParentId : updatedForum.ParentId,
+                        order: updatedForum == null ? currentForum.CurrentForum.Order : updatedForum.Order
                     )
                 );
 

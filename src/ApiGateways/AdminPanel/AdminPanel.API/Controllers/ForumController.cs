@@ -37,9 +37,14 @@ namespace CountyRP.ApiGateways.AdminPanel.API.Controllers
             );
         }
 
-        [HttpPut("Hierarchical")]
-        public async Task<IActionResult> EditHierarchical(IEnumerable<ApiUpdatedOrderedForumDtoIn> apiUpdatedOrderedForumDtoIn)
+        [HttpPut("Ordered")]
+        public async Task<IActionResult> EditOrdered(IEnumerable<ApiUpdatedOrderedForumDtoIn> apiUpdatedOrderedForumDtoIn)
         {
+            var updatedOrderedForumDtoIn = apiUpdatedOrderedForumDtoIn
+                .Select(ApiUpdatedOrderedForumDtoInConverter.ToService);
+
+            await _forumService.UpdateOrderedForumsAsync(updatedOrderedForumDtoIn);
+
             return NoContent();
         }
     }

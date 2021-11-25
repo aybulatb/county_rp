@@ -26,9 +26,16 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Forum.Implemen
                 .Select(ApiHierarchicalForumDtoOutConverter.ToService);
         }
 
-        public async Task<ForumForumWithModeratorsDtoOut> UpdateForumWithModeratorsAsync(ForumUpdatedForumWithModeratorsDtoIn updatedForumWithModeratorsDtoIn)
+        public async Task UpdateForumWithModeratorsAsync(ForumUpdatedForumWithModeratorsDtoIn updatedForumWithModeratorsDtoIn)
         {
-            return null;
+        }
+
+        public async Task UpdateOrderedForumsAsync(IEnumerable<ForumUpdatedOrderedForumDtoIn> updatedOrderedForumsDtoIn)
+        {
+            var apiUpdatedOrderedForumsDtoIn = updatedOrderedForumsDtoIn
+                .Select(ForumUpdatedOrderedForumDtoInConverter.ToExternalApi);
+
+            await _forumClient.EditOrderedAsync(apiUpdatedOrderedForumsDtoIn);
         }
 
         public async Task DeleteForumAsync(int id)
