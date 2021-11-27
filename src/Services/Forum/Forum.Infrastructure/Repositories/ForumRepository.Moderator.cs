@@ -1,4 +1,5 @@
 ﻿using CountyRP.Services.Forum.Infrastructure.Converters;
+using CountyRP.Services.Forum.Infrastructure.Entities;
 using CountyRP.Services.Forum.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -40,34 +41,28 @@ namespace CountyRP.Services.Forum.Infrastructure.Repositories
                 : null;
         }
 
-        public async Task<PagedFilterResult<ModeratorDtoOut>> GetModeratorByFilterAsync(ModeratorFilterDtoIn moderatorFilterDtoIn)
+        public async Task<PagedFilterResult<ModeratorDtoOut>> GetModeratorByFilterAsync(ModeratorFilterDtoIn filter)
         {
-            var moderatorsQuery = _forumDbContext
-                .Moderators
+            var query = GetModeratorsQuery(filter);
+
+            var allCount = await query.CountAsync();
+            var maxPages = filter.Count.HasValue && filter.Count.Value != 0
+                ?
+                    (allCount % filter.Count.Value == 0)
+                        ? allCount / filter.Count.Value
+                        : allCount / filter.Count.Value + 1
+                : 1;
+
+            query = GetModeratorsQueryWithPaging(query, filter);
+
+            var filteredModeratorsDao = await query
                 .AsNoTracking()
-                .Where(
-                    moderator =>
-                        (moderatorFilterDtoIn.EntityId == null || moderatorFilterDtoIn.EntityId.Equals(moderator.EntityId)) &&
-                        (moderatorFilterDtoIn.EntityType == null || moderatorFilterDtoIn.EntityType.Equals(moderator.EntityType)) &&
-                        (moderatorFilterDtoIn.ForumId == null || moderatorFilterDtoIn.ForumId.Equals(moderator.ForumId))
-                )
-                .AsQueryable();
-
-            var allCount = await moderatorsQuery.CountAsync();
-            var maxPages = (allCount % moderatorFilterDtoIn.Count == 0)
-                ? allCount / moderatorFilterDtoIn.Count
-                : allCount / moderatorFilterDtoIn.Count + 1;
-
-            var filteredModeratorsDao = await moderatorsQuery
-                .OrderBy(moderator => moderator.Id)
-                .Skip(moderatorFilterDtoIn.Count.Value * (moderatorFilterDtoIn.Page.Value - 1))
-                .Take(moderatorFilterDtoIn.Count.Value)
                 .ToListAsync();
 
             return new PagedFilterResult<ModeratorDtoOut>(
                 allCount: allCount,
-                page: moderatorFilterDtoIn.Page ?? 1,
-                maxPages: maxPages ?? 1,
+                page: filter.Page ?? 1,
+                maxPages: maxPages,
                 items: filteredModeratorsDao
                     .Select(ModeratorDaoConverter.ToRepository)
             );
@@ -90,7 +85,7 @@ namespace CountyRP.Services.Forum.Infrastructure.Repositories
             await _forumDbContext.SaveChangesAsync();
         }
 
-        public async Task DeleteModeratorByIdAsync(int id)
+        public async Task DeleteModeratorAsync(int id)
         {
             var moderator = await _forumDbContext
                 .Moderators
@@ -98,6 +93,43 @@ namespace CountyRP.Services.Forum.Infrastructure.Repositories
 
             _forumDbContext.Moderators.Remove(moderator);
             await _forumDbContext.SaveChangesAsync();
+        }
+
+        public async Task DeleteModeratorsByFilterAsync(ModeratorFilterDtoIn filter)
+        {
+            var query = GetModeratorsQuery(filter);
+
+            query = GetModeratorsQueryWithPaging(query, filter);
+
+            var moderatorsForDeleting = query;
+
+            _forumDbContext.Moderators.RemoveRange(moderatorsForDeleting);
+            await _forumDbContext.SaveChangesAsync();
+        }
+
+        private IQueryable<ModeratorDao> GetModeratorsQuery(ModeratorFilterDtoIn filter)
+        {
+            return _forumDbContext
+                .Moderators
+                .AsNoTracking()
+                .Where(
+                    moderator =>
+                        (filter.EntityId == null || filter.EntityId.Equals(moderator.EntityId)) &&
+                        (filter.EntityType == null || filter.EntityType.Equals(moderator.EntityType)) &&
+                        (filter.ForumId == null || filter.ForumId.Equals(moderator.ForumId))
+                );
+        }
+
+        private IQueryable<ModeratorDao> GetModeratorsQueryWithPaging(IQueryable<ModeratorDao> query, ModeratorFilterDtoIn filter)
+        {
+            if (filter.Page.HasValue && filter.Count.HasValue && filter.Count.Value > 0 && filter.Page.Value > 0)
+            {
+                query = query
+                   .Skip((filter.Page.Value - 1) * filter.Count.Value)
+                   .Take(filter.Count.Value);
+            }
+
+            return query;
         }
     }
 }

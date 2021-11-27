@@ -709,6 +709,40 @@
         ]
       }
     },
+    "/Moderator/ByFilter": {
+      "delete": {
+        "tags": [
+          "Moderator"
+        ],
+        "operationId": "Moderator_DeleteByFilter",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "name": "apiModeratorFilterDtoIn",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiModeratorFilterDtoIn"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
     "/Post": {
       "post": {
         "tags": [
@@ -2212,6 +2246,43 @@
           "items": {
             "$ref": "#/definitions/ApiModeratorDtoOut"
           }
+        }
+      }
+    },
+    "ApiModeratorFilterDtoIn": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/ApiPagedFilter"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "entityId": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "entityType": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "forumId": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        }
+      ]
+    },
+    "ApiPagedFilter": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "page": {
+          "type": "integer",
+          "format": "int32"
         }
       }
     },

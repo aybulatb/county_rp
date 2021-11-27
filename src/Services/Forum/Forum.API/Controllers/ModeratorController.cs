@@ -93,12 +93,12 @@ namespace CountyRP.Services.Forum.API.Controllers
         [ProducesResponseType(typeof(PagedFilterResult<ApiModeratorDtoOut>), StatusCodes.Status200OK)]
         public async Task<IActionResult> FilterBy([FromQuery] ApiModeratorFilterDtoIn filter)
         {
-            if (filter.Count < 1 || filter.Count > 100)
+            if (filter.Count.HasValue && (filter.Count < 1 || filter.Count > 100))
             {
                 return BadRequest(ConstantMessages.CountItemPerPageMoreThan100);
             }
 
-            if (filter.Page < 1)
+            if (filter.Page.HasValue && filter.Page < 1)
             {
                 return BadRequest(ConstantMessages.InvalidPageNumber);
             }
@@ -155,7 +155,7 @@ namespace CountyRP.Services.Forum.API.Controllers
         }
 
         /// <summary>
-        /// Удалить тему по ID.
+        /// Удалить модератора по ID.
         /// </summary>
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -171,7 +171,21 @@ namespace CountyRP.Services.Forum.API.Controllers
                 );
             }
 
-            await _forumRepository.DeleteModeratorByIdAsync(id);
+            await _forumRepository.DeleteModeratorAsync(id);
+
+            return Ok();
+        }
+
+        /// <summary>
+        /// Удалить модераторов по списку ID.
+        /// </summary>
+        [HttpDelete("ByFilter")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> DeleteByFilter([FromBody] ApiModeratorFilterDtoIn apiModeratorFilterDtoIn)
+        {
+            var moderatoFilterDtoIn = ApiModeratorFilterDtoInConverter.ToRepository(apiModeratorFilterDtoIn);
+
+            await _forumRepository.DeleteModeratorsByFilterAsync(moderatoFilterDtoIn);
 
             return Ok();
         }

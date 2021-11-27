@@ -17,17 +17,17 @@ namespace CountyRP.Services.Forum.Infrastructure.Repositories
         Task AddModeratorsAsync(IEnumerable<ModeratorDtoIn> moderatorsDtoIn);
 
         /// <summary>
-        /// Получить данные модератора по ID
+        /// Получить данные модератора по ID.
         /// </summary>
         Task<ModeratorDtoOut> GetModeratorByIdAsync(int id);
 
         /// <summary>
-        /// Получить отфильтрованный список модераторов
+        /// Получить отфильтрованный список модераторов.
         /// </summary>
-        Task<PagedFilterResult<ModeratorDtoOut>> GetModeratorByFilterAsync(ModeratorFilterDtoIn moderatorFilterDtoIn);
+        Task<PagedFilterResult<ModeratorDtoOut>> GetModeratorByFilterAsync(ModeratorFilterDtoIn filter);
 
         /// <summary>
-        /// Изменить данные модератора по ID
+        /// Изменить данные модератора по ID.
         /// </summary>
         Task UpdateModeratorAsync(ModeratorDtoOut moderatorDtoOut);
 
@@ -37,8 +37,13 @@ namespace CountyRP.Services.Forum.Infrastructure.Repositories
         Task UpdateModeratorsAsync(IEnumerable<ModeratorDtoOut> moderatorsDtoOut);
 
         /// <summary>
-        /// Удалить модератора по ID
+        /// Удалить модератора по ID.
         /// </summary>
-        Task DeleteModeratorByIdAsync(int id);
+        Task DeleteModeratorAsync(int id);
+
+        /// <summary>
+        /// Удалить модераторов по фильтру.
+        /// </summary>
+        Task DeleteModeratorsByFilterAsync(ModeratorFilterDtoIn filter);
     }
 }

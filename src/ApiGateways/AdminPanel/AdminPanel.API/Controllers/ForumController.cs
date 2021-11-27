@@ -47,5 +47,29 @@ namespace CountyRP.ApiGateways.AdminPanel.API.Controllers
 
             return NoContent();
         }
+
+        [HttpGet("{id}/Moderators")]
+        public async Task<IActionResult> GetWithModerators(int id)
+        {
+            return Ok();
+        }
+
+        [HttpPut("{id}/Moderators")]
+        public async Task<IActionResult> EditWithModerators(int id)
+        {
+            return NoContent();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create()
+        {
+            return Created(string.Empty, null);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            return Ok();
+        }
     }
 }
