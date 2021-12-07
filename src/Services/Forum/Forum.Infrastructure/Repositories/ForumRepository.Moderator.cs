@@ -114,6 +114,7 @@ namespace CountyRP.Services.Forum.Infrastructure.Repositories
                 .AsNoTracking()
                 .Where(
                     moderator =>
+                        (filter.Ids == null || filter.Ids.Contains(moderator.Id)) &&
                         (filter.EntityId == null || filter.EntityId.Equals(moderator.EntityId)) &&
                         (filter.EntityType == null || filter.EntityType.Equals(moderator.EntityType)) &&
                         (filter.ForumId == null || filter.ForumId.Equals(moderator.ForumId))

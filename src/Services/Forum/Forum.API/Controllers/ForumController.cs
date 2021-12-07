@@ -1,4 +1,5 @@
-﻿using CountyRP.Services.Forum.API.Converters;
+﻿using CountyRP.Services.Forum.API.Comparers;
+using CountyRP.Services.Forum.API.Converters;
 using CountyRP.Services.Forum.API.Models.Api;
 using CountyRP.Services.Forum.Infrastructure.Models;
 using CountyRP.Services.Forum.Infrastructure.Repositories;
@@ -36,9 +37,11 @@ namespace CountyRP.Services.Forum.API.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Create([FromBody] ApiForumDtoIn apiForumDtoIn)
         {
-            if (apiForumDtoIn.Name == null || apiForumDtoIn.Name.Length < 1 || apiForumDtoIn.Name.Length > 96)
+            var validationResult = await ValidateForum(apiForumDtoIn);
+
+            if (validationResult != null)
             {
-                return BadRequest(ConstantMessages.ForumInvalidNameLength);
+                return validationResult;
             }
 
             var forumDtoIn = ApiForumDtoInConverter.ToRepository(apiForumDtoIn);
@@ -148,9 +151,11 @@ namespace CountyRP.Services.Forum.API.Controllers
                 );
             }
 
-            if (apiForumDtoIn.Name == null || apiForumDtoIn.Name.Length < 1 || apiForumDtoIn.Name.Length > 96)
+            var validationResult = await ValidateForum(apiForumDtoIn);
+
+            if (validationResult != null)
             {
-                return BadRequest(ConstantMessages.ForumInvalidNameLength);
+                return validationResult;
             }
 
             var forumDtoOut = ApiForumDtoInConverter.ToDtoOut(
@@ -177,44 +182,12 @@ namespace CountyRP.Services.Forum.API.Controllers
                 )
             );
 
-            var updatedForums = currentForums
-                .Items
-                .GroupJoin(
-                    apiUpdatedOrderedForumsDtoIn.DefaultIfEmpty(),
-                    currentForum => currentForum.Id,
-                    updatedForum => updatedForum.Id,
-                    (currentForum, updatedForum) => new
-                    {
-                        CurrentForum = currentForum,
-                        UpdatedForum = updatedForum
-                    }
-                )
-                .SelectMany(
-                    x => x.UpdatedForum.DefaultIfEmpty(),
-                    (currentForum, updatedForum) => new ForumDtoOut(
-                        id: currentForum.CurrentForum.Id,
-                        name: currentForum.CurrentForum.Name,
-                        parentId: updatedForum == null ? currentForum.CurrentForum.ParentId : updatedForum.ParentId,
-                        order: updatedForum == null ? currentForum.CurrentForum.Order : updatedForum.Order
-                    )
-                );
+            var updatedOrderedForumsDtoIn = apiUpdatedOrderedForumsDtoIn
+                .Select(ApiUpdatedOrderedForumDtoInConverter.ToForumDtoOut);
 
-            var updatedForumGroupsByParentIdAndOrder = updatedForums
-                .GroupBy(forum => forum.ParentId)
-                .Select(forumGroup => forumGroup.GroupBy(forum => forum.Order));
+            var result = ValidateForumsOrdering(currentForums.Items, updatedOrderedForumsDtoIn);
 
-            var allAreMoreOrEqualThanZero = updatedForums.All(forum => forum.Order >= 0);
-            var doNotHaveDuplicates = updatedForumGroupsByParentIdAndOrder
-                .Select(forumGroup => forumGroup.All(forum => forum.Count() == 1))
-                .All(result => result == true);
-            var doNotHavePasses = updatedForumGroupsByParentIdAndOrder
-                .All(forumGroup => forumGroup.Count() == forumGroup.Max(forum => forum.Key) + 1);
-
-            if (allAreMoreOrEqualThanZero && doNotHaveDuplicates && doNotHavePasses)
-            {
-                await _forumRepository.UpdateForumsAsync(updatedForums);
-            }
-            else
+            if (!result)
             {
                 return BadRequest();
             }
@@ -242,6 +215,93 @@ namespace CountyRP.Services.Forum.API.Controllers
             await _forumRepository.DeleteForumAsync(id);
 
             return Ok();
+        }
+
+        [HttpPost("Validation")]
+        public async Task<IActionResult> Validate(ApiForumDtoIn apiForumDtoIn)
+        {
+            var validationResult = await ValidateForum(apiForumDtoIn);
+
+            if (validationResult != null)
+            {
+                return validationResult;
+            }
+
+            return Ok();
+        }
+
+        private async Task<IActionResult> ValidateForum(ApiForumDtoIn apiForumDtoIn)
+        {
+            if (apiForumDtoIn.Name == null || apiForumDtoIn.Name.Length < 1 || apiForumDtoIn.Name.Length > 96)
+            {
+                return BadRequest(ConstantMessages.ForumInvalidNameLength);
+            }
+
+            var sourceForums = await _forumRepository.GetForumsByFilterAsync(
+                new ForumFilterDtoIn(
+                    count: null,
+                    page: null,
+                    ids: null,
+                    parentIds: null
+                )
+            );
+
+            var forumDtoOut = ApiForumDtoInConverter.ToDtoOut(
+                source: apiForumDtoIn,
+                id: 0
+            );
+
+            var result = ValidateForumsOrdering(sourceForums.Items, new[] { forumDtoOut });
+
+            if (!result)
+            {
+                return BadRequest();
+            }
+
+            return null;
+        }
+
+        private bool ValidateForumsOrdering(IEnumerable<ForumDtoOut> sourceForums, IEnumerable<ForumDtoOut> newForums)
+        {
+            var updatedForums = sourceForums
+                .GroupJoin(
+                    newForums.DefaultIfEmpty(),
+                    sourceForum => sourceForum.Id,
+                    updatedForum => updatedForum.Id,
+                    (sourceForum, updatedForum) => new
+                    {
+                        CurrentForum = sourceForum,
+                        UpdatedForum = updatedForum
+                    }
+                )
+                .SelectMany(
+                    x => x.UpdatedForum.DefaultIfEmpty(),
+                    (currentForum, updatedForum) => new ForumDtoOut(
+                        id: currentForum.CurrentForum.Id,
+                        name: currentForum.CurrentForum.Name,
+                        parentId: updatedForum == null ? currentForum.CurrentForum.ParentId : updatedForum.ParentId,
+                        order: updatedForum == null ? currentForum.CurrentForum.Order : updatedForum.Order
+                    )
+                )
+                .Union(newForums, new ForumDtoOutComparer());
+
+            var updatedForumGroupsByParentIdAndOrder = updatedForums
+                .GroupBy(forum => forum.ParentId)
+                .Select(forumGroup => forumGroup.GroupBy(forum => forum.Order));
+
+            var allAreMoreOrEqualThanZero = updatedForums.All(forum => forum.Order >= 0);
+            var doNotHaveDuplicates = updatedForumGroupsByParentIdAndOrder
+                .Select(forumGroup => forumGroup.All(forum => forum.Count() == 1))
+                .All(result => result == true);
+            var doNotHavePasses = updatedForumGroupsByParentIdAndOrder
+                .All(forumGroup => forumGroup.Count() == forumGroup.Max(forum => forum.Key) + 1);
+
+            if (allAreMoreOrEqualThanZero && doNotHaveDuplicates && doNotHavePasses)
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

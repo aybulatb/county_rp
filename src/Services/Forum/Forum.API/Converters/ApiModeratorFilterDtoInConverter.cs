@@ -12,6 +12,7 @@ namespace CountyRP.Services.Forum.API.Converters
             return new ModeratorFilterDtoIn(
                 count: source.Count,
                 page: source.Page,
+                ids: source.Ids,
                 entityId: source.EntityId,
                 entityType: source.EntityType,
                 forumId: source.ForumId
