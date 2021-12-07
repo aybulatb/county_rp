@@ -218,6 +218,8 @@ namespace CountyRP.Services.Forum.API.Controllers
         }
 
         [HttpPost("Validation")]
+        [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Validate(ApiForumDtoIn apiForumDtoIn)
         {
             var validationResult = await ValidateForum(apiForumDtoIn);

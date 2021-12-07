@@ -2,7 +2,7 @@
 {
     public record ForumModeratorDtoIn(
         int EntityId,
-        int EntityType,
+        ForumModeratorEntityTypeDto EntityType,
         int ForumId,
         bool CreateTopics,
         bool CreatePosts,

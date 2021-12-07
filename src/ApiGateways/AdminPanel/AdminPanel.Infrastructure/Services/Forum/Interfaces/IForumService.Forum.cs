@@ -6,16 +6,18 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Forum.Interfac
 {
     public partial interface IForumService
     {
-        Task<ForumForumWithModeratorsDtoOut> CreateForumWithModeratorsAsync(ForumForumWithModeratorsDtoIn forumWithModeratorsDtoIn);
+        Task<ForumForumDtoOut> CreateForumAsync(ForumForumDtoIn forumDtoIn);
 
-        Task<ForumForumWithModeratorsDtoOut> GetForumWithModeratorsByIdAsync(int id);
+        Task<ForumForumDtoOut> GetForumAsync(int id);
 
         Task<IEnumerable<ForumHierarchicalForumDtoOut>> GetHierarchicalForumsAsync();
 
-        Task UpdateForumWithModeratorsAsync(ForumUpdatedForumWithModeratorsDtoIn updatedForumWithModeratorsDtoIn);
+        Task UpdateForumAsync(int id, ForumForumDtoIn forumDtoIn);
 
         Task UpdateOrderedForumsAsync(IEnumerable<ForumUpdatedOrderedForumDtoIn> updatedOrderedForumsDtoIn);
 
         Task DeleteForumAsync(int id);
+
+        Task<bool> ValidateForumAsync(ForumForumDtoIn forumDtoIn);
     }
 }

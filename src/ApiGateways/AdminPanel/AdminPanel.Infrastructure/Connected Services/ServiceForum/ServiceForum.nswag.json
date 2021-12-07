@@ -377,6 +377,52 @@
         ]
       }
     },
+    "/Forum/Validation": {
+      "post": {
+        "tags": [
+          "Forum"
+        ],
+        "operationId": "Forum_Validate",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "apiForumDtoIn",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiForumDtoIn"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "400": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
     "/Moderator": {
       "post": {
         "tags": [
@@ -657,6 +703,17 @@
           "text/json"
         ],
         "parameters": [
+          {
+            "type": "array",
+            "name": "Ids",
+            "in": "query",
+            "collectionFormat": "multi",
+            "x-nullable": true,
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
           {
             "type": "integer",
             "name": "EntityId",
@@ -2257,6 +2314,13 @@
         {
           "type": "object",
           "properties": {
+            "ids": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "format": "int32"
+              }
+            },
             "entityId": {
               "type": "integer",
               "format": "int32"
