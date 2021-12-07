@@ -12,6 +12,7 @@ namespace CountyRP.Services.Site.API.Converters
             return new GroupFilterDtoIn(
                 Count: source.Count,
                 Page: source.Page,
+                Ids: source.Ids,
                 Name: source.Name
             );
         }

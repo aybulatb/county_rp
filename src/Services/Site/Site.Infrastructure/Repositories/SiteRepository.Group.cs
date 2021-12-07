@@ -37,7 +37,8 @@ namespace CountyRP.Services.Site.Infrastructure.Repositories
                 .AsNoTracking()
                 .Where(
                     group =>
-                        filter.Name == null || group.Name == filter.Name
+                        (filter.Ids == null || filter.Ids.Contains(group.Id)) &&
+                        (filter.Name == null || group.Name == filter.Name)
                 );
 
             var allCount = await groupsQuery.CountAsync();
