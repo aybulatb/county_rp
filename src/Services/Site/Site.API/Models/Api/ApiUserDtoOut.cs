@@ -12,7 +12,7 @@
 
         public int ForumUserId { get; init; }
 
-        public string GroupId { get; init; }
+        public int GroupId { get; init; }
 
         public ApiUserDtoOut(
             int id,
@@ -20,7 +20,7 @@
             string password,
             int playerId,
             int forumUserId,
-            string groupId
+            int groupId
         )
         {
             Id = id;

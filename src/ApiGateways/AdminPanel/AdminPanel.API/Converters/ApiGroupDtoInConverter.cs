@@ -10,7 +10,6 @@ namespace CountyRP.ApiGateways.AdminPanel.API.Converters
         )
         {
             return new SiteGroupDtoIn(
-                Id: source.Id,
                 Name: source.Name,
                 Color: source.Color,
                 Admin: source.Admin,

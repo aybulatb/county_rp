@@ -15,7 +15,7 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Site.Implement
             return ApiGroupDtoOutConverter.ToService(apiGroupDtoOut);
         }
 
-        public async Task<SiteGroupDtoOut> GetGroupByIdAsync(string id)
+        public async Task<SiteGroupDtoOut> GetGroupByIdAsync(int id)
         {
             var apiGroupDtoOut = await _groupClient.GetByIdAsync(id);
 
@@ -25,6 +25,7 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Site.Implement
         public async Task<SitePagedFilterResultDtoOut<SiteGroupDtoOut>> GetGroupsByFilterAsync(SiteGroupFilterDtoIn filter)
         {
             var apiGroupsDtoOut = await _groupClient.FilterByAsync(
+                ids: filter.Ids,
                 name: filter.Name,
                 count: filter.Count,
                 page: filter.Page
@@ -33,7 +34,7 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Site.Implement
             return ApiPagedFilterResultDtoOutConverter.ToService(apiGroupsDtoOut);
         }
 
-        public async Task<SiteGroupDtoOut> EditGroupAsync(string id, SiteUpdatedGroupDtoIn updatedGroupDtoIn)
+        public async Task<SiteGroupDtoOut> EditGroupAsync(int id, SiteUpdatedGroupDtoIn updatedGroupDtoIn)
         {
             var apiUpdatedGroupDtoIn = SiteUpdatedGroupDtoInConverter.ToExternalApi(updatedGroupDtoIn);
 
@@ -42,7 +43,7 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Site.Implement
             return ApiGroupDtoOutConverter.ToService(apiGroupDtoOut);
         }
 
-        public async Task DeleteGroupAsync(string id)
+        public async Task DeleteGroupAsync(int id)
         {
             await _groupClient.DeleteAsync(id);
         }

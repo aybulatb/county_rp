@@ -24,7 +24,7 @@ namespace CountyRP.ApiGateways.AdminPanel.API.Models.Api
 
         public int MaxBan { get; init; }
 
-        public IEnumerable<string> BanGroupIds { get; init; }
+        public IEnumerable<int> BanGroupIds { get; init; }
 
         public bool SeeLogs { get; init; }
     }

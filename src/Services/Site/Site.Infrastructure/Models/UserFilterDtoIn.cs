@@ -9,7 +9,7 @@ namespace CountyRP.Services.Site.Infrastructure.Models
         IEnumerable<int> Ids,
         string Login,
         string LoginLike,
-        IEnumerable<string> GroupIds,
+        IEnumerable<int> GroupIds,
         IEnumerable<int> PlayerIds,
         DateTimeOffset? StartRegistrationDate,
         DateTimeOffset? FinishRegistrationDate,

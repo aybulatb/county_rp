@@ -21,7 +21,7 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Forum.Implemen
             var externalApiModeratorsDtoOut = await _moderatorClient.FilterByAsync(
                 ids: filter.Ids,
                 entityId: filter.EntityId,
-                entityType: (int)filter.EntityType,
+                entityType: filter.EntityType.HasValue ? (int)filter.EntityType.Value : null,
                 forumId: filter.ForumId,
                 count: filter.Count,
                 page: filter.Page

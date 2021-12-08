@@ -34,23 +34,6 @@ namespace CountyRP.Services.Site.API.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Create(ApiGroupDtoIn apiGroupDtoIn)
         {
-            var existedGroup = await _siteRepository.GetGroupAsync(apiGroupDtoIn.Id);
-
-            if (existedGroup != null)
-            {
-                return BadRequest(ConstantMessages.GroupAlreadyExistedWithId);
-            }
-
-            apiGroupDtoIn = apiGroupDtoIn with { Name = apiGroupDtoIn.Name?.Trim() };
-
-            if (apiGroupDtoIn.Id == null || apiGroupDtoIn.Id.Length < 3 || apiGroupDtoIn.Id.Length > 16)
-            {
-                return BadRequest(ConstantMessages.GroupInvalidIdLength);
-            }
-            if (!Regex.IsMatch(apiGroupDtoIn.Id, @"^[0-9a-zA-Z_]{3,16}$"))
-            {
-                return BadRequest(ConstantMessages.GroupInvalidId);
-            }
             if (apiGroupDtoIn.Name == null || apiGroupDtoIn.Name.Length < 3 || apiGroupDtoIn.Name.Length > 32)
             {
                 return BadRequest(ConstantMessages.GroupInvalidNameLength);
@@ -75,7 +58,7 @@ namespace CountyRP.Services.Site.API.Controllers
             }
             if (apiGroupDtoIn.BanGroupIds == null)
             {
-                apiGroupDtoIn = apiGroupDtoIn with { BanGroupIds = new string[0] };
+                apiGroupDtoIn = apiGroupDtoIn with { BanGroupIds = new int[0] };
             }
             foreach (var banGroupId in apiGroupDtoIn.BanGroupIds)
             {
@@ -107,7 +90,7 @@ namespace CountyRP.Services.Site.API.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(ApiGroupDtoOut), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetById(string id)
+        public async Task<IActionResult> GetById(int id)
         {
             var groupDtoOut = await _siteRepository.GetGroupAsync(id);
 
@@ -157,7 +140,7 @@ namespace CountyRP.Services.Site.API.Controllers
         [ProducesResponseType(typeof(ApiGroupDtoOut), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Edit(string id, ApiUpdateGroupDtoIn apiUpdateGroupDtoIn)
+        public async Task<IActionResult> Edit(int id, ApiUpdateGroupDtoIn apiUpdateGroupDtoIn)
         {
             var existedGroup = await _siteRepository.GetGroupAsync(id);
 
@@ -197,7 +180,7 @@ namespace CountyRP.Services.Site.API.Controllers
             }
             if (apiUpdateGroupDtoIn.BanGroupIds == null)
             {
-                apiUpdateGroupDtoIn = apiUpdateGroupDtoIn with { BanGroupIds = new string[0] };
+                apiUpdateGroupDtoIn = apiUpdateGroupDtoIn with { BanGroupIds = new int[0] };
             }
             foreach (var banGroupId in apiUpdateGroupDtoIn.BanGroupIds)
             {
@@ -232,7 +215,7 @@ namespace CountyRP.Services.Site.API.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(ApiGroupDtoOut), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(int id)
         {
             var existedGroup = await _siteRepository.GetGroupAsync(id);
 

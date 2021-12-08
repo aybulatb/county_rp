@@ -6,6 +6,6 @@
         string Password,
         int PlayerId,
         int ForumUserId,
-        string GroupId
+        int GroupId
     );
 }

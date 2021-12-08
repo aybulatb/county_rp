@@ -6,7 +6,7 @@
 
         public string Login { get; }
 
-        public string GroupId { get; }
+        public int GroupId { get; }
 
         public int Reputation { get; }
 
@@ -17,7 +17,7 @@
         public UserDtoOut(
             int id,
             string login,
-            string groupId,
+            int groupId,
             int reputation,
             int posts,
             int warnings

@@ -4,7 +4,7 @@
     {
         public string Login { get; set; }
 
-        public string GroupId { get; set; }
+        public int GroupId { get; set; }
 
         public int Reputation { get; set; }
 

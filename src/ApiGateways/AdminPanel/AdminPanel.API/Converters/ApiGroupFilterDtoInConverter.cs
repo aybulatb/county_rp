@@ -12,6 +12,7 @@ namespace CountyRP.ApiGateways.AdminPanel.API.Converters
             return new SiteGroupFilterDtoIn(
                 Count: source.Count,
                 Page: source.Page,
+                Ids: source.Ids,
                 Name: source.Name
             );
         }

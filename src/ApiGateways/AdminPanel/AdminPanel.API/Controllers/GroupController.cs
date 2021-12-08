@@ -37,7 +37,7 @@ namespace CountyRP.ApiGateways.AdminPanel.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(string id)
+        public async Task<IActionResult> GetById(int id)
         {
             var siteGroupDtoOut = await _siteService.GetGroupByIdAsync(id);
 
@@ -59,7 +59,7 @@ namespace CountyRP.ApiGateways.AdminPanel.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Edit(string id, [FromBody] ApiUpdatedGroupDtoIn apiUpdatedGroupDtoIn)
+        public async Task<IActionResult> Edit(int id, [FromBody] ApiUpdatedGroupDtoIn apiUpdatedGroupDtoIn)
         {
             var siteUpdatedGroupDtoIn = ApiUpdatedGroupDtoInConverter.ToService(apiUpdatedGroupDtoIn);
 
@@ -71,7 +71,7 @@ namespace CountyRP.ApiGateways.AdminPanel.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(int id)
         {
             await _siteService.DeleteGroupAsync(id);
 

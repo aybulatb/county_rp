@@ -10,7 +10,6 @@ namespace CountyRP.Services.Site.API.Converters
         )
         {
             return new GroupDtoIn(
-                Id: source.Id,
                 Name: source.Name,
                 Color: source.Color,
                 Admin: source.Admin,

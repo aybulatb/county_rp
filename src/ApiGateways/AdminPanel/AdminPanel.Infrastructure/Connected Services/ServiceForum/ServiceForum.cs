@@ -3797,11 +3797,11 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClients.ServiceForu
         System.Threading.Tasks.Task<ApiUserDtoOut> GetByLoginAsync(string login, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<PagedFilterResultOfApiUserDtoOut> FilterByAsync(string login, string sortingFlag, System.Collections.Generic.IEnumerable<string> groupIds, int? count, int? page);
+        System.Threading.Tasks.Task<PagedFilterResultOfApiUserDtoOut> FilterByAsync(string login, string sortingFlag, System.Collections.Generic.IEnumerable<int> groupIds, int? count, int? page);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<PagedFilterResultOfApiUserDtoOut> FilterByAsync(string login, string sortingFlag, System.Collections.Generic.IEnumerable<string> groupIds, int? count, int? page, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<PagedFilterResultOfApiUserDtoOut> FilterByAsync(string login, string sortingFlag, System.Collections.Generic.IEnumerable<int> groupIds, int? count, int? page, System.Threading.CancellationToken cancellationToken);
     
     }
     
@@ -4273,14 +4273,14 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClients.ServiceForu
         }
     
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<PagedFilterResultOfApiUserDtoOut> FilterByAsync(string login, string sortingFlag, System.Collections.Generic.IEnumerable<string> groupIds, int? count, int? page)
+        public System.Threading.Tasks.Task<PagedFilterResultOfApiUserDtoOut> FilterByAsync(string login, string sortingFlag, System.Collections.Generic.IEnumerable<int> groupIds, int? count, int? page)
         {
             return FilterByAsync(login, sortingFlag, groupIds, count, page, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<PagedFilterResultOfApiUserDtoOut> FilterByAsync(string login, string sortingFlag, System.Collections.Generic.IEnumerable<string> groupIds, int? count, int? page, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<PagedFilterResultOfApiUserDtoOut> FilterByAsync(string login, string sortingFlag, System.Collections.Generic.IEnumerable<int> groupIds, int? count, int? page, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/User/FilterBy?");
@@ -5378,8 +5378,8 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClients.ServiceForu
         [Newtonsoft.Json.JsonProperty("login", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Login { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("groupId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string GroupId { get; set; }
+        [Newtonsoft.Json.JsonProperty("groupId", Required = Newtonsoft.Json.Required.Always)]
+        public int GroupId { get; set; }
     
         [Newtonsoft.Json.JsonProperty("reputation", Required = Newtonsoft.Json.Required.Always)]
         public int Reputation { get; set; }
@@ -5399,8 +5399,8 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClients.ServiceForu
         [Newtonsoft.Json.JsonProperty("login", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Login { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("groupId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string GroupId { get; set; }
+        [Newtonsoft.Json.JsonProperty("groupId", Required = Newtonsoft.Json.Required.Always)]
+        public int GroupId { get; set; }
     
         [Newtonsoft.Json.JsonProperty("reputation", Required = Newtonsoft.Json.Required.Always)]
         public int Reputation { get; set; }

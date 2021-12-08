@@ -2,7 +2,7 @@
 {
     public record ApiGroupDtoOut
     {
-        public string Id { get; init; }
+        public int Id { get; init; }
 
         public string Name { get; init; }
 
@@ -24,12 +24,12 @@
 
         public int MaxBan { get; init; }
 
-        public string[] BanGroupIds { get; init; }
+        public int[] BanGroupIds { get; init; }
 
         public bool SeeLogs { get; init; }
 
         public ApiGroupDtoOut(
-            string id,
+            int id,
             string name,
             string color,
             bool admin,
@@ -40,7 +40,7 @@
             bool changeGroup,
             bool editGroups,
             int maxBan,
-            string[] banGroupIds,
+            int[] banGroupIds,
             bool seeLogs
         )
         {

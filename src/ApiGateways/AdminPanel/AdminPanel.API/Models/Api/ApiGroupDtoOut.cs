@@ -4,7 +4,7 @@ namespace CountyRP.ApiGateways.AdminPanel.API.Models.Api
 {
     public record ApiGroupDtoOut
     {
-        public string Id { get; init; }
+        public int Id { get; init; }
 
         public string Name { get; init; }
 
@@ -26,12 +26,12 @@ namespace CountyRP.ApiGateways.AdminPanel.API.Models.Api
 
         public int MaxBan { get; init; }
 
-        public IEnumerable<string> BanGroupIds { get; init; }
+        public IEnumerable<int> BanGroupIds { get; init; }
 
         public bool SeeLogs { get; init; }
 
         public ApiGroupDtoOut(
-            string id,
+            int id,
             string name,
             string color,
             bool admin,
@@ -42,7 +42,7 @@ namespace CountyRP.ApiGateways.AdminPanel.API.Models.Api
             bool changeGroup,
             bool editGroups,
             int maxBan,
-            IEnumerable<string> banGroupIds,
+            IEnumerable<int> banGroupIds,
             bool seeLogs
         )
         {

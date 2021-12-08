@@ -7,7 +7,7 @@ namespace CountyRP.Services.Site.API.Converters
     {
         public static GroupDtoOut ToDtoOut(
            ApiUpdateGroupDtoIn source,
-           string id
+           int id
         )
         {
             return new GroupDtoOut(

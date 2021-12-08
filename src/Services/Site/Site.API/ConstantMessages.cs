@@ -34,17 +34,11 @@
 
         public static string GroupNotFoundById = "Группа пользователей с ID {0} не найдена";
 
-        public static string GroupInvalidIdLength = "Длина ID группы пользователей должна быть от 3 до 16 символов";
-
-        public static string GroupInvalidId = "ID группы пользователей должно состоять из цифр, символов кириллицы, латинского алфавита и специальных символов";
-
         public static string GroupInvalidNameLength = "Длина названия группы пользователей должна быть от 3 до 32 символов";
 
         public static string GroupInvalidName = "Название группы пользователей должно состоять из цифр, символов кириллицы, латинского алфавита и специальных символов";
 
         public static string GroupInvalidColor = "Цвет группы пользователей должен соотвествовать HEX-формату";
-
-        public static string GroupAlreadyExistedWithId = "Группа пользователей с таким ID уже существует";
 
         public static string GroupInvalidMaxBan = "Максимальное количество часов бана у группы пользователей должно быть от {0} до {1}";
 

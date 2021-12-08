@@ -10,6 +10,6 @@ namespace CountyRP.Services.Site.Infrastructure.Models
         DateTimeOffset LastVisitDate,
         int PlayerId,
         int ForumUserId,
-        string GroupId
+        int GroupId
     );
 }

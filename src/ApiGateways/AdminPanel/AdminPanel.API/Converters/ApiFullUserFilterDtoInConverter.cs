@@ -14,11 +14,12 @@ namespace CountyRP.ApiGateways.AdminPanel.API.Converters
             return new SiteUserFilterDtoIn(
                 Count: null,
                 Page: null,
+                Ids: null,
                 Login: null,
                 LoginLike: source.LoginLike,
-                GroupIds: string.IsNullOrWhiteSpace(source.GroupId)
-                    ? null
-                    : new[] { source.GroupId },
+                GroupIds: source.GroupId.HasValue
+                    ? new[] { source.GroupId.Value }
+                    : null,
                 PlayerIds: null,
                 StartRegistrationDate: source.StartRegistrationDate,
                 FinishRegistrationDate: source.FinishRegistrationDate,
@@ -46,7 +47,7 @@ namespace CountyRP.ApiGateways.AdminPanel.API.Converters
                 PersonsNames: null,
                 PersonNameLike: source.PersonNameLike,
                 AdminLevelIds: null,
-                FactionIds: string.IsNullOrWhiteSpace(source.GroupId)
+                FactionIds: string.IsNullOrWhiteSpace(source.FactionId)
                     ? null
                     : new[] { source.FactionId }
             );

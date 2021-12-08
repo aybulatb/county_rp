@@ -10,6 +10,6 @@
 
         public int ForumUserId { get; init; }
 
-        public string GroupId { get; init; }
+        public int GroupId { get; init; }
     }
 }

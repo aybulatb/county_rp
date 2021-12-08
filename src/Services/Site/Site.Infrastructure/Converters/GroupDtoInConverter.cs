@@ -10,7 +10,7 @@ namespace CountyRP.Services.Site.Infrastructure.Converters
         )
         {
             return new GroupDao(
-                id: source.Id,
+                id: 0,
                 name: source.Name,
                 color: source.Color,
                 admin: source.Admin,

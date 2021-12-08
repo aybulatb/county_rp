@@ -13,7 +13,7 @@ namespace CountyRP.ApiGateways.AdminPanel.API.Models.Api
 
         public DateTimeOffset LastVisitDate { get; init; }
 
-        public string GroupId { get; init; }
+        public int GroupId { get; init; }
 
         public IEnumerable<ApiFullUserPersonDtoOut> Persons { get; init; }
 
@@ -22,7 +22,7 @@ namespace CountyRP.ApiGateways.AdminPanel.API.Models.Api
             string login,
             DateTimeOffset registrationDate,
             DateTimeOffset lastVisitDate,
-            string groupId,
+            int groupId,
             IEnumerable<ApiFullUserPersonDtoOut> persons
         )
         {

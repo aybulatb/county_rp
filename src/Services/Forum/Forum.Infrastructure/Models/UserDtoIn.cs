@@ -4,7 +4,7 @@
     {
         public string Login { get; }
 
-        public string GroupId { get; }
+        public int GroupId { get; }
 
         public int Reputation { get; }
 
@@ -14,7 +14,7 @@
 
         public UserDtoIn(
             string login,
-            string groupId,
+            int groupId,
             int reputation,
             int posts,
             int warnings

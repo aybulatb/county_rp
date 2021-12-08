@@ -1,7 +1,7 @@
 ﻿namespace CountyRP.Services.Site.Infrastructure.Models
 {
     public record GroupDtoOut(
-        string Id,
+        int Id,
         string Name,
         string Color,
         bool Admin,
@@ -12,7 +12,7 @@
         bool ChangeGroup,
         bool EditGroups,
         int MaxBan,
-        string[] BanGroupIds,
+        int[] BanGroupIds,
         bool SeeLogs
     );
 }

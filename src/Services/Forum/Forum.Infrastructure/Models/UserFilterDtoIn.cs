@@ -8,14 +8,14 @@ namespace CountyRP.Services.Forum.Infrastructure.Models
 
         public string SortingFlag { get; }
 
-        public IEnumerable<string> GroupIds { get; }
+        public IEnumerable<int> GroupIds { get; }
 
         public UserFilterDtoIn(
             int? count,
             int? page,
             string login,
             string sortingFlag,
-            IEnumerable<string> groupIds
+            IEnumerable<int> groupIds
         )
             : base(count, page)
         {

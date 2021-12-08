@@ -823,15 +823,18 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClient.ServiceSite
         }
     
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<ApiGroupDtoOut> GetByIdAsync(string id)
+        public System.Threading.Tasks.Task<ApiGroupDtoOut> GetByIdAsync(int id)
         {
             return GetByIdAsync(id, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<ApiGroupDtoOut> GetByIdAsync(string id, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<ApiGroupDtoOut> GetByIdAsync(int id, System.Threading.CancellationToken cancellationToken)
         {
+            if (id == null)
+                throw new System.ArgumentNullException("id");
+    
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/Group/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
@@ -906,15 +909,18 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClient.ServiceSite
         }
     
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<ApiGroupDtoOut> EditAsync(string id, ApiUpdateGroupDtoIn apiUpdateGroupDtoIn)
+        public System.Threading.Tasks.Task<ApiGroupDtoOut> EditAsync(int id, ApiUpdateGroupDtoIn apiUpdateGroupDtoIn)
         {
             return EditAsync(id, apiUpdateGroupDtoIn, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<ApiGroupDtoOut> EditAsync(string id, ApiUpdateGroupDtoIn apiUpdateGroupDtoIn, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<ApiGroupDtoOut> EditAsync(int id, ApiUpdateGroupDtoIn apiUpdateGroupDtoIn, System.Threading.CancellationToken cancellationToken)
         {
+            if (id == null)
+                throw new System.ArgumentNullException("id");
+    
             if (apiUpdateGroupDtoIn == null)
                 throw new System.ArgumentNullException("apiUpdateGroupDtoIn");
     
@@ -1005,15 +1011,18 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClient.ServiceSite
         }
     
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<ApiGroupDtoOut> DeleteAsync(string id)
+        public System.Threading.Tasks.Task<ApiGroupDtoOut> DeleteAsync(int id)
         {
             return DeleteAsync(id, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<ApiGroupDtoOut> DeleteAsync(string id, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<ApiGroupDtoOut> DeleteAsync(int id, System.Threading.CancellationToken cancellationToken)
         {
+            if (id == null)
+                throw new System.ArgumentNullException("id");
+    
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/Group/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
@@ -1088,17 +1097,21 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClient.ServiceSite
         }
     
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<ApiPagedFilterResultOfApiGroupDtoOut> FilterByAsync(string name, int? count, int? page)
+        public System.Threading.Tasks.Task<ApiPagedFilterResultOfApiGroupDtoOut> FilterByAsync(System.Collections.Generic.IEnumerable<int> ids, string name, int? count, int? page)
         {
-            return FilterByAsync(name, count, page, System.Threading.CancellationToken.None);
+            return FilterByAsync(ids, name, count, page, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<ApiPagedFilterResultOfApiGroupDtoOut> FilterByAsync(string name, int? count, int? page, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<ApiPagedFilterResultOfApiGroupDtoOut> FilterByAsync(System.Collections.Generic.IEnumerable<int> ids, string name, int? count, int? page, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/Group/FilterBy?");
+            if (ids != null)
+            {
+                foreach (var item_ in ids) { urlBuilder_.Append(System.Uri.EscapeDataString("Ids") + "=").Append(System.Uri.EscapeDataString(ConvertToString(item_, System.Globalization.CultureInfo.InvariantCulture))).Append("&"); }
+            }
             if (name != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("Name") + "=").Append(System.Uri.EscapeDataString(ConvertToString(name, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -2668,17 +2681,21 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClient.ServiceSite
         }
     
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<ApiPagedFilterResultOfApiUserDtoOut> FilterByAsync(string login, string loginLike, System.Collections.Generic.IEnumerable<string> groupIds, System.Collections.Generic.IEnumerable<int> playerIds, System.DateTimeOffset? startRegistrationDate, System.DateTimeOffset? finishRegistrationDate, System.DateTimeOffset? startLastVisitDate, System.DateTimeOffset? finishLastVisitDate, int? count, int? page)
+        public System.Threading.Tasks.Task<ApiPagedFilterResultOfApiUserDtoOut> FilterByAsync(System.Collections.Generic.IEnumerable<int> ids, string login, string loginLike, System.Collections.Generic.IEnumerable<int> groupIds, System.Collections.Generic.IEnumerable<int> playerIds, System.DateTimeOffset? startRegistrationDate, System.DateTimeOffset? finishRegistrationDate, System.DateTimeOffset? startLastVisitDate, System.DateTimeOffset? finishLastVisitDate, int? count, int? page)
         {
-            return FilterByAsync(login, loginLike, groupIds, playerIds, startRegistrationDate, finishRegistrationDate, startLastVisitDate, finishLastVisitDate, count, page, System.Threading.CancellationToken.None);
+            return FilterByAsync(ids, login, loginLike, groupIds, playerIds, startRegistrationDate, finishRegistrationDate, startLastVisitDate, finishLastVisitDate, count, page, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<ApiPagedFilterResultOfApiUserDtoOut> FilterByAsync(string login, string loginLike, System.Collections.Generic.IEnumerable<string> groupIds, System.Collections.Generic.IEnumerable<int> playerIds, System.DateTimeOffset? startRegistrationDate, System.DateTimeOffset? finishRegistrationDate, System.DateTimeOffset? startLastVisitDate, System.DateTimeOffset? finishLastVisitDate, int? count, int? page, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<ApiPagedFilterResultOfApiUserDtoOut> FilterByAsync(System.Collections.Generic.IEnumerable<int> ids, string login, string loginLike, System.Collections.Generic.IEnumerable<int> groupIds, System.Collections.Generic.IEnumerable<int> playerIds, System.DateTimeOffset? startRegistrationDate, System.DateTimeOffset? finishRegistrationDate, System.DateTimeOffset? startLastVisitDate, System.DateTimeOffset? finishLastVisitDate, int? count, int? page, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/User/FilterBy?");
+            if (ids != null)
+            {
+                foreach (var item_ in ids) { urlBuilder_.Append(System.Uri.EscapeDataString("Ids") + "=").Append(System.Uri.EscapeDataString(ConvertToString(item_, System.Globalization.CultureInfo.InvariantCulture))).Append("&"); }
+            }
             if (login != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("Login") + "=").Append(System.Uri.EscapeDataString(ConvertToString(login, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -2969,8 +2986,8 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClient.ServiceSite
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.5.2.0 (Newtonsoft.Json v12.0.0.2)")]
     public partial class ApiGroupDtoOut 
     {
-        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Id { get; set; }
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Always)]
+        public int Id { get; set; }
     
         [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Name { get; set; }
@@ -3003,7 +3020,7 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClient.ServiceSite
         public int MaxBan { get; set; }
     
         [Newtonsoft.Json.JsonProperty("banGroupIds", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<string> BanGroupIds { get; set; }
+        public System.Collections.Generic.ICollection<int> BanGroupIds { get; set; }
     
         [Newtonsoft.Json.JsonProperty("seeLogs", Required = Newtonsoft.Json.Required.Always)]
         public bool SeeLogs { get; set; }
@@ -3014,9 +3031,6 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClient.ServiceSite
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.5.2.0 (Newtonsoft.Json v12.0.0.2)")]
     public partial class ApiGroupDtoIn 
     {
-        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Id { get; set; }
-    
         [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Name { get; set; }
     
@@ -3048,7 +3062,7 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClient.ServiceSite
         public int MaxBan { get; set; }
     
         [Newtonsoft.Json.JsonProperty("banGroupIds", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<string> BanGroupIds { get; set; }
+        public System.Collections.Generic.ICollection<int> BanGroupIds { get; set; }
     
         [Newtonsoft.Json.JsonProperty("seeLogs", Required = Newtonsoft.Json.Required.Always)]
         public bool SeeLogs { get; set; }
@@ -3108,7 +3122,7 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClient.ServiceSite
         public int MaxBan { get; set; }
     
         [Newtonsoft.Json.JsonProperty("banGroupIds", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<string> BanGroupIds { get; set; }
+        public System.Collections.Generic.ICollection<int> BanGroupIds { get; set; }
     
         [Newtonsoft.Json.JsonProperty("seeLogs", Required = Newtonsoft.Json.Required.Always)]
         public bool SeeLogs { get; set; }
@@ -3321,8 +3335,8 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClient.ServiceSite
         [Newtonsoft.Json.JsonProperty("forumUserId", Required = Newtonsoft.Json.Required.Always)]
         public int ForumUserId { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("groupId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string GroupId { get; set; }
+        [Newtonsoft.Json.JsonProperty("groupId", Required = Newtonsoft.Json.Required.Always)]
+        public int GroupId { get; set; }
     
     
     }
@@ -3342,8 +3356,8 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClient.ServiceSite
         [Newtonsoft.Json.JsonProperty("forumUserId", Required = Newtonsoft.Json.Required.Always)]
         public int ForumUserId { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("groupId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string GroupId { get; set; }
+        [Newtonsoft.Json.JsonProperty("groupId", Required = Newtonsoft.Json.Required.Always)]
+        public int GroupId { get; set; }
     
     
     }

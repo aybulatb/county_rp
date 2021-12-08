@@ -7,9 +7,8 @@ namespace CountyRP.Services.Site.Infrastructure.Entities
     public class GroupDao
     {
         [Key]
-        [MaxLength(16)]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string Id { get; set; }
+        public int Id { get; private set; }
 
         [MaxLength(32)]
         public string Name { get; set; }
@@ -34,9 +33,9 @@ namespace CountyRP.Services.Site.Infrastructure.Entities
         public int MaxBan { get; set; }
 
         [NotMapped]
-        public string[] BanGroupIds
+        public int[] BanGroupIds
         {
-            get => JsonConvert.DeserializeObject<string[]>(_BanGroupIds);
+            get => JsonConvert.DeserializeObject<int[]>(_BanGroupIds);
             set => _BanGroupIds = JsonConvert.SerializeObject(value);
         }
 
@@ -50,7 +49,7 @@ namespace CountyRP.Services.Site.Infrastructure.Entities
         }
 
         public GroupDao(
-            string id,
+            int id,
             string name,
             string color,
             bool admin,
@@ -61,7 +60,7 @@ namespace CountyRP.Services.Site.Infrastructure.Entities
             bool changeGroup,
             bool editGroups,
             int maxBan,
-            string[] banGroupIds,
+            int[] banGroupIds,
             bool seeLogs
         )
         {

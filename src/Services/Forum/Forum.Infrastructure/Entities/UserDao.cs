@@ -13,9 +13,7 @@ namespace CountyRP.Services.Forum.Infrastructure.Entities
         [MaxLength(32)]
         public string Login { get; set; }
 
-        [MinLength(3)]
-        [MaxLength(16)]
-        public string GroupId { get; set; }
+        public int GroupId { get; set; }
 
         public int Reputation { get; set; }
 
@@ -33,7 +31,7 @@ namespace CountyRP.Services.Forum.Infrastructure.Entities
         public UserDao(
             int id,
             string login,
-            string groupId,
+            int groupId,
             int reputation,
             int posts,
             int warnings

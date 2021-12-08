@@ -12,7 +12,6 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Site.Converter
         {
             return new ApiGroupDtoIn
             {
-                Id = source.Id,
                 Name = source.Name,
                 Color = source.Color,
                 Admin = source.Admin,
@@ -23,7 +22,7 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Site.Converter
                 ChangeGroup = source.ChangeGroup,
                 EditGroups = source.EditGroups,
                 MaxBan = source.MaxBan,
-                BanGroupIds = (ICollection<string>)source.BanGroupIds,
+                BanGroupIds = (ICollection<int>)source.BanGroupIds,
                 SeeLogs = source.SeeLogs
             };
         }

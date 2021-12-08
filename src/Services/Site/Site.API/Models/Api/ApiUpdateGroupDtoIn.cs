@@ -22,7 +22,7 @@
 
         public int MaxBan { get; init; }
 
-        public string[] BanGroupIds { get; init; }
+        public int[] BanGroupIds { get; init; }
 
         public bool SeeLogs { get; init; }
 
@@ -36,7 +36,7 @@
             bool changeGroup,
             bool editGroups,
             int maxBan,
-            string[] banGroupIds,
+            int[] banGroupIds,
             bool seeLogs
         )
         {

@@ -29,6 +29,7 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Site.Implement
         )
         {
             var filteredUsers = await _userClient.FilterByAsync(
+                ids: siteUserFilterDtoIn.Ids,
                 login: siteUserFilterDtoIn.Login,
                 loginLike: siteUserFilterDtoIn.LoginLike,
                 groupIds: siteUserFilterDtoIn.GroupIds,

@@ -7,12 +7,12 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Site.Interface
     {
         Task<SiteGroupDtoOut> AddGroupAsync(SiteGroupDtoIn groupDtoIn);
 
-        Task<SiteGroupDtoOut> GetGroupByIdAsync(string id);
+        Task<SiteGroupDtoOut> GetGroupByIdAsync(int id);
 
         Task<SitePagedFilterResultDtoOut<SiteGroupDtoOut>> GetGroupsByFilterAsync(SiteGroupFilterDtoIn filter);
 
-        Task<SiteGroupDtoOut> EditGroupAsync(string id, SiteUpdatedGroupDtoIn updatedGroupDtoIn);
+        Task<SiteGroupDtoOut> EditGroupAsync(int id, SiteUpdatedGroupDtoIn updatedGroupDtoIn);
 
-        Task DeleteGroupAsync(string id);
+        Task DeleteGroupAsync(int id);
     }
 }

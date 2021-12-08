@@ -24,8 +24,7 @@ namespace CountyRP.Services.Site.Infrastructure.Entities
 
         public int ForumUserId { get; set; }
 
-        [MaxLength(16)]
-        public string GroupId { get; set; }
+        public int GroupId { get; set; }
 
         public UserDao(
             int id,
@@ -35,7 +34,7 @@ namespace CountyRP.Services.Site.Infrastructure.Entities
             DateTimeOffset lastVisitDate,
             int playerId,
             int forumUserId,
-            string groupId
+            int groupId
         )
         {
             Id = id;

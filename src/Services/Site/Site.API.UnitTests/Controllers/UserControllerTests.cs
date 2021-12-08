@@ -26,7 +26,7 @@ namespace Site.UnitTests.Controllers
             {
                 Login = login,
                 Password = "123123123",
-                GroupId = "group",
+                GroupId = 1,
                 PlayerId = 1,
                 ForumUserId = 2
             };
@@ -62,7 +62,7 @@ namespace Site.UnitTests.Controllers
             {
                 Login = login,
                 Password = "123123123",
-                GroupId = "group",
+                GroupId = 1,
                 PlayerId = 1,
                 ForumUserId = 2
             };
@@ -96,7 +96,7 @@ namespace Site.UnitTests.Controllers
             {
                 Login = "123",
                 Password = password,
-                GroupId = "group",
+                GroupId = 1,
                 PlayerId = 1,
                 ForumUserId = 2
             };
@@ -130,7 +130,7 @@ namespace Site.UnitTests.Controllers
             {
                 Login = "123",
                 Password = password,
-                GroupId = "group",
+                GroupId = 1,
                 PlayerId = 1,
                 ForumUserId = 2
             };
@@ -163,7 +163,7 @@ namespace Site.UnitTests.Controllers
             {
                 Login = login,
                 Password = "123123123",
-                GroupId = "group",
+                GroupId = 1,
                 PlayerId = 1,
                 ForumUserId = 2
             };
@@ -197,7 +197,7 @@ namespace Site.UnitTests.Controllers
             {
                 Login = "123",
                 Password = "123123123",
-                GroupId = "group",
+                GroupId = 1,
                 PlayerId = 1,
                 ForumUserId = 2
             };
@@ -209,7 +209,7 @@ namespace Site.UnitTests.Controllers
                 LastVisitDate: DateTimeOffset.Now,
                 PlayerId: 1,
                 ForumUserId: 2,
-                GroupId: "group"
+                GroupId: 1
             );
 
             var logger = new Mock<ILogger<UserController>>();
@@ -487,7 +487,7 @@ namespace Site.UnitTests.Controllers
             {
                 Login = "123",
                 Password = "123123123",
-                GroupId = "group",
+                GroupId = 1,
                 PlayerId = 1,
                 ForumUserId = 2
             };
@@ -524,7 +524,7 @@ namespace Site.UnitTests.Controllers
             {
                 Login = login,
                 Password = "123123123",
-                GroupId = "group",
+                GroupId = 1,
                 PlayerId = 1,
                 ForumUserId = 2
             };
@@ -567,7 +567,7 @@ namespace Site.UnitTests.Controllers
             {
                 Login = login,
                 Password = "123123123",
-                GroupId = "group",
+                GroupId = 1,
                 PlayerId = 1,
                 ForumUserId = 2
             };
@@ -608,7 +608,7 @@ namespace Site.UnitTests.Controllers
             {
                 Login = "123",
                 Password = password,
-                GroupId = "group",
+                GroupId = 1,
                 PlayerId = 1,
                 ForumUserId = 2
             };
@@ -649,7 +649,7 @@ namespace Site.UnitTests.Controllers
             {
                 Login = "123",
                 Password = password,
-                GroupId = "group",
+                GroupId = 1,
                 PlayerId = 1,
                 ForumUserId = 2
             };
@@ -688,7 +688,7 @@ namespace Site.UnitTests.Controllers
             {
                 Login = login,
                 Password = "123123123",
-                GroupId = "group",
+                GroupId = 1,
                 PlayerId = 1,
                 ForumUserId = 2
             };
@@ -700,7 +700,7 @@ namespace Site.UnitTests.Controllers
                 LastVisitDate: DateTimeOffset.Now,
                 PlayerId: 1,
                 ForumUserId: 2,
-                GroupId: "group"
+                GroupId: 1
             );
             var existedUserWithId = new UserDtoOut(
                 Id: existedUserId,
@@ -710,7 +710,7 @@ namespace Site.UnitTests.Controllers
                 LastVisitDate: DateTimeOffset.Now,
                 PlayerId: 1,
                 ForumUserId: 2,
-                GroupId: "group"
+                GroupId: 1
             );
 
             var logger = new Mock<ILogger<UserController>>();
@@ -749,7 +749,7 @@ namespace Site.UnitTests.Controllers
             {
                 Login = login,
                 Password = "123123123",
-                GroupId = "group",
+                GroupId = 1,
                 PlayerId = 1,
                 ForumUserId = 2
             };
@@ -761,7 +761,7 @@ namespace Site.UnitTests.Controllers
                 LastVisitDate: DateTimeOffset.Now,
                 PlayerId: 1,
                 ForumUserId: 2,
-                GroupId: "group"
+                GroupId: 1
             );
             var existedUserWithId = new UserDtoOut(
                 Id: existedUserId,
@@ -771,7 +771,7 @@ namespace Site.UnitTests.Controllers
                 LastVisitDate: DateTimeOffset.Now,
                 PlayerId: 1,
                 ForumUserId: 2,
-                GroupId: "group"
+                GroupId: 1
             );
             var userDtoOut = new UserDtoOut(
                 Id: id,
@@ -781,7 +781,7 @@ namespace Site.UnitTests.Controllers
                 LastVisitDate: DateTimeOffset.Now,
                 PlayerId: 1,
                 ForumUserId: 2,
-                GroupId: "group"
+                GroupId: 1
             );
 
             var logger = new Mock<ILogger<UserController>>();

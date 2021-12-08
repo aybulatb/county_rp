@@ -3,7 +3,6 @@
 namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Site.Models
 {
     public record SiteGroupDtoIn(
-        string Id,
         string Name,
         string Color,
         bool Admin,
@@ -14,7 +13,7 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Site.Models
         bool ChangeGroup,
         bool EditGroups,
         int MaxBan,
-        IEnumerable<string> BanGroupIds,
+        IEnumerable<int> BanGroupIds,
         bool SeeLogs
     );
 }

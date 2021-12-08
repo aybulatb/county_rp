@@ -1827,7 +1827,8 @@
             "collectionFormat": "multi",
             "x-nullable": true,
             "items": {
-              "type": "string"
+              "type": "integer",
+              "format": "int32"
             }
           },
           {
@@ -2613,6 +2614,7 @@
       "type": "object",
       "required": [
         "id",
+        "groupId",
         "reputation",
         "posts",
         "warnings"
@@ -2626,7 +2628,8 @@
           "type": "string"
         },
         "groupId": {
-          "type": "string"
+          "type": "integer",
+          "format": "int32"
         },
         "reputation": {
           "type": "integer",
@@ -2645,6 +2648,7 @@
     "ApiUserDtoIn": {
       "type": "object",
       "required": [
+        "groupId",
         "reputation",
         "posts",
         "warnings"
@@ -2654,7 +2658,8 @@
           "type": "string"
         },
         "groupId": {
-          "type": "string"
+          "type": "integer",
+          "format": "int32"
         },
         "reputation": {
           "type": "integer",

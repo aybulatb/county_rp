@@ -11,7 +11,7 @@ namespace CountyRP.Services.Site.API.Models.Api
 
         public string LoginLike { get; init; }
 
-        public IEnumerable<string> GroupIds { get; init; }
+        public IEnumerable<int> GroupIds { get; init; }
 
         public IEnumerable<int> PlayerIds { get; init; }
 

@@ -8,6 +8,6 @@ namespace CountyRP.Services.Forum.API.Models.Api
 
         public string SortingFlag { get; set; }
 
-        public IEnumerable<string> GroupIds { get; set; }
+        public IEnumerable<int> GroupIds { get; set; }
     }
 }

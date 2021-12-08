@@ -42,10 +42,6 @@ namespace CountyRP.Services.Forum.API.Controllers
             {
                 return BadRequest(ConstantMessages.UserInvalidLogin);
             }
-            if (apiUserDtoIn.GroupId == null || apiUserDtoIn.GroupId.Length < 3 || apiUserDtoIn.GroupId.Length > 16)
-            {
-                return BadRequest(ConstantMessages.UserInvalidGroupIdLength);
-            }
 
             var existedUser = await _forumRepository.GetUserByLoginAsync(apiUserDtoIn.Login);
 
@@ -159,10 +155,6 @@ namespace CountyRP.Services.Forum.API.Controllers
             if (!Regex.IsMatch(apiUserDtoIn.Login, @"^([0-9a-zA-Z]{3,32}|[0-9a-zA-Z]{1,31} [0-9a-zA-Z]{1,31}|[0-9a-zA-Z]{1,31} [0-9a-zA-Z]{1,31} [0-9a-zA-Z]{1,31})$"))
             {
                 return BadRequest(ConstantMessages.UserInvalidLogin);
-            }
-            if (apiUserDtoIn.GroupId == null || apiUserDtoIn.GroupId.Length < 3 || apiUserDtoIn.GroupId.Length > 16)
-            {
-                return BadRequest(ConstantMessages.UserInvalidGroupIdLength);
             }
 
             var existedUserWithLogin = await _forumRepository.GetUserByLoginAsync(apiUserDtoIn.Login);

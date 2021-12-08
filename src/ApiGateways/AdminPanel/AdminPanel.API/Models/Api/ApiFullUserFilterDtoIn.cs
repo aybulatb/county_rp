@@ -8,7 +8,7 @@ namespace CountyRP.ApiGateways.AdminPanel.API.Models.Api
 
         public string PersonNameLike { get; init; }
 
-        public string GroupId { get; init; }
+        public int? GroupId { get; init; }
 
         public string FactionId { get; init; }
 

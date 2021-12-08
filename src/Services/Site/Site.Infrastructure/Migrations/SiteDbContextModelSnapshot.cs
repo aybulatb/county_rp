@@ -53,10 +53,10 @@ namespace CountyRP.Services.Site.Infrastructure.Migrations
 
             modelBuilder.Entity("CountyRP.Services.Site.Infrastructure.Entities.GroupDao", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasMaxLength(16)
-                        .HasColumnType("nvarchar(16)");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool>("Admin")
                         .HasColumnType("bit");
@@ -173,9 +173,8 @@ namespace CountyRP.Services.Site.Infrastructure.Migrations
                     b.Property<int>("ForumUserId")
                         .HasColumnType("int");
 
-                    b.Property<string>("GroupId")
-                        .HasMaxLength(16)
-                        .HasColumnType("nvarchar(16)");
+                    b.Property<int>("GroupId")
+                        .HasColumnType("int");
 
                     b.Property<DateTimeOffset>("LastVisitDate")
                         .HasColumnType("datetimeoffset");

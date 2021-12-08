@@ -7,12 +7,12 @@ namespace CountyRP.Services.Site.Infrastructure.Repositories
     {
         Task<GroupDtoOut> AddGroupAsync(GroupDtoIn groupDtoIn);
 
-        Task<GroupDtoOut> GetGroupAsync(string id);
+        Task<GroupDtoOut> GetGroupAsync(int id);
 
         Task<PagedFilterResult<GroupDtoOut>> GetGroupsByFilterAsync(GroupFilterDtoIn filter);
 
         Task<GroupDtoOut> UpdateGroupAsync(GroupDtoOut groupDtoOut);
 
-        Task DeleteGroupAsync(string id);
+        Task DeleteGroupAsync(int id);
     }
 }

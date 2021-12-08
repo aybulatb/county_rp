@@ -18,7 +18,7 @@ namespace CountyRP.Services.Site.Infrastructure.Repositories
             return GroupDaoConverter.ToRepository(groupDao);
         }
 
-        public async Task<GroupDtoOut> GetGroupAsync(string id)
+        public async Task<GroupDtoOut> GetGroupAsync(int id)
         {
             var groupDao = await _siteDbContext
                 .Groups
@@ -83,7 +83,7 @@ namespace CountyRP.Services.Site.Infrastructure.Repositories
             return GroupDaoConverter.ToRepository(groupDao);
         }
 
-        public async Task DeleteGroupAsync(string id)
+        public async Task DeleteGroupAsync(int id)
         {
             var groupDao = await _siteDbContext
                 .Groups
