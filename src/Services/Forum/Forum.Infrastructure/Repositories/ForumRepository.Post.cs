@@ -1,6 +1,7 @@
 ﻿using CountyRP.Services.Forum.Infrastructure.Converters;
 using CountyRP.Services.Forum.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -30,35 +31,43 @@ namespace CountyRP.Services.Forum.Infrastructure.Repositories
                 : null;
         }
 
-        public async Task<PagedFilterResult<PostDtoOut>> GetPostByFilterAsync(PostFilterDtoIn postFilterDtoIn)
+        public async Task<PagedFilterResult<PostDtoOut>> GetPostByFilterAsync(PostFilterDtoIn filter)
         {
-            var postsQuery = _forumDbContext
+            var query = _forumDbContext
                 .Posts
                 .AsNoTracking()
                 .Where(
                     post =>
-                        (postFilterDtoIn.Text == null || post.Text.Contains(postFilterDtoIn.Text)) &&
-                        postFilterDtoIn.UserId.Equals(post.UserId) &&
-                        postFilterDtoIn.CreationDateTime.EqualsExact(post.CreationDateTime) &&
-                        postFilterDtoIn.EditionDateTime.EqualsExact(post.EditionDateTime)
+                        (filter.Text == null || post.Text.Contains(filter.Text)) &&
+                        filter.UserId.Equals(post.UserId) &&
+                        filter.CreationDateTime.EqualsExact(post.CreationDateTime) &&
+                        filter.EditionDateTime.EqualsExact(post.EditionDateTime)
                 )
                 .AsQueryable();
 
-            var allCount = await postsQuery.CountAsync();
-            var maxPages = (allCount % postFilterDtoIn.Count == 0)
-                ? allCount / postFilterDtoIn.Count
-                : allCount / postFilterDtoIn.Count + 1;
+            var allCount = await query.CountAsync();
+            var maxPages = filter.Count.HasValue && filter.Count.Value != 0
+                ?
+                    (allCount % filter.Count.Value == 0)
+                        ? allCount / filter.Count.Value
+                        : allCount / filter.Count.Value + 1
+                : 1;
 
-            var filteredPostsDao = await postsQuery
+            if (filter.Page.HasValue && filter.Count.HasValue && filter.Count.Value > 0 && filter.Page.Value > 0)
+            {
+                query = query
+                   .Skip((filter.Page.Value - 1) * filter.Count.Value)
+                   .Take(filter.Count.Value);
+            }
+
+            var filteredPostsDao = await query
                 .OrderBy(post => post.CreationDateTime)
-                .Skip(postFilterDtoIn.Count.Value * (postFilterDtoIn.Page.Value - 1))
-                .Take(postFilterDtoIn.Count.Value)
                 .ToListAsync();
 
             return new PagedFilterResult<PostDtoOut>(
                 allCount: allCount,
-                page: postFilterDtoIn.Page ?? 1,
-                maxPages: maxPages ?? 1,
+                page: filter.Page ?? 1,
+                maxPages: maxPages,
                 items: filteredPostsDao
                     .Select(PostDaoConverter.ToRepository)
             );
@@ -82,13 +91,11 @@ namespace CountyRP.Services.Forum.Infrastructure.Repositories
             await _forumDbContext.SaveChangesAsync();
         }
 
-        public async Task DeletePostsOnTopicByIdAsync(int topicId)
+        public async Task DeletePostsOnTopicByIdsAsync(IEnumerable<int> topicIds)
         {
             var affectedPosts = _forumDbContext
                 .Posts
-                .Select(post => post)
-                .Where(p => p.TopicId == topicId)
-                .ToArray();
+                .Where(p => topicIds.Contains(p.TopicId));
 
             _forumDbContext.Posts.RemoveRange(affectedPosts);
             await _forumDbContext.SaveChangesAsync();

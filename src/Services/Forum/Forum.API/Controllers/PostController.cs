@@ -158,7 +158,7 @@ namespace CountyRP.Services.Forum.API.Controllers
                 );
             }
 
-            await _forumRepository.DeletePostsOnTopicByIdAsync(topicId);
+            await _forumRepository.DeletePostsOnTopicByIdsAsync(new[] { topicId });
 
             return Ok();
         }

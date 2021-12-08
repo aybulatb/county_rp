@@ -24,14 +24,8 @@ namespace CountyRP.Services.Forum.API.Comparers
         public int GetHashCode([DisallowNull] ForumDtoOut forum)
         {
             var hashForumId = forum.Id.GetHashCode();
-            var hashForumName = forum.Name?.GetHashCode() ?? 0;
-            var hashParentId = forum.ParentId.GetHashCode();
-            var hashOrder = forum.Order.GetHashCode();
 
-            return hashForumId ^
-                hashForumName ^
-                hashParentId ^
-                hashOrder;
+            return hashForumId;
         }
     }
 }

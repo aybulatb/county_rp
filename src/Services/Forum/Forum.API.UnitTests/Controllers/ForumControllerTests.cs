@@ -191,7 +191,7 @@ namespace CountyRP.Services.Forum.UnitTests
             {
                 Count = count,
                 Page = 1,
-                ParentId = 1
+                ParentIds = new[] { 1 }
             };
 
             var logger = new Mock<ILogger<ForumController>>();
@@ -220,7 +220,7 @@ namespace CountyRP.Services.Forum.UnitTests
             {
                 Count = 5,
                 Page = page,
-                ParentId = 1
+                ParentIds = new[] { 1 }
             };
 
             var logger = new Mock<ILogger<ForumController>>();
@@ -250,7 +250,7 @@ namespace CountyRP.Services.Forum.UnitTests
             {
                 Count = 5,
                 Page = 1,
-                ParentId = 1
+                ParentIds = new[] { 1 }
             };
 
             var pagedFilterResult = fixture.Create<PagedFilterResult<ForumDtoOut>>();

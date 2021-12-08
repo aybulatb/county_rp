@@ -151,7 +151,7 @@ namespace CountyRP.Services.Forum.API.Controllers
                 );
             }
 
-            var validationResult = await ValidateForum(apiForumDtoIn);
+            var validationResult = await ValidateForum(apiForumDtoIn, id);
 
             if (validationResult != null)
             {
@@ -192,6 +192,8 @@ namespace CountyRP.Services.Forum.API.Controllers
                 return BadRequest();
             }
 
+            await _forumRepository.UpdateForumsAsync(updatedOrderedForumsDtoIn);
+
             return NoContent();
         }
 
@@ -212,7 +214,9 @@ namespace CountyRP.Services.Forum.API.Controllers
                 );
             }
 
-            await _forumRepository.DeleteForumAsync(id);
+            var forumParentId = existedForum.ParentId;
+
+            await DeleteForumModeratorsTopicsPostsAndUpdateOrdering(id, forumParentId);
 
             return Ok();
         }
@@ -232,7 +236,7 @@ namespace CountyRP.Services.Forum.API.Controllers
             return Ok();
         }
 
-        private async Task<IActionResult> ValidateForum(ApiForumDtoIn apiForumDtoIn)
+        private async Task<IActionResult> ValidateForum(ApiForumDtoIn apiForumDtoIn, int id = 0)
         {
             if (apiForumDtoIn.Name == null || apiForumDtoIn.Name.Length < 1 || apiForumDtoIn.Name.Length > 96)
             {
@@ -250,7 +254,7 @@ namespace CountyRP.Services.Forum.API.Controllers
 
             var forumDtoOut = ApiForumDtoInConverter.ToDtoOut(
                 source: apiForumDtoIn,
-                id: 0
+                id: id
             );
 
             var result = ValidateForumsOrdering(sourceForums.Items, new[] { forumDtoOut });
@@ -272,17 +276,17 @@ namespace CountyRP.Services.Forum.API.Controllers
                     updatedForum => updatedForum.Id,
                     (sourceForum, updatedForum) => new
                     {
-                        CurrentForum = sourceForum,
+                        SourceForum = sourceForum,
                         UpdatedForum = updatedForum
                     }
                 )
                 .SelectMany(
                     x => x.UpdatedForum.DefaultIfEmpty(),
-                    (currentForum, updatedForum) => new ForumDtoOut(
-                        id: currentForum.CurrentForum.Id,
-                        name: currentForum.CurrentForum.Name,
-                        parentId: updatedForum == null ? currentForum.CurrentForum.ParentId : updatedForum.ParentId,
-                        order: updatedForum == null ? currentForum.CurrentForum.Order : updatedForum.Order
+                    (sourceForum, updatedForum) => new ForumDtoOut(
+                        id: sourceForum.SourceForum.Id,
+                        name: sourceForum.SourceForum.Name,
+                        parentId: updatedForum == null ? sourceForum.SourceForum.ParentId : updatedForum.ParentId,
+                        order: updatedForum == null ? sourceForum.SourceForum.Order : updatedForum.Order
                     )
                 )
                 .Union(newForums, new ForumDtoOutComparer());
@@ -304,6 +308,66 @@ namespace CountyRP.Services.Forum.API.Controllers
             }
 
             return false;
+        }
+
+        private async Task DeleteForumModeratorsTopicsPostsAndUpdateOrdering(int id, int forumParentId)
+        {
+            var topicFilterDtoIn = ForumIdConverter.ToTopicFilterDtoIn(id);
+            var moderatorFilterDtoIn = ForumIdConverter.ToModeratorFilterDtoIn(id);
+            var forumFilterDtoIn = ForumIdConverter.ToForumFilterDtoIn(id);
+
+            var topicsForDeleting = await _forumRepository.GetTopicByFilterAsync(topicFilterDtoIn);
+            var topicIdsForDeleting = topicsForDeleting
+                .Items
+                .Select(topic => topic.Id);
+
+            await _forumRepository.DeleteForumAsync(id);
+            await _forumRepository.DeleteModeratorsByFilterAsync(moderatorFilterDtoIn);
+            await _forumRepository.DeleteTopicsOnForumByIdAsync(id);
+            await _forumRepository.DeletePostsOnTopicByIdsAsync(topicIdsForDeleting);
+
+            await UpdateOrdering(forumParentId);
+
+            var childForums = await _forumRepository.GetForumsByFilterAsync(forumFilterDtoIn);
+
+            foreach (var forum in childForums.Items)
+            {
+                await DeleteForumModeratorsTopicsPostsAndUpdateOrdering(forum.Id, forum.ParentId);
+            }
+        }
+
+        private async Task UpdateOrdering(int forumParentId)
+        {
+            var forumsWithParentId = await _forumRepository.GetForumsByFilterAsync(
+                new ForumFilterDtoIn(
+                    count: null,
+                    page: null,
+                    ids: null,
+                    parentIds: new[] { forumParentId }
+                )
+            );
+
+            var orderedForums = forumsWithParentId
+                .Items
+                .OrderBy(forum => forum.Order);
+
+            var updatedOrderedForums = new List<ForumDtoOut>();
+
+            for (var i = 0; i < orderedForums.Count(); i++)
+            {
+                var forum = orderedForums.ElementAt(i);
+
+                updatedOrderedForums.Add(
+                    new ForumDtoOut(
+                        id: forum.Id,
+                        name: forum.Name,
+                        parentId: forum.ParentId,
+                        order: i
+                    )
+                );
+            }
+
+            await _forumRepository.UpdateForumsAsync(updatedOrderedForums);
         }
     }
 }

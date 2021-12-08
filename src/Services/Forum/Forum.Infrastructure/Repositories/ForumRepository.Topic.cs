@@ -30,31 +30,38 @@ namespace CountyRP.Services.Forum.Infrastructure.Repositories
                 : null;
         }
 
-        public async Task<PagedFilterResult<TopicDtoOut>> GetTopicByFilterAsync(TopicFilterDtoIn topicFilterDtoIn)
+        public async Task<PagedFilterResult<TopicDtoOut>> GetTopicByFilterAsync(TopicFilterDtoIn filter)
         {
-            var topicsQuery = _forumDbContext
+            var query = _forumDbContext
                 .Topics
                 .AsNoTracking()
                 .Where(
-                    topic => topic.ForumId.Equals(topicFilterDtoIn.ForumId)
+                    topic => topic.ForumId.Equals(filter.ForumId)
                 )
                 .AsQueryable();
 
-            var allCount = await topicsQuery.CountAsync();
-            var maxPages = (allCount % topicFilterDtoIn.Count == 0)
-                ? allCount / topicFilterDtoIn.Count
-                : allCount / topicFilterDtoIn.Count + 1;
+            var allCount = await query.CountAsync();
+            var maxPages = filter.Count.HasValue && filter.Count.Value != 0
+                ?
+                    (allCount % filter.Count.Value == 0)
+                        ? allCount / filter.Count.Value
+                        : allCount / filter.Count.Value + 1
+                : 1;
 
-            var filteredTopicsDao = await topicsQuery
-                .OrderBy(topic => topic.Id)
-                .Skip(topicFilterDtoIn.Count.Value * (topicFilterDtoIn.Page.Value - 1))
-                .Take(topicFilterDtoIn.Count.Value)
+            if (filter.Page.HasValue && filter.Count.HasValue && filter.Count.Value > 0 && filter.Page.Value > 0)
+            {
+                query = query
+                   .Skip((filter.Page.Value - 1) * filter.Count.Value)
+                   .Take(filter.Count.Value);
+            }
+
+            var filteredTopicsDao = await query
                 .ToListAsync();
 
             return new PagedFilterResult<TopicDtoOut>(
                 allCount: allCount,
-                page: topicFilterDtoIn.Page ?? 1,
-                maxPages: maxPages.Value,
+                page: filter.Page ?? 1,
+                maxPages: maxPages,
                 items: filteredTopicsDao
                     .Select(TopicDaoConverter.ToRepository)
             );

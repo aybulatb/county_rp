@@ -1,4 +1,5 @@
 ﻿using CountyRP.Services.Forum.Infrastructure.Models;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace CountyRP.Services.Forum.Infrastructure.Repositories
@@ -33,6 +34,6 @@ namespace CountyRP.Services.Forum.Infrastructure.Repositories
         /// <summary>
         /// Удалить все сообщения в теме с ID topicId
         /// </summary>
-        Task DeletePostsOnTopicByIdAsync(int topicId);
+        Task DeletePostsOnTopicByIdsAsync(IEnumerable<int> topicIds);
     }
 }
