@@ -1,16 +1,8 @@
 ﻿namespace CountyRP.ApiGateways.AdminPanel.API.Models.Api
 {
-    public record ApiModeratorDtoOut
+    public record ApiUpdatedModeratorDtoIn
     {
         public int Id { get; init; }
-
-        public int EntityId { get; init; }
-
-        public ApiModeratorEntityTypeDto EntityType { get; init; }
-
-        public string Name { get; init; }
-
-        public int ForumId { get; init; }
 
         public bool CreateTopics { get; init; }
 
@@ -24,12 +16,8 @@
 
         public bool DeletePosts { get; init; }
 
-        public ApiModeratorDtoOut(
+        public ApiUpdatedModeratorDtoIn(
             int id,
-            int entityId,
-            ApiModeratorEntityTypeDto entityType,
-            string name,
-            int forumId,
             bool createTopics,
             bool createPosts,
             bool read,
@@ -39,10 +27,6 @@
         )
         {
             Id = id;
-            EntityId = entityId;
-            EntityType = entityType;
-            Name = name;
-            ForumId = forumId;
             CreateTopics = createTopics;
             CreatePosts = createPosts;
             Read = read;

@@ -1,7 +1,6 @@
 ﻿using CountyRP.ApiGateways.AdminPanel.API.Models.Api;
 using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Forum.Models;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace CountyRP.ApiGateways.AdminPanel.API.Converters
 {
@@ -9,7 +8,7 @@ namespace CountyRP.ApiGateways.AdminPanel.API.Converters
     {
         public static ApiForumWithModeratorsDtoOut ToApiForumWithModeratorsDtoOut(
             ForumForumDtoOut source,
-            IEnumerable<ForumModeratorDtoOut> moderators
+            IEnumerable<ApiModeratorDtoOut> moderators
         )
         {
             return new ApiForumWithModeratorsDtoOut(
@@ -18,7 +17,6 @@ namespace CountyRP.ApiGateways.AdminPanel.API.Converters
                 parentId: source.ParentId,
                 order: source.Order,
                 moderators: moderators
-                    .Select(ForumModeratorDtoOutConverter.ToApi)
             );
         }
     }
