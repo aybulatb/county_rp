@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -199,6 +200,79 @@ namespace CountyRP.Services.Game.API.Controllers
             );
         }
 
+        [HttpPut]
+        [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> MassivelyEdit(IEnumerable<ApiEditedPersonDtoIn> apiEditedPersonsDtoIn)
+        {
+            var idsForEdition = apiEditedPersonsDtoIn.Select(person => person.Id);
+
+            var filteredPersons = await _gameRepository.GetPersonsByFilter(
+                PersonIdConverter.ToPersonFilterDtoIn(idsForEdition)
+            );
+
+            var filteredIds = filteredPersons.Items.Select(person => person.Id);
+
+            var differenceIds = idsForEdition.Except(filteredIds);
+
+            if (differenceIds.Any())
+            {
+                return NotFound(
+                    string.Format(
+                        ConstantMessages.PersonNotFoundById,
+                        differenceIds
+                    )
+                );
+            }
+
+            foreach (var apiEditedPersonDtoIn in apiEditedPersonsDtoIn)
+            {
+                var currentPerson = filteredPersons.Items.First(person => person.Id == apiEditedPersonDtoIn.Id);
+
+                if (currentPerson.Name != apiEditedPersonDtoIn.Name)
+                {
+                    if (apiEditedPersonDtoIn.Name == null || apiEditedPersonDtoIn.Name.Length < 3 || apiEditedPersonDtoIn.Name.Length > 32)
+                    {
+                        return BadRequest(
+                            ConstantMessages.PersonInvalidNameLength
+                        );
+                    }
+                    if (!Regex.IsMatch(apiEditedPersonDtoIn.Name, @"^([0-9a-zA-Z]{3,32}|[0-9a-zA-Z]{1,31} [0-9a-zA-Z]{1,31}|[0-9a-zA-Z]{1,31} [0-9a-zA-Z]{1,31} [0-9a-zA-Z]{1,31})$"))
+                    {
+                        return BadRequest(
+                            ConstantMessages.PersonInvalidName
+                        );
+                    }
+
+                    var existedPersonsWithNewName = await _gameRepository.GetPersonsByFilter(
+                        PersonNameConverter.ToPersonFilterDtoIn(apiEditedPersonDtoIn.Name)
+                    );
+
+                    if (existedPersonsWithNewName.AllCount != 0)
+                    {
+                        return BadRequest(
+                            string.Format(
+                                ConstantMessages.PersonAlreadyExistedWithName,
+                                apiEditedPersonDtoIn.Name
+                            )
+                        );
+                    }
+                }
+            }
+
+            var editedPersonsDtoIn = apiEditedPersonsDtoIn
+                .Select(apiEditedPersonDtoIn =>
+                    ApiEditedPersonDtoInConverter.ToRepository(
+                        source: apiEditedPersonDtoIn
+                    )
+                );
+
+            await _gameRepository.UpdatePersonsAsync(editedPersonsDtoIn);
+
+            return NoContent();
+        }
+
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status404NotFound)]
@@ -217,6 +291,17 @@ namespace CountyRP.Services.Game.API.Controllers
                     )
                 );
             }
+
+            await _gameRepository.DeletePersonByFilter(filter);
+
+            return Ok();
+        }
+
+        [HttpDelete]
+        [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
+        public async Task<IActionResult> MassivelyDelete([FromQuery] IEnumerable<int> ids)
+        {
+            var filter = PersonIdConverter.ToPersonFilterDtoIn(ids);
 
             await _gameRepository.DeletePersonByFilter(filter);
 

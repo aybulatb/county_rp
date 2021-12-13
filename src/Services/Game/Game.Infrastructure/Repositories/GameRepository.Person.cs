@@ -3,6 +3,7 @@ using CountyRP.Services.Game.Infrastructure.Entities;
 using CountyRP.Services.Game.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -65,6 +66,33 @@ namespace CountyRP.Services.Game.Infrastructure.Repositories
             await _gameDbContext.SaveChangesAsync();
 
             return PersonDaoConverter.ToRepository(personDao);
+        }
+
+        public async Task UpdatePersonsAsync(IEnumerable<EditedPersonDtoIn> editedPersonsDtoIn)
+        {
+            var editedPersonsIds = editedPersonsDtoIn.Select(person => person.Id);
+
+            var existedPersonsDao = await _gameDbContext
+                .Persons
+                .AsNoTracking()
+                .Where(person => editedPersonsIds.Contains(person.Id))
+                .ToArrayAsync();
+
+            var editedPersonsDao = existedPersonsDao
+                .Join(
+                    editedPersonsDtoIn,
+                    person => person.Id,
+                    editedPerson => editedPerson.Id,
+                    (person, editedPerson) =>
+                        EditedPersonDtoInConverter.ToDb(
+                            source: editedPerson,
+                            personDtoOut: PersonDaoConverter.ToRepository(person)
+                        )
+            );
+
+            _gameDbContext.Persons.UpdateRange(editedPersonsDao);
+
+            await _gameDbContext.SaveChangesAsync();
         }
 
         public async Task DeletePersonByFilter(PersonFilterDtoIn filter)

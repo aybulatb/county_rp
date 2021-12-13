@@ -25,5 +25,25 @@ namespace CountyRP.Services.Game.API.Converters
                 pocketsInventoryId: source.PocketsInventoryId
             );
         }
+
+        public static EditedPersonDtoIn ToRepository(
+            ApiEditedPersonDtoIn source
+        )
+        {
+            return new EditedPersonDtoIn(
+                id: source.Id,
+                name: source.Name,
+                playerId: source.PlayerId,
+                lastVisitDate: source.LastVisitDate,
+                adminLevelId: source.AdminLevelId,
+                factionId: source.FactionId,
+                gangId: source.GangId,
+                leader: source.Leader,
+                rank: source.Rank,
+                position: source.Position,
+                commonInventoryId: source.CommonInventoryId,
+                pocketsInventoryId: source.PocketsInventoryId
+            );
+        }
     }
 }

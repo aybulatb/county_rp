@@ -1,4 +1,5 @@
 ﻿using CountyRP.Services.Game.Infrastructure.Models;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace CountyRP.Services.Game.Infrastructure.Repositories
@@ -10,6 +11,8 @@ namespace CountyRP.Services.Game.Infrastructure.Repositories
         public Task<PagedFilterResultDtoOut<PersonDtoOut>> GetPersonsByFilter(PersonFilterDtoIn filter);
 
         public Task<PersonDtoOut> UpdatePersonAsync(EditedPersonDtoIn editedPersonDtoIn);
+
+        public Task UpdatePersonsAsync(IEnumerable<EditedPersonDtoIn> editedPersonsDtoIn);
 
         public Task DeletePersonByFilter(PersonFilterDtoIn filter);
     }
