@@ -1,4 +1,5 @@
 ﻿using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Game.Models;
+using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Game.Models.Player;
 using System.Threading.Tasks;
 
 namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Game.Interfaces
@@ -8,5 +9,7 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Game.Interface
         Task<GamePlayerDtoOut> GetPlayerByIdAsync(int id);
 
         Task<GamePagedFilterResultDtoOut<GamePlayerDtoOut>> GetPlayersByFilterAsync(GamePlayerFilterDtoIn gameFilterPlayerDtoIn);
+
+        Task UpdatePlayerAsync(int id, GameEditedPlayerDtoIn editedPlayerDtoIn);
     }
 }

@@ -3,7 +3,11 @@ using CountyRP.ApiGateways.AdminPanel.Infrastructure.Exceptions;
 using CountyRP.ApiGateways.AdminPanel.Infrastructure.Models;
 using CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClient.ServiceGame;
 using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Game.Converters;
+using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Game.Converters.Persons;
 using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Game.Models;
+using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Game.Models.Persons;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Game.Implementations
@@ -53,6 +57,19 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Game.Implement
                     statusCode: ex.StatusCode
                 );
             }
+        }
+
+        public async Task UpdatePersonsAsync(IEnumerable<GameEditedPersonDtoIn> editedPersonsDtoIn)
+        {
+            var apiEditedPersonsDtoIn = editedPersonsDtoIn
+                .Select(GameEditedPersonDtoInConverter.ToExternalApi);
+
+            await _personClient.MassivelyEditAsync(apiEditedPersonsDtoIn);
+        }
+
+        public async Task DeletePersonsAsync(IEnumerable<int> ids)
+        {
+            await _personClient.MassivelyDeleteAsync(ids);
         }
     }
 }

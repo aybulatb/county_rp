@@ -3,7 +3,9 @@ using CountyRP.ApiGateways.AdminPanel.Infrastructure.Exceptions;
 using CountyRP.ApiGateways.AdminPanel.Infrastructure.Models;
 using CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClient.ServiceGame;
 using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Game.Converters;
+using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Game.Converters.Player;
 using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Game.Models;
+using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Game.Models.Player;
 using System.Threading.Tasks;
 
 namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Game.Implementations
@@ -74,6 +76,13 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Game.Implement
                     statusCode: ex.StatusCode
                 );
             }
+        }
+
+        public async Task UpdatePlayerAsync(int id, GameEditedPlayerDtoIn editedPlayerDtoIn)
+        {
+            var apiEditedPlayerDtoIn = GameEditedPlayerDtoInConverter.ToExternalApi(editedPlayerDtoIn);
+
+            await _playerClient.EditAsync(id, apiEditedPlayerDtoIn);
         }
     }
 }

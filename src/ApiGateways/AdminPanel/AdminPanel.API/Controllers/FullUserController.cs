@@ -1,4 +1,5 @@
 ﻿using CountyRP.ApiGateways.AdminPanel.API.Converters;
+using CountyRP.ApiGateways.AdminPanel.API.Converters.FullUser;
 using CountyRP.ApiGateways.AdminPanel.API.Models.Api;
 using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Game.Interfaces;
 using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Site.Interfaces;
@@ -45,7 +46,7 @@ namespace CountyRP.ApiGateways.AdminPanel.API.Controllers
         }
 
         [HttpGet("ShortFilterBy")]
-        public async Task<IActionResult> GetByShortFilter(ApiFullUserFilterDtoIn apiFullUserFilterDtoIn)
+        public async Task<IActionResult> GetByShortFilter([FromQuery] ApiFullUserFilterDtoIn apiFullUserFilterDtoIn)
         {
             var userFilter = ApiFullUserFilterDtoInConverter.ToUserService(apiFullUserFilterDtoIn);
 
@@ -89,8 +90,37 @@ namespace CountyRP.ApiGateways.AdminPanel.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(int id)
+        public async Task<IActionResult> Update(int id, [FromBody] ApiUpdatedFullUserDtoIn apiUpdatedFullUserDtoIn)
         {
+            var user = await _siteService.GetUserByIdAsync(id);
+
+            var playerWithPersons = await _gameService.GetPlayerWithPersonsByPlayerIdAsync(user.PlayerId);
+
+            var allPersonsExist = apiUpdatedFullUserDtoIn
+                .Persons
+                .All(updatedPerson => playerWithPersons.Persons.Any(person => person.Id == updatedPerson.Id));
+
+            if (!allPersonsExist)
+            {
+                return BadRequest();
+            }
+
+            var updatedFullUserDtoIn = ApiUpdatedFullUserDtoInConverter.ToService(apiUpdatedFullUserDtoIn);
+
+            // TODO: Сделать обновление пользователя на сайте
+            await _gameService.UpdatePlayerAsync(id, updatedFullUserDtoIn);
+
+            var editedPersonsDtoIn = apiUpdatedFullUserDtoIn
+                .Persons
+                .Select(person =>
+                    ApiUpdatedFullUserPersonDtoInConverter.ToService(
+                        source: person,
+                        playerId: id
+                    )
+                );
+
+            await _gameService.UpdatePersonsAsync(editedPersonsDtoIn);
+
             return null;
         }
 
