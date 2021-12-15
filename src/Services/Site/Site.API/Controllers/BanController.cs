@@ -284,7 +284,7 @@ namespace CountyRP.Services.Site.API.Controllers
         /// Удалить пользователя по ID.
         /// </summary>
         [HttpDelete("{id}")]
-        [ProducesResponseType(typeof(ApiBanDtoOut), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
@@ -299,7 +299,7 @@ namespace CountyRP.Services.Site.API.Controllers
 
             await _siteRepository.DeleteBanAsync(id);
 
-            return Ok();
+            return NoContent();
         }
     }
 }

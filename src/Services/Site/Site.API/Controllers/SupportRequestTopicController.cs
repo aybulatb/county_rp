@@ -126,7 +126,7 @@ namespace CountyRP.Services.Site.API.Controllers
         /// Удалить обращение с сообщениями.
         /// </summary>
         [HttpDelete("{id}")]
-        [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
@@ -149,7 +149,7 @@ namespace CountyRP.Services.Site.API.Controllers
                 )
             );
 
-            return Ok();
+            return NoContent();
         }
     }
 }

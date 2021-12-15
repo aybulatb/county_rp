@@ -213,7 +213,7 @@ namespace CountyRP.Services.Site.API.Controllers
         /// Удалить группу пользователей по ID.
         /// </summary>
         [HttpDelete("{id}")]
-        [ProducesResponseType(typeof(ApiGroupDtoOut), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
@@ -228,7 +228,7 @@ namespace CountyRP.Services.Site.API.Controllers
 
             await _siteRepository.DeleteGroupAsync(id);
 
-            return Ok();
+            return NoContent();
         }
     }
 }
