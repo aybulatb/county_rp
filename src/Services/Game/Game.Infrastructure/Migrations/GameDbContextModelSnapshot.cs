@@ -233,6 +233,41 @@ namespace CountyRP.Services.Game.Infrastructure.Migrations
                     b.ToTable("Atms");
                 });
 
+            modelBuilder.Entity("CountyRP.Services.Game.Infrastructure.Entities.BanDao", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AdminId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset>("FinishDateTime")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("IP")
+                        .HasMaxLength(16)
+                        .HasColumnType("nvarchar(16)");
+
+                    b.Property<int?>("PersonId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PlayerId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Reason")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<DateTimeOffset>("StartDateTime")
+                        .HasColumnType("datetimeoffset");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Bans");
+                });
+
             modelBuilder.Entity("CountyRP.Services.Game.Infrastructure.Entities.BusinessDao", b =>
                 {
                     b.Property<int>("Id")

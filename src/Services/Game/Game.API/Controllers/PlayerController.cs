@@ -1,6 +1,6 @@
 ﻿using CountyRP.Services.Game.API.Converters;
 using CountyRP.Services.Game.API.Models.Api;
-using CountyRP.Services.Game.Infrastructure.Repositories;
+using CountyRP.Services.Game.Infrastructure.Repositories.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;

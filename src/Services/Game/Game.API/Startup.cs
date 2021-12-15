@@ -1,6 +1,7 @@
 using CountyRP.BuildingBlocks.ApiKeyAuthenticationMiddleware;
 using CountyRP.Services.Game.Infrastructure.DbContexts;
-using CountyRP.Services.Game.Infrastructure.Repositories;
+using CountyRP.Services.Game.Infrastructure.Repositories.Implementations;
+using CountyRP.Services.Game.Infrastructure.Repositories.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;

@@ -2,7 +2,7 @@
 
 namespace CountyRP.Services.Game.Infrastructure.Models
 {
-    public class GangFilterDtoIn : PagedFilterDtoIn
+    public record GangFilterDtoIn : PagedFilterDtoIn
     {
         public IEnumerable<int> Ids { get; }
 

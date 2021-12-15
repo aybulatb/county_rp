@@ -2,7 +2,7 @@
 
 namespace CountyRP.Services.Game.Infrastructure.Models
 {
-    public class LockerRoomFilterDtoIn : PagedFilterDtoIn
+    public record LockerRoomFilterDtoIn : PagedFilterDtoIn
     {
         public IEnumerable<int> Ids { get; }
 

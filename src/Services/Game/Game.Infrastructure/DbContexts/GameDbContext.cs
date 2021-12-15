@@ -11,6 +11,8 @@ namespace CountyRP.Services.Game.Infrastructure.DbContexts
 
         public DbSet<AdminLevelDao> AdminLevels { get; set; }
 
+        public DbSet<BanDao> Bans { get; set; }
+
         public DbSet<AppearanceDao> Appearances { get; set; }
 
         public DbSet<AtmDao> Atms { get; set; }

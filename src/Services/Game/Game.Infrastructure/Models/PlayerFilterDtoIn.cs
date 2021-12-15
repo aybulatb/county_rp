@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CountyRP.Services.Game.Infrastructure.Models
 {
-    public class PlayerFilterDtoIn : PagedFilterDtoIn
+    public record PlayerFilterDtoIn : PagedFilterDtoIn
     {
         public IEnumerable<int> Ids { get; }
 

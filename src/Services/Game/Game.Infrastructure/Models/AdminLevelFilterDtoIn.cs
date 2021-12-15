@@ -2,7 +2,7 @@
 
 namespace CountyRP.Services.Game.Infrastructure.Models
 {
-    public class AdminLevelFilterDtoIn : PagedFilterDtoIn
+    public record AdminLevelFilterDtoIn : PagedFilterDtoIn
     {
         public IEnumerable<string> Ids { get; }
 
