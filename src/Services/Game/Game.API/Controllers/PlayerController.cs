@@ -233,13 +233,13 @@ namespace CountyRP.Services.Game.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ApiErrorResponseDtoOut), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
-            var filter = PlayerIdConverter.ToPlayerFilterDtoIn(id);
+            var filterForPlayer = PlayerIdConverter.ToPlayerFilterDtoIn(id);
 
-            var filteredPlayers = await _gameRepository.GetPlayersByFilter(filter);
+            var filteredPlayers = await _gameRepository.GetPlayersByFilter(filterForPlayer);
 
             if (!filteredPlayers.Items.Any())
             {
@@ -251,9 +251,13 @@ namespace CountyRP.Services.Game.API.Controllers
                 );
             }
 
-            await _gameRepository.DeletePlayerByFilter(filter);
+            await _gameRepository.DeletePlayerByFilter(filterForPlayer);
 
-            return Ok();
+            var filterForPersons = PlayerIdConverter.ToPersonFilterDtoIn(id);
+
+            await _gameRepository.DeletePersonByFilter(filterForPersons);
+
+            return NoContent();
         }
     }
 }

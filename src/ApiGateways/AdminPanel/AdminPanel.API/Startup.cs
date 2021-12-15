@@ -89,6 +89,11 @@ namespace CountyRP.ApiGateways.AdminPanel.API
                 BaseUrl = "https://localhost:10511"
             });
 
+            services.AddSingleton<IUserClient>(new Infrastructure.RestClients.ServiceForum.UserClient(httpClient3)
+            {
+                BaseUrl = "https://localhost:10511"
+            });
+
             HttpClientHandler clientHandler4 = new HttpClientHandler();
             clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
 

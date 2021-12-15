@@ -1000,12 +1000,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "x-nullable": false,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/ApiUserDtoOut"
-            }
+          "204": {
+            "description": ""
           },
           "404": {
             "x-nullable": false,

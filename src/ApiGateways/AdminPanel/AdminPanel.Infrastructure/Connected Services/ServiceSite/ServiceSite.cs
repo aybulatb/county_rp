@@ -2420,14 +2420,14 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClient.ServiceSite
         }
     
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<ApiUserDtoOut> DeleteAsync(int id)
+        public System.Threading.Tasks.Task DeleteAsync(int id)
         {
             return DeleteAsync(id, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<ApiUserDtoOut> DeleteAsync(int id, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task DeleteAsync(int id, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
@@ -2443,7 +2443,6 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClient.ServiceSite
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
-                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
     
                     PrepareRequest(client_, request_, urlBuilder_);
     
@@ -2466,14 +2465,9 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.RestClient.ServiceSite
                         ProcessResponse(client_, response_);
     
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 204)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ApiUserDtoOut>(response_, headers_, cancellationToken).ConfigureAwait(false);
-                            if (objectResponse_.Object == null)
-                            {
-                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
-                            }
-                            return objectResponse_.Object;
+                            return;
                         }
                         else
                         if (status_ == 404)

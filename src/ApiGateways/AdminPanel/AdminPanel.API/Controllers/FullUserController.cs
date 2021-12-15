@@ -1,8 +1,10 @@
 ﻿using CountyRP.ApiGateways.AdminPanel.API.Converters;
 using CountyRP.ApiGateways.AdminPanel.API.Converters.FullUser;
 using CountyRP.ApiGateways.AdminPanel.API.Models.Api;
+using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Forum.Interfaces;
 using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Game.Interfaces;
 using CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Site.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -18,16 +20,19 @@ namespace CountyRP.ApiGateways.AdminPanel.API.Controllers
         private readonly ILogger<FullUserController> _logger;
         private readonly ISiteService _siteService;
         private readonly IGameService _gameService;
+        private readonly IForumService _forumService;
 
         public FullUserController(
             ILogger<FullUserController> logger,
             ISiteService siteService,
-            IGameService gameService
+            IGameService gameService,
+            IForumService forumService
         )
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _siteService = siteService ?? throw new ArgumentNullException(nameof(siteService));
             _gameService = gameService ?? throw new ArgumentNullException(nameof(gameService));
+            _forumService = forumService ?? throw new ArgumentNullException(nameof(forumService));
         }
 
         [HttpGet("{id}")]
@@ -105,9 +110,15 @@ namespace CountyRP.ApiGateways.AdminPanel.API.Controllers
                 return BadRequest();
             }
 
-            var updatedFullUserDtoIn = ApiUpdatedFullUserDtoInConverter.ToService(apiUpdatedFullUserDtoIn);
+            var updatedSiteUserDtoIn = ApiUpdatedFullUserDtoInConverter.ToSiteService(
+                source: apiUpdatedFullUserDtoIn,
+                user: user
+            );
 
-            // TODO: Сделать обновление пользователя на сайте
+            await _siteService.UpdateUserAsync(updatedSiteUserDtoIn);
+
+            var updatedFullUserDtoIn = ApiUpdatedFullUserDtoInConverter.ToGameService(apiUpdatedFullUserDtoIn);
+
             await _gameService.UpdatePlayerAsync(id, updatedFullUserDtoIn);
 
             var editedPersonsDtoIn = apiUpdatedFullUserDtoIn
@@ -125,9 +136,16 @@ namespace CountyRP.ApiGateways.AdminPanel.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> Delete(int id)
         {
-            return null;
+            var siteUser = await _siteService.GetUserByIdAsync(id);
+
+            await _siteService.DeleteUserAsync(id);
+            await _gameService.DeletePlayerAsync(siteUser.PlayerId);
+            await _forumService.DeleteUserAsync(siteUser.ForumUserId);
+
+            return NoContent();
         }
     }
 }

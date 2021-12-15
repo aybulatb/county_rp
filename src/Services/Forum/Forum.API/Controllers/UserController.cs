@@ -1,4 +1,5 @@
 ﻿using CountyRP.Services.Forum.API.Converters;
+using CountyRP.Services.Forum.API.Converters.User;
 using CountyRP.Services.Forum.API.Models.Api;
 using CountyRP.Services.Forum.Infrastructure.Models;
 using CountyRP.Services.Forum.Infrastructure.Repositories;
@@ -178,7 +179,7 @@ namespace CountyRP.Services.Forum.API.Controllers
         /// Удалить пользователя по ID.
         /// </summary>
         [HttpDelete("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
@@ -193,7 +194,10 @@ namespace CountyRP.Services.Forum.API.Controllers
 
             await _forumRepository.DeleteUserAsync(id);
 
-            return Ok();
+            var filterForModerators = UserIdConverter.ToModeratorFilterDtoIn(id);
+            await _forumRepository.DeleteModeratorsByFilterAsync(filterForModerators);
+
+            return NoContent();
         }
     }
 }

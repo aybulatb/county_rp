@@ -8,14 +8,17 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Forum.Implemen
     {
         private readonly IForumClient _forumClient;
         private readonly IModeratorClient _moderatorClient;
+        private readonly IUserClient _userClient;
 
         public ForumService(
             IForumClient forumClient,
-            IModeratorClient moderatorClient
+            IModeratorClient moderatorClient,
+            IUserClient userClient
         )
         {
             _forumClient = forumClient ?? throw new ArgumentNullException(nameof(forumClient));
             _moderatorClient = moderatorClient ?? throw new ArgumentNullException(nameof(moderatorClient));
+            _userClient = userClient ?? throw new ArgumentNullException(nameof(userClient));
         }
     }
 }

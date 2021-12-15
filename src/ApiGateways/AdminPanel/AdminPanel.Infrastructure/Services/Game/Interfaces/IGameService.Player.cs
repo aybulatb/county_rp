@@ -11,5 +11,7 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Game.Interface
         Task<GamePagedFilterResultDtoOut<GamePlayerDtoOut>> GetPlayersByFilterAsync(GamePlayerFilterDtoIn gameFilterPlayerDtoIn);
 
         Task UpdatePlayerAsync(int id, GameEditedPlayerDtoIn editedPlayerDtoIn);
+
+        Task DeletePlayerAsync(int id);
     }
 }

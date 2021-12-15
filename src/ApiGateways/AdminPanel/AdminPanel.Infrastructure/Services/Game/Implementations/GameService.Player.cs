@@ -84,5 +84,10 @@ namespace CountyRP.ApiGateways.AdminPanel.Infrastructure.Services.Game.Implement
 
             await _playerClient.EditAsync(id, apiEditedPlayerDtoIn);
         }
+
+        public async Task DeletePlayerAsync(int id)
+        {
+            await _playerClient.DeleteAsync(id);
+        }
     }
 }
