@@ -9,7 +9,16 @@ namespace CountyRP.Services.Game.Infrastructure.Converters.Ban
             BanDtoIn source
         )
         {
-            return new BanDao();
+            return new BanDao(
+                id: 0,
+                playerId: source.PlayerId,
+                personId: source.PersonId,
+                adminId: source.AdminId,
+                startDateTime: source.StartDateTime,
+                finishDateTime: source.FinishDateTime,
+                ip: source.IP,
+                reason: source.Reason
+            );
         }
     }
 }

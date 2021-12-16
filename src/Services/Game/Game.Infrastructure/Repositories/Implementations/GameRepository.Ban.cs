@@ -1,11 +1,9 @@
 ﻿using CountyRP.Services.Game.Infrastructure.Converters.Ban;
+using CountyRP.Services.Game.Infrastructure.Entities;
 using CountyRP.Services.Game.Infrastructure.Infrastructure.Models.Ban;
 using CountyRP.Services.Game.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CountyRP.Services.Game.Infrastructure.Repositories.Implementations
@@ -22,7 +20,7 @@ namespace CountyRP.Services.Game.Infrastructure.Repositories.Implementations
             return BanDaoConverter.ToRepository(banDao);
         }
 
-        public async Task<BanDtoOut> GetBanAsync(int id)
+        public async Task<BanDtoOut> GetBanOrDefaultAsync(int id)
         {
             var banDao = await _gameDbContext
                 .Bans
@@ -36,17 +34,9 @@ namespace CountyRP.Services.Game.Infrastructure.Repositories.Implementations
 
         public async Task<PagedFilterResultDtoOut<BanDtoOut>> GetBansByFilterAsync(BanFilterDtoIn filter)
         {
-            var bansQuery = _gameDbContext
-                .Bans
-                .AsNoTracking()
-                .Where(
-                    ban =>
-                        (filter.StartDateTime == null || ban.StartDateTime >= filter.StartDateTime) &&
-                        (filter.FinishDateTime == null || filter.FinishDateTime <= filter.FinishDateTime)
-                )
-                .AsQueryable();
+            var query = GetQueryWithFilter(filter);
 
-            var allCount = await bansQuery.CountAsync();
+            var allCount = await query.CountAsync();
             var maxPages = filter.Count.HasValue && filter.Count.Value != 0
                 ?
                     (allCount % filter.Count.Value == 0)
@@ -54,17 +44,12 @@ namespace CountyRP.Services.Game.Infrastructure.Repositories.Implementations
                         : allCount / filter.Count.Value + 1
                 : 1;
 
-            bansQuery = bansQuery
-                .OrderBy(ban => ban.Id);
-
-            if (filter.Count.HasValue && filter.Page.HasValue && filter.Count.Value > 0 && filter.Page.Value > 0)
+            if (filter.Count.HasValue && filter.Page.HasValue)
             {
-                bansQuery = bansQuery
-                    .Skip(filter.Count.Value * (filter.Page.Value - 1))
-                    .Take(filter.Count.Value);
+                query = GetQueryWithPaging(query, filter.Count.Value, filter.Page.Value);
             }
 
-            var filteredBansDao = await bansQuery
+            var filteredBansDao = await query
                 .ToListAsync();
 
             return new PagedFilterResultDtoOut<BanDtoOut>(
@@ -88,12 +73,42 @@ namespace CountyRP.Services.Game.Infrastructure.Repositories.Implementations
 
         public async Task DeleteBanAsync(int id)
         {
-            var ban = await _gameDbContext
+            var banDao = await _gameDbContext
                 .Bans
-                .FirstAsync(ban => ban.Id == id);
+                .FirstOrDefaultAsync(ban => ban.Id == id);
 
-            _gameDbContext.Bans.Remove(ban);
+            _gameDbContext.Bans.Remove(banDao);
             await _gameDbContext.SaveChangesAsync();
+        }
+
+        private IQueryable<BanDao> GetQueryWithFilter(BanFilterDtoIn filter)
+        {
+            var query = _gameDbContext
+                .Bans
+                .AsNoTracking()
+                .Where(
+                    ban =>
+                        (filter.PlayerId == null || ban.PlayerId == filter.PlayerId) &&
+                        (filter.PersonId == null || ban.PersonId == filter.PersonId) &&
+                        (filter.StartDateTime == null || ban.StartDateTime >= filter.StartDateTime) &&
+                        (filter.FinishDateTime == null || filter.FinishDateTime <= filter.FinishDateTime)
+                )
+                .OrderBy(ban => ban.Id)
+                .AsQueryable();
+
+            return query;
+        }
+
+        private IQueryable<BanDao> GetQueryWithPaging(IQueryable<BanDao> query, int count, int page)
+        {
+            if (count > 0 && page > 0)
+            {
+                query = query
+                    .Skip(count * (page - 1))
+                    .Take(count);
+            }
+
+            return query;
         }
     }
 }

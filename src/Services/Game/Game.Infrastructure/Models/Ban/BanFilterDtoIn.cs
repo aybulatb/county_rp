@@ -7,7 +7,7 @@ namespace CountyRP.Services.Game.Infrastructure.Infrastructure.Models.Ban
         int? Count,
         int? Page,
         int? PlayerId,
-        int? UserId,
+        int? PersonId,
         DateTimeOffset? StartDateTime,
         DateTimeOffset? FinishDateTime
     ) : PagedFilterDtoIn(Count, Page);

@@ -8,7 +8,7 @@ namespace CountyRP.Services.Game.Infrastructure.Repositories.Interfaces
     {
         Task<BanDtoOut> AddBanAsync(BanDtoIn banDtoIn);
 
-        Task<BanDtoOut> GetBanAsync(int id);
+        Task<BanDtoOut> GetBanOrDefaultAsync(int id);
 
         Task<PagedFilterResultDtoOut<BanDtoOut>> GetBansByFilterAsync(BanFilterDtoIn filter);
 
